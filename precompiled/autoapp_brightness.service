@@ -1,0 +1,13 @@
+[Unit]
+Description=Android Auto Headunit Brightness
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/pi
+ExecStart=/usr/local/sbin/brightness_max.sh
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+

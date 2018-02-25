@@ -1,0 +1,13 @@
+[Unit]
+Description=Android Auto Headunit
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/usr/local/bin/autoapp
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+

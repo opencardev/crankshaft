@@ -5,11 +5,14 @@ Crankshaft is a turn-key distribution for the Raspberry Pi. It transforms your R
 
 This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). There you can find guides and videos too. 
 
-Report a bug?
+Want to report a problem?
 --
 
-To file a bug or an enhancement idea, please file an issue on this repository. For bugs or ideas related to OpenAuto or aasdk, please go to f1xpl's corresponding repository to file a bug report.
+To file a bug or an enhancement idea, please file an issue on this repository. 
 
+To help us help you, before reporting problems to this repository, I would appreciate if you could compile OpenAuto with X11 and run it the official way per [OpenAuto's instructions](https://github.com/f1xpl/openauto). To make the distribution easier and lightweight, I have opted to run OpenAuto under EGL instead of relying on X11. When you only observe the problem with Crankshaft and not with OpenAuto, should you file a bug request here.
+
+For bugs or ideas related to OpenAuto or aasdk, please go to f1xpl's corresponding repository to file a bug report. If you file a bug request there, please make sure that you follow the instructions to compile it with X11 and not with EGL.
 
 How to build a Crankshaft image
 --

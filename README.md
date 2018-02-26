@@ -8,7 +8,7 @@ This is the source code repository, just in case you want to build the system yo
 Does it work for you?
 --
 
-If you have a chance to try it, please report back at [ticket #2](https://github.com/htruong/crankshaft/issues/2).
+If you have a chance to try it, please spend a minute to report back at [Hardware Compatibility List](https://github.com/htruong/crankshaft/issues/2).
 
 Want to report a problem?
 --

@@ -5,10 +5,17 @@ Crankshaft is a turn-key distribution for the Raspberry Pi. It transforms your R
 
 This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). There you can find guides and videos too. 
 
+Known problems
+--
+
+For some reason, Crankshaft is giving error #2 when connecting with many phones (does not connect to Android Auto). If you actually compile OpenAuto with X11, it will work. For now the only phone I have verified to work is Google Pixel 1. Please be patient if Crankshaft does not work yet for you. Next alpha version will hopefully be able to address this problem.
+
 Does it work for you?
 --
 
 If you have a chance to try it, please spend a minute to report back at [Hardware Compatibility List](https://github.com/htruong/crankshaft/issues/2).
+
+
 
 Want to report a problem?
 --

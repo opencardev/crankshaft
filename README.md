@@ -5,6 +5,11 @@ Crankshaft is a turn-key distribution for the Raspberry Pi. It transforms your R
 
 This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). There you can find guides and videos too. 
 
+Does it work for you?
+--
+
+If you have a chance to try it, please report back at [ticket #2](https://github.com/htruong/crankshaft/issues/2).
+
 Want to report a problem?
 --
 

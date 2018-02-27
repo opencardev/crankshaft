@@ -8,9 +8,9 @@ This is the source code repository, just in case you want to build the system yo
 Known problems
 --
 
-For some reason, Crankshaft is giving error #2 when connecting with many phones (does not connect to Android Auto). It seems you'll have a much better chance of getting it to work using the official screen.
+For some reason, Crankshaft is giving error #2 when connecting with many phones (the phone complaining that it's connecting to an incompatible unit). It seems you'll have a better chance of getting it to work using the official screen.
 
-If you don't have the official screen or touchscreen, compile OpenAuto with X11, it will work. Please be patient if Crankshaft does not work yet for you. Next alpha version will hopefully be able to address this problem.
+If you don't have the official screen or touchscreen, compile OpenAuto with X11 per [OpenAuto's instructions](https://github.com/f1xpl/openauto/wiki/Build-instructions), it will work. Please be patient if Crankshaft does not work out-of-the-box yet for you. Next alpha version will hopefully be able to address this problem.
 
 Does it work for you?
 --
@@ -24,7 +24,7 @@ Want to report a problem?
 
 To file a bug or an enhancement idea, please file an issue on this repository. 
 
-To help us help you, before reporting problems to this repository, I would appreciate if you could compile OpenAuto with X11 and run it the official way per [OpenAuto's instructions](https://github.com/f1xpl/openauto). To make the distribution easier and lightweight, I have opted to run OpenAuto under EGL instead of relying on X11. When you only observe the problem with Crankshaft and not with OpenAuto, should you file a bug request here.
+To help us help you, before reporting problems to this repository, I would appreciate if you could compile OpenAuto with X11 and run it the official way per [OpenAuto's instructions](https://github.com/f1xpl/openauto/wiki/Build-instructions). To make the distribution easier and lightweight, I have opted to run OpenAuto under EGL instead of relying on X11. When you only observe the problem with Crankshaft and not with OpenAuto, should you file a bug request here.
 
 For bugs or ideas related to OpenAuto or aasdk, please go to f1xpl's corresponding repository to file a bug report. If you file a bug request there, please make sure that you follow the instructions to compile it with X11 and not with EGL.
 

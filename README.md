@@ -10,13 +10,16 @@ Known problems
 
 For some reason, Crankshaft is giving error #2 when connecting with many phones (the phone complaining that it's connecting to an incompatible unit). It seems you'll have a better chance of getting it to work using the official screen.
 
-If you don't have the official screen or touchscreen, compile OpenAuto with X11 per [OpenAuto's instructions](https://github.com/f1xpl/openauto/wiki/Build-instructions), it will work. Please be patient if Crankshaft does not work out-of-the-box yet for you. Next alpha version will hopefully be able to address this problem.
+If you don't have the official screen or touchscreen, you should get one :) It's a cheap and very good screen. 
+
+If you insist on using a custom screen, compile OpenAuto with X11 per [OpenAuto's instructions](https://github.com/f1xpl/openauto/wiki/Build-instructions), it will work. Please be patient if Crankshaft does not work out-of-the-box yet for you. Next alpha version will hopefully be able to address this problem.
 
 Does it work for you?
 --
 
-If you have a chance to try it, please spend a minute to report back at [Hardware Compatibility List](https://github.com/htruong/crankshaft/issues/2).
+If you have a chance to try it, please spend a minute to report back whether it works or not at [Hardware Compatibility List](https://github.com/htruong/crankshaft/issues/2).
 
+If you have pictures of your project, feel free to [add to the collection](https://photos.app.goo.gl/81hQ6wTuLFNGmRHh2).
 
 
 Want to report a problem?

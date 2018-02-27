@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ezpi4me - Raspberry Pi ME Cleaner image creation script
+# adapted from ezpi4me - Raspberry Pi ME image creation script
 # Written by Huan Truong <htruong@tnhh.net>, 2018
 # This script is licensed under GNU Public License v3
 

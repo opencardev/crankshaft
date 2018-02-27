@@ -33,10 +33,10 @@ This repository provides a skeleton for you to build your own Crankshaft image, 
 
 There are three missing binary blobs in the `precompiled` directory: 
 
-- `libQt5_OpenGLES2.tar.xz`: Qt5 library compiled with Raspberry Pi OpenGL ES2 library.
+- `libQt5_OpenGLES2.tar.xz`: Qt5 library compiled with Raspberry Pi OpenGL ES2 library. It is the archive of `/usr/local/qt5`
 - `autoapp`: OpenAuto binary
 - `libaasdk.so`: aasdk binary
 
-Please head to the Wiki for instruction how to build each of the component yourself.
+Please head to the Wiki for instruction [how to build each of the component yourself](https://github.com/htruong/crankshaft/wiki/Building-the-binary-blobs). The scripts provided in this repository allows you to [cross-compile them](https://github.com/htruong/crankshaft/wiki/Cross-compile-on-your-computer).
 
 

@@ -8,7 +8,9 @@ This is the source code repository, just in case you want to build the system yo
 Known problems
 --
 
-For some reason, Crankshaft is giving error #2 when connecting with many phones (does not connect to Android Auto). If you actually compile OpenAuto with X11, it will work. For now the only phone I have verified to work is Google Pixel 1. Please be patient if Crankshaft does not work yet for you. Next alpha version will hopefully be able to address this problem.
+For some reason, Crankshaft is giving error #2 when connecting with many phones (does not connect to Android Auto). It seems you'll have a much better chance of getting it to work using the official screen.
+
+If you don't have the official screen or touchscreen, compile OpenAuto with X11, it will work. Please be patient if Crankshaft does not work yet for you. Next alpha version will hopefully be able to address this problem.
 
 Does it work for you?
 --

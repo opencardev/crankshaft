@@ -38,6 +38,7 @@ house_keeping() {
     chown root:staff /etc/systemd/system/autoapp.service
     chown root:staff /etc/systemd/system/autoapp_brightness.service
     chown root:staff /etc/udev/rules.d/openauto.rules
+    chown root:staff /etc/pulse/daemon.conf
 
     # enable the startup actions
     systemctl enable autoapp.service

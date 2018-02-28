@@ -144,6 +144,8 @@ set_up_loopdevs() {
 
     cp precompiled/openauto.rules ${TEMP_CHROOT_DIR}/etc/udev/rules.d/
 
+    cp precompiled/pulseaudio_daemon.conf ${TEMP_CHROOT_DIR}/etc/pulse/daemon.conf
+
     # copy the customizer script
     cp scripts/customize-image-pi.sh ${TEMP_CHROOT_DIR}/root/
 

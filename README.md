@@ -1,7 +1,7 @@
 Crankshaft = Raspberry Pi 💖 Android Auto
 ==
 
-Crankshaft is a turn-key distribution for the Raspberry Pi. It transforms your Raspberry Pi to an [Android Auto headunit](https://www.android.com/auto/). Android then displays your apps on the big, gorgeous 7 inches screen of the RPi and gives you a car-optimized interface and experience so you can drive distraction-free. No more fumbling with the phone's small screen!
+Crankshaft is a turn-key free (as in freedom) distribution for the Raspberry Pi. It transforms your Raspberry Pi to an [Android Auto headunit](https://www.android.com/auto/). Android then displays your apps on the big, gorgeous 7 inches screen of the RPi and gives you a car-optimized interface and experience so you can drive distraction-free. No more fumbling with the phone's small screen!
 
 Crankshaft is possible thanks to the power of [OpenAuto](https://github.com/f1xpl/openauto) and [aasdk](https://github.com/f1xpl/aasdk).
 
@@ -10,9 +10,9 @@ This is the source code repository, just in case you want to build the system yo
 Known problems
 --
 
-For some reason, weveral phone models complain about "incompatible device" when connecting to Crankshaft. Please be patient if Crankshaft does not work out-of-the-box yet for you. I am trying to figure out why so. If you have a device that you can lend me to debug, please email.
+For some reason, several phone models complain about "incompatible device" when connecting to Crankshaft. Please be patient if Crankshaft does not work out-of-the-box yet for you. I am trying to figure out why so. If you have a device that you can lend me to debug, please email.
 
-It seems you'll have a better chance of getting it to work using the official screen. If you don't have the official screen or touchscreen, you should get one :) It's a cheap and very good screen. If you insist on using a custom screen, compile OpenAuto with X11 per [OpenAuto's instructions](https://github.com/f1xpl/openauto/wiki/Build-instructions), it will work. 
+It seems you'll have a better chance of getting it to work using the official screen. If you don't have the official screen or touchscreen, you should get one - it is a cheap and very good screen. If you insist on using a custom screen, compile OpenAuto with X11 per [OpenAuto's instructions](https://github.com/f1xpl/openauto/wiki/Build-instructions).
 
 
 Does it work for you?

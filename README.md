@@ -10,7 +10,7 @@ This is the source code repository, just in case you want to build the system yo
 Known problems
 --
 
-For some reason, Crankshaft is giving error #2 when connecting with many phones (the phone complaining that it's connecting to an incompatible unit). Please be patient if Crankshaft does not work out-of-the-box yet for you. Next alpha version will hopefully be able to address this problem.
+For some reason, weveral phone models complain about "incompatible device" when connecting to Crankshaft. Please be patient if Crankshaft does not work out-of-the-box yet for you. I am trying to figure out why so. If you have a device that you can lend me to debug, please email.
 
 It seems you'll have a better chance of getting it to work using the official screen. If you don't have the official screen or touchscreen, you should get one :) It's a cheap and very good screen. If you insist on using a custom screen, compile OpenAuto with X11 per [OpenAuto's instructions](https://github.com/f1xpl/openauto/wiki/Build-instructions), it will work. 
 

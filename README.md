@@ -14,7 +14,6 @@ For some reason, several phone models complain about "incompatible device" when 
 
 It seems you'll have a better chance of getting it to work using the official screen. If you don't have the official screen or touchscreen, you should get one - it is a cheap and very good screen. If you insist on using a custom screen, compile OpenAuto with X11 per [OpenAuto's instructions](https://github.com/f1xpl/openauto/wiki/Build-instructions).
 
-
 Does it work for you?
 --
 
@@ -42,7 +41,7 @@ What's new:
 Release notes:
 
 - To mount system read/wite, put a jumper on GPIO4/Ground (Pin 07-09)
-
+- Pulseaudio produced choppier audio even compared to previous one when two streams are played at the same time.
 
 Want to report a problem?
 --

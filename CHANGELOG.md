@@ -19,4 +19,6 @@ What's new:
 Release notes:
 
 - To mount system read/wite, put a jumper on GPIO4/Ground (Pin 07-09)
+- Pulseaudio produces choppier audio even compared to previous one when two streams are played at the same time.
+
 

@@ -11,6 +11,11 @@ if [ $(id -u) -ne 0 ]; then
 	exit 1
 fi
 
+if [ -f /etc/fs_read_only_config ]; then
+    echo "This script has been run before. Nothing to do."
+    exit 0
+fi
+
 
 # FEATURE PROMPTS ----------------------------------------------------------
 # Installation doesn't begin until after all user input is taken.
@@ -94,6 +99,10 @@ append2() {
 		# Not found; insert in file before EOF
 		sed -i "s/\'/ $3/g" $1 >/dev/null
 	fi
+}
+
+mark_script_run() {
+    touch /etc/fs_read_only_config
 }
 
 echo
@@ -232,6 +241,8 @@ append1 /etc/fstab "/var/log" "tmpfs /var/log tmpfs nodev,nosuid 0 0"
 append1 /etc/fstab "/var/tmp" "tmpfs /var/tmp tmpfs nodev,nosuid 0 0"
 append1 /etc/fstab "\s/tmp"   "tmpfs /tmp    tmpfs nodev,nosuid 0 0"
 append1 /etc/fstab "\s/tmpfs_home"   "tmpfs /tmpfs_home    tmpfs nodev,nosuid 0 0"
+
+mark_script_run
 
 sync
 exit 0

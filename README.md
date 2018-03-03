@@ -3,7 +3,7 @@ Crankshaft = Raspberry Pi 💖 Android Auto
 
 Crankshaft is a turn-key free (as in freedom) distribution for the Raspberry Pi. It transforms your Raspberry Pi to an [Android Auto headunit](https://www.android.com/auto/). Android then displays your apps on the big, gorgeous 7 inches screen of the RPi and gives you a car-optimized interface and experience so you can drive distraction-free. No more fumbling with the phone's small screen!
 
-Crankshaft is possible thanks to the power of [OpenAuto](https://github.com/f1xpl/openauto) and [aasdk](https://github.com/f1xpl/aasdk).
+Crankshaft is possible thanks to the power of [OpenAuto](https://github.com/f1xpl/openauto) and [aasdk](https://github.com/f1xpl/aasdk). Crankshaft and OpenAuto are in no way related, certfied or sanctioned by either Google or Android.
 
 This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). There you can find guides and videos too. 
 

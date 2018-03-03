@@ -65,6 +65,10 @@ There are three missing binary blobs in the `precompiled` directory:
 - `autoapp`: OpenAuto binary
 - `libaasdk.so`: aasdk binary
 
+There is currently another 1 additional missing small script:
+
+- `dumb_suid`: A way to exec bash scripts in `opt/crankshaft` as root. Compile it (in `src`) and put it to `precompiled/opt`. Bash scripts can't do `suid`.
+
 Please head to the Wiki for instruction [how to build each of the components yourself](https://github.com/htruong/crankshaft/wiki/Building-the-binary-blobs). The scripts provided in this repository allows you to [cross-compile them](https://github.com/htruong/crankshaft/wiki/Cross-compile-on-your-computer).
 
 

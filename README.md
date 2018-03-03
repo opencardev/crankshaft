@@ -7,6 +7,11 @@ Crankshaft is possible thanks to the power of [OpenAuto](https://github.com/f1xp
 
 This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). There you can find guides and videos too. 
 
+Tips & Tricks
+--
+
+Although Crankshaft is designed so it's not necessary to configure, there are some [tips and tricks](https://github.com/htruong/crankshaft/wiki/Hidden-tips,-tricks,-settings,-etc.) here that might be useful for power users.
+
 Known problems
 --
 
@@ -65,7 +70,7 @@ There are three missing binary blobs in the `precompiled` directory:
 - `autoapp`: OpenAuto binary
 - `libaasdk.so`: aasdk binary
 
-There is currently another 1 additional missing small script:
+There is currently one additional missing small script:
 
 - `dumb_suid`: A way to exec bash scripts in `opt/crankshaft` as root. Compile it (in `src`) and put it to `precompiled/opt`. Bash scripts can't do `suid`.
 

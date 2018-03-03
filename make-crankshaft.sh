@@ -135,6 +135,7 @@ set_up_loopdevs() {
     mkdir ${TEMP_CHROOT_DIR}/usr/local/lib/
     mkdir ${TEMP_CHROOT_DIR}/etc/pulse/
     mkdir ${TEMP_CHROOT_DIR}/etc/wpa_supplicant/
+    mkdir ${TEMP_CHROOT_DIR}/opt/crankshaft/
 
     cp precompiled/autoapp ${TEMP_CHROOT_DIR}/usr/local/bin/
     cp precompiled/libaasdk.so ${TEMP_CHROOT_DIR}/usr/local/lib/
@@ -144,6 +145,8 @@ set_up_loopdevs() {
 
     cp precompiled/autoapp.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
     cp precompiled/autoapp_brightness.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
+    cp precompiled/splashscreen.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
+    cp precompiled/opt/* ${TEMP_CHROOT_DIR}/opt/crankshaft/
 
     cp precompiled/openauto.rules ${TEMP_CHROOT_DIR}/etc/udev/rules.d/
 

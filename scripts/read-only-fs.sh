@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # CREDIT TO THESE TUTORIALS:
+# Ladyada's readonly fs script
 # petr.io/en/blog/2015/11/09/read-only-raspberry-pi-with-jessie
 # hallard.me/raspberry-pi-read-only
 # k3a.me/how-to-make-raspberrypi-truly-read-only-reliable-and-trouble-free
@@ -113,15 +114,13 @@ echo "Removing unwanted packages..."
 # dphys-swapfile xserver-common lightdm fake-hwclock
 # Let's keep dbus...that includes avahi-daemon, a la 'raspberrypi.local',
 # also keeping xserver & lightdm for GUI login (WIP, not working yet)
-apt-get remove -y --force-yes --purge triggerhappy cron logrotate \
+apt-get remove -y --force-yes --purge triggerhappy \
  dphys-swapfile fake-hwclock
 apt-get -y --force-yes autoremove --purge
 
-# Replace log management with busybox (use logread if needed)
-echo "Installing busybox-syslogd..."
-apt-get -y --force-yes install busybox-syslogd; dpkg --purge rsyslog
-
 echo "Configuring system..."
+
+sed -i "s/#Storage=auto/Storage=volatile/" /etc/systemd/journald.conf
 
 # Install boot-time R/W jumper test if requested
 if [ $INSTALL_RW_JUMPER -ne 0 ]; then
@@ -146,14 +145,14 @@ if [ \`gpio -g read $INVERT_PIN\` -eq 0 ] ; then
 		echo "lcd_rotate=2" >> /boot/config.txt
 		reboot
 	fi
-else
-	grep "lcd_rotate=2" /boot/config.txt >/dev/null
-	if [ \$? -eq 0 ]; then
-		# There, need to restore
-		mount -o remount,rw /boot
-		sed -i 's/^lcd_rotate=2//g' /boot/config.txt
-		reboot
-        fi
+#else
+#	grep "lcd_rotate=2" /boot/config.txt >/dev/null
+#	if [ \$? -eq 0 ]; then
+#		# There, need to restore
+#		mount -o remount,rw /boot
+#		sed -i 's/^lcd_rotate=2//g' /boot/config.txt
+#		reboot
+#       fi
 fi
 exit 0
 EOF

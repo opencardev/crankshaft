@@ -26,6 +26,8 @@ If you have a chance to try it, please spend a minute to report back whether it 
 
 If you have pictures of your project, feel free to [add to the collection](https://photos.app.goo.gl/81hQ6wTuLFNGmRHh2).
 
+For further questions, please see the [FAQ](FAQ.md).
+
 Release Highlights
 --
 

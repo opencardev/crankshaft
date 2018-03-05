@@ -5,8 +5,8 @@ Description=Android Auto Headunit
 Type=simple
 User=pi
 WorkingDirectory=/home/pi
+ExecStartPre=/opt/crankshaft/dumb_suid brightness_max.sh
 ExecStart=/usr/local/bin/autoapp
-#ExecStopPost=/sbin/shutdown --halt now
 Restart=on-abort
 
 [Install]

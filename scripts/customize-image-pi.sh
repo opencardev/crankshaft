@@ -50,7 +50,6 @@ house_keeping() {
     chown -R root:root /usr/local/
     chown -R root:root /opt/crankshaft/
     chown root:root /etc/systemd/system/autoapp.service
-    chown root:root /etc/systemd/system/autoapp_brightness.service
     chown root:root /etc/systemd/system/splashscreen.service
     chown root:root /etc/systemd/system/crankshaft_startup.service
     chown root:root /etc/udev/rules.d/openauto.rules
@@ -68,7 +67,6 @@ house_keeping() {
     # enable the startup actions
     systemctl enable splashscreen.service
     systemctl enable autoapp.service
-    systemctl enable autoapp_brightness.service
     systemctl enable crankshaft_startup.service
 
     systemctl disable resize2fs_once.service

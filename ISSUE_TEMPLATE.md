@@ -1,4 +1,4 @@
 - What phone do you have? What OS version?
 - Does it happen with OpenAuto on X11 too, or you don't know?
 - Did you try to compile OpenAuto with Xorg instead of EGL? Did you follow the build instructions on https://github.com/f1xpl/openauto/wiki/Build-instructions? What is your libQt version and does that come with raspbian?
-- Please provide any fruther information that you might find helpful.
+- Please provide any further information that you might find helpful.

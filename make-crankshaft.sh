@@ -143,9 +143,7 @@ set_up_loopdevs() {
 
     cp precompiled/brightness_max.sh ${TEMP_CHROOT_DIR}/usr/local/sbin/
 
-    cp precompiled/autoapp.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
-    cp precompiled/autoapp_brightness.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
-    cp precompiled/splashscreen.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
+    cp precompiled/systemd_services/*.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
     cp precompiled/opt/* ${TEMP_CHROOT_DIR}/opt/crankshaft/
 
     cp precompiled/openauto.rules ${TEMP_CHROOT_DIR}/etc/udev/rules.d/

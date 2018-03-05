@@ -26,33 +26,8 @@ SYS_TYPES=(Pi\ 3\ /\ Pi\ Zero\ W All\ other\ models)
 WATCHDOG_MODULES=(bcm2835_wdog bcm2708_wdog)
 OPTION_NAMES=(NO YES)
 
-INSTALL_RW_JUMPER=1
-RW_PIN=4
-#invert LCD pin
-INVERT_PIN=21
-
 INSTALL_WATCHDOG=1
 WD_TARGET=1
-
-# VERIFY SELECTIONS BEFORE CONTINUING --------------------------------------
-
-echo
-if [ $INSTALL_RW_JUMPER -eq 1 ]; then
-	echo "Boot-time R/W jumper: YES (GPIO$RW_PIN)"
-else
-	echo "Boot-time R/W jumper: NO"
-fi
-if [ $INSTALL_HALT -eq 1 ]; then
-	echo "Install GPIO-halt: YES (GPIO$HALT_PIN)"
-else
-	echo "Install GPIO-halt: NO"
-fi
-if [ $INSTALL_WATCHDOG -eq 1 ]; then
-	echo "Enable watchdog: YES (${SYS_TYPES[WD_TARGET-1]})"
-else
-	echo "Enable watchdog: NO"
-fi
-echo
 
 # START INSTALL ------------------------------------------------------------
 # All selections have been validated at this point...
@@ -122,64 +97,6 @@ echo "Configuring system..."
 
 sed -i "s/#Storage=auto/Storage=volatile/" /etc/systemd/journald.conf
 
-# Install boot-time R/W jumper test if requested
-if [ $INSTALL_RW_JUMPER -ne 0 ]; then
-	apt-get install -y --force-yes wiringpi
-	# Check if already present in rc.local:
-	cat <<EOF > /etc/rc.local
-#!/bin/bash
-
-gpio -g mode $RW_PIN up
-gpio -g mode $INVERT_PIN up
-
-if [ \`gpio -g read $RW_PIN\` -eq 0 ] ; then
-	mount -o remount,rw /
-	mount -o remount,rw /boot
-fi
-
-if [ \`gpio -g read $INVERT_PIN\` -eq 0 ] ; then
-	grep "lcd_rotate=2" /boot/config.txt >/dev/null
-	if [ \$? -ne 0 ]; then
-		# Not there
-		mount -o remount,rw /boot
-		echo "lcd_rotate=2" >> /boot/config.txt
-		reboot
-	fi
-#else
-#	grep "lcd_rotate=2" /boot/config.txt >/dev/null
-#	if [ \$? -eq 0 ]; then
-#		# There, need to restore
-#		mount -o remount,rw /boot
-#		sed -i 's/^lcd_rotate=2//g' /boot/config.txt
-#		reboot
-#       fi
-fi
-exit 0
-EOF
-fi
-
-chmod +x /etc/rc.local
-
-cat <<EOF > /etc/systemd/system/rc-local.service
-[Unit]
- Description=/etc/rc.local Compatibility
- ConditionPathExists=/etc/rc.local
-
-[Service]
- Type=forking
- ExecStart=/etc/rc.local start
- TimeoutSec=0
- StandardOutput=tty
- RemainAfterExit=yes
- SysVStartPriority=99
-
-[Install]
- WantedBy=multi-user.target
-EOF
-
-systemctl enable rc-local
-
-
 # Install watchdog if requested
 if [ $INSTALL_WATCHDOG -ne 0 ]; then
 	apt-get install -y --force-yes watchdog
@@ -214,12 +131,6 @@ rm -rf /home/pi/.config
 mkdir /tmpfs_home
 chown pi:pi /tmpfs_home
 ln -s /tmpfs_home /home/pi/.config
-
-# Make SSH work
-#replaceAppend /etc/ssh/sshd_config "^.*UsePrivilegeSeparation.*$" "UsePrivilegeSeparation no"
-# bbro method (not working in Jessie?):
-#rmdir /var/run/sshd
-#ln -s /tmp /var/run/sshd
 
 # Change spool permissions in var.conf (rondie/Margaret fix)
 replace /usr/lib/tmpfiles.d/var.conf "spool\s*0755" "spool 1777"

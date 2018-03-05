@@ -1,0 +1,10 @@
+[Unit]
+ Description=Crankshaft misc startup services
+ ConditionPathExists=/opt/crankshaft/startup.sh
+
+[Service]
+ Type=simple
+ ExecStart=/opt/crankshaft/startup.sh
+
+[Install]
+ WantedBy=multi-user.target

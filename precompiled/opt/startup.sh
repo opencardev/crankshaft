@@ -15,9 +15,7 @@ if [ `gpio -g read $DEV_PIN` -eq 0 ] ; then
 
 	# ... but we don't see it being enabled
 	if ! [ -f $DEV_FILE ]; then
-		systemctl disable autoapp.service
-		systemctl start regenerate_ssh_host_keys.service
-		systemctl enable ssh
+		/opt/crankshaft/devmode.sh enable
 		touch $DEV_FILE
 		reboot
 	fi
@@ -26,8 +24,7 @@ else
 	# ... but there is a dev file
 	if [ -f $DEV_FILE ]; then
 		mount -o remount,rw /
-		systemctl enable autoapp.service
-		systemctl disable ssh
+		/opt/crankshaft/devmode.sh disable
 		rm -f $DEV_FILE
 		reboot
 	fi

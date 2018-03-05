@@ -32,6 +32,7 @@ WD_TARGET=1
 # START INSTALL ------------------------------------------------------------
 # All selections have been validated at this point...
 
+
 # Given a filename, a regex pattern to match and a replacement string:
 # Replace string if found, else no change.
 # (# $1 = filename, $2 = pattern to match, $3 = replacement)
@@ -83,6 +84,11 @@ mark_script_run() {
 
 echo
 echo "Starting installation..."
+
+
+# disable failed units due to readonly fs
+systemctl disable systemd-rfkill.service
+
 
 echo "Removing unwanted packages..."
 #apt-get remove -y --force-yes --purge triggerhappy cron logrotate dbus \

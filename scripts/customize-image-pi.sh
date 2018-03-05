@@ -10,11 +10,8 @@
 
 print_banner() {
     echo "---- WELCOME TO THE RASPBERRY PI IMAGE CUSTOMIZER --------------"
-    sleep 1
     echo " Congratulations, we have gone a long way."
-    sleep 1
     echo " I will prepare some software for you, sit tight."
-    sleep 1
     echo ""
     echo ""
     echo ""
@@ -64,12 +61,17 @@ house_keeping() {
         chown root:root /etc/wpa_supplicant/wpa_supplicant.conf
     fi
 
+    # set the hostname
+    echo "crankshaft" > /etc/hostname
+    sed -i "s/raspberrypi/crankshaft/" /etc/hosts
+    
     # enable the startup actions
     systemctl enable splashscreen.service
     systemctl enable autoapp.service
     systemctl enable crankshaft_startup.service
-
+    
     systemctl disable resize2fs_once.service
+    /opt/crankshaft/devmode.sh disable
 }
 
 

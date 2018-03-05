@@ -141,8 +141,6 @@ set_up_loopdevs() {
     cp precompiled/libaasdk.so ${TEMP_CHROOT_DIR}/usr/local/lib/
     tar -xvf precompiled/libQt5_OpenGLES2.tar.xz -C ${TEMP_CHROOT_DIR}/
 
-    cp precompiled/brightness_max.sh ${TEMP_CHROOT_DIR}/usr/local/sbin/
-
     cp precompiled/systemd_services/*.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
     cp precompiled/opt/* ${TEMP_CHROOT_DIR}/opt/crankshaft/
 

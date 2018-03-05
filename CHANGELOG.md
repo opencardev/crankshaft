@@ -1,3 +1,14 @@
+Version alpha0.1.6 2018-03-05
+--
+
+What's new:
+
+- Dev mode: Bridge GPIO4 to ground to enable dev mode
+- Less services enabled means faster startup and less power consumption\
+  Removed SSH, networking, dhcpd services by default.
+- Misc. organizational changes for scripts
+
+
 Version alpha0.1.5 2018-03-02
 --
 

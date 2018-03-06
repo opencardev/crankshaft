@@ -1,20 +1,18 @@
 Crankshaft = Raspberry Pi 💖 Android Auto
 ==
 
-Crankshaft is a turn-key free (as in freedom) distribution for the Raspberry Pi. It transforms your Raspberry Pi to an [Android Auto headunit](https://www.android.com/auto/). Android then displays your apps on the big, gorgeous 7 inches screen of the RPi and gives you a car-optimized interface and experience so you can drive distraction-free. No more fumbling with the phone's small screen!
+Crankshaft is a turn-key free (as in freedom) distribution for the Raspberry Pi. It transforms your Raspberry Pi to an [Android Auto headunit](https://www.android.com/auto/).
 
-Crankshaft is possible thanks to the power of [OpenAuto](https://github.com/f1xpl/openauto) and [aasdk](https://github.com/f1xpl/aasdk). Crankshaft and OpenAuto are in no way related, certfied or sanctioned by either Google or Android.
+This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). Crankshaft is possible thanks to the power of [OpenAuto](https://github.com/f1xpl/openauto) and [aasdk](https://github.com/f1xpl/aasdk). Crankshaft and OpenAuto are in no way related or certfied by either Google or Android.
 
-This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). There you can find guides and videos too. 
 
-Tips & Tricks & FAQs
+Have questions? We have answers!
 --
 
-Does OK Google work? Can I use a custom screen? Oh my, all those questions!
+The premier place to discuss your question or idea is [the subreddit (BETA)](https://www.reddit.com/r/crankshaft/). 
 
-Although Crankshaft is designed so it's not necessary to configure, there are some [tips and tricks](https://github.com/htruong/crankshaft/wiki/Hidden-tips,-tricks,-settings,-etc.) here that might be useful for power users.
+Several other questions such as "Does OK Google work? Can I use a custom screen?" get asked a lot and might have already been answered in the [tips and tricks](https://github.com/htruong/crankshaft/wiki/Hidden-tips,-tricks,-settings,-etc.) page or the  [check out the growing FAQs](https://github.com/htruong/crankshaft/blob/master/FAQ.md).
 
-You might want to [check out the growing FAQs](https://github.com/htruong/crankshaft/blob/master/FAQ.md) too!
 
 Known problems
 --

@@ -14,3 +14,7 @@ of Android Auto are as follows:
 - 480p
 - 720p (requires dev mode enabled)
 - 1080p (requires dev mode enabled)
+
+I want to run this on an Android tablet...
+------------
+Use [this program](https://play.google.com/store/apps/details?id=gb.xxy.hr&hl=en) :).

@@ -7,10 +7,14 @@ Crankshaft is possible thanks to the power of [OpenAuto](https://github.com/f1xp
 
 This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). There you can find guides and videos too. 
 
-Tips & Tricks
+Tips & Tricks & FAQs
 --
 
+Does OK Google work? Can I use a custom screen? Oh my, all those questions!
+
 Although Crankshaft is designed so it's not necessary to configure, there are some [tips and tricks](https://github.com/htruong/crankshaft/wiki/Hidden-tips,-tricks,-settings,-etc.) here that might be useful for power users.
+
+You might want to [check out the growing FAQs](https://github.com/htruong/crankshaft/blob/master/FAQ.md) too!
 
 Known problems
 --

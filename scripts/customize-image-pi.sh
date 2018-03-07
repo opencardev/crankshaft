@@ -56,7 +56,7 @@ house_keeping() {
     chmod u+s /opt/crankshaft/dumb_suid
     
     sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
-    echo 'set-sink-volume 0 80%' >> /etc/pulse/default.pa
+    echo 'set-sink-volume 0 65536' >> /etc/pulse/default.pa
 
     if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
         chown root:root /etc/wpa_supplicant/wpa_supplicant.conf

@@ -75,6 +75,13 @@ For some reason, several phone models complain about "incompatible device" when 
 
 It seems you'll have a better chance of getting it to work using the official screen. If you don't have the official screen or touchscreen, you should get one - it is a cheap and very good screen. If you insist on using a custom screen and the custom screen does not work out of the box, [try running Crankshaft under X11 under dev mode](https://github.com/htruong/crankshaft/wiki/Crankshaft-dev-mode).
 
+Other projects
+--
+
+OpenAuto and Crankshaft are not the only people in this world experimenting with this idea. 
+
+Some other developers worked hard on this too, and you might want to give them a try. [Here is another solution that works on the Pi](https://github.com/viktorgino/headunit-desktop), [here is one that works on an Android tablet](https://github.com/borconi/headunit).
+
 
 How to build a Crankshaft image
 --

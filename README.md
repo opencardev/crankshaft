@@ -37,6 +37,11 @@ What's new:
   Removed SSH, networking, dhcpd services by default.
 - Misc. organizational changes
 
+Release notes:
+
+- Crankshaft is using a fork of OpenAuto with some experimental changes\
+  http://github.com/htruong/openauto
+
 **Version alpha0.1.5 2018-03-02**
 
 What's new:

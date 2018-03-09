@@ -20,12 +20,13 @@ print_banner() {
 get_deps() {
     apt update
     #apt upgrade
-    apt install -y \
+    apt install --no-install-recommends -y \
         libprotobuf10 libpulse0 libboost-log1.62.0 libboost-test1.62.0 \
         libboost-thread1.62.0 libboost-date-time1.62.0 libboost-chrono1.62.0 \
         libboost-atomic1.62.0 libpulse-mainloop-glib0 libfontconfig1 \
         libinput10 libxkbcommon0 pulseaudio \
         fbi \
+        xinit xserver-xorg \
         wiringpi
 
     apt clean
@@ -60,6 +61,10 @@ house_keeping() {
     if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
         chown root:root /etc/wpa_supplicant/wpa_supplicant.conf
     fi
+
+    # some magic to get X11 openauto to work
+    echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
+    echo "exec autoapp --platform xcb" > ~/.xinitrc
 
     # set the hostname
     echo "crankshaft" > /etc/hostname

@@ -47,7 +47,6 @@ house_keeping() {
     chown -R root:root /usr/local/
     chown -R root:root /opt/crankshaft/
     chown root:root /etc/systemd/system/autoapp.service
-    chown root:root /etc/systemd/system/splashscreen.service
     chown root:root /etc/systemd/system/crankshaft_startup.service
     chown root:root /etc/udev/rules.d/openauto.rules
     

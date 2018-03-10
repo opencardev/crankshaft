@@ -1,14 +1,10 @@
 [Unit]
-Description=Crankshaft startup services
-DefaultDependencies=no
-After=local-fs.target
-ConditionPathExists=/opt/crankshaft/startup.sh
+ Description=Crankshaft misc startup services
+ ConditionPathExists=/opt/crankshaft/startup.sh
 
 [Service]
-ExecStartPre=/usr/bin/fbi -d /dev/fb0 --noverbose -a /opt/crankshaft/splash.png
-ExecStart=/opt/crankshaft/startup.sh
-StandardInput=tty
-StandardOutput=tty
+ Type=simple
+ ExecStart=/opt/crankshaft/startup.sh
 
 [Install]
-WantedBy=sysinit.target
+ WantedBy=multi-user.target

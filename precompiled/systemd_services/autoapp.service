@@ -4,7 +4,7 @@ Description=Android Auto Headunit
 [Service]
 Type=simple
 User=pi
-WorkingDirectory=/home/pi/.config
+WorkingDirectory=/home/pi
 ExecStartPre=/opt/crankshaft/dumb_suid brightness_max.sh
 ExecStart=/opt/crankshaft/openauto.sh
 Restart=on-abort

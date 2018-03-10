@@ -133,10 +133,14 @@ rm -rf /var/spool
 ln -s /tmp /var/spool
 
 # Voodoo stuff to get the home folder working
-rm -rf /home/pi/.config
-mkdir /tmpfs_home
-chown pi:pi /tmpfs_home
-ln -s /tmpfs_home /home/pi/.config
+touch /tmp/openauto.ini
+ln -s /tmp/openauto.ini /home/pi/openauto.ini
+chown pi:pi /home/pi/openauto.ini
+mkdir /tmp/
+mkdir /tmp/.config
+mkdir /tmp/.local
+ln -s /tmp/.config /home/pi/
+ln -s /tmp/.local /home/pi/
 
 # Change spool permissions in var.conf (rondie/Margaret fix)
 replace /usr/lib/tmpfiles.d/var.conf "spool\s*0755" "spool 1777"
@@ -156,7 +160,6 @@ replace /etc/fstab "ext4\s*defaults,noatime\s" "ext4    defaults,noatime,ro "
 append1 /etc/fstab "/var/log" "tmpfs /var/log tmpfs nodev,nosuid 0 0"
 append1 /etc/fstab "/var/tmp" "tmpfs /var/tmp tmpfs nodev,nosuid 0 0"
 append1 /etc/fstab "\s/tmp"   "tmpfs /tmp    tmpfs nodev,nosuid 0 0"
-append1 /etc/fstab "\s/tmpfs_home"   "tmpfs /tmpfs_home    tmpfs nodev,nosuid 0 0"
 
 mark_script_run
 

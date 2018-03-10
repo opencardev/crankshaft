@@ -26,7 +26,7 @@ get_deps() {
         libboost-atomic1.62.0 libpulse-mainloop-glib0 libfontconfig1 \
         libinput10 libxkbcommon0 pulseaudio \
         fbi \
-        xinit xserver-xorg \
+        xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse \
         wiringpi
 
     apt clean
@@ -64,7 +64,11 @@ house_keeping() {
 
     # some magic to get X11 openauto to work
     echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
-    echo "exec autoapp --platform xcb" > ~/.xinitrc
+    echo "exec autoapp --platform xcb" > /home/pi/.xinitrc
+    sudo usermod -aG tty pi
+    chown pi:pi /home/pi/.xinitrc
+
+    chown pi:pi /home/pi/.openauto_saved.ini
 
     # set the hostname
     echo "crankshaft" > /etc/hostname

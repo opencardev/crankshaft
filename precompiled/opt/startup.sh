@@ -49,4 +49,5 @@ if [ `gpio -g read $INVERT_PIN` -eq 0 ] ; then
 #               reboot
 #       fi
 fi
+
 exit 0

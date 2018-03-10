@@ -145,6 +145,7 @@ set_up_loopdevs() {
     cp precompiled/opt/* ${TEMP_CHROOT_DIR}/opt/crankshaft/
 
     cp precompiled/openauto.rules ${TEMP_CHROOT_DIR}/etc/udev/rules.d/
+    cp precompiled/.openauto_saved.ini ${TEMP_CHROOT_DIR}/home/pi/
 
     cp precompiled/pulseaudio_daemon.conf ${TEMP_CHROOT_DIR}/root/
     if [ -f precompiled/wpa_supplicant.conf ]; then
@@ -162,7 +163,7 @@ set_up_loopdevs() {
     chroot ${TEMP_CHROOT_DIR} /bin/bash /root/customize-image-pi.sh
     echo -e "Dropping you on the chroot shell."
     echo -e "You need to do whatever you need to do, then I will make it RO.\n\n\n"
-    chroot ${TEMP_CHROOT_DIR} /bin/bash
+    # chroot ${TEMP_CHROOT_DIR} /bin/bash
     chroot ${TEMP_CHROOT_DIR} /bin/bash /root/read-only-fs.sh
     
     # undo ld.so.preload fix

@@ -1,3 +1,24 @@
+Version alpha0.1.7 2018-03-10
+--
+
+What's new:
+
+- Customize your Crankshaft install: Put `wallpaper.png` on `boot`.
+- The "plug phone in" screen doesn't scream "I AM ERROR." (Issue #23) 
+- Audio volume output is now louder. (Issue #24)
+- You can switch to X11 mode without getting to dev mode.
+- Switching to dev mode repeatedly doesn't generate different \
+  SSH certificates (so no more warnings).
+- OpenAuto now remembers your settings. (Issue #13)
+
+Release notes:
+
+- Turn down your stereo volume. Now Crankshaft is loud.
+- To enable X11 mode, put a jumper on GPIO26-Ground.
+- Somehow the cursor is still not showing up in X11 \
+  So now you're still unable to use a mouse.
+
+
 Version alpha0.1.6 2018-03-05
 --
 

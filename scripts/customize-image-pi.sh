@@ -42,6 +42,7 @@ house_keeping() {
     # we don't need to resize the root part
     sed -i 's/ init\=.*$//' /boot/cmdline.txt
     echo "disable_splash=1" >> /boot/config.txt
+    echo -e "# Disable the PWR LED.\ndtparam=pwr_led_trigger=none\ndtparam=pwr_led_activelow=off" >> /boot/config.txt
 
 
     # make sure everything has the right owner

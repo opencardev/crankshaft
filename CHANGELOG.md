@@ -1,3 +1,13 @@
+Version alpha0.1.8 (unreleased)
+--
+
+What's new:
+
+- Use your native audio output aka. Bluetooth stereo natively!\
+  See https://github.com/f1xpl/openauto/pull/38
+- No more stuttering when phone's native audio is used.
+- The power LED is now disabled, it should save you several milliamps.
+
 Version alpha0.1.7 2018-03-10
 --
 

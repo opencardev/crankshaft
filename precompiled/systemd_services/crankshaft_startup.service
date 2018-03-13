@@ -1,9 +1,9 @@
 [Unit]
- Description=Crankshaft misc startup services
+ Description=Crankshaft Startup Services
  ConditionPathExists=/opt/crankshaft/startup.sh
 
 [Service]
- Type=simple
+ Type=oneshot
  ExecStart=/opt/crankshaft/startup.sh
 
 [Install]

@@ -28,6 +28,26 @@ Release Highlights
 
 [Full Changelog](https://github.com/htruong/crankshaft/blob/master/CHANGELOG.md)
 
+**Version alpha0.2.0 2018-03-13**
+
+What's new:
+
+- Use your native audio output aka. Bluetooth stereo natively!\
+  See https://github.com/f1xpl/openauto/pull/38 \
+  See https://github.com/htruong/crankshaft/wiki/Using-your-Bluetooth-stereo \
+  (Issue #9, #12)
+- Audio no longer janks when phone's native audio is used.
+- Audio and video no longer janks on native path either. (Issue #16, #25)
+- Audio no longer crackle (too loud).
+- The power LED is now disabled, it should save you several milliamps. \
+  (Issue #31)
+
+Known issues:
+
+- Sometimes the Android Auto interface doesn't show up, just restart the Pi.
+- Error #2 on some phones still?
+- X11 still does not show cursors on projection mode, so no mouse.
+
 
 **Version alpha0.1.7 2018-03-10**
 
@@ -40,28 +60,6 @@ What's new:
 - Switching to dev mode repeatedly doesn't generate different \
   SSH certificates (so no more warnings).
 - OpenAuto now remembers your settings. (Issue #13)
-
-Release notes:
-
-- Turn down your stereo volume. Now Crankshaft is loud.
-- To enable X11 mode, put a jumper on GPIO26-Ground.
-- Somehow the cursor is still not showing up in X11 \
-  So now you're still unable to use a mouse.
-
-
-**Version alpha0.1.6 2018-03-05**
-
-What's new:
-
-- Dev mode: Bridge GPIO4 to ground to enable dev mode
-- Less services enabled means faster startup and less power consumption\
-  Removed SSH, networking, dhcpd services by default.
-- Misc. organizational changes
-
-Release notes:
-
-- Crankshaft is using a fork of OpenAuto with some experimental changes\
-  http://github.com/htruong/openauto
 
 
 Want to report a problem?

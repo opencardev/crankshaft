@@ -26,7 +26,7 @@ get_deps() {
         libboost-atomic1.62.0 libpulse-mainloop-glib0 libfontconfig1 \
         libinput10 libxkbcommon0 pulseaudio \
         fbi \
-        xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse \
+        xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri xserver-xorg-input-evdev \
         wiringpi
 
     apt clean

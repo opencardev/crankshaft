@@ -137,8 +137,8 @@ set_up_loopdevs() {
     mkdir ${TEMP_CHROOT_DIR}/etc/wpa_supplicant/
     mkdir ${TEMP_CHROOT_DIR}/opt/crankshaft/
 
-    cp precompiled/autoapp ${TEMP_CHROOT_DIR}/usr/local/bin/
-    cp precompiled/libaasdk.so ${TEMP_CHROOT_DIR}/usr/local/lib/
+    cp precompiled/bins/autoapp ${TEMP_CHROOT_DIR}/usr/local/bin/
+    cp precompiled/libs/*.so ${TEMP_CHROOT_DIR}/usr/local/lib/
     tar -xvf precompiled/libQt5_OpenGLES2.tar.xz -C ${TEMP_CHROOT_DIR}/
 
     cp precompiled/systemd_services/*.service ${TEMP_CHROOT_DIR}/etc/systemd/system/

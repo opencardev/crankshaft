@@ -1,12 +1,22 @@
-Version alpha0.1.8 (unreleased)
+Version alpha0.2.0 2018-03-13
 --
 
 What's new:
 
+- Audio and video no longer janks on native path. (Issue #16, #25)
 - Use your native audio output aka. Bluetooth stereo natively!\
-  See https://github.com/f1xpl/openauto/pull/38
+  See https://github.com/f1xpl/openauto/pull/38 \
+  (Issue #9, #12)
 - No more stuttering when phone's native audio is used.
+  See https://github.com/htruong/crankshaft/wiki/Using-your-Bluetooth-stereo
 - The power LED is now disabled, it should save you several milliamps.
+  (Issue #31)
+
+Known issues:
+
+- Sometimes the Android Auto interface doesn't show up \
+  Just restart the Pi.
+
 
 Version alpha0.1.7 2018-03-10
 --

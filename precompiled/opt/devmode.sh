@@ -12,8 +12,7 @@ if [ "$1" = "enable" ]; then
     systemctl enable avahi-daemon.service
     systemctl enable ssh
     sed -i 's/console=tty3/console=tty1/' /boot/cmdline.txt
-    sed -i 's/ logo.nologo loglevel=0 vt.global_cursor_default=0 splash//' /boo
-t/cmdline.txt
+    sed -i 's/ logo.nologo loglevel=0 vt.global_cursor_default=0 splash//' /boot/cmdline.txt
 else
     systemctl enable autoapp.service
     systemctl enable splashscreen.service

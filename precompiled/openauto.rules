@@ -1,4 +1,4 @@
 SUBSYSTEM=="usb", ATTR{idVendor}=="*", ATTR{idProduct}=="*", MODE="0660", GROUP="plugdev"
-SUBSYSTEM=="usb", ACTION=="add", ENV{ID_VENDOR_ID}=="*", ENV{ID_MODEL_ID}=="*", RUN+="/opt/crankshaft/usb_plug.sh"
-SUBSYSTEM=="usb", ACTION=="remove", ENV{ID_VENDOR_ID}=="*", ENV{ID_MODEL_ID}=="*", RUN+="/opt/crankshaft/usb_unplug.sh"
+#SUBSYSTEM=="usb", ACTION=="add", ENV{ID_VENDOR_ID}=="*", ENV{ID_MODEL_ID}=="*", RUN+="/opt/crankshaft/usb_plug.sh"
+#SUBSYSTEM=="usb", ACTION=="remove", ENV{ID_VENDOR_ID}=="*", ENV{ID_MODEL_ID}=="*", RUN+="/opt/crankshaft/usb_unplug.sh"
 

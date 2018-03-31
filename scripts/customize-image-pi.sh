@@ -26,12 +26,16 @@ get_deps() {
         libboost-atomic1.62.0 libpulse-mainloop-glib0 libfontconfig1 \
         libinput10 libxkbcommon0 pulseaudio librtaudio5a \
         fbi \
+	libts-0.0-0 tsconf \
         xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri xserver-xorg-input-evdev \
         wiringpi
 
     apt clean
+    rm -rf /var/cache/apt/
     #update raspi firmware
     #SKIP_WARNING=1 rpi-update
+    ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so
+    ln -s /opt/vc/lib/libbrcmEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
 }
 
 mark_script_run() {
@@ -41,8 +45,10 @@ mark_script_run() {
 house_keeping() {
     # we don't need to resize the root part
     sed -i 's/ init\=.*$//' /boot/cmdline.txt
+    sed -i 's/console=tty1/console=tty3/' /boot/cmdline.txt
     echo "disable_splash=1" >> /boot/config.txt
     echo -e "# Disable the PWR LED.\ndtparam=pwr_led_trigger=none\ndtparam=pwr_led_activelow=off" >> /boot/config.txt
+    echo "logo.nologo splash loglevel=0 vt.global_cursor_default=0" >> /boot/cmdline.txt
 
 
     # make sure everything has the right owner
@@ -72,10 +78,9 @@ house_keeping() {
     chown pi:pi /home/pi/.openauto_saved.ini
 
     # wallaper magic :)
-    touch /boot/wallpaper.png
+    mv /root/wallpaper.png /boot/wallpaper.png
     ln -s /boot/wallpaper.png /home/pi/wallpaper.png
     chown pi:pi /home/pi/wallpaper.png
-    rm /boot/wallpaper.png
 
     # set the hostname
     echo "crankshaft" > /etc/hostname

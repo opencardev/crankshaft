@@ -152,6 +152,8 @@ set_up_loopdevs() {
         cp precompiled/wpa_supplicant.conf ${TEMP_CHROOT_DIR}/etc/wpa_supplicant/
     fi
 
+    cp precompiled/wallpaper.png ${TEMP_CHROOT_DIR}/root/
+
     # copy the customizer script
     cp scripts/customize-image-pi.sh ${TEMP_CHROOT_DIR}/root/
     cp scripts/read-only-fs.sh ${TEMP_CHROOT_DIR}/root/

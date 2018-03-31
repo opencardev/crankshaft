@@ -50,4 +50,9 @@ if [ `gpio -g read $INVERT_PIN` -eq 0 ] ; then
 #       fi
 fi
 
+
+if [ -f /sys/class/backlight/rpi_backlight/brightness ]; then
+	chmod 666 /sys/class/backlight/rpi_backlight/brightness
+fi
+
 exit 0

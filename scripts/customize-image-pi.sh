@@ -45,10 +45,8 @@ mark_script_run() {
 house_keeping() {
     # we don't need to resize the root part
     sed -i 's/ init\=.*$//' /boot/cmdline.txt
-    sed -i 's/console=tty1/console=tty3/' /boot/cmdline.txt
     echo "disable_splash=1" >> /boot/config.txt
     echo -e "# Disable the PWR LED.\ndtparam=pwr_led_trigger=none\ndtparam=pwr_led_activelow=off" >> /boot/config.txt
-    echo "logo.nologo splash loglevel=0 vt.global_cursor_default=0" >> /boot/cmdline.txt
 
 
     # make sure everything has the right owner

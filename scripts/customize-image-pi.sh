@@ -74,10 +74,9 @@ house_keeping() {
     chown pi:pi /home/pi/.openauto_saved.ini
 
     # wallaper magic :)
-    touch /boot/wallpaper.png
+    mv /root/wallpaper.png /boot/wallpaper.png
     ln -s /boot/wallpaper.png /home/pi/wallpaper.png
     chown pi:pi /home/pi/wallpaper.png
-    rm /boot/wallpaper.png
 
     # set the hostname
     echo "crankshaft" > /etc/hostname

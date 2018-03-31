@@ -26,7 +26,7 @@ get_deps() {
         libboost-atomic1.62.0 libpulse-mainloop-glib0 libfontconfig1 \
         libinput10 libxkbcommon0 pulseaudio librtaudio5a \
         fbi \
-	libts-0.0-0 tsconf \
+        libts-0.0-0 tsconf \
         xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri xserver-xorg-input-evdev \
         wiringpi
 
@@ -90,8 +90,8 @@ house_keeping() {
     
     # enable the startup actions
     systemctl enable splashscreen.service
-    systemctl enable autoapp.service
     systemctl enable crankshaft_startup.service
+    systemctl enable autoapp.service
     
     systemctl disable resize2fs_once.service
     /opt/crankshaft/devmode.sh disable

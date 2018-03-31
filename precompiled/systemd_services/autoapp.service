@@ -1,5 +1,6 @@
 [Unit]
 Description=Android Auto Headunit
+After=crankshaft_startup.service
 
 [Service]
 Type=simple

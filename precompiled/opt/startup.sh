@@ -7,7 +7,6 @@ INVERT_PIN=21
 gpio -g mode $DEV_PIN up
 gpio -g mode $INVERT_PIN up
 
-
 if [ `gpio -g read $DEV_PIN` -eq 0 ] ; then
 	# the development mode pin is there
 	mount -o remount,rw /
@@ -54,5 +53,16 @@ fi
 if [ -f /sys/class/backlight/rpi_backlight/brightness ]; then
 	chmod 666 /sys/class/backlight/rpi_backlight/brightness
 fi
+
+# magic to make stuff work
+
+cp /home/pi/.openauto_saved.ini /tmp/openauto.ini
+
+mkdir /tmp/.local
+mkdir /tmp/.config
+
+chown pi:pi /tmp/.local
+chown pi:pi /tmp/.config
+chown pi:pi /tmp/openauto.ini
 
 exit 0

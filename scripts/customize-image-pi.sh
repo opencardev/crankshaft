@@ -31,7 +31,7 @@ get_deps() {
 
     apt clean
     #update raspi firmware
-    SKIP_WARNING=1 rpi-update
+    #SKIP_WARNING=1 rpi-update
 }
 
 mark_script_run() {

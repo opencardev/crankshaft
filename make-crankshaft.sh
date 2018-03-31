@@ -4,13 +4,13 @@
 # Written by Huan Truong <htruong@tnhh.net>, 2018
 # This script is licensed under GNU Public License v3
 
-IMAGE_FILE=2017-11-29-raspbian-stretch-lite.zip
-IMAGE_FILE_UNZIPPED=2017-11-29-raspbian-stretch-lite.img
+IMAGE_FILE=2018-03-13-raspbian-stretch-lite.zip
+IMAGE_FILE_UNZIPPED=2018-03-13-raspbian-stretch-lite.img
 TODAY_EXT=$(date +"%Y-%m-%d")
 IMAGE_FILE_CUSTOMIZED=crankshaft-${TODAY_EXT}.img
-IMAGE_URL=http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-12-01/2017-11-29-raspbian-stretch-lite.zip
+IMAGE_URL=http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-03-13/2018-03-13-raspbian-stretch-lite.zip
 IMAGE_SIZE_RAW=1858076672
-IMAGE_ROOTPART_START=94208
+IMAGE_ROOTPART_START=98304
 TEMP_CHROOT_DIR=/mnt/raspbian-temp
 
 

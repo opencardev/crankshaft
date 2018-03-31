@@ -30,6 +30,7 @@ get_deps() {
         wiringpi
 
     apt clean
+    rm -rf /var/cache/apt/
     #update raspi firmware
     #SKIP_WARNING=1 rpi-update
 }

@@ -24,7 +24,7 @@ get_deps() {
         libprotobuf10 libpulse0 libboost-log1.62.0 libboost-test1.62.0 \
         libboost-thread1.62.0 libboost-date-time1.62.0 libboost-chrono1.62.0 \
         libboost-atomic1.62.0 libpulse-mainloop-glib0 libfontconfig1 \
-        libinput10 libxkbcommon0 pulseaudio \
+        libinput10 libxkbcommon0 pulseaudio librtaudio5a \
         fbi \
         xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri xserver-xorg-input-evdev \
         wiringpi

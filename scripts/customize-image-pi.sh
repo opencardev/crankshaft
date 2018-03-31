@@ -26,6 +26,7 @@ get_deps() {
         libboost-atomic1.62.0 libpulse-mainloop-glib0 libfontconfig1 \
         libinput10 libxkbcommon0 pulseaudio librtaudio5a \
         fbi \
+	libts-0.0-0 tsconf \
         xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri xserver-xorg-input-evdev \
         wiringpi
 
@@ -33,6 +34,8 @@ get_deps() {
     rm -rf /var/cache/apt/
     #update raspi firmware
     #SKIP_WARNING=1 rpi-update
+    ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so
+    ln -s /opt/vc/lib/libbrcmEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
 }
 
 mark_script_run() {

@@ -33,6 +33,32 @@ Release Highlights
 
 [Full Changelog](https://github.com/htruong/crankshaft/blob/master/CHANGELOG.md)
 
+**Version alpha0.2.1 2018-04-01**
+
+What's new:
+
+- Raspbian base image upgraded from 2017-11 to 2018-03.
+- Now all Pis of all generations should be supported.
+- Brightness control on the main interface. (Issue #44, #49, #52)
+- Pi now displays less verbose information. (Issue #35) \
+  Thanks @byransays for the pull request.
+- OpenAuto now detects already connected phones. (Issue #55) 
+- The "display cursor" button is now hidden on touchscreen-capable devices.
+- Tslib for more touchscreens support.
+- The "sleep" button is unavailable - Pi now automatically sleeps after 30 secs.
+- Pi now automatically shut down after 3 hours of idling.
+- RtAudio option for future wireless support.
+
+What's new for developers:
+
+- Dev tool: New script to compile the Qt5 binary blob on Raspbian.
+
+Known issues:
+
+- Error #2 on some phones still?
+- X11 still does not show cursors on projection mode, so no mouse.
+
+
 **Version alpha0.2.0 2018-03-13**
 
 What's new:

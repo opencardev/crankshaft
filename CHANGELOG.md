@@ -12,12 +12,15 @@ What's new:
 - The "display cursor" button is now hidden on touchscreen-capable devices.
 - Tslib for more touchscreens support.
 - The "sleep" button is unavailable - Pi now automatically sleeps after 30 secs.
-- Pi now automatically sleeps after 3 hours of idling.
+- Pi now automatically shut down after 3 hours of idling.
 - RtAudio option for future wireless support.
+
+What's new for developers:
+
+- Dev tool: New script to compile the Qt5 binary blob on Raspbian.
 
 Known issues:
 
-- Slow startup when connecting phones. Just wait a sec more.
 - Error #2 on some phones still?
 - X11 still does not show cursors on projection mode, so no mouse.
 

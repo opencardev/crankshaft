@@ -33,9 +33,9 @@ get_deps() {
     apt clean
     rm -rf /var/cache/apt/
     #update raspi firmware
-    #SKIP_WARNING=1 rpi-update
-    ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so
-    ln -s /opt/vc/lib/libbrcmEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
+    SKIP_WARNING=1 rpi-update
+    #ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so
+    #ln -s /opt/vc/lib/libbrcmEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
 }
 
 mark_script_run() {

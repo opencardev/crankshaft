@@ -65,4 +65,6 @@ chown pi:pi /tmp/.local
 chown pi:pi /tmp/.config
 chown pi:pi /tmp/openauto.ini
 
+/sbin/shutdown --poweroff 15
+
 exit 0

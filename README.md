@@ -8,15 +8,17 @@ This is the source code repository, just in case you want to build the system yo
 Getting Started
 --
 
-It's easy to get started even when you're new to Raspberry Pi and know nothing about electronics. [Check here for the latest guide](https://github.com/htruong/crankshaft/wiki/Getting-started-with-Crankshaft). As of March 2018, we are still writing and perfecting the guide so anyone can get started.
+It's easy to get started even when you're new to Raspberry Pi and know nothing about electronics. [Check here for the latest guide](https://github.com/htruong/crankshaft/wiki/Getting-started-with-Crankshaft). 
 
 
-Have questions? We have answers!
+Where to get help
 --
 
 The premier place to discuss your question or idea is [the subreddit (BETA)](https://www.reddit.com/r/crankshaft/). 
 
 Several other questions such as "Does OK Google work? Can I use a custom screen?" get asked a lot and might have already been answered in the [tips and tricks](https://github.com/htruong/crankshaft/wiki/Hidden-tips,-tricks,-settings,-etc.) page. If you have questions, [check out the growing FAQs](https://github.com/htruong/crankshaft/wiki/Frequently-Asked-Questions).
+
+If you have pictures of your project, feel free to [add to the collection](https://photos.app.goo.gl/81hQ6wTuLFNGmRHh2).
 
 
 Will it/Does it work for you?
@@ -24,9 +26,8 @@ Will it/Does it work for you?
 
 If you don't have the official touch screen and just want to see whether Crankshaft will work with the phone you have before spending money to buy the screen, try [this trick](https://github.com/htruong/crankshaft/wiki/Frequently-Asked-Questions#i-have-a-pi3-how-can-i-test-crankshaft-compatibility-with-my-phone-before-i-spend-the-money-to-buy-the-official-screen).
 
-If you want to know for sure or have a chance to try it, please spend a minute to report back whether it works or not at [Hardware Compatibility List](https://github.com/htruong/crankshaft/issues/2). Crankshaft did some tweaks to the way standard OpenAuto works, so that might have caused some incompatibility among phones. If Crankshaft doesn't work but you're capable of compiling software on Linux, there is some chance you can get it to work [following OpenAuto's simple intructions](https://github.com/htruong/crankshaft/issues/2).
+If you want to know for sure or have a chance to try it, please spend a minute to report back whether it works or not at [Hardware Compatibility List](https://github.com/htruong/crankshaft/issues/2). If Crankshaft doesn't work but you're capable of compiling software on Linux, there is a chance chance you can get it to work [following OpenAuto's simple intructions](https://github.com/htruong/crankshaft/issues/2).
 
-If you have pictures of your project, feel free to [add to the collection](https://photos.app.goo.gl/81hQ6wTuLFNGmRHh2).
 
 Release Highlights
 --
@@ -98,7 +99,7 @@ Want to report a problem?
 
 To file a bug or an enhancement idea, please file an issue on this repository. 
 
-To help us help you, before reporting problems to this repository, I would appreciate if you could try [running Crankshaft under X11 under dev mode](https://github.com/htruong/crankshaft/wiki/Crankshaft-dev-mode). This will help in cases you use non standard hardware, for example, a custom HDMI screen. To make the distribution easier and lightweight, by default I opted to run OpenAuto under EGL instead of relying on X11, and this might cause OpenAuto to behave in ways that OpenAuto's author rather not deal with :)
+To help us help you, before reporting problems to this repository, I would appreciate if you could try [running Crankshaft under X11](https://github.com/htruong/crankshaft/wiki/Crankshaft-dev-mode). This will help in cases you use non standard hardware, for example, a custom HDMI screen. To make the distribution easier and lightweight, by default I opted to run OpenAuto under EGL instead of relying on X11, and this might cause OpenAuto to behave in ways that OpenAuto's author rather not deal with :)
 
 Known problems
 --

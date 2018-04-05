@@ -47,6 +47,8 @@ house_keeping() {
     sed -i 's/ init\=.*$//' /boot/cmdline.txt
 
     echo "disable_splash=1" >> /boot/config.txt
+    #allow GPIO on/shutdown
+    echo "dtoverlay=gpio-shutdown" >> /boot/config.txt
     echo "gpu_mem=256" >> /boot/config.txt
     echo "gpu_mem_256=128" >> /boot/config.txt
     echo -e "# Disable the PWR LED.\ndtparam=pwr_led_trigger=none\ndtparam=pwr_led_activelow=off" >> /boot/config.txt

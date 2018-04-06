@@ -57,7 +57,7 @@ house_keeping() {
     chown -R root:root /opt/crankshaft/
     chown root:root /etc/systemd/system/autoapp.service
     chown root:root /etc/systemd/system/crankshaft_startup.service
-    chown root:root /etc/udev/rules.d/openauto.rules
+    chown root:root /etc/udev/rules.d/51-android.rules
     
     cat /root/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
     
@@ -76,11 +76,11 @@ house_keeping() {
     sudo usermod -aG tty pi
     chown pi:pi /home/pi/.xinitrc
 
-    chown pi:pi /home/pi/.openauto_saved.ini
+    # chown pi:pi /home/pi/.openauto_saved.ini
 
     # wallaper magic :)
-    mv /root/wallpaper.png /boot/wallpaper.png
-    ln -s /boot/wallpaper.png /home/pi/wallpaper.png
+    mv /root/wallpaper.png /boot/crankshaft/wallpaper.png
+    ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png
     chown pi:pi /home/pi/wallpaper.png
 
     # set the hostname

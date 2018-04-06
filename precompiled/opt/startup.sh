@@ -56,7 +56,7 @@ fi
 
 # magic to make stuff work
 
-cp /home/pi/.openauto_saved.ini /tmp/openauto.ini
+cp /boot/crankshaft/openauto.ini /tmp/openauto.ini
 
 mkdir /tmp/.local
 mkdir /tmp/.config

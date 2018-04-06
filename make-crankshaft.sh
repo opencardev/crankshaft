@@ -136,6 +136,7 @@ set_up_loopdevs() {
     mkdir ${TEMP_CHROOT_DIR}/etc/pulse/
     mkdir ${TEMP_CHROOT_DIR}/etc/wpa_supplicant/
     mkdir ${TEMP_CHROOT_DIR}/opt/crankshaft/
+    mkdir ${TEMP_CHROOT_DIR}/boot/crankshaft/
 
     cp precompiled/bins/autoapp ${TEMP_CHROOT_DIR}/usr/local/bin/
     cp precompiled/libs/*.so ${TEMP_CHROOT_DIR}/usr/local/lib/
@@ -144,8 +145,9 @@ set_up_loopdevs() {
     cp precompiled/systemd_services/*.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
     cp precompiled/opt/* ${TEMP_CHROOT_DIR}/opt/crankshaft/
 
-    cp precompiled/openauto.rules ${TEMP_CHROOT_DIR}/etc/udev/rules.d/
-    cp precompiled/.openauto_saved.ini ${TEMP_CHROOT_DIR}/home/pi/
+    cp precompiled/udev/* ${TEMP_CHROOT_DIR}/etc/udev/rules.d/
+
+    cp precompiled/boot_crankshaft/* ${TEMP_CHROOT_DIR}/boot/crankshaft/
 
     cp precompiled/pulseaudio_daemon.conf ${TEMP_CHROOT_DIR}/root/
     if [ -f precompiled/wpa_supplicant.conf ]; then

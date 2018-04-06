@@ -10,12 +10,12 @@ if [ `gpio -g read $X11_PIN` -eq 0 ] ; then
     # xinit will read and call autoapp in .xinitrc
     # If you need to make any graphical program run before the Autoapp
     # edit /home/pi/.xinitrc
-    sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=0/" ~/.config/openauto.ini
+    sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=0/" ~/openauto.ini
     xinit
 else
     # EGLFS - crankshaft "normal" mode
     # we don't have to call xinit, just start autoapp directly
-    sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=2/" ~/.config/openauto.ini
+    sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=2/" ~/openauto.ini
     /usr/local/bin/autoapp
 fi
 

@@ -95,7 +95,7 @@ echo "Removing unwanted packages..."
 # dphys-swapfile xserver-common lightdm fake-hwclock
 # Let's keep dbus...that includes avahi-daemon, a la 'raspberrypi.local',
 # also keeping xserver & lightdm for GUI login (WIP, not working yet)
-apt-get remove -y --force-yes --purge triggerhappy \
+apt-get remove -y --force-yes --purge \
  dphys-swapfile fake-hwclock
 apt-get -y --force-yes autoremove --purge
 

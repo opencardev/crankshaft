@@ -128,50 +128,23 @@ set_up_loopdevs() {
     # copy qemu binary
     cp `which qemu-arm-static` ${TEMP_CHROOT_DIR}/usr/bin/
 
-    # copy all the binaries and startup scripts
-    mkdir ${TEMP_CHROOT_DIR}/usr/local/
-    mkdir ${TEMP_CHROOT_DIR}/usr/local/bin/
-    mkdir ${TEMP_CHROOT_DIR}/usr/local/sbin/
-    mkdir ${TEMP_CHROOT_DIR}/usr/local/lib/
-    mkdir ${TEMP_CHROOT_DIR}/etc/pulse/
-    mkdir ${TEMP_CHROOT_DIR}/etc/wpa_supplicant/
-    mkdir ${TEMP_CHROOT_DIR}/opt/crankshaft/
-    mkdir ${TEMP_CHROOT_DIR}/boot/crankshaft/
+    # extract libQt5
+    tar -xvf prebuilt/libQt5_OpenGLES2.tar.xz -C ${TEMP_CHROOT_DIR}/
 
-    cp precompiled/bins/autoapp ${TEMP_CHROOT_DIR}/usr/local/bin/
-    cp precompiled/libs/*.so ${TEMP_CHROOT_DIR}/usr/local/lib/
-    tar -xvf precompiled/libQt5_OpenGLES2.tar.xz -C ${TEMP_CHROOT_DIR}/
-
-    cp precompiled/systemd_services/*.service ${TEMP_CHROOT_DIR}/etc/systemd/system/
-    cp precompiled/opt/* ${TEMP_CHROOT_DIR}/opt/crankshaft/
-
-    cp precompiled/udev/* ${TEMP_CHROOT_DIR}/etc/udev/rules.d/
-
-    cp precompiled/boot_crankshaft/* ${TEMP_CHROOT_DIR}/boot/crankshaft/
-
-    cp precompiled/pulseaudio_daemon.conf ${TEMP_CHROOT_DIR}/root/
-
-    cp precompiled/triggerhappy.conf ${TEMP_CHROOT_DIR}/etc/triggerhappy/triggers.d/crankshaft.conf
-
-    if [ -f precompiled/wpa_supplicant.conf ]; then
-        cp precompiled/wpa_supplicant.conf ${TEMP_CHROOT_DIR}/etc/wpa_supplicant/
-    fi
-
-    cp precompiled/wallpaper.png ${TEMP_CHROOT_DIR}/root/
-
-    # copy the customizer script
-    cp scripts/customize-image-pi.sh ${TEMP_CHROOT_DIR}/root/
-    cp scripts/read-only-fs.sh ${TEMP_CHROOT_DIR}/root/
+    # copy rest of CS stuff to the root home directory
+    cp -a crankshaft/. ${TEMP_CHROOT_DIR}/root/
 
     sync
     sleep 1
     
     # phew, customize it
-    chroot ${TEMP_CHROOT_DIR} /bin/bash /root/customize-image-pi.sh
+    chroot ${TEMP_CHROOT_DIR} /bin/bash /root/crankshaft/scripts/customize-image-pi.sh
+
     echo -e "Dropping you on the chroot shell."
     echo -e "You need to do whatever you need to do, then I will make it RO.\n\n\n"
     # chroot ${TEMP_CHROOT_DIR} /bin/bash
-    chroot ${TEMP_CHROOT_DIR} /bin/bash /root/read-only-fs.sh
+
+    chroot ${TEMP_CHROOT_DIR} /bin/bash /root/crankshaft/scripts/read-only-fs.sh
     
     # undo ld.so.preload fix
     sed -i 's/^#CHROOT //g' ${TEMP_CHROOT_DIR}/etc/ld.so.preload

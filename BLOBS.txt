@@ -1,0 +1,6 @@
+crankshaft/rootfs/opt/crankshaft/dumb_suid
+crankshaft/rootfs/opt/crankshaft/gpio2kbd
+crankshaft/rootfs/usr/local/bin/autoapp
+crankshaft/rootfs/usr/local/lib/libaasdk.so
+crankshaft/rootfs/usr/local/lib/libaasdk_proto.so
+prebuilt/libQt5_OpenGLES2.tar.xz

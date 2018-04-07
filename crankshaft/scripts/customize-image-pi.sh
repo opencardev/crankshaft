@@ -34,8 +34,6 @@ get_deps() {
     rm -rf /var/cache/apt/
     #update raspi firmware
     SKIP_WARNING=1 rpi-update
-    #ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so
-    #ln -s /opt/vc/lib/libbrcmEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
 }
 
 mark_script_run() {
@@ -43,6 +41,10 @@ mark_script_run() {
 }
 
 house_keeping() {
+    # make sure everything has the right owner
+    chown -R root:root /root/rootfs
+    mv /rootfs/* /
+
     # we don't need to resize the root part
     sed -i 's/ init\=.*$//' /boot/cmdline.txt
 
@@ -50,40 +52,25 @@ house_keeping() {
     echo "gpu_mem=256" >> /boot/config.txt
     echo "gpu_mem_256=128" >> /boot/config.txt
     echo -e "# Disable the PWR LED.\ndtparam=pwr_led_trigger=none\ndtparam=pwr_led_activelow=off" >> /boot/config.txt
-
-
-    # make sure everything has the right owner
-    chown -R root:root /usr/local/
-    chown -R root:root /opt/crankshaft/
-    chown root:root /etc/systemd/system/*.service
-    chown root:root /etc/udev/rules.d/51-android.rules
     
-    cat /root/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
+    cat /root/crankshaft/misc/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
 
     sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service
 
-    chown root:root /etc/triggerhappy/triggers.d/crankshaft.conf
-    
     chmod u+s /opt/crankshaft/dumb_suid
     
     sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
 
     echo 'set-sink-volume 0 52428' >> /etc/pulse/default.pa
 
-    if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
-        chown root:root /etc/wpa_supplicant/wpa_supplicant.conf
-    fi
-
     # some magic to get X11 openauto to work
     echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
     echo "exec autoapp --platform xcb" > /home/pi/.xinitrc
+
     sudo usermod -aG tty pi
     chown pi:pi /home/pi/.xinitrc
 
-    # chown pi:pi /home/pi/.openauto_saved.ini
-
     # wallaper magic :)
-    mv /root/wallpaper.png /boot/crankshaft/wallpaper.png
     ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png
     chown pi:pi /home/pi/wallpaper.png
 

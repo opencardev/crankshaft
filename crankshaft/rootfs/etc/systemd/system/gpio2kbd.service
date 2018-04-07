@@ -1,5 +1,5 @@
 [Unit]
- Description=Crankshaft Startup Services
+ Description=Crankshaft GPIO to keyboard mapper
  ConditionPathExists=/opt/crankshaft/gpio2kbd
 
 [Service]

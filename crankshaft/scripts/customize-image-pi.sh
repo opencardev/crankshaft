@@ -46,6 +46,8 @@ house_keeping() {
     rsync -avr /root/rootfs/ /
     rm -rf /root/rootfs/
 
+    ldconfig
+
     # we don't need to resize the root part
     sed -i 's/ init\=.*$//' /boot/cmdline.txt
 
@@ -61,6 +63,8 @@ house_keeping() {
     chmod u+s /opt/crankshaft/dumb_suid
     
     sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
+
+    echo 'load-module module-mmkbd-evdev device=/dev/gpio2kbd' >> /etc/pulse/default.pa
 
     echo 'set-sink-volume 0 52428' >> /etc/pulse/default.pa
 

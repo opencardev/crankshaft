@@ -2,7 +2,7 @@
 
 BRIGHTNESS_FILE=/sys/class/backlight/rpi_backlight/brightness
 CS_BRIGHTNESS_FILE=/boot/crankshaft/brightness
-BR_MIN=5
+BR_MIN=30
 BR_MAX=255
 BR_STEP=25
 LVL=`cat ${BRIGHTNESS_FILE}`

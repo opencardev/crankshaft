@@ -34,7 +34,32 @@ Release Highlights
 
 [Full Changelog](https://github.com/htruong/crankshaft/blob/master/CHANGELOG.md)
 
-**Version alpha0.2.1 2018-04-01**
+##### Version alpha0.2.2 2018-04-07
+
+What's new:
+
+- Everything you need to backup when you install crankshaft is at `boot/crankshaft`.
+- The wallpaper location change to `boot/crankshaft` from `boot`.
+- GPIO2KBD, virtual keyboard daemon from GPIO by Adafruit, \
+  The config file is at `boot/crankshaft/gpio2kbd.cfg`.
+- You can change the volume by connecting GND to GPIO 12/13 (or any GPIO).
+- Brightness change by GPIO - uncomment the GPIO2KBD config file.
+- Trigger "OK Google" by GPIO - uncomment the GPIO2KBD config file.
+- More GPU memshare by default.
+- Fix OMXlayer hack for OpenAuto.
+
+What's new for developers:
+
+- The rootfs structure is much better organized. \
+  Now what you see on crankshaft/rootfs is exactly what will be installed.
+- The `dumb_suid` (poor man's sudo) is now less dangerous, still dumb.
+
+Known issues:
+
+- Error #2 on some phones still?
+- X11 still does not show cursors on projection mode, so no mouse.
+
+##### Version alpha0.2.1 2018-04-01
 
 What's new:
 
@@ -54,13 +79,8 @@ What's new for developers:
 
 - Dev tool: New script to compile the Qt5 binary blob on Raspbian.
 
-Known issues:
 
-- Error #2 on some phones still?
-- X11 still does not show cursors on projection mode, so no mouse.
-
-
-**Version alpha0.2.0 2018-03-13**
+##### Version alpha0.2.0 2018-03-13
 
 What's new:
 
@@ -74,24 +94,6 @@ What's new:
 - The power LED is now disabled, it should save you several milliamps. \
   (Issue #31)
 
-Known issues:
-
-- Sometimes the Android Auto interface doesn't show up, just restart the Pi.
-- Error #2 on some phones still?
-- X11 still does not show cursors on projection mode, so no mouse.
-
-
-**Version alpha0.1.7 2018-03-10**
-
-What's new:
-
-- Customize your Crankshaft install: Put `wallpaper.png` on `boot`.
-- The "plug phone in" screen doesn't scream "I AM ERROR." (Issue #23) 
-- Audio volume output is now louder. (Issue #24)
-- You can switch to X11 mode without getting to dev mode.
-- Switching to dev mode repeatedly doesn't generate different \
-  SSH certificates (so no more warnings).
-- OpenAuto now remembers your settings. (Issue #13)
 
 
 Want to report a problem?

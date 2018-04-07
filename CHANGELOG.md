@@ -1,5 +1,30 @@
-Version alpha0.2.1 2018-04-01
---
+##### Version alpha0.2.2 2018-04-07
+
+What's new:
+
+- Everything you need to backup when you install crankshaft is at `boot/crankshaft`.
+- The wallpaper location change to `boot/crankshaft` from `boot`.
+- GPIO2KBD, virtual keyboard daemon from GPIO by Adafruit, \
+  The config file is at `boot/crankshaft/gpio2kbd.cfg`.
+- You can change the volume by connecting GND to GPIO 12/13 (or any GPIO).
+- Brightness change by GPIO - uncomment the GPIO2KBD config file.
+- Trigger "OK Google" by GPIO - uncomment the GPIO2KBD config file.
+- More GPU memshare by default.
+- Fix OMXlayer hack for OpenAuto.
+
+What's new for developers:
+
+- The rootfs structure is much better organized. \
+  Now what you see on crankshaft/rootfs is exactly what will be installed.
+- The `dumb_suid` (poor man's sudo) is now less dangerous, still dumb.
+
+Known issues:
+
+- Error #2 on some phones still?
+- X11 still does not show cursors on projection mode, so no mouse.
+
+
+##### Version alpha0.2.1 2018-04-01
 
 What's new:
 
@@ -25,8 +50,7 @@ Known issues:
 - X11 still does not show cursors on projection mode, so no mouse.
 
 
-Version alpha0.2.0 2018-03-13
---
+##### Version alpha0.2.0 2018-03-13
 
 What's new:
 
@@ -47,8 +71,7 @@ Known issues:
 - X11 still does not show cursors on projection mode, so no mouse.
 
 
-Version alpha0.1.7 2018-03-10
---
+##### Version alpha0.1.7 2018-03-10
 
 What's new:
 
@@ -68,8 +91,7 @@ Release notes:
   So now you're still unable to use a mouse.
 
 
-Version alpha0.1.6 2018-03-05
---
+##### Version alpha0.1.6 2018-03-05
 
 What's new:
 
@@ -79,8 +101,7 @@ What's new:
 - Misc. organizational changes for scripts
 
 
-Version alpha0.1.5 2018-03-02
---
+##### Version alpha0.1.5 2018-03-02
 
 What's new:
 
@@ -98,8 +119,8 @@ Release notes:
 - You can use mouse and keyboard (almost...)
 - More information on debugging with X11/Wayland to come later
 
-Version alpha0.1.1 2018-02-28
---
+
+##### Version alpha0.1.1 2018-02-28
 
 What's new:
 
@@ -116,8 +137,8 @@ Release notes:
 - To mount system read/wite, put a jumper on GPIO4/Ground (Pin 07-09)
 - Pulseaudio produces choppier audio even compared to previous one when two streams are played at the same time
 
-Version alpha0.1.0 2018-02-24
---
+
+##### Version alpha0.1.0 2018-02-24
 
 - Initial release
 

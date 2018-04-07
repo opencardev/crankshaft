@@ -8,5 +8,5 @@ cp /tmp/openauto.ini /boot/crankshaft/openauto.ini
 
 sync
 
-mount -o remount,ro /
+mount -o remount,ro /boot/
 

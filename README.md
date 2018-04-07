@@ -38,20 +38,22 @@ Release Highlights
 
 What's new:
 
+- Image is 50M+ smaller. Less download, less bandwidth wasted!
 - Everything you need to backup when you install crankshaft is at `boot/crankshaft`.
 - The wallpaper location change to `boot/crankshaft` from `boot`.
 - GPIO2KBD, virtual keyboard daemon from GPIO by Adafruit, \
   The config file is at `boot/crankshaft/gpio2kbd.cfg`.
-- You can change the volume by connecting GND to GPIO 12/13 (or any GPIO).
+- You can change the volume by connecting GND to GPIO 12/13 (or any GPIO). \
+  (Issue #49, #33)
 - Brightness change by GPIO - uncomment the GPIO2KBD config file.
 - Trigger "OK Google" by GPIO - uncomment the GPIO2KBD config file.
-- More GPU memshare by default.
+- More GPU memshare by default. (Hopefully fix Issue #37)
 - Fix OMXlayer hack for OpenAuto.
 
 What's new for developers:
 
-- The rootfs structure is much better organized. \
-  Now what you see on crankshaft/rootfs is exactly what will be installed.
+- The `rootfs` structure is much better organized. \
+  Now what you see on `crankshaft/rootfs` is exactly what will be installed.
 - The `dumb_suid` (poor man's sudo) is now less dangerous, still dumb.
 
 Known issues:

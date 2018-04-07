@@ -142,6 +142,9 @@ mkdir /tmp/.local
 ln -s /tmp/.config /home/pi/
 ln -s /tmp/.local /home/pi/
 
+apt clean
+rm -rf /var/cache/apt/ 
+
 # Change spool permissions in var.conf (rondie/Margaret fix)
 replace /usr/lib/tmpfiles.d/var.conf "spool\s*0755" "spool 1777"
 

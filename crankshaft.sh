@@ -7,11 +7,13 @@
 IMAGE_FILE=2018-03-13-raspbian-stretch-lite.zip
 IMAGE_FILE_UNZIPPED=2018-03-13-raspbian-stretch-lite.img
 TODAY_EXT=$(date +"%Y-%m-%d")
-IMAGE_FILE_CUSTOMIZED=crankshaft-${TODAY_EXT}.img
+IMAGE_FILE_CUSTOMIZED=${IMAGE:-"crankshaft-${TODAY_EXT}.img"}
 IMAGE_URL=http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-03-13/2018-03-13-raspbian-stretch-lite.zip
 IMAGE_SIZE_RAW=1858076672
 IMAGE_ROOTPART_START=98304
 TEMP_CHROOT_DIR=/mnt/raspbian-temp
+DROP_IN=${DROP_IN:-0}
+CUSTOM_SCRIPT=${CUSTOM_SCRIPT:-""}
 
 
 #########################################################
@@ -119,33 +121,47 @@ set_up_loopdevs() {
     e2fsck -f ${LOOPDEVPARTS}p2
 
     mount_chroot_dirs ${LOOPDEVPARTS} ${LOOPPARTSID}
-    
-    # now we should have a 
-    
+
     # ld.so.preload fix
     sed -i 's/^/#CHROOT /g' ${TEMP_CHROOT_DIR}/etc/ld.so.preload
 
     # copy qemu binary
     cp `which qemu-arm-static` ${TEMP_CHROOT_DIR}/usr/bin/
 
-    # extract libQt5
-    tar -xvf prebuilt/libQt5_OpenGLES2.tar.xz -C ${TEMP_CHROOT_DIR}/
+    if [[ ${DROP_IN} -ne 0 ]]; then
 
-    # copy rest of CS stuff to the root home directory
-    cp -a crankshaft/. ${TEMP_CHROOT_DIR}/root/
+        echo -e "Dropping you in the chroot shell."
+        chroot ${TEMP_CHROOT_DIR} /bin/bash
 
-    sync
-    sleep 1
-    
-    # phew, customize it
-    chroot ${TEMP_CHROOT_DIR} /bin/bash /root/scripts/customize-image-pi.sh
+    else 
 
-    echo -e "Dropping you on the chroot shell."
-    echo -e "You need to do whatever you need to do, then I will make it RO.\n\n\n"
-    chroot ${TEMP_CHROOT_DIR} /bin/bash
+        if [[ -n "${CUSTOM_SCRIPT}" ]]; then
 
-    chroot ${TEMP_CHROOT_DIR} /bin/bash /root/scripts/read-only-fs.sh
-    
+            # eval the custom script
+
+            eval ${CUSTOM_SCRIPT}
+
+        else
+
+            # make the image
+
+            # extract libQt5
+            tar -xvf prebuilt/libQt5_OpenGLES2.tar.xz -C ${TEMP_CHROOT_DIR}/
+
+            # copy rest of CS stuff to the root home directory
+            cp -a crankshaft/. ${TEMP_CHROOT_DIR}/root/
+
+            sync
+            sleep 1
+
+            # phew, customize it
+            chroot ${TEMP_CHROOT_DIR} /bin/bash /root/scripts/customize-image-pi.sh
+
+            chroot ${TEMP_CHROOT_DIR} /bin/bash /root/scripts/read-only-fs.sh
+            
+        fi
+
+    fi
     # undo ld.so.preload fix
     sed -i 's/^#CHROOT //g' ${TEMP_CHROOT_DIR}/etc/ld.so.preload
     

@@ -10,7 +10,6 @@
 
 print_banner() {
     echo "---- WELCOME TO THE RASPBERRY PI IMAGE CUSTOMIZER --------------"
-    echo " Congratulations, we have gone a long way."
     echo " I will prepare some software for you, sit tight."
     echo ""
     echo ""
@@ -19,7 +18,7 @@ print_banner() {
 
 get_deps() {
     apt update
-    #apt upgrade
+
     apt install --no-install-recommends -y \
         libprotobuf10 libpulse0 libboost-log1.62.0 libboost-test1.62.0 \
         libboost-thread1.62.0 libboost-date-time1.62.0 libboost-chrono1.62.0 \
@@ -30,10 +29,11 @@ get_deps() {
         xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri xserver-xorg-input-evdev \
         wiringpi
 
-    apt clean
-    rm -rf /var/cache/apt/
+    apt -y upgrade
+    apt autoremove --purge
+
     #update raspi firmware
-    SKIP_WARNING=1 SKIP_BACKUP=1 rpi-update
+    # SKIP_WARNING=1 SKIP_BACKUP=1 rpi-update
 }
 
 mark_script_run() {

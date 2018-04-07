@@ -54,6 +54,9 @@ if [ -f /sys/class/backlight/rpi_backlight/brightness ]; then
 	chmod 666 /sys/class/backlight/rpi_backlight/brightness
 fi
 
+# restore the brightness if possible
+/opt/crankshaft/brightness.sh restore
+
 # magic to make stuff work
 
 cp /boot/crankshaft/openauto.ini /tmp/openauto.ini

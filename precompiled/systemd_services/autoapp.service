@@ -6,7 +6,7 @@ After=crankshaft_startup.service
 Type=simple
 User=pi
 WorkingDirectory=/home/pi
-ExecStartPre=/opt/crankshaft/dumb_suid brightness_max.sh
+#ExecStartPre=/opt/crankshaft/dumb_suid brightness_max.sh
 ExecStart=/opt/crankshaft/openauto.sh
 Restart=on-abort
 

@@ -60,7 +60,7 @@ house_keeping() {
     
     cat /root/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
 
-    sed -i 's/user nobody/user pi/' /etc/init.d/triggerhappy
+    sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service
 
     chown root:root /etc/triggerhappy/triggers.d/crankshaft.conf
     

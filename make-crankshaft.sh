@@ -150,6 +150,9 @@ set_up_loopdevs() {
     cp precompiled/boot_crankshaft/* ${TEMP_CHROOT_DIR}/boot/crankshaft/
 
     cp precompiled/pulseaudio_daemon.conf ${TEMP_CHROOT_DIR}/root/
+
+    cp precompiled/triggerhappy.conf ${TEMP_CHROOT_DIR}/etc/triggerhappy/triggers.d/crankshaft.conf
+
     if [ -f precompiled/wpa_supplicant.conf ]; then
         cp precompiled/wpa_supplicant.conf ${TEMP_CHROOT_DIR}/etc/wpa_supplicant/
     fi

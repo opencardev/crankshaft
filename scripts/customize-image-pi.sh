@@ -59,10 +59,15 @@ house_keeping() {
     chown root:root /etc/udev/rules.d/51-android.rules
     
     cat /root/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
+
+    sed -i 's/user nobody/user pi/' /etc/init.d/triggerhappy
+
+    chown root:root /etc/triggerhappy/triggers.d/crankshaft.conf
     
     chmod u+s /opt/crankshaft/dumb_suid
     
     sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
+
     echo 'set-sink-volume 0 52428' >> /etc/pulse/default.pa
 
     if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then

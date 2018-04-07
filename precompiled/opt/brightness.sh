@@ -42,7 +42,7 @@ case $1 in
 	set_max)
 		echo ${BR_MAX} > ${BRIGHTNESS_FILE}
 		;;
-	get_location)
+	get_file_location)
 		echo ${BRIGHTNESS_FILE}
 		;;
 esac

@@ -33,7 +33,7 @@ get_deps() {
     apt clean
     rm -rf /var/cache/apt/
     #update raspi firmware
-    SKIP_WARNING=1 rpi-update
+    SKIP_WARNING=1 SKIP_BACKUP=1 SKIP_KERNEL=1 rpi-update
 }
 
 mark_script_run() {

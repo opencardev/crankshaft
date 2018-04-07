@@ -1,0 +1,10 @@
+[Unit]
+ Description=Crankshaft Startup Services
+ ConditionPathExists=/opt/crankshaft/gpio2kbd
+
+[Service]
+ Type=simple
+ ExecStart=/opt/crankshaft/gpio2kbd /boot/crankshaft/gpio2kbd.cfg
+
+[Install]
+ WantedBy=multi-user.target

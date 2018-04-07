@@ -55,8 +55,7 @@ house_keeping() {
     # make sure everything has the right owner
     chown -R root:root /usr/local/
     chown -R root:root /opt/crankshaft/
-    chown root:root /etc/systemd/system/autoapp.service
-    chown root:root /etc/systemd/system/crankshaft_startup.service
+    chown root:root /etc/systemd/system/*.service
     chown root:root /etc/udev/rules.d/51-android.rules
     
     cat /root/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
@@ -89,6 +88,7 @@ house_keeping() {
     
     # enable the startup actions
     systemctl enable splashscreen.service
+    systemctl enable gpio2kbd.service
     systemctl enable crankshaft_startup.service
     systemctl enable autoapp.service
     

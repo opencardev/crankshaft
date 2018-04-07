@@ -43,7 +43,8 @@ mark_script_run() {
 house_keeping() {
     # make sure everything has the right owner
     chown -R root:root /root/rootfs
-    mv /rootfs/* /
+    rsync -avr /root/rootfs/ /
+    rm -rf /root/rootfs/
 
     # we don't need to resize the root part
     sed -i 's/ init\=.*$//' /boot/cmdline.txt
@@ -53,7 +54,7 @@ house_keeping() {
     echo "gpu_mem_256=128" >> /boot/config.txt
     echo -e "# Disable the PWR LED.\ndtparam=pwr_led_trigger=none\ndtparam=pwr_led_activelow=off" >> /boot/config.txt
     
-    cat /root/crankshaft/misc/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
+    cat /root/scripts/misc/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
 
     sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service
 

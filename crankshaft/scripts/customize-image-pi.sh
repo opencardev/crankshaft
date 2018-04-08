@@ -93,6 +93,7 @@ house_keeping() {
     systemctl enable gpio2kbd.service
     systemctl enable crankshaft_startup.service
     systemctl enable autoapp.service
+    systemctl enable user_startup.service
     
     systemctl disable resize2fs_once.service
     /opt/crankshaft/devmode.sh disable

@@ -1,10 +1,9 @@
 #!/bin/bash
 
-BRIGHTNESS_FILE=/sys/class/backlight/rpi_backlight/brightness
+source /opt/crankshaft/crankshaft_default_env.sh
+source /boot/crankshaft/crankshaft_env.sh
+
 CS_BRIGHTNESS_FILE=/boot/crankshaft/brightness
-BR_MIN=30
-BR_MAX=255
-BR_STEP=25
 LVL=`cat ${BRIGHTNESS_FILE}`
 
 case $1 in

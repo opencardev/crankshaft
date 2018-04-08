@@ -1,12 +1,9 @@
 #!/bin/bash
 
-mount -o remount,rw /boot/
+/opt/crankshaft/filesystem.sh unlock_boot
 
 cp /tmp/openauto.ini /boot/crankshaft/openauto.ini
 
 /opt/crankshaft/brightness.sh save
 
-sync
-
-mount -o remount,ro /boot/
-
+/opt/crankshaft/filesystem.sh lock_boot

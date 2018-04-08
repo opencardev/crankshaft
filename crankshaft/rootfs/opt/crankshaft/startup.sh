@@ -1,35 +1,23 @@
 #!/bin/bash
 
-DEV_PIN=4
-DEV_FILE=/etc/dev_mode_enabled
-INVERT_PIN=21
+source /opt/crankshaft/crankshaft_default_env.sh
+source /boot/crankshaft/crankshaft_env.sh
+
 
 gpio -g mode $DEV_PIN up
 gpio -g mode $INVERT_PIN up
+gpio -g mode $X11_PIN up
 
-if [ `gpio -g read $DEV_PIN` -eq 0 ] ; then
-	# the development mode pin is there
-	mount -o remount,rw /
-	mount -o remount,rw /boot
+/opt/crankshaft/devmode.sh autoset
 
-	# ... but we don't see it being enabled
-	if ! [ -f $DEV_FILE ]; then
-		/opt/crankshaft/devmode.sh enable
-		touch $DEV_FILE
-		reboot
-	fi
-else
-	# the development mode pin is not there
-	# ... but there is a dev file
-	if [ -f $DEV_FILE ]; then
-		mount -o remount,rw /
-		/opt/crankshaft/devmode.sh disable
-		rm -f $DEV_FILE
-		reboot
-	fi
+if [ -f $BRIGHTNESS_FILE ]; then
+	chmod 666 $BRIGHTNESS_FILE
 fi
 
-if [ `gpio -g read $INVERT_PIN` -eq 0 ] ; then
+# restore the brightness if possible
+/opt/crankshaft/brightness.sh restore
+
+if [ `gpio -g read $INVERT_PIN` -eq 0 ] || [ FLIP_SCREEN -eq 1 ] ; then
         grep "lcd_rotate=2" /boot/config.txt >/dev/null
         if [ $? -ne 0 ]; then
                 # Not there
@@ -37,25 +25,8 @@ if [ `gpio -g read $INVERT_PIN` -eq 0 ] ; then
                 echo "lcd_rotate=2" >> /boot/config.txt
                 reboot
         fi
-#this section is commented out
-#once you put the invert pin in, then it won't flip back
-#else
-#       grep "lcd_rotate=2" /boot/config.txt >/dev/null
-#       if [ \$? -eq 0 ]; then
-#               # There, need to restore
-#               mount -o remount,rw /boot
-#               sed -i 's/^lcd_rotate=2//g' /boot/config.txt
-#               reboot
-#       fi
 fi
 
-
-if [ -f /sys/class/backlight/rpi_backlight/brightness ]; then
-	chmod 666 /sys/class/backlight/rpi_backlight/brightness
-fi
-
-# restore the brightness if possible
-/opt/crankshaft/brightness.sh restore
 
 # magic to make stuff work
 
@@ -68,6 +39,6 @@ chown pi:pi /tmp/.local
 chown pi:pi /tmp/.config
 chown pi:pi /tmp/openauto.ini
 
-/sbin/shutdown --poweroff 15
+/sbin/shutdown --poweroff ${NO_CONNECTION_POWEROFF_MINS}
 
 exit 0

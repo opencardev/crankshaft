@@ -48,6 +48,8 @@ house_keeping() {
 
     ldconfig
 
+    cp /opt/crankshaft/crankshaft_default_env.sh /boot/crankshaft/crankshaft_env.sh
+
     # we don't need to resize the root part
     sed -i 's/ init\=.*$//' /boot/cmdline.txt
 

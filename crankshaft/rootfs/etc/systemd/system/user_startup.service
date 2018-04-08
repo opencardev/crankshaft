@@ -7,7 +7,6 @@ Type=oneshot
 User=pi
 WorkingDirectory=/home/pi
 ExecStart=/opt/crankshaft/user_startup.sh
-Restart=on-abort
 
 [Install]
 WantedBy=multi-user.target

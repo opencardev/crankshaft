@@ -10,3 +10,5 @@ fi
 if [ -f ${PYTHON_SCRIPT} ] ; then
 	/usr/bin/python ${PYTHON_SCRIPT}
 fi
+
+exit 0

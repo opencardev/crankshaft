@@ -1,9 +1,16 @@
 #!/bin/bash
 
-/opt/crankshaft/filesystem.sh unlock_boot
+DEV_MODE=`/opt/crankshaft/devmode.sh status`
+
+
+if [ $DEV_MODE == "disabled" ] ; then
+	/opt/crankshaft/filesystem.sh unlock_boot
+fi
 
 cp /tmp/openauto.ini /boot/crankshaft/openauto.ini
 
 /opt/crankshaft/brightness.sh save
 
-/opt/crankshaft/filesystem.sh lock_boot
+if [ $DEV_MODE == "disabled" ] ; then
+	/opt/crankshaft/filesystem.sh lock_boot
+fi

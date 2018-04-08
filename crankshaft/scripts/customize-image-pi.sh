@@ -81,6 +81,9 @@ house_keeping() {
     ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png
     chown pi:pi /home/pi/wallpaper.png
 
+    # make the triggergappy happy
+    ln -s /boot/crankshaft/triggerhappy.conf /etc/triggerhappy/triggers.d/crankshaft.conf
+
     # set the hostname
     echo "crankshaft" > /etc/hostname
     sed -i "s/raspberrypi/crankshaft/" /etc/hosts

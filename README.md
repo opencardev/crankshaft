@@ -123,18 +123,5 @@ Some other developers worked hard on this too, and you might want to give them a
 How to build a Crankshaft image
 --
 
-This repository provides a skeleton for you to build your own Crankshaft image, but it doesn't have all the binary blobs that are the result of the build process. When you supply all the three, you should be able to call `sudo ./make-crankshaft.sh` and it will build the `img` file for you.
-
-There are three missing binary blobs in the `precompiled` directory: 
-
-- `libQt5_OpenGLES2.tar.xz`: Qt5 library compiled with Raspberry Pi OpenGL ES2 library. It is the archive of `/usr/local/qt5`
-- `autoapp`: OpenAuto binary
-- `libaasdk.so`: aasdk binary
-
-There is currently one additional missing small script:
-
-- `dumb_suid`: A way to exec bash scripts in `opt/crankshaft` as root. Compile it (in `src`) and put it to `precompiled/opt`. Bash scripts can't do `suid`.
-
-Please head to the Wiki for instruction [how to build each of the components yourself](https://github.com/htruong/crankshaft/wiki/Building-the-binary-blobs). The scripts provided in this repository allows you to [cross-compile them](https://github.com/htruong/crankshaft/wiki/Cross-compile-on-your-computer).
-
+Please see COMPILE.md
 

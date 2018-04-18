@@ -4,7 +4,7 @@ source /opt/crankshaft/crankshaft_default_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
 # Starts the Autoapp (OpenAuto) main program
-if [ `gpio -g read $X11_PIN` -eq 0 ] || [ START_X11 -eq 1 ] ; then
+if [ $START_X11 -ne 0 ] || [ `gpio -g read $X11_PIN` -eq 0 ] ; then
     # This is when the X11 pin is connected to ground (X11 enabled)
     # We don't call autoapp here, we call it in .xinitrc
     # xinit will read and call autoapp in .xinitrc

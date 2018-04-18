@@ -17,7 +17,7 @@ fi
 # restore the brightness if possible
 /opt/crankshaft/brightness.sh restore
 
-if [ `gpio -g read $INVERT_PIN` -eq 0 ] || [ FLIP_SCREEN -eq 1 ] ; then
+if [ $FLIP_SCREEN -ne 0 ] || [ `gpio -g read $INVERT_PIN` -eq 0 ] ; then
         grep "lcd_rotate=2" /boot/config.txt >/dev/null
         if [ $? -ne 0 ]; then
                 # Not there
@@ -39,6 +39,8 @@ chown pi:pi /tmp/.local
 chown pi:pi /tmp/.config
 chown pi:pi /tmp/openauto.ini
 
-/sbin/shutdown --poweroff ${NO_CONNECTION_POWEROFF_MINS}
+if [ ${NO_CONNECTION_POWEROFF_MINS} -gt 0 ] ; then
+	/sbin/shutdown --poweroff ${NO_CONNECTION_POWEROFF_MINS}
+fi
 
 exit 0

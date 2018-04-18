@@ -42,7 +42,7 @@ get_status() {
 }
 
 gpio_autoset() {
-	if [ `gpio -g read $DEV_PIN` -eq 0 ] ; then
+	if [ $DEV_MODE -ne 0 ] || [ `gpio -g read $DEV_PIN` -eq 0 ] ; then
 		# the development mode pin is there
 		/opt/crankshaft/filesystem.sh unlock
 		/opt/crankshaft/filesystem.sh unlock_boot

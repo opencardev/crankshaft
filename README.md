@@ -10,7 +10,6 @@ Getting Started
 
 It's easy to get started even when you're new to Raspberry Pi and know nothing about electronics. [Check here for the latest guide](https://github.com/htruong/crankshaft/wiki/Getting-started-with-Crankshaft). 
 
-
 Where to get help
 --
 
@@ -34,67 +33,28 @@ Release Highlights
 
 [Full Changelog](https://github.com/htruong/crankshaft/blob/master/CHANGELOG.md)
 
-##### Version alpha0.2.2 2018-04-07
+#### Version alpha0.2.3 2018-04-18
 
 What's new:
 
-- Image is 50M+ smaller. Less download, less bandwidth wasted!
-- Everything you need to backup when you install crankshaft is at `boot/crankshaft`.
-- The wallpaper location change to `boot/crankshaft` from `boot`.
-- GPIO2KBD, virtual keyboard daemon from GPIO by Adafruit, \
-  The config file is at `boot/crankshaft/gpio2kbd.cfg`.
-- You can change the volume by connecting GND to GPIO 12/13 (or any GPIO). \
-  (Issue #49, #33)
-- Brightness change by GPIO - uncomment the GPIO2KBD config file.
-- Trigger "OK Google" by GPIO - uncomment the GPIO2KBD config file.
-- More GPU memshare by default. (Hopefully fix Issue #37)
-- Fix OMXlayer hack for OpenAuto.
+- Now you can configure many of the settings normally you have to use hardware jumpers\
+  through software settings. Open the file `/boot/crankshaft/crankshaft_env.sh` to edit.
+- Startup scripts via `/boot/crankshaft`. You can use both bash and python.
+- Triggerhappy actions are exposed now via `boot/crankshaft/triggerhappy.conf`
+- Fix "Crankshaft shuts down immediately after NTP time sync" when you set \
+  `NO_CONNECTION_POWEROFF_MINS` on `crankshaft_env.sh` to 0. Fix #77.
+- Some minor bug fixes: 
+  Now crankshaft should mount `boot` and `root` ro correctly.\
+  Video FPS is 30 by default for now (less janky animations).
 
 What's new for developers:
 
-- The `rootfs` structure is much better organized. \
-  Now what you see on `crankshaft/rootfs` is exactly what will be installed.
-- The `dumb_suid` (poor man's sudo) is now less dangerous, still dumb.
+- Clearer image building instructions.
 
 Known issues:
 
-- Error #2 on some phones still?
+- If Android Auto doesn't automatically launch, disable Android debug.
 - X11 still does not show cursors on projection mode, so no mouse.
-
-##### Version alpha0.2.1 2018-04-01
-
-What's new:
-
-- Raspbian base image upgraded from 2017-11 to 2018-03.
-- Now all Pis of all generations should be supported.
-- Brightness control on the main interface. (Issue #44, #49, #52)
-- Pi now displays less verbose information. (Issue #35) \
-  Thanks @byransays for the pull request.
-- OpenAuto now detects already connected phones. (Issue #55) 
-- The "display cursor" button is now hidden on touchscreen-capable devices.
-- Tslib for more touchscreens support.
-- The "sleep" button is unavailable - Pi now automatically sleeps after 30 secs.
-- Pi now automatically shut down after 3 hours of idling.
-- RtAudio option for future wireless support.
-
-What's new for developers:
-
-- Dev tool: New script to compile the Qt5 binary blob on Raspbian.
-
-
-##### Version alpha0.2.0 2018-03-13
-
-What's new:
-
-- Use your native audio output aka. Bluetooth stereo natively!\
-  See https://github.com/f1xpl/openauto/pull/38 \
-  See https://github.com/htruong/crankshaft/wiki/Using-your-Bluetooth-stereo \
-  (Issue #9, #12)
-- Audio no longer janks when phone's native audio is used.
-- Audio and video no longer janks on native path either. (Issue #16, #25)
-- Audio no longer crackle (too loud).
-- The power LED is now disabled, it should save you several milliamps. \
-  (Issue #31)
 
 
 
@@ -123,5 +83,5 @@ Some other developers worked hard on this too, and you might want to give them a
 How to build a Crankshaft image
 --
 
-Please see COMPILE.md
+Please see `COMPILE.md`.
 

@@ -1,4 +1,27 @@
-##### Version alpha0.2.2 2018-04-07
+#### Version alpha0.2.3 2018-04-18
+
+What's new:
+
+- Now you can configure many of the settings normally you have to use hardware jumpers\
+  through software settings. Open the file `/boot/crankshaft/crankshaft_env.sh` to edit.
+- Startup scripts via `/boot/crankshaft`. You can use both bash and python.
+- Triggerhappy actions are exposed now via `boot/crankshaft/triggerhappy.conf`
+- Fix "Crankshaft shuts down immediately after NTP time sync" when you set \
+  `NO_CONNECTION_POWEROFF_MINS` on `crankshaft_env.sh` to 0. Fix #77.
+- Some minor bug fixes: 
+  Now crankshaft should mount `boot` and `root` ro correctly.\
+  Video FPS is 30 by default for now (less janky animations).
+
+What's new for developers:
+
+- Clearer image building instructions.
+
+Known issues:
+
+- If Android Auto doesn't automatically launch, disable Android debug.
+- X11 still does not show cursors on projection mode, so no mouse.
+
+#### Version alpha0.2.2 2018-04-07
 
 What's new:
 
@@ -26,7 +49,7 @@ Known issues:
 - X11 still does not show cursors on projection mode, so no mouse.
 
 
-##### Version alpha0.2.1 2018-04-01
+#### Version alpha0.2.1 2018-04-01
 
 What's new:
 
@@ -52,7 +75,7 @@ Known issues:
 - X11 still does not show cursors on projection mode, so no mouse.
 
 
-##### Version alpha0.2.0 2018-03-13
+#### Version alpha0.2.0 2018-03-13
 
 What's new:
 
@@ -73,7 +96,7 @@ Known issues:
 - X11 still does not show cursors on projection mode, so no mouse.
 
 
-##### Version alpha0.1.7 2018-03-10
+#### Version alpha0.1.7 2018-03-10
 
 What's new:
 
@@ -93,7 +116,7 @@ Release notes:
   So now you're still unable to use a mouse.
 
 
-##### Version alpha0.1.6 2018-03-05
+#### Version alpha0.1.6 2018-03-05
 
 What's new:
 
@@ -103,7 +126,7 @@ What's new:
 - Misc. organizational changes for scripts
 
 
-##### Version alpha0.1.5 2018-03-02
+#### Version alpha0.1.5 2018-03-02
 
 What's new:
 
@@ -122,7 +145,7 @@ Release notes:
 - More information on debugging with X11/Wayland to come later
 
 
-##### Version alpha0.1.1 2018-02-28
+#### Version alpha0.1.1 2018-02-28
 
 What's new:
 
@@ -140,7 +163,7 @@ Release notes:
 - Pulseaudio produces choppier audio even compared to previous one when two streams are played at the same time
 
 
-##### Version alpha0.1.0 2018-02-24
+#### Version alpha0.1.0 2018-02-24
 
 - Initial release
 

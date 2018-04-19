@@ -1,0 +1,2 @@
+load-module module-alsa-source device=dmic_sv source_name=BoostedMic
+set-default-source BoostedMic

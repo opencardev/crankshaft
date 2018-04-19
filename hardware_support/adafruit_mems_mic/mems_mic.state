@@ -1,0 +1,19 @@
+state.sndrpii2scard {
+	control.1 {
+		iface MIXER
+		name 'Boost Capture Volume'
+		value.0 126
+		value.1 126
+		comment {
+			access 'read write user'
+			type INTEGER
+			count 2
+			range '0 - 255'
+			tlv '0000000100000008fffffed40000000c'
+			dbmin -300
+			dbmax 2760
+			dbvalue.0 1212
+			dbvalue.1 1212
+		}
+	}
+}

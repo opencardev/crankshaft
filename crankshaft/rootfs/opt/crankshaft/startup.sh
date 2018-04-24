@@ -39,7 +39,7 @@ chown pi:pi /tmp/.local
 chown pi:pi /tmp/.config
 chown pi:pi /tmp/openauto.ini
 
-if [ ${NO_CONNECTION_POWEROFF_MINS} -gt 0 ] ; then
+if [ ${NO_CONNECTION_POWEROFF_MINS} -gt 0 ] && [ $DEV_MODE -eq 0 ] ; then
 	/sbin/shutdown --poweroff ${NO_CONNECTION_POWEROFF_MINS}
 fi
 

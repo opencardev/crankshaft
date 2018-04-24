@@ -9,16 +9,20 @@
 ###############################################################################
 
 print_banner() {
-    echo "---- WELCOME TO THE RASPBERRY PI IMAGE CUSTOMIZER --------------"
-    echo " I will prepare some software for you, sit tight."
-    echo ""
-    echo ""
-    echo ""
+    echo "---------------------------------------------------------------------------"
+    echo "Preparing packeges and customize inside image..."
+    echo "---------------------------------------------------------------------------"
 }
 
 get_deps() {
-    apt update
+    # make sure dns is available
+    #echo "nameserver 8.8.8.8" > /etc/resolv.conf
+    #echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 
+    echo "---------------------------------------------------------------------------"
+    echo "Install / remove packages via apt..."
+    echo "---------------------------------------------------------------------------"
+    apt update
     apt install --no-install-recommends -y \
         libprotobuf10 libpulse0 libboost-log1.62.0 libboost-test1.62.0 \
         libboost-thread1.62.0 libboost-date-time1.62.0 libboost-chrono1.62.0 \
@@ -37,10 +41,16 @@ get_deps() {
 }
 
 mark_script_run() {
+    echo "---------------------------------------------------------------------------"
+    echo "Customization done"
+    echo "---------------------------------------------------------------------------"
     touch /etc/customizer_done
 }
 
 house_keeping() {
+    echo "---------------------------------------------------------------------------"
+    echo "House keeping..."
+    echo "---------------------------------------------------------------------------"
     # make sure everything has the right owner
     chown -R root:root /root/rootfs
     rsync -avr /root/rootfs/ /
@@ -57,13 +67,13 @@ house_keeping() {
     echo "gpu_mem=256" >> /boot/config.txt
     echo "gpu_mem_256=128" >> /boot/config.txt
     echo -e "# Disable the PWR LED.\ndtparam=pwr_led_trigger=none\ndtparam=pwr_led_activelow=off" >> /boot/config.txt
-    
+
     cat /root/scripts/misc/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
 
     sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service
 
     chmod u+s /opt/crankshaft/dumb_suid
-    
+
     sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
 
     echo 'load-module module-mmkbd-evdev device=/dev/gpio2kbd' >> /etc/pulse/default.pa
@@ -87,14 +97,14 @@ house_keeping() {
     # set the hostname
     echo "crankshaft" > /etc/hostname
     sed -i "s/raspberrypi/crankshaft/" /etc/hosts
-    
+
     # enable the startup actions
     systemctl enable splashscreen.service
     systemctl enable gpio2kbd.service
     systemctl enable crankshaft_startup.service
     systemctl enable autoapp.service
     systemctl enable user_startup.service
-    
+
     systemctl disable resize2fs_once.service
     /opt/crankshaft/devmode.sh disable
 }
@@ -103,16 +113,15 @@ house_keeping() {
 ###############################################################################
 
 if [ -f /etc/customizer_done ]; then
-    echo "This script has been run before. Nothing to do."
+    echo "---------------------------------------------------------------------------"
+    echo "Customization was already done before. Nothing to do."
+    echo "---------------------------------------------------------------------------"
     exit 0
 fi
 
-cd /root/ 
+cd /root/
 
 print_banner
-
 get_deps
-
 house_keeping
-
 mark_script_run

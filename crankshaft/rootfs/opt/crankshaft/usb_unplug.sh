@@ -9,5 +9,7 @@ sleep ${DISCONNECTION_SCREEN_POWEROFF_SECS}
 
 if [ -f /tmp/phone_unplugged ]; then
 	/opt/crankshaft/sleep.sh
-	/sbin/shutdown --poweroff ${DISCONNECTION_POWEROFF_MINS}
+	if [ ${DISCONNECTION_POWEROFF_MINS} -gt 0 ] ; then
+		/sbin/shutdown --poweroff ${DISCONNECTION_POWEROFF_MINS}
+	fi
 fi

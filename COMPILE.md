@@ -1,7 +1,7 @@
 Building a Crankshaft image
 --
 
-The heart of Crankshaft is the ./crankshaft.sh script. I assume you use Linux.
+The heart of Crankshaft is the `./crankshaft.sh` script. I assume you use Linux.
 
 Issue `sudo ./crankshaft.sh`
 
@@ -28,8 +28,11 @@ It will drop into the prebuilt image for you. Now the image is mounted at `/mnt/
 
 For example, when you need the `crankshaft/rootfs/usr/local/bin/autoapp` blob, it will be at `/mnt/raspbian-temp/usr/local/bin/autoapp`. Just copy it there. The exception to that is the Qt5 blob. You need to tar it first to make `libQt5_OpenGLES2.tar.xz`,then put it to prebuilt.
 
-### Build them
+### Build binary blobs manually
 
 You can build everything starting off with a Raspbian Lite image and then do all the apt-get update && apt-get upgrade businesses (actually important). Then you can download the Qt5 build script. `https://github.com/htruong/crankshaft/blob/master/prebuilt/make-qt5.sh` - then `chmod +x` it and then run it, you'll end up with a `tar.xz` file.
 
-For the aasdk + openauto blob, build them exactly as the wiki said on an actual rpi3. The reason cross compiling didn't work was that the cross-compiler didn't know where to look for the Broadcom blobs, and openauto needs the Broadcom blobs, and you probably can't provide that in a cross-compiling environment. 
+For the aasdk + openauto blob, build them exactly as the aasdk/openauto wiki said on an actual rpi3. Note, do not install the `libqt5-whatever` because we have already manually compiled them.
+
+The reason cross compiling didn't work was that the cross-compiler didn't know where to look for the Broadcom blobs, and openauto needs the Broadcom blobs, and you probably can't provide that in a cross-compiling environment. 
+

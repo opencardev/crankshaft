@@ -58,6 +58,7 @@ check_dependencies() {
     check_command_ok qemu-arm-static
     check_command_ok chroot
     check_command_ok pv
+    check_command_ok zipinfo
 }
 
 get_unzip_image() {
@@ -78,6 +79,11 @@ get_unzip_image() {
             wget -q --show-progress -O${IMAGE_FILE} ${IMAGE_URL}
             echo "---------------------------------------------------------------------------"
         fi
+    else
+        echo "---------------------------------------------------------------------------"
+        echo "Downloading raspbian image from server..."
+        wget -q --show-progress -O${IMAGE_FILE} ${IMAGE_URL}
+        echo "---------------------------------------------------------------------------"
     fi
 
     IMAGE_FILE_UNZIPPED=`zipinfo -1 ${IMAGE_FILE}`

@@ -7,13 +7,17 @@
 # k3a.me/how-to-make-raspberrypi-truly-read-only-reliable-and-trouble-free
 
 if [ $(id -u) -ne 0 ]; then
+        echo "###########################################################################"
 	echo "Installer must be run as root."
 	echo "Try 'sudo bash $0'"
+        echo "###########################################################################"
 	exit 1
 fi
 
 if [ -f /etc/fs_read_only_config ]; then
-    echo "This script has been run before. Nothing to do."
+    echo "---------------------------------------------------------------------------"
+    echo "Preparing os for read only mode was done before. Nothing to do."
+    echo "---------------------------------------------------------------------------"
     exit 0
 fi
 
@@ -82,15 +86,16 @@ mark_script_run() {
     touch /etc/fs_read_only_config
 }
 
-echo
+echo "---------------------------------------------------------------------------"
 echo "Starting installation..."
-
+echo "---------------------------------------------------------------------------"
 
 # disable failed units due to readonly fs
 systemctl disable systemd-rfkill.service
 
-
+echo "---------------------------------------------------------------------------"
 echo "Removing unwanted packages..."
+echo "---------------------------------------------------------------------------"
 #apt-get remove -y --force-yes --purge triggerhappy cron logrotate dbus \
 # dphys-swapfile xserver-common lightdm fake-hwclock
 # Let's keep dbus...that includes avahi-daemon, a la 'raspberrypi.local',
@@ -99,7 +104,9 @@ apt-get remove -y --force-yes --purge \
  dphys-swapfile fake-hwclock
 apt-get -y --force-yes autoremove --purge
 
+echo "---------------------------------------------------------------------------"
 echo "Configuring system..."
+echo "---------------------------------------------------------------------------"
 
 sed -i "s/#Storage=auto/Storage=volatile/" /etc/systemd/journald.conf
 
@@ -143,13 +150,15 @@ ln -s /tmp/.config /home/pi/
 ln -s /tmp/.local /home/pi/
 
 apt clean
-rm -rf /var/cache/apt/ 
+rm -rf /var/cache/apt/
 
 # Change spool permissions in var.conf (rondie/Margaret fix)
 replace /usr/lib/tmpfiles.d/var.conf "spool\s*0755" "spool 1777"
 
 # Move dhcpd.resolv.conf to tmpfs
 touch /tmp/dhcpcd.resolv.conf
+echo "nameserver 8.8.8.8" > /tmp/dhcpcd.resolv.conf
+echo "nameserver 8.8.4.4" >> /tmp/dhcpcd.resolv.conf
 rm /etc/resolv.conf
 ln -s /tmp/dhcpcd.resolv.conf /etc/resolv.conf
 

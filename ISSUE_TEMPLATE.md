@@ -1,3 +1,3 @@
 - What phone do you have? What OS version?
-- Did you try to enable and run autoapp under X11 dev mode?  Follow this: https://github.com/htruong/crankshaft/wiki/Crankshaft-dev-mode
+- Steps to reproduce the bug, if you're planning to report a bug. Please indicate whether the bug is always repoducible.
 - Please provide any further information that you might find helpful.

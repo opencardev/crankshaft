@@ -5,7 +5,7 @@
 # This script is licensed under GNU Public License v3
 
 IMAGE_FILE=raspbian-stretch-lite.zip
-TODAY_EXT=$(date +"%Y-%m-%d")
+TODAY_EXT=$(date +"%Y-%m-%d-%H-%M")
 IMAGE_FILE_CUSTOMIZED=${IMAGE:-"crankshaft-${TODAY_EXT}.img"}
 IMAGE_URL=https://downloads.raspberrypi.org/raspbian_lite_latest
 TEMP_CHROOT_DIR=/mnt/raspbian-temp
@@ -95,6 +95,13 @@ get_unzip_image() {
         echo "---------------------------------------------------------------------------"
         unzip -o -p ${IMAGE_FILE} | pv -p -s ${IMAGE_FILE_UNZIPPED_SIZE} -w 80 > ${IMAGE_FILE_UNZIPPED}
     fi
+
+    # Check for previous build image and rename it to new name
+    if [ -f crankshaft-*.img ]; then
+        OLD_IMAGE_NAME=`ls -a | grep crankshaft-*.img`
+        mv $OLD_IMAGE_NAME $IMAGE_FILE_CUSTOMIZED
+    fi
+
     if ! [ -f ${IMAGE_FILE_CUSTOMIZED} ]; then
         echo "---------------------------------------------------------------------------"
         echo "Copying a big file..."

@@ -15,10 +15,6 @@ print_banner() {
 }
 
 get_deps() {
-    # make sure dns is available
-    #echo "nameserver 8.8.8.8" > /etc/resolv.conf
-    #echo "nameserver 8.8.4.4" >> /etc/resolv.conf
-
     echo "---------------------------------------------------------------------------"
     echo "Install / remove packages via apt..."
     echo "---------------------------------------------------------------------------"
@@ -31,7 +27,7 @@ get_deps() {
         fbi \
         libts-0.0-0 tsconf \
         xinit xserver-xorg-video-fbdev xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri xserver-xorg-input-evdev \
-        wiringpi
+        wiringpi ntp
 
     apt -y upgrade
     apt autoremove --purge
@@ -106,6 +102,7 @@ house_keeping() {
     systemctl enable user_startup.service
 
     systemctl disable resize2fs_once.service
+    systemctl disable ntp.service
     /opt/crankshaft/devmode.sh disable
 }
 

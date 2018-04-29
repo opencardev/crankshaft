@@ -24,7 +24,7 @@ echo "##########################################################################
 #########################################################
 
 bail_and_cleanup() {
-    kpartx -d $1 
+    kpartx -d $1
     # rm $2
 }
 
@@ -75,7 +75,7 @@ get_unzip_image() {
         else
             #re-download cause filesize has changed
             echo "---------------------------------------------------------------------------"
-            echo "Downloading raspbian image from server..."
+            echo "Downloading new version of raspbian image from server..."
             wget -q --show-progress -O${IMAGE_FILE} ${IMAGE_URL}
             echo "---------------------------------------------------------------------------"
         fi
@@ -171,17 +171,17 @@ set_up_loopdevs() {
     LOOPDEVPARTS=/dev/mapper/${LOOPPARTSID}
 
     echo "---------------------------------------------------------------------------"
-    echo "Check root fs before resize..."
+    echo "Check rootfs before resize..."
     echo "---------------------------------------------------------------------------"
     e2fsck -f ${LOOPDEVPARTS}p2
 
     echo "---------------------------------------------------------------------------"
-    echo "Resize root fs..."
+    echo "Resize rootfs..."
     echo "---------------------------------------------------------------------------"
     resize2fs -p ${LOOPDEVPARTS}p2
 
     echo "---------------------------------------------------------------------------"
-    echo "Check root fs afer resize..."
+    echo "Check rootfs afer resize..."
     echo "---------------------------------------------------------------------------"
     e2fsck -f ${LOOPDEVPARTS}p2
 
@@ -214,7 +214,7 @@ set_up_loopdevs() {
 
             # extract libQt5
             echo "---------------------------------------------------------------------------"
-            echo "Unpacking qt libraries..."
+            echo "Unpacking qt5 libraries..."
             echo "---------------------------------------------------------------------------"
             pv -p  -w 80 prebuilt/libQt5_OpenGLES2.tar.xz | tar -xf - -C ${TEMP_CHROOT_DIR}/
 
@@ -305,4 +305,3 @@ check_root
 get_unzip_image
 resize_raw_image
 set_up_loopdevs
-

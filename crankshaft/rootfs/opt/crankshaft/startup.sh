@@ -32,15 +32,18 @@ fi
 
 cp /boot/crankshaft/openauto.ini /tmp/openauto.ini
 
-mkdir /tmp/.local
-mkdir /tmp/.config
+mkdir -p /tmp/.local
+mkdir -p /tmp/.config
 
 chown pi:pi /tmp/.local
 chown pi:pi /tmp/.config
 chown pi:pi /tmp/openauto.ini
 
-if [ ${NO_CONNECTION_POWEROFF_MINS} -gt 0 ] && [ $DEV_MODE -eq 0 ] ; then
-	/sbin/shutdown --poweroff ${NO_CONNECTION_POWEROFF_MINS}
+if [ ${NO_CONNECTION_POWEROFF_MINS} -gt 0 ]; then
+	# Skip if dev mode is enabled by $DEV_MODE (1=enabled) or $DEV_PIN (0=enabled | 0 = low = closed)
+	if [ $DEV_MODE -eq 0 ] && [ `gpio -g read $DEV_PIN` -eq 1 ]; then
+	    /sbin/shutdown --poweroff ${NO_CONNECTION_POWEROFF_MINS}
+	fi
 fi
 
 exit 0

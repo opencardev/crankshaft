@@ -27,7 +27,7 @@ fi
 
 INSTALL_HALT=0
 SYS_TYPES=(Pi\ 3\ /\ Pi\ Zero\ W All\ other\ models)
-WATCHDOG_MODULES=(bcm2835_wdog bcm2708_wdog)
+WATCHDOG_MODULES=(bcm2835_wdt bcm2835_wdog bcm2708_wdt bcm2708_wdog)
 OPTION_NAMES=(NO YES)
 
 INSTALL_WATCHDOG=1

@@ -94,6 +94,16 @@ house_keeping() {
     echo "crankshaft" > /etc/hostname
     sed -i "s/raspberrypi/crankshaft/" /etc/hosts
 
+    # fix watchdog module (seems to be renamed on latest versions)
+    CHECK=`modprobe --dry-run bcm2835_wdt`
+    if [ $CHECK == "" ]; then
+        sed -i "s/bcm2835_wdog/bcm2835_wdt/" /etc/modules
+    fi
+    CHECK=`modprobe --dry-run bcm2708_wdt`
+    if [ $CHECK == "" ]; then
+        sed -i "s/bcm2708_wdog/2708_wdt/" /etc/modules
+    fi
+
     # link needed libs to run openauto
     ln -s /opt/vc/lib/libbrcmEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
     ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so

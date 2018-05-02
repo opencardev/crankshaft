@@ -10,7 +10,7 @@ We provide the guidelines that we use to determine if a work is "free" in the do
 We will give back to the free software community
 --
 
-When we write new components of the Crankshaft system, we will license them in a manner consistent with the Crankshaft Free Software Guidelines. We will make the best system we can, so that free works will be widely distributed and used. We will communicate things such as bug fixes, improvements and user requests to the "upstream" authors of works included in our system.
+When we write new components of the Crankshaft system, we will license them in a manner consistent with the Debian Free Software Guidelines. We will make the best system we can, so that free works will be widely distributed and used. We will communicate things such as bug fixes, improvements and user requests to the "upstream" authors of works included in our system.
 
 We will not hide problems
 --

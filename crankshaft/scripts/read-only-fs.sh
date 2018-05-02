@@ -27,7 +27,7 @@ fi
 
 INSTALL_HALT=0
 SYS_TYPES=(Pi\ 3\ /\ Pi\ Zero\ W All\ other\ models)
-WATCHDOG_MODULES=(bcm2835_wdog bcm2708_wdog)
+WATCHDOG_MODULES=(bcm2835_wdt bcm2835_wdog bcm2708_wdt bcm2708_wdog)
 OPTION_NAMES=(NO YES)
 
 INSTALL_WATCHDOG=1
@@ -143,9 +143,8 @@ ln -s /tmp /var/spool
 touch /tmp/openauto.ini
 ln -s /tmp/openauto.ini /home/pi/openauto.ini
 chown pi:pi /home/pi/openauto.ini
-mkdir /tmp/
-mkdir /tmp/.config
-mkdir /tmp/.local
+mkdir -p /tmp/.config
+mkdir -p /tmp/.local
 ln -s /tmp/.config /home/pi/
 ln -s /tmp/.local /home/pi/
 

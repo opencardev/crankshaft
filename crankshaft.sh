@@ -67,6 +67,11 @@ get_unzip_image() {
         #check remote filze size
         remotesize=`wget https://downloads.raspberrypi.org/raspbian_lite_latest --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
         localsize=`wc -c ${IMAGE_FILE} | awk '{print $1}'`
+        # Failsafe - if string length of remote size is to short try again (sometimes happens caused by delayed response)
+        if [ ${#remotesize} != ${#localsize} ]; then
+            remotesize=`wget https://downloads.raspberrypi.org/raspbian_lite_latest --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+        fi
+
         if [ "$remotesize" = "$localsize" ]; then
             echo "---------------------------------------------------------------------------"
             echo "Image file ${IMAGE_FILE} is already the same, skipping download."

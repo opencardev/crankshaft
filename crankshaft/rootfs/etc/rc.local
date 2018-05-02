@@ -1,0 +1,43 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+RED=`tput setaf 1`
+GREEN=`tput setaf 2`
+YELLOW=`tput setaf 3`
+CYAN=`tput setaf 6`
+MAGENTA=`tput setaf 5`
+RESET=`tput sgr0`
+BOLD=`tput bold`
+
+# Get ip addresses by interface
+_IP_ETH0=$(ifconfig eth0 | grep 'inet ' | awk '{print $2}')
+_IP_WLAN0=$(ifconfig wlan0 | grep 'inet ' | awk '{print $2}')
+_SSID_WLAN0=$(wpa_cli -i wlan0 status | grep '^ssid' | cut -d= -f2)
+_FREQ_WLAN0=$(wpa_cli -i wlan0 status | grep '^freq' | cut -d= -f2)
+_ENC_WLAN0=$(wpa_cli -i wlan0 status | grep '^key_mgmt' | cut -d= -f2)
+
+printf "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************\n"
+if [ "$_IP_ETH0" ]; then
+  printf "[${CYAN}${BOLD} INFO ${RESET}]                                                        \n"
+  printf "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}ETH0:  ${RESET}IP:        ${YELLOW}%s\n" "$_IP_ETH0${RESET}"
+fi
+if [ "$_IP_WLAN0" ]; then
+  printf "[${CYAN}${BOLD} INFO ${RESET}]                                                        \n"
+  printf "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}WLAN0: ${RESET}IP:        ${MAGENTA}%s\n" "$_IP_WLAN0${RESET}"
+  printf "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}WLAN0: ${RESET}SSID:      ${YELLOW}%s\n" "$_SSID_WLAN0${RESET}"
+  printf "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}WLAN0: ${RESET}Frequency: ${YELLOW}%s\n" "$_FREQ_WLAN0${RESET}"
+  printf "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}WLAN0: ${RESET}Type:      ${YELLOW}%s\n" "$_ENC_WLAN0${RESET}"
+fi
+printf "[${CYAN}${BOLD} INFO ${RESET}]                                                        \n"
+printf "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************\n"
+exit 0

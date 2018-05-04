@@ -72,3 +72,5 @@ Other projects
 OpenAuto and Crankshaft are not the only people in this world experimenting with this idea. 
 
 Some other developers worked hard on this too, and you might want to give them a try. [Here is another solution that works on the Pi](https://github.com/viktorgino/headunit-desktop), [here is one that works on an Android tablet](https://github.com/borconi/headunit).
+
+*Conflicts of interests*: Huan Truong is a independent developer he declares no business relationship as well as no conflicts of interests between him and the following entities: Google, Android, OpenAuto/aasdk, Michal Swaz, Viktor Gino, Emil Borconi-Szedressy.

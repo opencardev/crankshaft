@@ -21,11 +21,11 @@
 - Markus Loy
 - Derek Anderson
 
-## Google shared photo album contributors
+### Google shared photo album contributors
 - Everyone who contributed setups and answers
-- Special thanks to Glen Stockham
+- Thanks to Glen Stockham
 
-## Youtubers
-- Special thanks to ETA Prime
+### Youtubers
+- Thanks to ETA Prime
 
 If you have contributed to the code, wiki, documentation or photos without being credited, we apologize for overlooking your contribution. Please send any developer a note stating your perferred names and your contribution, and we will happily add your name to the credits roll.

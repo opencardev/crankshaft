@@ -18,7 +18,7 @@
 - Evangeline Archer
 
 ### Documentations & Wiki
-- Maju3
+- Markus Loy
 - Derek Anderson
 
 ## Google shared photo album contributors

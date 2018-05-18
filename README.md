@@ -40,6 +40,30 @@ Release Highlights
 
 [Full Changelog](https://github.com/htruong/crankshaft/blob/master/CHANGELOG.md)
 
+#### Version alpha0.2.4 2018-05-18
+
+What's new:
+
+- Syncs with latest OpenAuto and AASDK.
+- Buttons now look a bit nicer.
+- Featured default wallpaper: Eve's "Camping (with Dock)"!
+- Dev mode does not shut down crankshaft on ntp sync anymore.
+
+What's new for developers:
+
+- Now you can build your own Crankshaft system on raspbian \
+  Use the scripts in `rpi_buildsystem`.
+- The crankshaft buildscript is improved.
+- Wifi client is supported in dev mode.
+- Watchdog module is fixed & really enabled.
+- Dev mode will have ntp enabled.
+
+Known issues:
+
+- If Android Auto doesn't automatically launch, disable Android debug.
+- X11 still does not show cursors on projection mode, so no mouse.
+- X11 will activate screensaver if not touched for 10 minutes.
+
 #### Version alpha0.2.3 2018-04-18
 
 What's new:

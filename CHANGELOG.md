@@ -20,6 +20,7 @@ Known issues:
 
 - If Android Auto doesn't automatically launch, disable Android debug.
 - X11 still does not show cursors on projection mode, so no mouse.
+- X11 will activate screensaver if not touched for 10 minutes.
 
 #### Version alpha0.2.3 2018-04-18
 

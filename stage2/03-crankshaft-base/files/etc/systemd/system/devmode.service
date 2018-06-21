@@ -1,0 +1,15 @@
+[Unit]
+ Description=Crankshaft Dev Mode Service
+ ConditionPathExists=/opt/crankshaft/service_devmode.sh
+ After=gpio2kbd.service
+ Before=crankshaft.service
+
+[Service]
+ Type=oneshot
+ ExecStart=/opt/crankshaft/service_devmode.sh
+ StandardInput=tty
+ StandardOutput=tty
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

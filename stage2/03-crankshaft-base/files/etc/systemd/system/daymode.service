@@ -1,0 +1,7 @@
+[Unit]
+Description=Crankshaft Day Mode Service
+After=rc.local.service
+
+[Service]
+Type=simple
+ExecStart=/opt/crankshaft/service_daynight.sh day

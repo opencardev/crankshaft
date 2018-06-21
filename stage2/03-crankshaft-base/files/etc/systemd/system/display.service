@@ -1,0 +1,13 @@
+[Unit]
+ Description=Crankshaft Display Service
+ ConditionPathExists=/opt/crankshaft/service_display.sh
+ After=usbrestore.service
+ Before=usbdetect.service
+
+[Service]
+ Type=oneshot
+ ExecStart=/opt/crankshaft/service_display.sh
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

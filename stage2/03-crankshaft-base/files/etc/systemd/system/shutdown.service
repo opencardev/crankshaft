@@ -1,0 +1,9 @@
+[Unit]
+Description=Crankshaft Shutdown Service
+
+[Service]
+Type=simple
+ExecStartPre=/usr/local/bin/crankshaft display on
+ExecStart=/sbin/shutdown -t 1 -P
+ExecStop=/sbin/shutdown -c
+RemainAfterExit=yes

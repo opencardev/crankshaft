@@ -1,0 +1,7 @@
+netbase
+ifupdown
+iptables
+wget
+net-tools
+dhcpcd5
+iputils-ping

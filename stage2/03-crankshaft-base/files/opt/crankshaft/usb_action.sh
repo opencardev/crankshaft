@@ -1,0 +1,41 @@
+#!/bin/bash
+
+source /opt/crankshaft/crankshaft_default_env.sh
+source /opt/crankshaft/crankshaft_system_env.sh
+source /boot/crankshaft/crankshaft_env.sh
+
+addremove=$1
+model=$2
+usbpath=$3
+
+if [ $addremove == "add" ] && [ "$usbpath" != "" ]; then
+    echo $usbpath > /tmp/android_device
+    echo $model >> /tmp/android_device
+    echo "" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] Device detected!" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] Model: $model" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] Path: $usbpath" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    /usr/local/bin/crankshaft timers stop
+    sudo /usr/bin/gpio -g mode $ANDROID_PIN up
+fi
+
+if [ "$addremove" == "remove" ] && [ "$usbpath" != "" ]; then
+    if [ -f /tmp/android_device ]; then
+        CHECK=$(cat /tmp/android_device | grep $usbpath)
+        if [ ! -z $CHECK ]; then
+            sudo rm /tmp/android_device
+            echo "" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Device removed!" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Model: $model" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Path: $usbpath" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            if [ ! -f /tmp/dev_mode_enabled ]; then
+                /usr/local/bin/crankshaft timers start
+            fi
+            sudo /usr/bin/gpio -g mode $ANDROID_PIN down
+        fi
+    fi
+fi

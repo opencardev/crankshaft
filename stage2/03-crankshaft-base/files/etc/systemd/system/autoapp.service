@@ -1,0 +1,12 @@
+[Unit]
+Description=Crankshaft Android Auto Headunit
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/opt/crankshaft/service_openauto.sh
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

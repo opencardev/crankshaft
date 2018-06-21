@@ -1,0 +1,3 @@
+libprotobuf10 libboost-log1.62.0 libboost-test1.62.0 libboost-thread1.62.0 libboost-date-time1.62.0
+libboost-chrono1.62.0 libboost-atomic1.62.0 libpulse-mainloop-glib0 libfontconfig1 libinput10 libxkbcommon0
+librtaudio5a fbi libts-0.0-0 tsconf wiringpi insserv watchdog pulseaudio evtest

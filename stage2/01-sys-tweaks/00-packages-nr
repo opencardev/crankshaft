@@ -1,0 +1,30 @@
+ssh less fbset sudo psmisc strace ed ncdu crda
+console-setup keyboard-configuration debconf-utils parted unzip
+python bash-completion gdb pkg-config
+python-rpi.gpio
+hardlink ca-certificates curl
+nfs-common usbutils
+dosfstools
+raspberrypi-sys-mods
+pi-bluetooth
+apt-listchanges
+usb-modeswitch
+apt-utils
+apt-transport-https
+libpam-chksshpwd
+rpi-update
+libmtp-runtime
+rsync
+systemd-sysv
+rsyslog
+mc
+nano
+i2c-tools
+fake-hwclock
+python-picamera
+python3-gpiozero
+pv
+busybox-static
+plymouth-themes
+initramfs-tools
+python-pil

@@ -1,0 +1,15 @@
+[Unit]
+ Description=Crankshaft USB Detect Service
+ ConditionPathExists=/opt/crankshaft/service_usbdetect.sh
+ After=display.service
+ Before=gpio2kbd.service
+
+[Service]
+ Type=oneshot
+ ExecStart=/opt/crankshaft/service_usbdetect.sh
+ StandardInput=tty
+ StandardOutput=tty
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

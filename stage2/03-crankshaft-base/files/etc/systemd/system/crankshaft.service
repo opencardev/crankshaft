@@ -1,0 +1,13 @@
+[Unit]
+ Description=Crankshaft Startup Service
+ ConditionPathExists=/opt/crankshaft/service_crankshaft.sh
+ After=gpio2kbd.service
+ Before=rc.local.service
+
+[Service]
+ Type=oneshot
+ ExecStart=/opt/crankshaft/service_crankshaft.sh
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

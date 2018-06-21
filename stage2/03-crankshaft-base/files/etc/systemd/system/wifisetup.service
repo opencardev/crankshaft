@@ -1,0 +1,11 @@
+[Unit]
+ Description=Crankshaft Wifi Setup Service
+ ConditionPathExists=/opt/crankshaft/service_wifisetup.sh
+
+[Service]
+ Type=oneshot
+ ExecStart=/opt/crankshaft/service_wifisetup.sh
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

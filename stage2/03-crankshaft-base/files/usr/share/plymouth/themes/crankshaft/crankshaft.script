@@ -1,0 +1,123 @@
+screen_width = Window.GetWidth();
+screen_height = Window.GetHeight();
+
+theme_image = Image("splash.png");
+shutdown_image = Image("shutdown.png");
+image_width = theme_image.GetWidth();
+image_height = theme_image.GetHeight();
+shutdown_image_width = shutdown_image.GetWidth();
+shutdown_image_height = shutdown_image.GetHeight();
+
+scale_x = image_width / screen_width;
+scale_y = image_height / screen_height;
+shutdown_scale_x = shutdown_image_width / screen_width;
+shutdown_scale_y = shutdown_image_height / screen_height;
+
+flag = 1;
+
+if (scale_x > 1 || scale_y > 1) {
+	if (scale_x > scale_y) {
+		resized_image = theme_image.Scale (screen_width, image_height / scale_x);
+		image_x = 0;
+		image_y = (screen_height - ((image_height  * screen_width) / image_width)) / 2;
+	}
+	else {
+		resized_image = theme_image.Scale (image_width / scale_y, screen_height);
+		image_x = (screen_width - ((image_width  * screen_height) / image_height)) / 2;
+		image_y = 0;
+	}
+}
+else {
+	resized_image = theme_image.Scale (image_width, image_height);
+	image_x = (screen_width - image_width) / 2;
+	image_y = (screen_height - image_height) / 2;
+}
+
+if (shutdown_scale_x > 1 || shutdown_scale_y > 1) {
+	if (shutdown_scale_x > shutdown_scale_y)
+	{
+		shutdown_resized_image = shutdown_image.Scale (screen_width, shutdown_image_height / shutdown_scale_x);
+		shutdown_image_x = 0;
+		shutdown_image_y = (screen_height - ((shutdown_image_height  * screen_width) / shutdown_image_width)) / 2;
+	}
+	else
+	{
+		shutdown_resized_image = shutdown_image.Scale (shutdown_image_width / shutdown_scale_y, screen_height);
+		shutdown_image_x = (screen_width - ((shutdown_image_width  * screen_height) / shutdown_image_height)) / 2;
+		shutdown_image_y = 0;
+	}
+}
+else {
+	shutdown_resized_image = shutdown_image.Scale (shutdown_image_width, shutdown_image_height);
+	shutdown_image_x = (screen_width - shutdown_image_width) / 2;
+	shutdown_image_y = (screen_height - shutdown_image_height) / 2;
+}
+
+if (Plymouth.GetMode() != "shutdown") {
+    sprite = Sprite (resized_image);
+    sprite.SetPosition (image_x, image_y, -100);
+}
+else {
+    sprite = Sprite (shutdown_resized_image);
+    sprite.SetPosition (shutdown_image_x, shutdown_image_y, -100);
+}
+
+#----------------------------------------- Progress Bar --------------------------------
+
+progress_box.image = Image("progress_box.png");
+progress_box.sprite = Sprite(progress_box.image);
+
+progress_box.x = Window.GetX() + screen_width / 2 - progress_box.image.GetWidth() / 2;
+progress_box.y = Window.GetY() + screen_height * 0.75 - progress_box.image.GetHeight() / 2;
+if (Plymouth.GetMode() == "boot") {
+    #progress_box.sprite.SetPosition(progress_box.x, progress_box.y, 0);
+    progress_box.sprite.SetPosition(screen_width, screen_height, 0);
+}
+else {
+    progress_box.sprite.SetPosition(screen_width, screen_height, 0);
+}
+
+progress_bar.original_image = Image("progress_bar.png");
+progress_bar.sprite = Sprite();
+
+progress_bar.x = Window.GetX() + screen_width  / 2 -        progress_bar.original_image.GetWidth() / 2;
+progress_bar.y = Window.GetY() + screen_height / 2 * 1.5  - progress_box.image.GetHeight() / 2 + (progress_box.image.GetHeight() - progress_bar.original_image.GetHeight()) / 2;
+progress_bar.sprite.SetPosition(progress_bar.x, progress_bar.y, 1);
+
+fun progress_callback (duration, progress) {
+    if (Plymouth.GetMode() == "boot")
+    {
+	if (progress_bar.image.GetWidth () != Math.Int (progress_bar.original_image.GetWidth () * progress))
+	{
+	    progress_bar.image = progress_bar.original_image.Scale(progress_bar.original_image.GetWidth(progress_bar.original_image) * progress, progress_bar.original_image.GetHeight());
+	    progress_bar.sprite.SetImage (progress_bar.image);
+	}
+	if (progress == 1)
+	{
+	    progress_box.sprite.SetPosition(screen_width, screen_height, 0);
+	    progress_bar.sprite.SetPosition(screen_width, screen_height, 1);
+	}
+    }
+}
+#----------------------------------------- Progress Bar --------------------------------
+
+message_sprite = Sprite();
+if (Plymouth.GetMode() == "boot") {
+    message_sprite.SetPosition(0, screen_height * 0.94, 10000);
+}
+else {
+    message_sprite.SetPosition(0, screen_height, 10000);
+}
+
+fun message_callback (text) {
+    #my_image = Image.Text(text, 1, 1, 1);
+    #message_sprite.SetImage(my_image);
+    if (Plymouth.GetMode() == "boot") {
+	sprite.SetImage (resized_image);
+    }
+    if (Plymouth.GetMode() == "shutdown") {
+        sprite.SetImage (shutdown_resized_image);
+    }
+}
+#Plymouth.SetBootProgressFunction(progress_callback);
+Plymouth.SetUpdateStatusFunction(message_callback);

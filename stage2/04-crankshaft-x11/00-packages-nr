@@ -1,0 +1,3 @@
+xinit xserver-xorg-video-fbdev
+xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri
+xserver-xorg-input-evdev xcb x11-xserver-utils

@@ -1,0 +1,12 @@
+[Unit]
+ Description=USB Backup Restore Service
+ ConditionPathExists=/opt/crankshaft/service_usbrestore.sh
+ Before=display.service local-fs.service
+
+[Service]
+ Type=oneshot
+ ExecStart=/opt/crankshaft/service_usbrestore.sh
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

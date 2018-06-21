@@ -1,0 +1,8 @@
+[Unit]
+Description=Crankshaft Day Mode Timer
+
+[Timer]
+OnCalendar=*-*-* 08..17:*:00
+
+[Install]
+WantedBy=timers.target

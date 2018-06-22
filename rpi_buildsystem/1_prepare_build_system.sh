@@ -26,7 +26,7 @@ sudo apt-get clean
 
 # Firmware update
 updatecheck=`sudo JUST_CHECK=1 rpi-update | grep commit`
-if [ $updatecheck != "" ]; then
+if [ -z $updatecheck ]; then
     sudo rpi-update
     echo "############################################################################"
     echo ""

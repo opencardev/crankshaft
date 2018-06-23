@@ -51,18 +51,31 @@ if [ $? -eq 0 ]; then
         /usr/local/bin/crankshaft settings save
         /usr/local/bin/crankshaft brightness save
         /usr/local/bin/crankshaft audio volume save
-        sudo shutdown -P now
+        if [ -f /tmp/reboot ]; then
+            sudo reboot
+        else
+            sudo shutdown -P now
+        fi
     else
         /usr/local/bin/crankshaft settings save
         /usr/local/bin/crankshaft brightness save
         /usr/local/bin/crankshaft audio volume save
         if [ $DEV_MODE_APP -eq 1 ]; then
-            echo "" >/dev/tty3
-            echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
-            echo "[${RED}${BOLD} INFO ${RESET}] You are in Dev Mode OpenAuto." >/dev/tty3
-            echo "[${RED}${BOLD} INFO ${RESET}] System will shutdown in 60 seconds automatically." >/dev/tty3
-            echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
-    	    sudo shutdown -P -t 1
+            if [ -f /tmp/reboot ]; then
+                echo "" >/dev/tty3
+                echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+                echo "[${RED}${BOLD} INFO ${RESET}] You are in Dev Mode OpenAuto." >/dev/tty3
+                echo "[${RED}${BOLD} INFO ${RESET}] System will reboot in 60 seconds automatically." >/dev/tty3
+                echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+                sudo shutdown -r -t 1
+            else
+                echo "" >/dev/tty3
+                echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+                echo "[${RED}${BOLD} INFO ${RESET}] You are in Dev Mode OpenAuto." >/dev/tty3
+                echo "[${RED}${BOLD} INFO ${RESET}] System will shutdown in 60 seconds automatically." >/dev/tty3
+                echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+                sudo shutdown -P -t 1
+            fi
         else
             echo "" >/dev/tty3
             echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3

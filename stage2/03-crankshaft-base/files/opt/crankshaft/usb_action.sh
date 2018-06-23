@@ -32,7 +32,9 @@ if [ "$addremove" == "remove" ] && [ "$usbpath" != "" ]; then
             echo "[${RED}${BOLD} WARN ${RESET}] Model: $model" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Path: $usbpath" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-            if [ ! -f /tmp/dev_mode_enabled ]; then
+            sleep 1 # relax time for failsafe while android phone is switching mode
+                    # while starting google auto
+            if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
                 /usr/local/bin/crankshaft timers start
             fi
             sudo /usr/bin/gpio -g mode $ANDROID_PIN down

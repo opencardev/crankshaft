@@ -5,7 +5,7 @@ source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
 # Check udev rules
-REMOTE_UDEV=`wget --no-check-certificate https://raw.githubusercontent.com/hawkeyexp/android-udev-rules/master/51-android.rules --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+REMOTE_UDEV=`wget --no-check-certificate https://raw.githubusercontent.com/opencardev/prebuilts/master/udev/51-android.rules --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
 
 if [ -f /etc/udev/rules.d/51-android.master ]; then
     LOCAL_UDEV=`wc -c /etc/udev/rules.d/51-android.master | awk '{print $1}'`
@@ -14,7 +14,7 @@ else
 fi
 
 # Check crankshaft amangement tool
-REMOTE_CSMT=`wget --no-check-certificate https://raw.githubusercontent.com/hawkeyexp/crankshaft-updates/master/crankshaft --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
+REMOTE_CSMT=`wget --no-check-certificate https://raw.githubusercontent.com/opencardev/prebuilts/master/csmt/crankshaft --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}'`
 
 if [ -f /usr/local/bin/crankshaft ]; then
     LOCAL_CSMT=`wc -c /usr/local/bin/crankshaft | awk '{print $1}'`

@@ -8,8 +8,8 @@ if [ ! -f /etc/cs_resize_done ]; then
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
     chvt 3
     clear > /dev/tty3
-    setterm -cursor on
-    setterm -blink on
+    setterm -cursor on > /dev/tty3
+    setterm -blink on > /dev/tty3
     echo "" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] Partition and Filesystem not resized - resizing..." > /dev/tty3
@@ -45,6 +45,27 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                 umount /tmp/${PARTITION} > /dev/null 2>&1
                 mkdir /tmp/${PARTITION} > /dev/null 2>&1
                 echo "" > /dev/tty3
+                # check fs if needed
+                if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ]; then
+                    # check state of fs
+                    dosfsck -n $DEVICE
+                    if [ $? == "1" ]; then
+                        # 1 = errors detected - repair...
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        dosfsck -y $DEVICE > /dev/tty3
+                    fi
+                fi
+                if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
+                    CHECK=`tune2fs -l /dev/devicename |awk -F':' '/^Filesystem s/ {print $2}' | sed 's/ //g'`
+                    if [ "$CHECK" != "clean" ]; then
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        fsck.$FSTYPE -f -y $DEVICE > /dev/tty3
+                    fi
+                fi
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Mounting..." > /dev/tty3
                 mount -t auto ${DEVICE} /tmp/${PARTITION} > /dev/tty3

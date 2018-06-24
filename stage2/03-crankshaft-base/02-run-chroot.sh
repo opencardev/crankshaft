@@ -117,7 +117,7 @@ sed -i 's/#Banner none/Banner \/etc\/issue.net/' /etc/ssh/sshd_config
 sed -i 's/^#ListenAddress 0.0.0.0/ListenAddress 0.0.0.0/' /etc/ssh/sshd_config
 
 # OS Name
-sed -i 's/PRETTY_NAME=.*/PRETTY_NAME="Crankshaft CarOS 1.0"/g' /usr/lib/os-release
+sed -i 's/PRETTY_NAME=.*/PRETTY_NAME="Crankshaft CarOS Alpha ('${IMG_DATE}' \/ '${BUILDHASH}')"/g' /usr/lib/os-release
 
 # wifi
 rm /etc/wpa_supplicant/wpa_supplicant.conf

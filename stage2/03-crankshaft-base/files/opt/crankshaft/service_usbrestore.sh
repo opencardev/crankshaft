@@ -117,6 +117,12 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             systemctl daemon-reload > /dev/null 2>&1
                             # set tzdata
                             timedatectl set-timezone $(cat /tmp/${PARTITION}/cs-backup/etc/timezone) > /dev/null 2>&1
+                            # reset i2c modules
+                            sed -i 's/i2c*//d' /etc/modules
+                            # clean empty lines
+                            sed -i '/./,/^$/!d' /etc/modules
+                            # set modules
+                            echo 'i2c_dev' >> /etc/modules
                         fi
 
                         # check camera setup

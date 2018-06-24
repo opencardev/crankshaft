@@ -120,7 +120,9 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                         if [ ! -z ${MD5SUM} ]; then
                             echo "${RESET}" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] Image is consistent -> Preparing flash mode...${RESET}" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             # mount /boot rw to init flash mode
                             mount -o remount,rw /boot
@@ -141,15 +143,19 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             sed -i 's/plymouth.ignore-serial-consoles //' /boot/cmdline.txt
                             sed -i 's/$/ rootdelay=10/' /boot/cmdline.txt
                             sed -i 's/$/ initrd=-1/' /boot/cmdline.txt
-                            echo "[${CYAN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
-                            echo "[${CYAN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3
-                            echo "[${CYAN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                            echo "[${GREEN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                            echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
                             sleep 5
                             reboot
                         else
                             echo "${RESET}" > /dev/tty3
                             echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${RED}${BOLD} FAIL ${RESET}]" > /dev/tty3
                             echo "[${RED}${BOLD} FAIL ${RESET}] Image check has failed - abort.${RESET}" > /dev/tty3
+                            echo "[${RED}${BOLD} FAIL ${RESET}]" > /dev/tty3
                             echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
                             umount /tmp/${PARTITION} > /dev/tty3
                             rmdir /tmp/${PARTITION} > /dev/tty3

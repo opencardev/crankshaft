@@ -50,6 +50,8 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
                         dosfsck -y $DEVICE > /dev/tty3
+                        sync
+                        reboot
                     fi
                 fi
                 if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
@@ -61,6 +63,8 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
                         fsck.$FSTYPE -f -y $DEVICE > /dev/tty3
+                        sync
+                        reboot
                     fi
                 fi
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3

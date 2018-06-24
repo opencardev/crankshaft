@@ -8,6 +8,7 @@ if [ -d $BASEDIR/prebuilts ]; then
     echo "***************************************************************************************"
     cd prebuilts
     git reset --hard
+    git clean -f -d
     git pull
     cd $BASEDIR
 else

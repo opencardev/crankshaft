@@ -28,8 +28,7 @@ if [ $FLIP_SCREEN -ne 0 ] || [ $INVERT_MODE_GPIO -ne 1 ] ; then
         # Not there
         mount -o remount,rw /
         mount -o remount,rw /boot
-        plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
-        chvt 3
+        show_clear_screen
         echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         echo "[${RED}${BOLD} INFO ${RESET}] Display rotation triggered - Setting up..." >/dev/tty3
         echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
@@ -51,8 +50,7 @@ else
         # there
         mount -o remount,rw /
         mount -o remount,rw /boot
-        plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
-        chvt 3
+        show_clear_screen
         echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         echo "[${RED}${BOLD} INFO ${RESET}] Display rotation not triggered - Removing..." >/dev/tty3
         echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3

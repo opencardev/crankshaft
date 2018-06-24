@@ -45,10 +45,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                 if [ $? -eq 0 ]; then
                     USB_DEVMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEVMODE | head -1)
                     if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ]; then
-                        plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
-                        chvt 3
-                        clear > /dev/tty3
-                        echo "" > /dev/tty3
+                        show_clear_screen
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Dev Mode trigger file detected on ${DEVICE} (${LABEL})" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
@@ -61,9 +58,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                     if [ ! -z ${UPDATEZIP} ]; then
                         UNPACKED=$(unzip -l /tmp/${PARTITION}/${UPDATEZIP} | grep crankshaft-ng | grep .img | grep -v md5 | awk {'print $4'})
                         if [ ! -f /tmp/${PARTITION}/${UNPACKED} ]; then
-                            chvt 3
-                            clear > /dev/tty3
-                            echo "" > /dev/tty3
+                            show_clear_screen
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] Update zip found on ${DEVICE} (${LABEL})" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
@@ -71,24 +66,20 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                            setterm -cursor on > /dev/tty3
-                            setterm -blink on > /dev/tty3
+                            show_cursor
                             rm /tmp/${PARTITION}/*.md5 > /dev/null 2>&1
                             rm /tmp/${PARTITION}/*.img > /dev/null 2>&1
                             unzip -q -o /tmp/${PARTITION}/${UPDATEZIP} -d /tmp/${PARTITION}
-                            setterm -cursor off > /dev/tty3
-                            setterm -blink off> /dev/tty3
+                            hide_cursor
                             FLAG=1
                         fi
                     fi
                     UPDATEFILE=$(ls /tmp/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | head -1)
                     if [ ! -z ${UPDATEFILE} ]; then
-                        plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
                         if [ ${FLAG} -ne 1 ]; then
-                            chvt 3
-                            clear > /dev/tty3
+                            show_clear_screen
                         fi
-                        echo "" > /dev/tty3
+                        show_screen
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Update file found on ${DEVICE} (${LABEL})" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
@@ -109,8 +100,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                         echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                        setterm -cursor on > /dev/tty3
-                        setterm -blink on > /dev/tty3
+                        show_cursor
 
                         if [ -f /tmp/${PARTITION}/${UPDATEFILE} ]; then
                             SIZE=$(($(wc -c < "/tmp/${PARTITION}/${UPDATEFILE}") / 1024 / 1024 / 1014))

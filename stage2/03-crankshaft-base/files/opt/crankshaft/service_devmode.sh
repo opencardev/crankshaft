@@ -19,7 +19,7 @@ if [ $DEV_MODE != 0 ] || [ $DEV_MODE_GPIO != 1 ] || [ -f /tmp/usb_dev_mode ]; th
         mount -o remount,rw /
         mount -o remount,rw /boot
         touch /tmp/dev_mode_enabled
-        plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
+        show_screen
         echo "[${RED}${BOLD}ACTIVE${RESET}] Dev Mode Enabled - Shell"
         echo "nameserver 8.8.8.8" > /tmp/resolv.conf
         echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
@@ -35,14 +35,13 @@ if [ $DEV_MODE != 0 ] || [ $DEV_MODE_GPIO != 1 ] || [ -f /tmp/usb_dev_mode ]; th
             touch /etc/cs_ssh_regen_done
         fi
         systemctl start ssh.service
-        chvt 3
-        setterm -cursor on
+        show_cursor
     else
         # dev mode with start of openauto
         mount -o remount,rw /
         mount -o remount,rw /boot
         touch /tmp/dev_mode_enabled
-        plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
+        show_screen
         echo "[${RED}${BOLD}ACTIVE${RESET}] Dev Mode Enabled - OpenAuto"
         echo "nameserver 8.8.8.8" > /tmp/resolv.conf
         echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
@@ -58,8 +57,7 @@ if [ $DEV_MODE != 0 ] || [ $DEV_MODE_GPIO != 1 ] || [ -f /tmp/usb_dev_mode ]; th
             touch /etc/cs_ssh_regen_done
         fi
         systemctl start ssh.service
-        chvt 3
-        setterm -cursor on
+        show_cursor
         systemctl start autoapp.service
     fi
 else

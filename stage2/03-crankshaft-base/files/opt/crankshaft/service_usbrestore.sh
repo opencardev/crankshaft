@@ -5,26 +5,19 @@ source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
 if [ ! -f /etc/cs_resize_done ]; then
-    plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
-    chvt 3
-    clear > /dev/tty3
-    setterm -cursor on > /dev/tty3
-    setterm -blink on > /dev/tty3
-    echo "" > /dev/tty3
+    show_clear_screen
+    show_cursor
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] Partition and Filesystem not resized - resizing..." > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-    /usr/local/bin/crankshaft resize > /dev/tty3
+    /usr/local/bin/crankshaft resize
     reboot
 fi
 
 if [ ! -f /etc/cs_backup_restore_done ]; then
     if [ ! -f /etc/cs_first_start_done ]; then
-        plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
-        chvt 3
-        clear > /dev/tty3
+        show_clear_screen
     fi
-    echo "" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] Checking for cs backups to restore..." > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -51,6 +44,8 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                     dosfsck -n $DEVICE
                     if [ $? == "1" ]; then
                         # 1 = errors detected - repair...
+                        show_clear_screen
+                        show_cursor
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
@@ -60,6 +55,8 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                 if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
                     CHECK=`tune2fs -l /dev/devicename |awk -F':' '/^Filesystem s/ {print $2}' | sed 's/ //g'`
                     if [ "$CHECK" != "clean" ]; then
+                        show_clear_screen
+                        show_cursor
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
@@ -72,8 +69,8 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 if [ $? -eq 0 ]; then
                     if [ -d /tmp/${PARTITION}/cs-backup ]; then
-                        chvt 3
-                        echo "" > /dev/tty3
+                        show_clear_screen
+                        show_cursor
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Backup found on $DEVICE (${LABEL}) - restoring backup..." > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -118,7 +115,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             # set tzdata
                             timedatectl set-timezone $(cat /tmp/${PARTITION}/cs-backup/etc/timezone) > /dev/null 2>&1
                             # reset i2c modules
-                            sed -i 's/i2c*//d' /etc/modules
+                            sed -i '/i2c*//d' /etc/modules
                             # clean empty lines
                             sed -i '/./,/^$/!d' /etc/modules
                             # set modules

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# check for updates
+./check-updates.sh
+
 # set date
 TODAY_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"}"
 

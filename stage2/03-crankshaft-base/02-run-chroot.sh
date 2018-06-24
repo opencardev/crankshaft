@@ -84,6 +84,7 @@ systemctl disable hciuart.service
 systemctl disable hostapd.service
 systemctl disable dnsmasq.service
 systemctl disable hotspot.service
+systemctl disable systemd-backlight@.service
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
 rm /lib/systemd/system/apt-daily.timer

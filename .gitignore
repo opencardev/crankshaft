@@ -3,3 +3,12 @@ work/*
 config
 SKIP
 SKIP_IMAGES
+prebuilts
+stage2/03-crankshaft-base/files/usr/local/bin/autoapp
+stage2/03-crankshaft-base/files/usr/local/bin/btservice
+stage2/03-crankshaft-base/files/usr/local/lib/libaasdk.so
+stage2/03-crankshaft-base/files/usr/local/lib/libaasdk_proto.so
+stage2/03-crankshaft-base/files/etc/udev/rules.d/51-android.rules
+stage2/03-crankshaft-base/files/etc/udev/rules.d/51-android.master
+stage2/03-crankshaft-base/files/qt5/Qt5_OpenGLES2.tar.xz
+stage2/03-crankshaft-base/files/qt5/Qt5_libs_OpenGLES2.tar.xz

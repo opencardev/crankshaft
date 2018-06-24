@@ -23,7 +23,17 @@ rm -rf ./work/$TODAY_DATE-*/stage2 2>&1>/dev/null
 rm -rf ./work/$TODAY_DATE-*/stage3 2>&1>/dev/null
 
 clear
-echo "Buildhash: "$BUILDHASH
+echo "***************************************************************************************"
+echo "Start build..."
+echo "***************************************************************************************"
+echo ""
+echo "***************************************************************************************"
+echo "Build Hash: "$BUILDHASH
+echo "Build Date: "$TODAY_DATE
+echo "***************************************************************************************"
+
+# check prebuilts
+./check-prebuilts.sh
 
 # run pi-gen buildsystem
 ./build.sh

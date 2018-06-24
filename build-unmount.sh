@@ -12,6 +12,10 @@ done
 
 # Check after unmount
 echo "***************************************************************************************"
-echo "* Still mounted:                                                                      *"
-mount | grep $BASEDIR | awk '{print $3}' | awk {'print length, $1'} | sort -g -r | cut -d' ' -f2-
-echo "***************************************************************************************"
+echo "* Still mounted:"
+mountpoints=`mount | grep ${BASEDIR} | awk '{print $3}' | awk {'print length, $1'} | sort -g -r | cut -d' ' -f2-`
+if [ ! -z mountpoints ]; then
+    #mount | grep $BASEDIR | awk '{print $3}' | awk {'print length, $1'} | sort -g -r | cut -d' ' -f2-
+    echo $mountpoints
+    echo "***************************************************************************************"
+fi

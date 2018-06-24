@@ -22,7 +22,17 @@ echo "IMG_NAME='crankshaft'" > config
 rm -rf ./work/$TODAY_DATE-* 2>&1>/dev/null
 
 clear
-echo "Buildhash: "$BUILDHASH
+echo "***************************************************************************************"
+echo "Start build..."
+echo "***************************************************************************************"
+echo ""
+echo "***************************************************************************************"
+echo "Build Hash: "$BUILDHASH
+echo "Build Date: "$TODAY_DATE
+echo "***************************************************************************************"
+
+# check prebuilts
+./check-prebuilts.sh
 
 # run pi-gen buildsystem
 ./build.sh

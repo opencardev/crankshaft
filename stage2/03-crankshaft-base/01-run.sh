@@ -99,4 +99,5 @@ install -m 644 files/usr/share/plymouth/themes/crankshaft/progress_bar.png      
 install -m 644 files/usr/share/plymouth/themes/crankshaft/progress_box.png      "${ROOTFS_DIR}/usr/share/plymouth/themes/crankshaft/"
 
 #qt5
-pv -p  -w 80 files/qt5/libQt5_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/
+pv -p  -w 80 files/qt5/Qt5_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/
+pv -p  -w 80 files/qt5/Qt5_libs_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/

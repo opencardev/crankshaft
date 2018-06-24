@@ -53,7 +53,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         touch /tmp/usb_dev_mode
                     fi
-                    UPDATEZIP=$(ls /tmp/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | head -1)
+                    UPDATEZIP=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | tail -1)
                     FLAG=0
                     if [ ! -z ${UPDATEZIP} ]; then
                         UNPACKED=$(unzip -l /tmp/${PARTITION}/${UPDATEZIP} | grep crankshaft-ng | grep .img | grep -v md5 | awk {'print $4'})
@@ -74,7 +74,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             FLAG=1
                         fi
                     fi
-                    UPDATEFILE=$(ls /tmp/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | head -1)
+                    UPDATEFILE=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | tail -1)
                     if [ ! -z ${UPDATEFILE} ]; then
                         if [ ${FLAG} -ne 1 ]; then
                             show_clear_screen

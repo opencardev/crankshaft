@@ -30,7 +30,7 @@ for _device in /sys/block/*/device; do
                 printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
                 sleep 1
             else
-                UPDATEFILE=$(ls /tmp/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | head -1)
+                UPDATEFILE=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | tail -1)
                 if [ ! -z ${UPDATEFILE} ]; then
                     printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
                     printf "[ ${CYAN}INFO${GRAY} ] Detected Drive: ${PARTITION}\n" > /dev/tty3

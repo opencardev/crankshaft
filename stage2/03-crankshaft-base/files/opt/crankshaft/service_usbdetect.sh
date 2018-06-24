@@ -78,8 +78,10 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                     if [ ! -z ${UPDATEFILE} ]; then
                         if [ ${FLAG} -ne 1 ]; then
                             show_clear_screen
+                        else
+                            show_screen
+                            echo "" > /dev/tty3
                         fi
-                        show_screen
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Update file found on ${DEVICE} (${LABEL})" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3

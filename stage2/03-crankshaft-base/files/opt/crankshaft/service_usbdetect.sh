@@ -85,8 +85,8 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Update file found on ${DEVICE} (${LABEL})" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
-                        if [ -f /etc/crankshaft.build ]; then
-                            CURRENT=$(cat /etc/crankshaft.build)
+                        if [ -f /etc/crankshaft.build ] && [ -f /etc/crankshaft.date ]; then
+                            CURRENT="$(cat /etc/crankshaft.date)-$(cat /etc/crankshaft.build)"
                         else
                             CURRENT=""
                         fi

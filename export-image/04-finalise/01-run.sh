@@ -7,7 +7,8 @@ MD5_FILE="${STAGE_WORK_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}.img.md5"
 on_chroot << EOF
 /etc/init.d/fake-hwclock stop
 hardlink -t /usr/share/doc
-echo ${IMG_DATE}-${BUILDHASH} > /etc/crankshaft.build
+echo ${BUILDHASH} > /etc/crankshaft.build
+echo ${IMG_DATE} > /etc/crankshaft.date
 EOF
 
 if [ -d "${ROOTFS_DIR}/home/pi/.config" ]; then

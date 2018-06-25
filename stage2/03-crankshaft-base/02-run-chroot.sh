@@ -121,7 +121,9 @@ sed -i 's/^#ListenAddress 0.0.0.0/ListenAddress 0.0.0.0/' /etc/ssh/sshd_config
 STRING="Welcome to Crankshaft CarOS Alpha (${IMG_DATE} / ${BUILDHASH})"
 sed -i 's/PRETTY_NAME=.*/PRETTY_NAME="'${STRING}'"/g' /usr/lib/os-release
 echo "$STRING" > /etc/issue
+echo "" >> /etc/issue
 echo "$STRING" > /etc/issue.net
+echo "" >> /etc/issue.net
 
 # wifi
 rm /etc/wpa_supplicant/wpa_supplicant.conf

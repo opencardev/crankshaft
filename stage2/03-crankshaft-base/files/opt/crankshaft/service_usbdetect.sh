@@ -150,9 +150,9 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             # remove possible existing force trigger to prevent flash loop
                             rm /tmp/${PARTITION}/FORCE_FLASH > /dev/null 2>&1
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
-                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                            echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3
-                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                            echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
                             sleep 5
                             reboot

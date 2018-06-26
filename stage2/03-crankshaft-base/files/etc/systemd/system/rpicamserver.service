@@ -6,7 +6,7 @@ After=devmode.service
 Before=rc.local.service
 
 [Service]
-Type=simple
+Type=oneshot
 ExecStart=/opt/crankshaft/cameraserver.py
 Restart=always
 RestartSec=5

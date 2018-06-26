@@ -1,4 +1,4 @@
-sysinit.target
+basic.target & local-fs.target & plymouth-start.service
    |
 usbrestore
    |

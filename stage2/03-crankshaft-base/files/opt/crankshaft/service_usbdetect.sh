@@ -14,6 +14,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
             LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1)
             FSTYPE=$(blkid /dev/${PARTITION} | sed 's/.*TYPE="//' | cut -d'"' -f1)
             if [ $LABEL == "RECORD" ]; then
+                echo "" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] USB-Storage for Dashcam detected - mounting..." > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -46,6 +47,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                     USB_DEVMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEVMODE | head -1)
                     if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ]; then
                         show_clear_screen
+                        echo "" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Dev Mode trigger file detected on ${DEVICE} (${LABEL})" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
@@ -59,6 +61,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                         UNPACKED=$(unzip -l /tmp/${PARTITION}/${UPDATEZIP} | grep crankshaft-ng | grep .img | grep -v md5 | awk {'print $4'})
                         if [ ! -f /tmp/${PARTITION}/${UNPACKED} ]; then
                             show_clear_screen
+                            echo "" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] Update zip found on ${DEVICE} (${LABEL})" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
@@ -80,8 +83,8 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             show_clear_screen
                         else
                             show_screen
-                            echo "" > /dev/tty3
                         fi
+                        echo "" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Update file found on ${DEVICE} (${LABEL})" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
@@ -91,7 +94,8 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             CURRENT=""
                         fi
                         NEW=$(basename ${UPDATEFILE} | cut -d- -f1-3,6 | cut -d. -f1) # use date and hash
-                        if [ "$CURRENT" == "$NEW" ]; then
+                        FORCEFLASH=$(ls /tmp/${PARTITION} | grep FORCE_FLASH | head -1)
+                        if [ "$CURRENT" == "$NEW" ] && [ -z $FORCEFLASH ]; then
                             echo "[${CYAN}${BOLD} INFO ${RESET}] IMAGE already flashed - ignoring." > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             umount /tmp/${PARTITION} > /dev/tty3
@@ -143,11 +147,12 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             sed -i 's/plymouth.ignore-serial-consoles //' /boot/cmdline.txt
                             sed -i 's/$/ rootdelay=10/' /boot/cmdline.txt
                             sed -i 's/$/ initrd=-1/' /boot/cmdline.txt
-                            echo "${RESET}" > /dev/tty3
+                            # remove possible existing force trigger to prevent flash loop
+                            rm /tmp/${PARTITION}/FORCE_FLASH > /dev/null 2>&1
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
-                            echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3
-                            echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
                             sleep 5
                             reboot

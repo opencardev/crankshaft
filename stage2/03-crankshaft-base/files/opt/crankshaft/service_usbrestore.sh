@@ -7,17 +7,32 @@ source /boot/crankshaft/crankshaft_env.sh
 if [ ! -f /etc/cs_resize_done ]; then
     show_clear_screen
     show_cursor
+    echo "${RESET}" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] Partition and Filesystem not resized - resizing..." > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     /usr/local/bin/crankshaft resize
+    sync
     reboot
 fi
 
+# check if / is available
+while [ "$(mountpoint -q / && echo mounted || echo fail)" == "fail" ]; do
+    show_clear_screen
+    show_cursor
+    echo "${RESET}" > /dev/tty3
+    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+    echo "[${RED}${BOLD} WARN ${RESET}] Delayed rootfs - waiting..." > /dev/tty3
+    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+    sleep 2
+done
+
+sleep 1
 if [ ! -f /etc/cs_backup_restore_done ]; then
     if [ ! -f /etc/cs_first_start_done ]; then
         show_clear_screen
     fi
+    echo "${RESET}" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] Checking for cs backups to restore..." > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -28,7 +43,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             PARTITION="${_disk}1"
             LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1)
             FSTYPE=$(blkid /dev/${PARTITION} | sed 's/.*TYPE="//' | cut -d'"' -f1)
-            echo "" > /dev/tty3
+            echo "${RESET}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Detected Drive: ${PARTITION}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Label 1st Part: ${LABEL}" > /dev/tty3
@@ -37,44 +52,53 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ] || [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
                 umount /tmp/${PARTITION} > /dev/null 2>&1
                 mkdir /tmp/${PARTITION} > /dev/null 2>&1
-                echo "" > /dev/tty3
+                echo "${RESET}" > /dev/tty3
                 # check fs if needed
                 if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ]; then
                     # check state of fs
                     dosfsck -n $DEVICE
                     if [ $? == "1" ]; then
                         # 1 = errors detected - repair...
-                        show_clear_screen
                         show_cursor
+                        echo "${RESET}" > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
                         dosfsck -y $DEVICE > /dev/tty3
                         sync
+                        sleep 5
                         reboot
                     fi
                 fi
                 if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
                     CHECK=`tune2fs -l /dev/devicename |awk -F':' '/^Filesystem s/ {print $2}' | sed 's/ //g'`
                     if [ "$CHECK" != "clean" ]; then
-                        show_clear_screen
                         show_cursor
+                        echo "${RESET}" > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
                         fsck.$FSTYPE -f -y $DEVICE > /dev/tty3
                         sync
+                        sleep 5
                         reboot
                     fi
                 fi
+                echo "${RESET}" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Mounting..." > /dev/tty3
-                mount -t auto ${DEVICE} /tmp/${PARTITION} > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                mount -t auto ${DEVICE} /tmp/${PARTITION} > /dev/tty3
                 if [ $? -eq 0 ]; then
+                    echo "${RESET}" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] Checking if backup folder is present..." > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                     if [ -d /tmp/${PARTITION}/cs-backup ]; then
-                        show_clear_screen
+                        sleep 2
+                        show_screen
                         show_cursor
+                        echo "${RESET}" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Backup found on $DEVICE (${LABEL}) - restoring backup..." > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -119,7 +143,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             # set tzdata
                             timedatectl set-timezone $(cat /tmp/${PARTITION}/cs-backup/etc/timezone) > /dev/null 2>&1
                             # reset i2c modules
-                            sed -i '/i2c*//d' /etc/modules
+                            sed -i '/i2c/d' /etc/modules
                             # clean empty lines
                             sed -i '/./,/^$/!d' /etc/modules
                             # set modules
@@ -149,10 +173,21 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                     fi
                     umount /tmp/${PARTITION}
                     rmdir /tmp/${PARTITION}
+                else
+                    echo "${RESET}" > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] Mount failed!" > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                    sleep 5
                 fi
             fi
         fi
     done
 fi
+echo "${RESET}" > /dev/tty3
+echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+echo "[${CYAN}${BOLD} INFO ${RESET}] Backup already restored." > /dev/tty3
+echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+sleep 5
 
 exit 0

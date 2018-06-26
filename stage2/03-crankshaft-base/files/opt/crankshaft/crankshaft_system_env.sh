@@ -6,7 +6,7 @@ GREEN=`tput setaf 2 -T xterm`
 YELLOW=`tput setaf 3 -T xterm`
 CYAN=`tput setaf 6 -T xterm`
 MAGENTA=`tput setaf 5 -T xterm`
-RESET=`tput sgr0 -T xterm`
+RESET=`tput sgr0 -T xterm && tput setaf 7 -T xterm`
 BOLD=`tput bold -T xterm`
 
 # set gpio default pin levels if global activated
@@ -45,3 +45,4 @@ hide_cursor() {
     setterm -cursor off > /dev/tty3
     setterm -blink off > /dev/tty3
 }
+

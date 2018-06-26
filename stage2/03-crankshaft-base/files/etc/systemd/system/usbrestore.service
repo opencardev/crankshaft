@@ -2,11 +2,14 @@
  Description=USB Backup Restore Service
  ConditionPathExists=/opt/crankshaft/service_usbrestore.sh
  Before=display.service local-fs.service
- After=basic.target
+ After=basic.target plymouth-start.service local-fs.target
 
 [Service]
  Type=oneshot
+ ExecStartPre=/bin/sleep 1
  ExecStart=/opt/crankshaft/service_usbrestore.sh
+ StandardInput=tty
+ StandardOutput=tty
  RemainAfterExit=yes
 
 [Install]

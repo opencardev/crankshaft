@@ -143,10 +143,11 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             sed -i 's/plymouth.ignore-serial-consoles //' /boot/cmdline.txt
                             sed -i 's/$/ rootdelay=10/' /boot/cmdline.txt
                             sed -i 's/$/ initrd=-1/' /boot/cmdline.txt
+                            echo "${RESET}" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
-                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                            echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3
-                            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                            echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
                             sleep 5
                             reboot

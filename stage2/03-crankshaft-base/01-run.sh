@@ -59,6 +59,7 @@ install -m 755 files/opt/crankshaft/crankshaft_system_env.sh            "${ROOTF
 install -m 755 files/opt/crankshaft/service_crankshaft.sh               "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/cameraserver.py                     "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/cameracontrol.py                    "${ROOTFS_DIR}/opt/crankshaft/"
+install -m 755 files/opt/crankshaft/service_debugmode.sh                "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_devmode.sh                  "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_display.sh                  "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_daynight.sh                 "${ROOTFS_DIR}/opt/crankshaft/"

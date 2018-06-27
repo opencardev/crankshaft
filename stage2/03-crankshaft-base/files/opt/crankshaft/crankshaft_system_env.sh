@@ -5,6 +5,7 @@ RED=`tput setaf 1 -T xterm`
 GREEN=`tput setaf 2 -T xterm`
 YELLOW=`tput setaf 3 -T xterm`
 CYAN=`tput setaf 6 -T xterm`
+BLUE=`tput setaf 4 -T xterm`
 MAGENTA=`tput setaf 5 -T xterm`
 RESET=`tput sgr0 -T xterm && tput setaf 7 -T xterm`
 BOLD=`tput bold -T xterm`

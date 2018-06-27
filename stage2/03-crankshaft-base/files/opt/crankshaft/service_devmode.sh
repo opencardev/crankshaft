@@ -6,6 +6,7 @@ source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
+
 # Check gpio pin if activated
 if [ $ENABLE_GPIO -eq 1 ]; then
     DEV_MODE_GPIO=`gpio -g read $DEV_PIN`
@@ -61,7 +62,13 @@ if [ $DEV_MODE != 0 ] || [ $DEV_MODE_GPIO != 1 ] || [ -f /tmp/usb_dev_mode ]; th
         systemctl start autoapp.service
     fi
 else
-    echo "[${BLUE}${BOLD}  OFF ${RESET}] Dev Mode Disabled"
+    if [ ! -f /tmp/usb_debug_mode ]; then
+        echo "[${CYAN}${BOLD}  OFF ${RESET}] Dev Mode Disabled"
+    fi
+    # if debugging is enabled start network / ssh
+    if [ -f /tmp/usb_debug_mode ]; then
+        /opt/crankshaft/service_debugmode.sh
+    fi
     /usr/local/bin/crankshaft timers start
     systemctl start autoapp.service
 fi

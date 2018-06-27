@@ -44,6 +44,20 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                 mkdir /tmp/${PARTITION} > /dev/null 2>&1
                 mount -t auto ${DEVICE} /tmp/${PARTITION}
                 if [ $? -eq 0 ]; then
+                    USB_DEBUGMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEBUG | head -1)
+                    if [ ! -z ${USB_DEBUGMODE} ]; then
+                        show_clear_screen
+                        echo "" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] Debug Mode trigger file detected on ${DEVICE} (${LABEL})" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] Starting in debug mode...${RESET}" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                        touch /tmp/usb_debug_mode
+                        umount /tmp/${PARTITION} > /dev/tty3
+                        rmdir /tmp/${PARTITION} > /dev/tty3
+                        exit 0
+                    fi
                     USB_DEVMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEVMODE | head -1)
                     if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ]; then
                         show_clear_screen

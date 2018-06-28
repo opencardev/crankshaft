@@ -163,6 +163,7 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                             sed -i 's/$/ initrd=-1/' /boot/cmdline.txt
                             # remove possible existing force trigger to prevent flash loop
                             rm /tmp/${PARTITION}/FORCE_FLASH > /dev/null 2>&1
+                            echo "${RESET}" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
                             echo "[${GREEN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3

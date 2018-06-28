@@ -3,6 +3,10 @@
 # check for updates
 ./check-updates.sh
 
+if [ $? -ne 0 ]; then
+    exit 0
+fi
+
 # set date
 TODAY_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"}"
 

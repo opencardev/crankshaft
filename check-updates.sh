@@ -8,8 +8,14 @@ if [ $LOCALE == $REMOTE ]; then
     echo "Locale repo clone is up-to-date"
     echo "***************************************************************************************"
 else
+    clear
     echo "***************************************************************************************"
     echo "New commits - available - please update before building!"
     echo "***************************************************************************************"
-    exit 0
+    echo ""
+    echo "use following:"
+    echo ""
+    echo "git reset --hard"
+    echo "git pull"
+    exit 1
 fi

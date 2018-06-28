@@ -49,6 +49,10 @@ FLIP_SCREEN=0
 # don't use - only prepared for further releases!
 DISPLAY_AUTO_DETECT=0
 
+### Audio ###
+# If stored vol is greater than this limit to this value
+STARTUP_VOL_MAX=50
+
 ###  Power Mgmt Related Stuff ###
 # Timeout display after disconnect or after boot without connected device
 DISCONNECTION_POWEROFF_MINS=60

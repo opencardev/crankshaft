@@ -51,7 +51,7 @@ DISPLAY_AUTO_DETECT=0
 
 ### Audio ###
 # If stored vol is greater than this limit to this value
-STARTUP_VOL_MAX=50
+STARTUP_VOL_MAX=100
 
 ###  Power Mgmt Related Stuff ###
 # Timeout display after disconnect or after boot without connected device

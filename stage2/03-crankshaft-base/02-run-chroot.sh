@@ -56,6 +56,7 @@ systemctl enable gpio2kbd.service
 systemctl enable crankshaft.service
 systemctl enable user_startup.service
 systemctl enable devmode.service
+systemctl enable debugmode.service
 systemctl enable display.service
 systemctl enable user_startup.service
 systemctl enable fake-hwclock.service
@@ -65,9 +66,10 @@ systemctl enable usbdetect.service
 systemctl enable daymode.timer
 systemctl enable nightmode.timer
 systemctl enable tap2wake.service
-systemctl disable rpicamserver.service
-systemctl disable autoapp.service
+systemctl enable openauto.service
+systemctl enable regensshkeys.service
 systemctl disable ssh.service
+systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service
 systemctl disable networking.service
 systemctl disable dhcpcd.service

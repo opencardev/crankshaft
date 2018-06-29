@@ -140,6 +140,7 @@ for _device in /sys/block/*/device; do
                         printf "[ ${BLUE}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
                         printf "\n" >/dev/tty3
                         printf "[ ${GREEN}DONE${GRAY} ] *******************************************************\n" >/dev/tty3
+                        printf "[ ${GREEN}DONE${GRAY} ] \n" >/dev/tty3
                         printf "[ ${GREEN}DONE${GRAY} ] Flashing successful!\n" >/dev/tty3
                         printf "[ ${GREEN}DONE${GRAY} ] \n" >/dev/tty3
                         printf "[ ${GREEN}DONE${GRAY} ] *******************************************************\n" >/dev/tty3

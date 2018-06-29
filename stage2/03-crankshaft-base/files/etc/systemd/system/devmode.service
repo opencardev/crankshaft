@@ -1,7 +1,7 @@
 [Unit]
  Description=Crankshaft Dev Mode Service
  ConditionPathExists=/opt/crankshaft/service_devmode.sh
- After=gpio2kbd.service
+ After=debugmode.service
  Before=crankshaft.service
 
 [Service]

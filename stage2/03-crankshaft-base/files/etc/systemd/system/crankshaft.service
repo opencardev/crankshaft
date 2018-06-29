@@ -1,8 +1,8 @@
 [Unit]
  Description=Crankshaft Startup Service
  ConditionPathExists=/opt/crankshaft/service_crankshaft.sh
- After=gpio2kbd.service
- Before=rc.local.service
+ After=tap2wake.service
+ Before=user_startup.service
 
 [Service]
  Type=oneshot

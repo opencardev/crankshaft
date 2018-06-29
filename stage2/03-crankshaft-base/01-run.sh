@@ -11,11 +11,12 @@ install -m 755 files/opt/crankshaft/crankshaft_default_env.sh           "${ROOTF
 
 # /etc
 install -m 644 files/etc/pulse/pulseaudio_daemon.conf                   "${ROOTFS_DIR}/etc/pulse/"
-install -m 644 files/etc/systemd/system/autoapp.service                 "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/openauto.service                "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/crankshaft.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/daymode.service                 "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/daymode.timer                   "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/devmode.service                 "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/debugmode.service               "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/disconnect.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/disconnect.timer                "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/display.service                 "${ROOTFS_DIR}/etc/systemd/system/"
@@ -34,6 +35,7 @@ install -m 644 files/etc/systemd/system/nightmode.timer                 "${ROOTF
 install -m 644 files/etc/systemd/system/user_startup.service            "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/wifisetup.service               "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/hotspot.service                 "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/regensshkeys.service            "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/udev/rules.d/10-gpio2kbd.rules                 "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.rules                  "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.master                 "${ROOTFS_DIR}/etc/udev/rules.d/"

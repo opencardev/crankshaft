@@ -1,14 +1,14 @@
 [Unit]
-Description=Crankshaft Sync Hardware Clock to System Clock
-DefaultDependencies=no
-After=sysinit.target
-Before=shutdown.target
-Conflicts=shutdown.target
+ Description=Crankshaft Sync Hardware Clock to System Clock
+ DefaultDependencies=no
+ After=sysinit.target
+ Before=shutdown.target
+ Conflicts=shutdown.target
 
 [Service]
-Type=oneshot
-ExecStart=/sbin/hwclock --hctosys
-StandardOutput=syslog
+ Type=oneshot
+ ExecStart=/sbin/hwclock --hctosys
+ StandardOutput=syslog
 
 [Install]
-WantedBy=sysinit.target
+ WantedBy=sysinit.target

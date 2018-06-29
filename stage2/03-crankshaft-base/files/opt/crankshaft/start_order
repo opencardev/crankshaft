@@ -6,15 +6,21 @@ display
    |
 usbdetect
    |
+regensshkeys (one time)
+   |
 gpio2kbd
    |
-devmode - wifisetup | networking | dhcpcd | systemd-timesyncd | ssh | openauto | hotspot
+debugmode
+   |
+devmode - wifisetup | networking | dhcpcd | systemd-timesyncd | ssh | hotspot
+   |
+tap2wake
    |
 crankshaft
    |
 user-startup
    |
-tap2wake
+openauto
    |
 rc.local
    |

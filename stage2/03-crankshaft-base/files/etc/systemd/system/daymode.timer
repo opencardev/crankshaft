@@ -1,8 +1,8 @@
 [Unit]
-Description=Crankshaft Day Mode Timer
+ Description=Crankshaft Day Mode Timer
 
 [Timer]
-OnCalendar=*-*-* 8..17:*:00
+ OnCalendar=*-*-* 8..17:*:00
 
 [Install]
-WantedBy=timers.target
+ WantedBy=timers.target

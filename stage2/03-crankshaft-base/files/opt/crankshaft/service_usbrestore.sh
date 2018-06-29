@@ -183,11 +183,11 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             fi
         fi
     done
+else
+    echo "${RESET}" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] Backup already restored." > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
 fi
-echo "${RESET}" > /dev/tty3
-echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-echo "[${CYAN}${BOLD} INFO ${RESET}] Backup already restored." > /dev/tty3
-echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-sleep 5
 
 exit 0

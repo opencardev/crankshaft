@@ -1,12 +1,12 @@
 [Unit]
-Description=Cranksahft Sync System Clock to Hardware Clock
-DefaultDependencies=no
-Before=shutdown.target
+ Description=Cranksahft Sync System Clock to Hardware Clock
+ DefaultDependencies=no
+ Before=shutdown.target
 
 [Service]
-Type=oneshot
-ExecStart=/sbin/hwclock --systohc
-StandardOutput=syslog
+ Type=oneshot
+ ExecStart=/sbin/hwclock --systohc
+ StandardOutput=syslog
 
 [Install]
-WantedBy=shutdown.target
+ WantedBy=shutdown.target

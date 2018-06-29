@@ -46,4 +46,3 @@ hide_cursor() {
     setterm -cursor off > /dev/tty3
     setterm -blink off > /dev/tty3
 }
-

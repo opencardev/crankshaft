@@ -24,7 +24,6 @@ if [ ! -f /tmp/usb_debug_mode ]; then
             touch /tmp/dev_mode_enabled
             show_screen
             echo "[${RED}${BOLD}ACTIVE${RESET}] Dev Mode Enabled - Shell"
-            systemctl start ssh.service
             echo "nameserver 8.8.8.8" > /tmp/resolv.conf
             echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
             systemctl start wifisetup.service
@@ -42,7 +41,6 @@ if [ ! -f /tmp/usb_debug_mode ]; then
             touch /tmp/dev_mode_enabled
             show_screen
             echo "[${RED}${BOLD}ACTIVE${RESET}] Dev Mode Enabled - OpenAuto"
-            systemctl start ssh.service
             touch /tmp/start_openauto
             echo "nameserver 8.8.8.8" > /tmp/resolv.conf
             echo "nameserver 8.8.4.4" >> /tmp/resolv.conf

@@ -9,7 +9,6 @@ source /boot/crankshaft/crankshaft_env.sh
 if [ -f /tmp/usb_debug_mode ]; then
     show_screen
     echo "[${BLUE}${BOLD}ACTIVE${RESET}] Debug Mode Enabled"
-    systemctl start ssh.service
     /usr/local/bin/crankshaft timers start &
     touch /tmp/start_openauto
     systemctl start wifisetup.service

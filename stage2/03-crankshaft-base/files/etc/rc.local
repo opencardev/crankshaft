@@ -45,7 +45,8 @@ if [ "$_IP_ETH0" ] || [ "$_IP_WLAN0" ]; then
 	echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************"
     fi
     if [ "$_IP_WLAN0" ]; then
-	if [ ! $(systemctl status hostapd | grep running | cut -d"(" -f2 | cut -d")" -f1) ]; then
+	HOSTAPDCHECK=`systemctl status hostapd | grep running | cut -d"(" -f2 | cut -d")" -f1`
+	if [ ! $HOSTAPDCHECK ]; then
 	    _SSID_WLAN0=$(wpa_cli -i wlan0 status | grep '^ssid' | cut -d= -f2)
 	    _FREQ_WLAN0=$(wpa_cli -i wlan0 status | grep '^freq' | cut -d= -f2)
 	    _ENC_WLAN0=$(wpa_cli -i wlan0 status | grep '^key_mgmt' | cut -d= -f2)
@@ -71,4 +72,6 @@ fi
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************"
     echo "[${CYAN}${BOLD} INFO ${RESET}] Systemtime: $systime"
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************"
+    /opt/crankshaft/debug_systemdanalyze.sh &
+
 exit 0

@@ -7,7 +7,7 @@ source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
 if [ -f /tmp/usb_debug_mode ]; then
-    show_screen
+    #show_screen
     echo "[${BLUE}${BOLD}ACTIVE${RESET}] Debug Mode Enabled"
     /usr/local/bin/crankshaft timers start &
     touch /tmp/start_openauto

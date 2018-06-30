@@ -57,6 +57,12 @@ if [ -f /tmp/start_openauto ]; then
         /usr/local/bin/crankshaft brightness save
         /usr/local/bin/crankshaft audio volume save
 
+	if [ ! -f /etc/cs_first_start_done ]; then
+	    /usr/local/bin/crankshaft filesystem system unlock
+	    sudo touch /etc/cs_first_start_done
+	    /usr/local/bin/crankshaft filesystem system lock
+	fi
+
         if [ ! -f /tmp/dev_mode_enabled ]; then
             if [ -f /tmp/reboot ]; then
                 sudo reboot

@@ -54,12 +54,9 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Starting in debug mode...${RESET}" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         touch /tmp/usb_debug_mode
-                        umount /tmp/${PARTITION} > /dev/tty3
-                        rmdir /tmp/${PARTITION} > /dev/tty3
-                        exit 0
                     fi
                     USB_DEVMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEVMODE | head -1)
-                    if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ]; then
+                    if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ] && [ -z ${USB_DEBUGMODE} ]; then
                         show_clear_screen
                         echo "" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3

@@ -141,3 +141,11 @@ echo "alias mc='. /usr/share/mc/bin/mc-wrapper.sh'" >> /etc/bash.bashrc
 
 # enable auto detection display
 #sed -i 's/DISPLAY_AUTO_DETECT=0/DISPLAY_AUTO_DETECT=1/' /boot/crankshaft/crankshaft_env.sh
+
+# Setup watchdog
+sed -i 's/.*max-load-1	.*/max-load-1		= 2/' /etc/watchdog.conf
+sed -i 's/.*watchdog-device.*/watchdog-device		= \/dev\/watchdog/' /etc/watchdog.conf
+
+# Setup kernel panic behaviour
+sed -i 's/.*kernel-panic.*//g' /etc/sysctl.conf
+echo "kernel-panic = 10" >> /etc/sysctl.conf

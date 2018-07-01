@@ -29,3 +29,5 @@ plymouth-themes
 initramfs-tools
 python-pil
 policykit-1
+htop
+cpufrequtils

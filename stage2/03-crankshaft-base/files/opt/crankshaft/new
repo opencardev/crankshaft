@@ -1,0 +1,3 @@
+
+SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: | sed 's/ //g')
+

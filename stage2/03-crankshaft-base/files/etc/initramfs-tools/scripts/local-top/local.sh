@@ -13,6 +13,8 @@ printf "[ ${BLUE}INFO${GRAY} ] Crankshaft Flash & Backup System\n" >/dev/tty3
 printf "[ ${BLUE}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
 printf "\n" >/dev/tty3
 
+SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: | sed 's/ //g')
+
 for _device in /sys/block/*/device; do
     if echo $(readlink -f "$_device")|egrep -q "usb"; then
         _disk=$(echo "$_device" | cut -f4 -d/)
@@ -53,26 +55,26 @@ for _device in /sys/block/*/device; do
                     mkdir /tmp/rootfs
                     mount -o ro /dev/mmcblk0p1 /tmp/bootfs
                     mount -o ro /dev/mmcblk0p2 /tmp/rootfs
-                    rm -rf /tmp/${PARTITION}/cs-backup
-                    mkdir -p /tmp/${PARTITION}/cs-backup/boot/crankshaft
-                    mkdir -p /tmp/${PARTITION}/cs-backup/etc
-                    mkdir -p /tmp/${PARTITION}/cs-backup/etc/X11/xorg.conf.d/
+                    rm -rf /tmp/${PARTITION}/cs-backup/${SERIAL}
+                    mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft
+                    mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/etc
+                    mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/
                     printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
                     printf "[ ${CYAN}INFO${GRAY} ] Backing up cranksahft config files...\n" > /dev/tty3
                     printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
                     printf "\n" > /dev/tty3
-                    cp -f /tmp/bootfs/config.txt /tmp/${PARTITION}/cs-backup/boot/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/crankshaft_env.sh /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/gpio2kbd.cfg /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/startup.py /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/startup.sh /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/triggerhappy.conf /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/brightness /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/brightness-night /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/volume /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/openauto.ini /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/rootfs/etc/timezone /tmp/${PARTITION}/cs-backup/etc/ 2>/dev/null
-                    cp -f /tmp/rootfs/etc/X11/xorg.conf.d/99-calibration.conf /tmp/${PARTITION}/cs-backup/etc/X11/xorg.conf.d/ 2>/dev/null
+                    cp -f /tmp/bootfs/config.txt /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/crankshaft_env.sh /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/gpio2kbd.cfg /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/startup.py /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/startup.sh /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/triggerhappy.conf /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/brightness /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/brightness-night /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/volume /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/openauto.ini /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/rootfs/etc/timezone /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
+                    cp -f /tmp/rootfs/etc/X11/xorg.conf.d/99-calibration.conf /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/ 2>/dev/null
                     sleep 1
                     # umount after backup
                     printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
@@ -146,8 +148,8 @@ for _device in /sys/block/*/device; do
                         printf "\n" >/dev/tty3
                         sync
                         mount -o rw /dev/mmcblk0p1 /tmp/bootfs
-                        cp -f  /tmp/${PARTITION}/cs-backup/boot/config.txt /tmp/bootfs/ 2>/dev/null
-                        cp -f  /tmp/${PARTITION}/cs-backup/boot/crankshaft/crankshaft_env.sh /tmp/bootfs/crankshaft/ 2>/dev/null
+                        cp -f  /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/config.txt /tmp/bootfs/ 2>/dev/null
+                        cp -f  /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/crankshaft_env.sh /tmp/bootfs/crankshaft/ 2>/dev/null
                         umount /tmp/bootfs
                         umount /tmp/${PARTITION}
                         printf "[ ${GREEN}EXEC${GRAY} ] *******************************************************\n" >/dev/tty3

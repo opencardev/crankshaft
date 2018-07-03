@@ -28,6 +28,8 @@ while [ "$(mountpoint -q / && echo mounted || echo fail)" == "fail" ]; do
 done
 
 sleep 1
+SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: | sed 's/ //g')
+
 if [ ! -f /etc/cs_backup_restore_done ]; then
     if [ ! -f /etc/cs_first_start_done ]; then
         show_clear_screen
@@ -94,7 +96,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] Checking if backup folder is present..." > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                    if [ -d /tmp/${PARTITION}/cs-backup ]; then
+                    if [ -d /tmp/${PARTITION}/cs-backup/${SERIAL} ]; then
                         sleep 2
                         show_screen
                         show_cursor
@@ -105,9 +107,9 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         mount -o remount,rw /boot
                         mount -o remount,rw /
                         # restore files
-                        cp -r -f /tmp/${PARTITION}/cs-backup/boot/. /boot/ > /dev/null 2>&1
-                        cp -r -f /tmp/${PARTITION}/cs-backup/etc/. /etc/ > /dev/null 2>&1
-                        cp -r -f /tmp/${PARTITION}/cs-backup/etc/X11/xorg.conf.d/. /etc/ > /dev/null 2>&1
+                        cp -r -f /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/. /boot/ > /dev/null 2>&1
+                        cp -r -f /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/. /etc/ > /dev/null 2>&1
+                        cp -r -f /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/. /etc/ > /dev/null 2>&1
                         chmod 644 /etc/timezone > /dev/null 2>&1
                         # remove possible existing lost boot entries
                         sed -i 's/initramfs initrd.img followkernel//' /boot/config.txt
@@ -136,7 +138,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             # reload services
                             systemctl daemon-reload > /dev/null 2>&1
                             # set tzdata
-                            timedatectl set-timezone $(cat /tmp/${PARTITION}/cs-backup/etc/timezone) > /dev/null 2>&1
+                            timedatectl set-timezone $(cat /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/timezone) > /dev/null 2>&1
                             # reset i2c modules
                             sed -i '/i2c/d' /etc/modules
                             # clean empty lines

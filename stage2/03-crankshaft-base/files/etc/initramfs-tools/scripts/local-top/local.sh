@@ -13,7 +13,7 @@ printf "[ ${BLUE}INFO${GRAY} ] Crankshaft Flash & Backup System\n" >/dev/tty3
 printf "[ ${BLUE}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
 printf "\n" >/dev/tty3
 
-SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: | sed 's/ //g')
+SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: -f2 | sed 's/ //g')
 
 for _device in /sys/block/*/device; do
     if echo $(readlink -f "$_device")|egrep -q "usb"; then

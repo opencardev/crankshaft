@@ -28,7 +28,7 @@ while [ "$(mountpoint -q / && echo mounted || echo fail)" == "fail" ]; do
 done
 
 sleep 1
-SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: | sed 's/ //g')
+SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: -f2 | sed 's/ //g')
 
 if [ ! -f /etc/cs_backup_restore_done ]; then
     if [ ! -f /etc/cs_first_start_done ]; then

@@ -73,13 +73,6 @@ for _device in /sys/block/*/device; do
                     cp -f /tmp/bootfs/crankshaft/openauto.ini /tmp/${PARTITION}/cs-backup/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/rootfs/etc/timezone /tmp/${PARTITION}/cs-backup/etc/ 2>/dev/null
                     cp -f /tmp/rootfs/etc/X11/xorg.conf.d/99-calibration.conf /tmp/${PARTITION}/cs-backup/etc/X11/xorg.conf.d/ 2>/dev/null
-                    if [ -d /tmp/rootfs/home/pi/.kodi ]; then
-                        printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
-                        printf "[ ${CYAN}INFO${GRAY} ] Kodi home folder detected - backing up...\n" > /dev/tty3
-                        printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
-                        printf "\n" > /dev/tty3
-                        tar -cf /tmp/${PARTITION}/cs-backup/kodi.tar -C /tmp/rootfs/home/pi/.kodi . 2>/dev/null
-                    fi
                     sleep 1
                     # umount after backup
                     printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3

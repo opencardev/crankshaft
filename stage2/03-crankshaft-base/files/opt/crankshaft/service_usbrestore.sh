@@ -109,11 +109,6 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         cp -r -f /tmp/${PARTITION}/cs-backup/etc/. /etc/ > /dev/null 2>&1
                         cp -r -f /tmp/${PARTITION}/cs-backup/etc/X11/xorg.conf.d/. /etc/ > /dev/null 2>&1
                         chmod 644 /etc/timezone > /dev/null 2>&1
-                        # restore kodi home folder if present
-                        if [ -f /tmp/${PARTITION}/cs-backup/kodi.tar ]; then
-                            mkdir -p /home/pi/.kodi > /dev/null 2>&1
-                            tar -xf /tmp/${PARTITION}/cs-backup/kodi.tar -C /home/pi/.kodi
-                        fi
                         # remove possible existing lost boot entries
                         sed -i 's/initramfs initrd.img followkernel//' /boot/config.txt
                         sed -i 's/ramfsfile=initrd.img//' /boot/config.txt

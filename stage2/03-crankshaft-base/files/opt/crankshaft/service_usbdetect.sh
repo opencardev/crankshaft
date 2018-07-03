@@ -4,68 +4,79 @@ source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
-if [ $ALLOW_USB_FLASH -eq 1 ]; then
+CSSTORAGE_DETECTED=0
 
-    for _device in /sys/block/*/device; do
-        if echo $(readlink -f "$_device")|egrep -q "usb"; then
-            _disk=$(echo "$_device" | cut -f4 -d/)
-            DEVICE="/dev/${_disk}1"
-            PARTITION="${_disk}1"
-            LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1)
-            FSTYPE=$(blkid /dev/${PARTITION} | sed 's/.*TYPE="//' | cut -d'"' -f1)
-            if [ $LABEL == "RECORD" ]; then
-                echo "" > /dev/tty3
-                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                echo "[${CYAN}${BOLD} INFO ${RESET}] USB-Storage for Dashcam detected - mounting..." > /dev/tty3
-                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ] || [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
-                    umount ${DEVICE} > /dev/null 2>&1
-                    /usr/local/bin/crankshaft filesystem system unlock
+for _device in /sys/block/*/device; do
+    if echo $(readlink -f "$_device")|egrep -q "usb"; then
+        _disk=$(echo "$_device" | cut -f4 -d/)
+        DEVICE="/dev/${_disk}1"
+        PARTITION="${_disk}1"
+        LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1)
+        FSTYPE=$(blkid /dev/${PARTITION} | sed 's/.*TYPE="//' | cut -d'"' -f1)
+        if [ $LABEL == "CSSTORAGE" ]; then
+            echo "" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] External CS-USB-Storage detected - mounting..." > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ] || [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
+                umount ${DEVICE} > /dev/null 2>&1
+                /usr/local/bin/crankshaft filesystem system unlock
+                mkdir -p /media/${LABEL}
+                mount -t auto ${DEVICE} /media/${LABEL} -o rw,umask=0000
+                if [ $? -eq 0 ]; then
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] CSSTORAGE mounted." > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    # dashcam related
                     mkdir -p /media/${LABEL}/RPIDC/AUTOSAVE > /dev/null 2>&1
                     mkdir -p /media/${LABEL}/RPIDC/EVENTS > /dev/null 2>&1
-                    chmod 777 /media/${LABEL}/RPIDC -R > /dev/null 2>&1
-                    mount -t auto ${DEVICE} /media/${LABEL}
+                    # kodi related
+                    mkdir -p /media/${LABEL}/KODI > /dev/null 2>&1
+                    rm -rf /home/pi/.kodi > /dev/null 2>&1
+                    ln -s /media/${LABEL}/KODI /home/pi/.kodi
+                    chmod 777 /home/pi/.kodi > /dev/null 2>&1
+                    # Allow all users rw to CSSTORAGE and subfolders/files
+                    chmod -r 777 /media/${LABEL} > /dev/null 2>&1
                     /usr/local/bin/crankshaft filesystem system lock
-                    if [ $? -eq 0 ]; then
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] RECORD mounted." > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                    else
-                        echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
-                        echo "[${RED}${BOLD} FAIL ${RESET}] RECORD not mounted!" > /dev/tty3
-                        echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
-                    fi
+                    CSSTORAGE_DETECTED=1
+                else
+                    echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${RED}${BOLD} FAIL ${RESET}] CSSTORAGE not mounted!" > /dev/tty3
+                    echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                    /usr/local/bin/crankshaft filesystem system lock
                 fi
-                continue
             fi
+            continue
+        fi
 
-            if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ] || [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
-                umount /tmp/${PARTITION} > /dev/null 2>&1
-                mkdir /tmp/${PARTITION} > /dev/null 2>&1
-                mount -t auto ${DEVICE} /tmp/${PARTITION}
-                if [ $? -eq 0 ]; then
-                    USB_DEBUGMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEBUG | head -1)
-                    if [ ! -z ${USB_DEBUGMODE} ]; then
-                        show_clear_screen
-                        echo "" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] Debug Mode trigger file detected on ${DEVICE} (${LABEL})" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] Starting in debug mode...${RESET}" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                        touch /tmp/usb_debug_mode
-                    fi
-                    USB_DEVMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEVMODE | head -1)
-                    if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ] && [ -z ${USB_DEBUGMODE} ]; then
-                        show_clear_screen
-                        echo "" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] Dev Mode trigger file detected on ${DEVICE} (${LABEL})" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] Starting in dev mode...${RESET}" > /dev/tty3
-                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                        touch /tmp/usb_dev_mode
-                    fi
+        if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ] || [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
+            umount /tmp/${PARTITION} > /dev/null 2>&1
+            mkdir /tmp/${PARTITION} > /dev/null 2>&1
+            mount -t auto ${DEVICE} /tmp/${PARTITION}
+            if [ $? -eq 0 ]; then
+                USB_DEBUGMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEBUG | head -1)
+                if [ ! -z ${USB_DEBUGMODE} ]; then
+                    show_clear_screen
+                    echo "" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] Debug Mode trigger file detected on ${DEVICE} (${LABEL})" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] Starting in debug mode...${RESET}" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    touch /tmp/usb_debug_mode
+                fi
+                USB_DEVMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEVMODE | head -1)
+                if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ] && [ -z ${USB_DEBUGMODE} ]; then
+                    show_clear_screen
+                    echo "" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] Dev Mode trigger file detected on ${DEVICE} (${LABEL})" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] Starting in dev mode...${RESET}" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    touch /tmp/usb_dev_mode
+                fi
+	        if [ $ALLOW_USB_FLASH -eq 1 ]; then
                     UPDATEZIP=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | tail -1)
                     FLAG=0
                     if [ ! -z ${UPDATEZIP} ]; then
@@ -181,11 +192,19 @@ if [ $ALLOW_USB_FLASH -eq 1 ]; then
                         fi
                     fi
                 fi
-                umount /tmp/${PARTITION} > /dev/tty3
-                rmdir /tmp/${PARTITION} > /dev/tty3
             fi
+            umount /tmp/${PARTITION} > /dev/tty3
+            rmdir /tmp/${PARTITION} > /dev/tty3
         fi
-    done
+    fi
+done
+
+# No external storage available - remove lost local folders / files
+if [ $CSSTORAGE_DETECTED -eq 0 ]; then
+    /usr/local/bin/crankshaft filesystem system unlock
+    rm -rf /media/CSSTORAGE > /dev/null 2>&1
+    rm -rf /home/pi/.kodi > /dev/null 2>&1
+    /usr/local/bin/crankshaft filesystem system lock
 fi
 
 exit 0

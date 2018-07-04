@@ -5,7 +5,7 @@ Crankshaft is a turn-key free (as in freedom) distribution for the Raspberry Pi.
 
 This is the source code repository, just in case you want to build the system yourself. To get the binary without dealing with all this stuff, please head to [GetCrankshaft.com](http://getcrankshaft.com). Crankshaft is possible thanks to the power of [OpenAuto](https://github.com/f1xpl/openauto) and [aasdk](https://github.com/f1xpl/aasdk). Crankshaft and OpenAuto are in no way related or certfied by either Google or Android.
 
-
+This is the stable branch, if you want the cutting edge stuff, check out [Crankshaft-NG](https://github.com/opencardev/crankshaft/tree/crankshaft-ng).
 
 Getting Started
 --

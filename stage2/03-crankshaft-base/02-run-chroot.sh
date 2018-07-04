@@ -18,8 +18,22 @@ ln -s /opt/vc/lib/libbrcmWFC.so /usr/lib/arm-linux-gnueabihf/libWFC.so
 sed -i 's/ init\=.*$//' /boot/cmdline.txt
 
 # config.txt
+echo "" >> /boot/config.txt
+echo "# Custom power settings" >> /boot/config.txt
+echo "max_usb_current=1" >> /boot/config.txt
+
+echo "" >> /boot/config.txt
+echo "# Disable the PWR LED." >> /boot/config.txt
+echo "dtparam=pwr_led_trigger=none" >> /boot/config.txt
+echo "dtparam=pwr_led_activelow=off" >> /boot/config.txt
+
+echo "" >> /boot/config.txt
+echo "# Disable Rainbow splash" >> /boot/config.txt
 echo "disable_splash=1" >> /boot/config.txt
-echo -e "# Disable the PWR LED.\ndtparam=pwr_led_trigger=none\ndtparam=pwr_led_activelow=off" >> /boot/config.txt
+
+echo "" >> /boot/config.txt
+echo "# GPU Mem" >> /boot/config.txt
+echo "gpu_mem=256" >> /boot/config.txt
 
 # pulseaudio
 cat /etc/pulse/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf

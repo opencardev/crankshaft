@@ -22,6 +22,8 @@ user-startup
    |
 openauto
    |
+gpiotrigger
+   |
 rc.local
    |
 update

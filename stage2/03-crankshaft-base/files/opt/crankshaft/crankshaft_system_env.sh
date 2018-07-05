@@ -16,6 +16,9 @@ if [ ! -z $ENABLE_GPIO ]; then
         sudo /usr/bin/gpio -g mode $DEV_PIN up
         sudo /usr/bin/gpio -g mode $INVERT_PIN up
         sudo /usr/bin/gpio -g mode $X11_PIN up
+        if [ $REARCAM_PIN -ne 0 ]; then
+            sudo /usr/bin/gpio -g mode $REARCAM_PIN up
+        fi
     else
         # make sure flag is correctly set if
         # ENABLE_GPIO is not set to 1 or missing

@@ -23,6 +23,11 @@ X11_PIN=13
 # To disable set to 0
 ANDROID_PIN=0
 
+# GPIO Trigger for Rearcam
+# GPIO wich triggers enabling Rearcam Mode of RPICam
+# To disable set to 0
+REARCAM_PIN=0
+
 ### Maintenance / Initial Setup ###
 # Start Crankshaft in dev mode to get network, shell and ssh access
 # openauto won't be started automatically

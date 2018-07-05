@@ -1,0 +1,53 @@
+#!/bin/bash
+
+source /opt/crankshaft/crankshaft_default_env.sh
+source /opt/crankshaft/crankshaft_system_env.sh
+source /boot/crankshaft/crankshaft_env.sh
+
+if [ $1 == "getvolume" ]; then
+    level=$(amixer get Master | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
+    echo $level > /tmp/return_value
+fi
+
+if [ $1 == "setvolume" ] && [ ! -z $2 ]; then
+    amixer set -q Master $2%
+fi
+
+if [ $1 == "getfreemem" ]; then
+    mem=$(free -h | grep Mem | awk {'print $4'})
+    echo $mem > /tmp/return_value
+fi
+
+if [ $1 == "getcpufreq" ]; then
+    typeset -i freq
+    freq=$(sudo cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq)/1000
+    echo "$freq MHz" > /tmp/return_value
+fi
+
+if [ $1 == "getshutdown" ]; then
+    remaining=$(systemctl list-timers --all --no-pager | grep shutdown | grep left | cut -dl -f1  | awk {'print $5 $6'} | sed 's/min/min /')
+    value="| Stopped"
+    if [ ! -z $remaining ]; then
+        value="| $remaining left"
+    fi
+    echo "$DISCONNECTION_POWEROFF_MINS Minutes $value" > /tmp/return_value
+fi
+
+if [ $1 == "getdisconnect" ]; then
+    remaining=$(systemctl list-timers --all --no-pager | grep disconnect | grep left | cut -dl -f1  | awk {'print $5 $6'} | sed 's/min/min /')
+    value="| Stopped"
+    if [ ! -z $remaining ]; then
+        value="| $remaining left"
+    fi
+    echo "$DISCONNECTION_SCREEN_POWEROFF_SECS Seconds $value" > /tmp/return_value
+fi
+
+if [ $1 == "getcputemp" ]; then
+    typeset -i freq
+    temp=$(/opt/vc/bin/vcgencmd measure_temp | cut -d= -f2)
+    echo "$temp" > /tmp/return_value
+fi
+
+echo "$1 $2" > /tmp/oasysif_command
+
+exit 0

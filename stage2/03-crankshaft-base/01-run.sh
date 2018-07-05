@@ -90,6 +90,7 @@ install -m 644 files/opt/crankshaft/wallpaper/camera-overlay.png              "$
 install -m 755 files/usr/local/bin/autoapp                              "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/bin/btservice                            "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/bin/crankshaft                           "${ROOTFS_DIR}/usr/local/bin/"
+install -m 755 files/usr/local/bin/oasysif                              "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/lib/libaasdk.so                          "${ROOTFS_DIR}/usr/local/lib/"
 install -m 755 files/usr/local/lib/libaasdk_proto.so                    "${ROOTFS_DIR}/usr/local/lib/"
 

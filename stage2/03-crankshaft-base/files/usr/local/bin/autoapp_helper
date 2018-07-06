@@ -50,7 +50,7 @@ if [ $1 == "getcpufreq" ]; then
 fi
 
 if [ $1 == "getshutdown" ]; then
-    remaining=$(systemctl list-timers --all --no-pager | grep shutdown | grep left | cut -dl -f1  | awk {'print $5 $6'} | sed 's/min/min /')
+    remaining=$(systemctl list-timers shutdown.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
     value="| Stopped"
     if [ ! -z $remaining ]; then
         value="| $remaining left"
@@ -59,7 +59,7 @@ if [ $1 == "getshutdown" ]; then
 fi
 
 if [ $1 == "getdisconnect" ]; then
-    remaining=$(systemctl list-timers --all --no-pager | grep disconnect | grep left | cut -dl -f1  | awk {'print $5 $6'} | sed 's/min/min /')
+    remaining=$(systemctl list-timers disconnect.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
     value="| Stopped"
     if [ ! -z $remaining ]; then
         value="| $remaining left"

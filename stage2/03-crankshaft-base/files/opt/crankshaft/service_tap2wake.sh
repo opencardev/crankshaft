@@ -13,7 +13,7 @@ readlines() {
             systemctl stop disconnect.timer
             systemctl start disconnect.timer
         fi
-            systemctl start tap2wake
+            systemctl restart tap2wake
         sleep 10
         fi
     done

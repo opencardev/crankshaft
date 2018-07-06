@@ -51,17 +51,17 @@ if [ -f /tmp/start_openauto ]; then
         # save and shutdown
         echo "" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] Saving OpenAuto, Brightness, Volume settings..." >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] Saving settings..." >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         /usr/local/bin/crankshaft settings save
         /usr/local/bin/crankshaft brightness save
         /usr/local/bin/crankshaft audio volume save
 
-	if [ ! -f /etc/cs_first_start_done ]; then
-	    /usr/local/bin/crankshaft filesystem system unlock
-	    sudo touch /etc/cs_first_start_done
-	    /usr/local/bin/crankshaft filesystem system lock
-	fi
+        if [ ! -f /etc/cs_first_start_done ]; then
+            /usr/local/bin/crankshaft filesystem system unlock
+            sudo touch /etc/cs_first_start_done
+            /usr/local/bin/crankshaft filesystem system lock
+        fi
 
         if [ ! -f /tmp/dev_mode_enabled ]; then
             if [ -f /tmp/reboot ]; then

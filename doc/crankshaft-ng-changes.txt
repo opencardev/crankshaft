@@ -19,12 +19,12 @@
 - Including rpi cam as dashcam or rearcam cause low resources needed from os.
     Usb cams possible needs transconding and causes high cpu load so no good decision.
     To extend the flat cable from cam hdmi extenders are available and working well!
-    If a usb storage (partition 1) called "RECORD" is detected it will be auto mounted and used for dashcam.
+    If a usb storage (partition 1) called "CSSTORAGE" is detected it will be auto mounted and used for dashcam and kodi home folder.
     Events can be saved by button press in dashcam window (last recorded file will we saved with different name in EVENTS)
     By default every recording file will have a length of 5 mins after it a new file is created.
     Free available storage is shown in dashcam window.
 - Rearcam can be triggered externally to show/hide by placing (or remove) file /tmp/rearcam_enabled
-    Rearcam can also be activated via toogle button in dashcam window.
+    Rearcam can also be activated via toogle button in dashcam window or by gpio service.
 - Screen timeouts: redesigned to two timers.
     First:  Shutdown timer if no connected device for auto shutdown the rpi.
             Default 60 mins.
@@ -49,3 +49,6 @@
     Note: if hotspot is used, system can't be wifi client!
 - Android device detection via udev optimized and device list updateable (let us know if some manufacturer is missing!)
     GPIO can be set if device connected to switch exernal parts.
+- Optimized settings menu (slider size / textboxes)
+- New CS-NG tab in settings with system infos etc.
+- System volume and capture volume control added (experimental)

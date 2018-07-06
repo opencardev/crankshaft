@@ -10,14 +10,15 @@ if [ $1 == "getvolume" ]; then
 fi
 
 if [ $1 == "setvolume" ] && [ ! -z $2 ]; then
-    echo "$1 $2" > /tmp/oasysif_volume_command
-    amixer set -q Master $2% unmute >> /tmp/oasysif_volume_command
-    sudo runuser -l pi -c 'amixer set -q Master '$2'% unmute' >> /tmp/oasysif_volume_command
+    amixer set -q Master $2% unmute
+    sudo runuser -l pi -c 'amixer set -q Master '$2'% unmute'
 fi
 
 if [ $1 == "savevolume" ]; then
     level=$(amixer get Master | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
+    crankshaft filesystem boot unlock
     sudo sh -c 'echo '$level' > /boot/crankshaft/volume'
+    crankshaft filesystem boot lock
 fi
 
 if [ $1 == "getfreemem" ]; then
@@ -55,6 +56,6 @@ if [ $1 == "getcputemp" ]; then
     echo "$temp" > /tmp/return_value
 fi
 
-echo "$1 $2" > /tmp/oasysif_command
+echo "$1 $2" > /tmp/autoapp_helper_command
 
 exit 0

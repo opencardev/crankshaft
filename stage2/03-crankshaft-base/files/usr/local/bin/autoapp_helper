@@ -15,9 +15,26 @@ if [ $1 == "setvolume" ] && [ ! -z $2 ]; then
 fi
 
 if [ $1 == "savevolume" ]; then
-    level=$(amixer get Master | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
+    level=$(amixer get Capture | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
     crankshaft filesystem boot unlock
     sudo sh -c 'echo '$level' > /boot/crankshaft/volume'
+    crankshaft filesystem boot lock
+fi
+
+if [ $1 == "getcapvolume" ]; then
+    level=$(amixer get Capture | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
+    echo $level > /tmp/return_value
+fi
+
+if [ $1 == "setcapvolume" ] && [ ! -z $2 ]; then
+    amixer set -q Capture $2% unmute
+    sudo runuser -l pi -c 'amixer set -q Capture '$2'% unmute'
+fi
+
+if [ $1 == "savecapvolume" ]; then
+    level=$(amixer get Capture | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
+    crankshaft filesystem boot unlock
+    sudo sh -c 'echo '$level' > /boot/crankshaft/capvolume'
     crankshaft filesystem boot lock
 fi
 

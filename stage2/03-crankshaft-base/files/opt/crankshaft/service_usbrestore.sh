@@ -169,6 +169,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         fi
 
                         # set done
+                        mount -o remount,rw /
                         touch /etc/cs_backup_restore_done
 
                         # sync wait and reboot

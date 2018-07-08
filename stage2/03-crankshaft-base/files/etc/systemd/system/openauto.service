@@ -1,7 +1,7 @@
 [Unit]
  Description=Crankshaft Android Auto Headunit
  After=user_startup.service
- Before=gpiotrigger.service
+ Before=timerstart.service
 
 [Service]
  Type=simple

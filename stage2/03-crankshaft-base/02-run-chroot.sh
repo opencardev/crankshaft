@@ -82,6 +82,7 @@ systemctl enable nightmode.timer
 systemctl enable tap2wake.service
 systemctl enable openauto.service
 systemctl enable gpiotrigger.service
+systemctl enable timerstart.service
 systemctl enable regensshkeys.service
 systemctl enable ssh.service
 systemctl disable rpicamserver.service

@@ -1,0 +1,13 @@
+[Unit]
+ Description=Crankshaft Timers Startup Service
+ ConditionPathExists=/opt/crankshaft/service_timerstart.sh
+ After=gpiotrigger.service
+ Before=rc-local.service
+
+[Service]
+ Type=simple
+ ExecStart=/opt/crankshaft/service_timerstart.sh
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

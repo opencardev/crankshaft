@@ -54,7 +54,6 @@ if [ ! -f /tmp/usb_debug_mode ]; then
             show_cursor
         fi
     else
-        /usr/local/bin/crankshaft timers start &
         touch /tmp/start_openauto
     fi
 fi

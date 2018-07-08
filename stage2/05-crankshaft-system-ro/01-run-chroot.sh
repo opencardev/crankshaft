@@ -7,9 +7,11 @@ sed -i 's/.*ROOTDEV.*/\/dev\/mmcblk0p2\t\/\t\text4\t\t\tro,defaults,noatime\t0\t
 sed -i '/^$/d' /etc/fstab
 echo "tmpfs		/var/log	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/var/tmp	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
+echo "tmpfs		/var/lib	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.local	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.config	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
+echo "tmpfs		/tmp/.cache	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 
 sed -i 's/root=ROOTDEV/root=\/dev\/mmcblk0p2/' /boot/cmdline.txt
 
@@ -24,6 +26,7 @@ ln -s /tmp /var/spool
 ln -s /tmp /var/lock
 ln -s /tmp/.config /home/pi/
 ln -s /tmp/.local /home/pi/
+ln -s /tmp/.cache /home/pi/
 ln -s /tmp/openauto.ini /home/pi/openauto.ini
 ln -s /tmp/resolv.conf /etc/resolv.conf
 

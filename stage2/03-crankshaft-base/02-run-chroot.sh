@@ -102,6 +102,7 @@ systemctl disable hostapd.service
 systemctl disable dnsmasq.service
 systemctl disable hotspot.service
 systemctl disable systemd-backlight@.service
+systemctl disable alsa-restore.service
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
 rm /lib/systemd/system/apt-daily.timer
@@ -111,6 +112,7 @@ rm /lib/systemd/system/apt-daily-upgrade.service
 rm /etc/systemd/system/timers.target.wants/apt-daily.timer
 rm /etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer
 rm /lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
+rm /lib/systemd/system/alsa-restore.service
 systemctl daemon-relaod
 
 # set custom boot splash

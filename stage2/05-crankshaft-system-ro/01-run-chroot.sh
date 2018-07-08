@@ -7,7 +7,7 @@ sed -i 's/.*ROOTDEV.*/\/dev\/mmcblk0p2\t\/\t\text4\t\t\tro,defaults,noatime\t0\t
 sed -i '/^$/d' /etc/fstab
 echo "tmpfs		/var/log	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/var/tmp	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
-echo "tmpfs		/var/lib	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
+echo "tmpfs		/var/lib/alsa	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.local	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.config	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
@@ -18,10 +18,11 @@ sed -i 's/root=ROOTDEV/root=\/dev\/mmcblk0p2/' /boot/cmdline.txt
 sed -i "s/#Storage=auto/Storage=volatile/" /etc/systemd/journald.conf
 
 # Link dirs for read only
-rm -rf /var/spool /var/lock /var/lib/dhcp/ /var/cache/apt/
+rm -rf /var/spool /var/lock /var/lib/dhcp /var/lib/dhcpcd5 /var/cache/apt/
 rm /etc/resolv.conf
 
 ln -s /tmp /var/lib/dhcp
+ln -s /tmp /var/lib/dhcpcd5
 ln -s /tmp /var/spool
 ln -s /tmp /var/lock
 ln -s /tmp/.config /home/pi/

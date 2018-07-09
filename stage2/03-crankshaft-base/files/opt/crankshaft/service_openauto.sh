@@ -40,7 +40,7 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] Starting OpenAuto in EGL Mode" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
-        sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=2/" /tmp/openauto.ini
+        sed -i "s/^OMXLayerIndex=0.*$/OMXLayerIndex=2/" /tmp/openauto.ini
         # Starts the Autoapp (OpenAuto) main program
         sudo runuser -l pi -c '/usr/local/bin/autoapp'
     fi

@@ -13,9 +13,15 @@ BOLD=`tput bold -T xterm`
 # set gpio default pin levels if global activated
 if [ ! -z $ENABLE_GPIO ]; then
     if [ $ENABLE_GPIO -eq 1 ]; then
-        sudo /usr/bin/gpio -g mode $DEV_PIN up
-        sudo /usr/bin/gpio -g mode $INVERT_PIN up
-        sudo /usr/bin/gpio -g mode $X11_PIN up
+        if [ $DEV_PIN -ne 0 ]; then
+            sudo /usr/bin/gpio -g mode $DEV_PIN up
+        fi
+        if [ $INVERT_PIN -ne 0 ]; then
+            sudo /usr/bin/gpio -g mode $INVERT_PIN up
+        fi
+        if [ $X11_PIN -ne 0 ]; then
+            sudo /usr/bin/gpio -g mode $X11_PIN up
+        fi
         if [ $REARCAM_PIN -ne 0 ]; then
             sudo /usr/bin/gpio -g mode $REARCAM_PIN up
         fi

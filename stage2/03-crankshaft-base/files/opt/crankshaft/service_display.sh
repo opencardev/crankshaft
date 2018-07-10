@@ -17,7 +17,7 @@ fi
 flipset=`grep '^lcd_rotate=' /boot/config.txt`
 
 # check gpio pin if activated
-if [ $ENABLE_GPIO -eq 1 ]; then
+if [ $ENABLE_GPIO -eq 1 ] && [ $INVERT_PIN -ne 0 ]; then
     INVERT_MODE_GPIO=`gpio -g read $INVERT_PIN`
 else
     INVERT_MODE_GPIO=1 # 1 = untriggered

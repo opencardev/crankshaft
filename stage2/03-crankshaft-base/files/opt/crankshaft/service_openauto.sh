@@ -14,7 +14,7 @@ if [ -f /tmp/start_openauto ]; then
     /usr/local/bin/crankshaft display on
 
     # Check gpio if activated
-    if [ $ENABLE_GPIO -eq 1 ]; then
+    if [ $ENABLE_GPIO -eq 1 ] && [ $X11_PIN -ne 0 ]; then
         X11_MODE_GPIO=`gpio -g read $X11_PIN`
     else
         X11_MODE_GPIO=1 # 1 = untriggered

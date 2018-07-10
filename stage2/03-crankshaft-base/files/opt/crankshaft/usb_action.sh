@@ -18,7 +18,9 @@ if [ $addremove == "add" ] && [ "$usbpath" != "" ]; then
     echo "[${CYAN}${BOLD} INFO ${RESET}] Path: $usbpath" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     /usr/local/bin/crankshaft timers stop
-    sudo /usr/bin/gpio -g mode $ANDROID_PIN up
+    if [ $ANDROID_PIN -ne 0 ]; then
+        sudo /usr/bin/gpio -g mode $ANDROID_PIN up
+    fi
 fi
 
 if [ "$addremove" == "remove" ] && [ "$usbpath" != "" ]; then
@@ -37,7 +39,9 @@ if [ "$addremove" == "remove" ] && [ "$usbpath" != "" ]; then
             if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
                 /usr/local/bin/crankshaft timers start
             fi
-            sudo /usr/bin/gpio -g mode $ANDROID_PIN down
+            if [ $ANDROID_PIN -ne 0 ]; then
+                sudo /usr/bin/gpio -g mode $ANDROID_PIN down
+            fi
         fi
     fi
 fi

@@ -10,7 +10,7 @@ if [ ! -f /tmp/usb_debug_mode ]; then
     source /boot/crankshaft/crankshaft_env.sh
 
     # Check gpio pin if activated
-    if [ $ENABLE_GPIO -eq 1 ]; then
+    if [ $ENABLE_GPIO -eq 1 ] && [ $DEV_PIN -ne 0 ]; then
         DEV_MODE_GPIO=`gpio -g read $DEV_PIN`
     else
         DEV_MODE_GPIO=1 # 1 = untriggered

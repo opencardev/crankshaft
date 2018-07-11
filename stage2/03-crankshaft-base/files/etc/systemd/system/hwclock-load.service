@@ -2,7 +2,7 @@
  Description=Crankshaft Sync Hardware Clock to System Clock
  DefaultDependencies=no
  After=sysinit.target
- Before=shutdown.target
+ Before=shutdown.target rc.local.service
  Conflicts=shutdown.target
 
 [Service]

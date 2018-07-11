@@ -51,6 +51,13 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             echo "[${CYAN}${BOLD} INFO ${RESET}] Label 1st Part: ${LABEL}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] PartFilesystem: ${FSTYPE}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            if [ $LABEL == "CSSTORAGE" ]; then
+                echo "${RESET}" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] Skipping CSSTORAGE..." > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                continue
+            fi
             if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ] || [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
                 umount /tmp/${PARTITION} > /dev/null 2>&1
                 mkdir /tmp/${PARTITION} > /dev/null 2>&1

@@ -114,6 +114,7 @@ rm /etc/systemd/system/timers.target.wants/apt-daily.timer
 rm /etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer
 rm /lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
 rm /lib/systemd/system/alsa-restore.service
+rm /lib/systemd/system/systemd-backlight@.service
 systemctl daemon-relaod
 
 # set custom boot splash

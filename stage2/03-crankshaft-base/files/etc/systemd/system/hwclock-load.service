@@ -6,9 +6,11 @@
  Conflicts=shutdown.target
 
 [Service]
- Type=oneshot
+ Type=simple
  ExecStart=/sbin/hwclock --hctosys
  StandardOutput=syslog
+ Restart=on-failure
+ RestartSec=5
 
 [Install]
  WantedBy=sysinit.target

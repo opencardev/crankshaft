@@ -70,13 +70,13 @@ respreview_y = int(get_var('RPICAM_Y'))
 camera.rotation = int(get_var('RPICAM_ROTATION'))
 
 hflip = int(get_var('RPICAM_HFLIP'))
-if hflip == "1":
+if hflip == 1:
     camera.hflip = True
 else:
     camera.hflip = False
 
 vflip = int(get_var('RPICAM_VFLIP'))
-if vflip == "1":
+if vflip == 1:
     camera.vflip = True
 else:
     camera.vflip = False

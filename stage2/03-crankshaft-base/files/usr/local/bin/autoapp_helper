@@ -4,21 +4,11 @@ source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
+echo "$1 $2 $3 $4 $5 $6 $7" >> /tmp/autoapp_helper_command
+
 if [ $1 == "getvolume" ]; then
     level=$(amixer get Master | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
     echo $level > /tmp/return_value
-fi
-
-if [ $1 == "setvolume" ] && [ ! -z $2 ]; then
-    amixer set -q Master $2% unmute
-    sudo runuser -l pi -c 'amixer set -q Master '$2'% unmute'
-fi
-
-if [ $1 == "savevolume" ]; then
-    level=$(amixer get Capture | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
-    crankshaft filesystem boot unlock
-    sudo sh -c 'echo '$level' > /boot/crankshaft/volume'
-    crankshaft filesystem boot lock
 fi
 
 if [ $1 == "getcapvolume" ]; then
@@ -26,15 +16,29 @@ if [ $1 == "getcapvolume" ]; then
     echo $level > /tmp/return_value
 fi
 
+if [ $1 == "setvolumes" ] && [ ! -z $2 ] && [ ! -z $3 ]; then
+    amixer set -q Master $2% unmute
+    sudo runuser -l pi -c 'amixer set -q Master '$2'% unmute'
+    amixer set -q Capture $3% unmute
+    sudo runuser -l pi -c 'amixer set -q Capture '$3'% unmute'
+fi
+
+if [ $1 == "setvolume" ] && [ ! -z $2 ]; then
+    amixer set -q Master $2% unmute
+    sudo runuser -l pi -c 'amixer set -q Master '$2'% unmute'
+fi
+
 if [ $1 == "setcapvolume" ] && [ ! -z $2 ]; then
     amixer set -q Capture $2% unmute
     sudo runuser -l pi -c 'amixer set -q Capture '$2'% unmute'
 fi
 
-if [ $1 == "savecapvolume" ]; then
-    level=$(amixer get Capture | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
+if [ $1 == "savevolumes" ]; then
+    levelplay=$(amixer get Master | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
+    levelcap=$(amixer get Capture | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
     crankshaft filesystem boot unlock
-    sudo sh -c 'echo '$level' > /boot/crankshaft/capvolume'
+    sudo sh -c 'echo '$levelplay' > /boot/crankshaft/volume'
+    sudo sh -c 'echo '$levelcap' > /boot/crankshaft/capvolume'
     crankshaft filesystem boot lock
 fi
 
@@ -49,13 +53,10 @@ if [ $1 == "getcpufreq" ]; then
     echo "$freq MHz" > /tmp/return_value
 fi
 
-if [ $1 == "getshutdown" ]; then
-    remaining=$(systemctl list-timers shutdown.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
-    value="| Stopped"
-    if [ ! -z $remaining ]; then
-        value="| $remaining left"
-    fi
-    echo "$DISCONNECTION_POWEROFF_MINS Minutes $value" > /tmp/return_value
+if [ $1 == "getcputemp" ]; then
+    typeset -i freq
+    temp=$(/opt/vc/bin/vcgencmd measure_temp | cut -d= -f2)
+    echo "$temp" > /tmp/return_value
 fi
 
 if [ $1 == "getdisconnect" ]; then
@@ -67,12 +68,64 @@ if [ $1 == "getdisconnect" ]; then
     echo "$DISCONNECTION_SCREEN_POWEROFF_SECS Seconds $value" > /tmp/return_value
 fi
 
-if [ $1 == "getcputemp" ]; then
-    typeset -i freq
-    temp=$(/opt/vc/bin/vcgencmd measure_temp | cut -d= -f2)
-    echo "$temp" > /tmp/return_value
+if [ $1 == "getshutdown" ]; then
+    remaining=$(systemctl list-timers shutdown.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
+    value="| Stopped"
+    if [ ! -z $remaining ]; then
+        value="| $remaining left"
+    fi
+    echo "$DISCONNECTION_POWEROFF_MINS Minutes $value" > /tmp/return_value
 fi
 
-echo "$1 $2" > /tmp/autoapp_helper_command
+if [ $1 == "setdisconnect" ] && [ ! -z $2 ]; then
+    crankshaft timers disconnect set $2
+fi
+
+if [ $1 == "setshutdown" ] && [ ! -z $2 ]; then
+    crankshaft timers shutdown set $2
+fi
+
+if [ $1 == "getgpios" ]; then
+    echo "$ENABLE_GPIO $DEV_PIN $INVERT_PIN $X11_PIN $REARCAM_PIN $ANDROID_PIN " > /tmp/return_value
+fi
+
+if [ $1 == "setgpios" ] && [ ! -z $2 ]; then
+    crankshaft filesystem boot unlock
+    sudo sed -i 's/^ENABLE_GPIO=.*/ENABLE_GPIO='$(echo $2 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^DEV_PIN=.*/DEV_PIN='$(echo $3 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^INVERT_PIN=.*/INVERT_PIN='$(echo $4 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^X11_PIN=.*/X11_PIN='$(echo $5 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^REARCAM_PIN=.*/REARCAM_PIN='$(echo $6 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^ANDROID_PIN=.*/ANDROID_PIN='$(echo $7 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    crankshaft filesystem boot lock
+fi
+
+if [ $1 == "getdaynight" ]; then
+    echo "$RTC_DAY_START $RTC_NIGHT_START " > /tmp/return_value
+fi
+
+if [ $1 == "setdaynight" ] && [ ! -z $2 ] && [ ! -z $3 ]; then
+    crankshaft timers daynight $2 $3
+fi
+
+if [ $1 == "gettzdata" ]; then
+    cat zone1970.tab | grep / | awk {'print $3'} | sort > /tmp/return_value
+fi
+
+if [ $1 == "getmodeflip" ]; then
+    echo "$START_X11 $FLIP_SCREEN " > /tmp/return_value
+fi
+
+if [ $1 == "setmode" ] && [ ! -z $2 ]; then
+    crankshaft filesystem boot unlock
+    sudo sed -i 's/^START_X11=.*/START_X11='$(echo $2)'/' /boot/crankshaft/crankshaft_env.sh
+    crankshaft filesystem boot lock
+fi
+
+if [ $1 == "setflip" ] && [ ! -z $2 ]; then
+    crankshaft filesystem boot unlock
+    sudo sed -i 's/^FLIP_SCREEN=.*/FLIP_SCREEN='$(echo $2)'/' /boot/crankshaft/crankshaft_env.sh
+    crankshaft filesystem boot lock
+fi
 
 exit 0

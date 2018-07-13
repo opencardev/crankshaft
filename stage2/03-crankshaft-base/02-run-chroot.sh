@@ -168,3 +168,6 @@ sed -i 's/.*watchdog-device.*/watchdog-device		= \/dev\/watchdog/' /etc/watchdog
 # Setup kernel panic behaviour
 sed -i 's/.*kernel-panic.*//g' /etc/sysctl.conf
 echo "kernel-panic = 10" >> /etc/sysctl.conf
+
+# Boost system performance
+sed -i 's/^GOVERNOR=.*/GOVERNOR="performance"/' /etc/init.d/cpufrequtils

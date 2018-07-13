@@ -4,8 +4,13 @@ source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
-chown pi:pi /tmp/.local
-chown pi:pi /tmp/.config
+chown pi:pi /tmp/.local-pi
+chown pi:pi /tmp/.config-pi
+chown pi:pi /tmp/.cache-pi
+
+chown root:root /tmp/.local-pi
+chown root:root /tmp/.config-pi
+chown root:root /tmp/.cache-pi
 
 # Check if wallpapers are present and non zero
 if [ ! -f /boot/crankshaft/wallpaper.png ] || [ ! -s /boot/crankshaft/wallpaper.png ]; then

@@ -61,20 +61,20 @@ fi
 
 if [ $1 == "getdisconnect" ]; then
     remaining=$(systemctl list-timers disconnect.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
-    value="| Stopped"
+    value="Stopped"
     if [ ! -z $remaining ]; then
-        value="| $remaining left"
+        value="$remaining left"
     fi
-    echo "$DISCONNECTION_SCREEN_POWEROFF_SECS Seconds $value" > /tmp/return_value
+    echo "$DISCONNECTION_SCREEN_POWEROFF_SECS-$value" > /tmp/return_value
 fi
 
 if [ $1 == "getshutdown" ]; then
     remaining=$(systemctl list-timers shutdown.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
-    value="| Stopped"
+    value="Stopped"
     if [ ! -z $remaining ]; then
-        value="| $remaining left"
+        value="$remaining left"
     fi
-    echo "$DISCONNECTION_POWEROFF_MINS Minutes $value" > /tmp/return_value
+    echo "$DISCONNECTION_POWEROFF_MINS-$value"  > /tmp/return_value
 fi
 
 if [ $1 == "setdisconnect" ] && [ ! -z $2 ]; then

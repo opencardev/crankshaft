@@ -9,12 +9,12 @@ readlines() {
         check=$(echo $line | grep "^Event:")
         if [ -n "$check" ]; then
             systemctl stop disconnect.service
-        if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
-            systemctl stop disconnect.timer
-            systemctl start disconnect.timer
-        fi
+            if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
+                systemctl stop disconnect.timer
+                systemctl start disconnect.timer
+            fi
+            sleep 30
             systemctl restart tap2wake
-        sleep 10
         fi
     done
 }

@@ -30,6 +30,8 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] Starting OpenAuto in X11 Mode" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+        # short delay to be sure system is ready
+        sleep 2
         sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=0/" /tmp/openauto.ini
         # Starts the Autoapp (OpenAuto) main program via x-server
         sudo runuser -l pi -c 'xinit'

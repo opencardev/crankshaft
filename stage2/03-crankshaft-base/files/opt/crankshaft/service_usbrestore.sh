@@ -140,7 +140,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             param=$(echo $line | cut -d= -f1)
                             value=$(echo $line | cut -d= -f2)
                             #echo "$param - $value" > /dev/tty3
-                            sed -i 's/^'$param'=.*/'$param'='$value'/' /boot/crankshaft/crankshaft_env.sh
+                            sed -i 's#^'$param'=.*#'$param'='$value'#' /boot/crankshaft/crankshaft_env.sh
                         done < /boot/crankshaft/crankshaft_env_bak.sh
 
                         rm -f /boot/crankshaft/crankshaft_env_bak.sh

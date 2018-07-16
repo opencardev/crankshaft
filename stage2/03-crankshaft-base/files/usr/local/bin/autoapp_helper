@@ -149,6 +149,7 @@ if [ $1 == "getinputs" ]; then
 fi
 
 if [ $1 == "getdefaultoutput" ]; then
+    sudo rm /tmp/return_value
     pulseid=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2)
     defaultoutput=$(pactl list sinks short | awk {'print $1" "$2'} | grep $pulseid | awk {'print $2'})
     card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/^ //' | sed 's/ *$//')
@@ -158,6 +159,7 @@ if [ $1 == "getdefaultoutput" ]; then
 fi
 
 if [ $1 == "getdefaultinput" ]; then
+    sudo rm /tmp/return_value
     pulseid=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2)
     defaultoutput=$(pactl list sources short | awk {'print $1" "$2'} | grep $pulseid | awk {'print $2'})
     card=$(pacmd list-sources | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/^ //' | sed 's/ *$//')
@@ -186,7 +188,7 @@ if [ $1 == "setoutput" ]; then
             sudo sed -i 's/^# no output selected -> default.*//' /etc/pulse/client.conf
             sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
             sudo sh -c 'echo "# Crankshaft selected output device" >> /etc/pulse/client.conf'
-            sudo sh -c 'echo "default-sink = '$(echo $pulseid)'" >> /etc/pulse/client.conf'
+            sudo sh -c 'echo "default-sink = '$(echo $pulsedevice)'" >> /etc/pulse/client.conf'
         crankshaft filesystem system lock
     else
         crankshaft filesystem system unlock
@@ -220,7 +222,7 @@ if [ $1 == "setinput" ]; then
             sudo sed -i 's/^# no input selected -> default.*//' /etc/pulse/client.conf
             sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
             sudo sh -c 'echo "# Crankshaft selected input device" >> /etc/pulse/client.conf'
-            sudo sh -c 'echo "default-source = '$(echo $pulseid)'" >> /etc/pulse/client.conf'
+            sudo sh -c 'echo "default-source = '$(echo $pulsedevice)'" >> /etc/pulse/client.conf'
         crankshaft filesystem system lock
     else
         crankshaft filesystem system unlock

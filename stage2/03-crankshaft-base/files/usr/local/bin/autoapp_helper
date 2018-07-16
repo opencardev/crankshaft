@@ -150,21 +150,21 @@ fi
 
 if [ $1 == "getdefaultoutput" ]; then
     sudo rm /tmp/return_value
-    pulseid=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2)
+    pulseid=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
     defaultoutput=$(pactl list sinks short | awk {'print $1" "$2'} | grep $pulseid | awk {'print $2'})
-    card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/^ //' | sed 's/ *$//')
-    device=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/^ //' | sed 's/ *$//')
-    desc=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/^ //' | sed 's/ *$//')
+    card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    device=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    desc=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
     echo "$card|$device - $desc" > /tmp/return_value
 fi
 
 if [ $1 == "getdefaultinput" ]; then
     sudo rm /tmp/return_value
-    pulseid=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2)
+    pulseid=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
     defaultoutput=$(pactl list sources short | awk {'print $1" "$2'} | grep $pulseid | awk {'print $2'})
-    card=$(pacmd list-sources | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/^ //' | sed 's/ *$//')
-    device=$(pacmd list-sources | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/^ //' | sed 's/ *$//')
-    desc=$(pacmd list-sources | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/^ //' | sed 's/ *$//')
+    card=$(pacmd list-sources | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    device=$(pacmd list-sources | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    desc=$(pacmd list-sources | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
     echo "$card|$device - $desc" > /tmp/return_value
 fi
 
@@ -173,14 +173,14 @@ if [ $1 == "setoutput" ]; then
     card=$(echo $receive | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
     device=$(echo $receive | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
     desc=$(echo $receive | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
-    echo "Request: $receive" > /tmp/set_soundcard
-    echo "Card: $card" >> /tmp/set_soundcard
-    echo "Device: $device" >> /tmp/set_soundcard
-    echo "Desc: $desc" >> /tmp/set_soundcard
-    pulsedevice=$(pactl list sinks | grep -B25 -e 'alsa.card = "'$card'"' | grep -B24 -e 'alsa.device = "'$device'"' | grep -A0 'Name: ' | grep -v '.default' | sed 's/--//' | sed 's/Name: //' | tail -n1 | sed 's/^ //' | sed 's/ *$//')
-    pulseid=$(pactl list sinks short | grep $pulsedevice | awk {'print $1'})
-    echo "Pulse: $pulsedevice" >> /tmp/set_soundcard
-    echo "Pulse ID: $pulseid" >> /tmp/set_soundcard
+    echo "Request: >$receive<" > /tmp/set_soundcard
+    echo "Card: >$card<" >> /tmp/set_soundcard
+    echo "Device: >$device<" >> /tmp/set_soundcard
+    echo "Desc: >$desc<" >> /tmp/set_soundcard
+    pulsedevice=$(pactl list sinks | grep -B25 -e 'alsa.card = "'$card'"' | grep -B24 -e 'alsa.device = "'$device'"' | grep -A0 'Name: ' | grep -v '.default' | sed 's/--//' | sed 's/Name: //' | tail -n1 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    pulseid=$(pactl list sinks short | grep $pulsedevice | awk {'print $1'} | sed 's/\t//g')
+    echo "Pulse: >$pulsedevice<" >> /tmp/set_soundcard
+    echo "Pulse ID: >$pulseid<" >> /tmp/set_soundcard
     if [ ! -z $pulsedevice ]; then
         crankshaft filesystem system unlock
             sudo sed -i 's/.*default-sink.*//' /etc/pulse/client.conf
@@ -207,14 +207,14 @@ if [ $1 == "setinput" ]; then
     card=$(echo $receive | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
     device=$(echo $receive | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
     desc=$(echo $receive | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
-    echo "Request: $receive" > /tmp/set_mic
-    echo "Card: $card" >> /tmp/set_mic
-    echo "Device: $device" >> /tmp/set_mic
-    echo "Desc: $desc" >> /tmp/set_mic
-    pulsedevice=$(pactl list sources | grep -B25 -e 'alsa.card = "'$card'"' | grep -B24 -e 'alsa.device = "'$device'"' | grep -A0 'Name: ' | grep -v '.default' | sed 's/--//' | sed 's/Name: //' | tail -n1 | sed 's/^ //' | sed 's/ *$//')
-    pulseid=$(pactl list sources short | grep $pulsedevice | awk {'print $1'})
-    echo "Pulse: $pulsedevice" >> /tmp/set_mic
-    echo "Pulse ID: $pulseid" >> /tmp/set_mic
+    echo "Request: >$receive<" > /tmp/set_mic
+    echo "Card: >$card<" >> /tmp/set_mic
+    echo "Device: >$device<" >> /tmp/set_mic
+    echo "Desc: >$desc<" >> /tmp/set_mic
+    pulsedevice=$(pactl list sources | grep -B25 -e 'alsa.card = "'$card'"' | grep -B24 -e 'alsa.device = "'$device'"' | grep -A0 'Name: ' | grep -v '.default' | sed 's/--//' | sed 's/Name: //' | tail -n1 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    pulseid=$(pactl list sources short | grep $pulsedevice | awk {'print $1'} | sed 's/\t//g')
+    echo "Pulse: >$pulsedevice<" >> /tmp/set_mic
+    echo "Pulse ID: >$pulseid<" >> /tmp/set_mic
     if [ ! -z $pulsedevice ]; then
         crankshaft filesystem system unlock
             sudo sed -i 's/.*default-source.*//' /etc/pulse/client.conf

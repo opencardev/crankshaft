@@ -59,6 +59,7 @@ for _device in /sys/block/*/device; do
                     mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft
                     mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/etc
                     mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/
+                    mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/pulse
                     printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
                     printf "[ ${CYAN}INFO${GRAY} ] Backing up cranksahft config files...\n" > /dev/tty3
                     printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
@@ -80,6 +81,7 @@ for _device in /sys/block/*/device; do
                     cp -f /tmp/bootfs/crankshaft/wallpaper-devmode-night.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/rootfs/etc/timezone /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
                     cp -f /tmp/rootfs/etc/X11/xorg.conf.d/99-calibration.conf /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/ 2>/dev/null
+                    cp -f /tmp/rootfs/etc/pulse/client.conf /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/pulse/ 2>/dev/null
                     sleep 1
                     # umount after backup
                     printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3

@@ -121,6 +121,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         cp -r -f /tmp/${PARTITION}/cs-backup/boot/. /boot/ > /dev/null 2>&1
                         cp -r -f /tmp/${PARTITION}/cs-backup/etc/. /etc/ > /dev/null 2>&1
                         cp -r -f /tmp/${PARTITION}/cs-backup/etc/X11/xorg.conf.d/. /etc/ > /dev/null 2>&1
+                        cp -r -f /tmp/${PARTITION}/cs-backup/etc/pulse/. /etc/pulse/ > /dev/null 2>&1
                         chmod 644 /etc/timezone > /dev/null 2>&1
                         # remove possible existing lost boot entries
                         sed -i 's/initramfs initrd.img followkernel//' /boot/config.txt

@@ -40,6 +40,7 @@ cat /etc/pulse/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
 sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
 echo 'load-module module-mmkbd-evdev device=/dev/gpio2kbd' >> /etc/pulse/default.pa
 echo 'set-sink-volume 0 52428' >> /etc/pulse/default.pa
+rm pulseaudio_daemon.conf
 
 # wallaper's
 ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png
@@ -102,7 +103,7 @@ systemctl disable hciuart.service
 systemctl disable hostapd.service
 systemctl disable dnsmasq.service
 systemctl disable hotspot.service
-systemctl disable systemd-backlight@.service
+#systemctl disable systemd-backlight@.service
 systemctl disable alsa-restore.service
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
@@ -114,7 +115,7 @@ rm /etc/systemd/system/timers.target.wants/apt-daily.timer
 rm /etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer
 rm /lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
 rm /lib/systemd/system/alsa-restore.service
-rm /lib/systemd/system/systemd-backlight@.service
+#rm /lib/systemd/system/systemd-backlight@.service
 systemctl daemon-relaod
 
 # set custom boot splash

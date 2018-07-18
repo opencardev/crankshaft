@@ -4,178 +4,72 @@ source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
-echo "$1 $2 $3 $4 $5 $6 $7" >> /tmp/autoapp_helper_command
-
-if [ $1 == "getvolume" ]; then
-    level=$(amixer get Master | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
-    echo $level > /tmp/return_value
+echo "$@" >> /tmp/autoapp_helper_command
+if [ -z "$@" ]; then
+    echo "got no params" >> /tmp/autoapp_helper_command
 fi
 
-if [ $1 == "getcapvolume" ]; then
-    level=$(amixer get Capture | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
-    echo $level > /tmp/return_value
+IFS="#" read -r -a array <<< "$@"
+
+# check if pulse is running
+CHECK=$(ps -ax | grep pulseaudio | grep -v grep | tail -n1 | awk {'print $1'})
+
+# start pulse if not started
+if [ -z $CHECK ]; then
+    pulseaudio --start --log-target syslog
+    sleep 3
 fi
 
-if [ $1 == "setvolumes" ] && [ ! -z $2 ] && [ ! -z $3 ]; then
-    amixer set -q Master $2% unmute
-    sudo runuser -l pi -c 'amixer set -q Master '$2'% unmute'
-    amixer set -q Capture $3% unmute
-    sudo runuser -l pi -c 'amixer set -q Capture '$3'% unmute'
-fi
+# set params to system
+if [ "${array[0]}" == "setparams" ]; then
 
-if [ $1 == "setvolume" ] && [ ! -z $2 ]; then
-    amixer set -q Master $2% unmute
-    sudo runuser -l pi -c 'amixer set -q Master '$2'% unmute'
-fi
+    # Start
+    echo "-------------------------------------" >> /tmp/autoapp_helper_command
+    echo "configure start" >> /tmp/autoapp_helper_command
+    sudo touch /tmp/config_in_progress
 
-if [ $1 == "setcapvolume" ] && [ ! -z $2 ]; then
-    amixer set -q Capture $2% unmute
-    sudo runuser -l pi -c 'amixer set -q Capture '$2'% unmute'
-fi
 
-if [ $1 == "savevolumes" ]; then
-    levelplay=$(amixer get Master | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
-    levelcap=$(amixer get Capture | grep % | grep Left | awk '{print $5}' | sed 's/\[//' | sed 's/\]//' | sed 's/\%//')
+    # set disconnect timeout
+    echo "${array[3]}" >> /tmp/autoapp_helper_command
+    crankshaft timers disconnect set ${array[3]}
+
+    # set shutdown timeout
+    echo "${array[4]}" >> /tmp/autoapp_helper_command
+    crankshaft timers shutdown set ${array[4]}
+
+    # set day / night
+    echo "${array[5]}" >> /tmp/autoapp_helper_command
+    echo "${array[6]}" >> /tmp/autoapp_helper_command
+    crankshaft timers daynight ${array[5]} ${array[6]}
+
+    # set general gpio usage # dev mode gpio # invert gpio # x11 gpio # rearcam gpio # android gpio # enable x11 mode # enable flip mode
+    echo "${array[7]}" >> /tmp/autoapp_helper_command
+    echo "${array[8]}" >> /tmp/autoapp_helper_command
+    echo "${array[9]}" >> /tmp/autoapp_helper_command
+    echo "${array[10]}" >> /tmp/autoapp_helper_command
+    echo "${array[11]}" >> /tmp/autoapp_helper_command
+    echo "${array[12]}" >> /tmp/autoapp_helper_command
+    echo "${array[13]}" >> /tmp/autoapp_helper_command
+    echo "${array[14]}" >> /tmp/autoapp_helper_command
+
+    # open filesystems
     crankshaft filesystem boot unlock
-    sudo sh -c 'echo '$levelplay' > /boot/crankshaft/volume'
-    sudo sh -c 'echo '$levelcap' > /boot/crankshaft/capvolume'
-    crankshaft filesystem boot lock
-fi
+    crankshaft filesystem system unlock
+    sudo sed -i 's/^ENABLE_GPIO=.*/ENABLE_GPIO='$(echo ${array[7]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^DEV_PIN=.*/DEV_PIN='$(echo ${array[8]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^INVERT_PIN=.*/INVERT_PIN='$(echo ${array[9]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^X11_PIN=.*/X11_PIN='$(echo ${array[10]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^REARCAM_PIN=.*/REARCAM_PIN='$(echo ${array[11]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^ANDROID_PIN=.*/ANDROID_PIN='$(echo ${array[12]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^START_X11=.*/START_X11='$(echo ${array[13]})'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^FLIP_SCREEN=.*/FLIP_SCREEN='$(echo ${array[14]})'/' /boot/crankshaft/crankshaft_env.sh
 
-if [ $1 == "getfreemem" ]; then
-    mem=$(free -h | grep Mem | awk {'print $4'})
-    echo $mem > /tmp/return_value
-fi
-
-if [ $1 == "getcpufreq" ]; then
-    typeset -i freq
-    freq=$(sudo cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq)/1000
-    echo "$freq MHz" > /tmp/return_value
-fi
-
-if [ $1 == "getcputemp" ]; then
-    typeset -i freq
-    temp=$(/opt/vc/bin/vcgencmd measure_temp | cut -d= -f2)
-    echo "$temp" > /tmp/return_value
-fi
-
-if [ $1 == "getdisconnect" ]; then
-    remaining=$(systemctl list-timers disconnect.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
-    value="Stopped"
-    if [ ! -z $remaining ]; then
-        value="$remaining left"
-    fi
-    echo "$DISCONNECTION_SCREEN_POWEROFF_SECS-$value" > /tmp/return_value
-fi
-
-if [ $1 == "getshutdown" ]; then
-    remaining=$(systemctl list-timers shutdown.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
-    value="Stopped"
-    if [ ! -z $remaining ]; then
-        value="$remaining left"
-    fi
-    echo "$DISCONNECTION_POWEROFF_MINS-$value"  > /tmp/return_value
-fi
-
-if [ $1 == "setdisconnect" ] && [ ! -z $2 ]; then
-    crankshaft timers disconnect set $2
-fi
-
-if [ $1 == "setshutdown" ] && [ ! -z $2 ]; then
-    crankshaft timers shutdown set $2
-fi
-
-if [ $1 == "getgpios" ]; then
-    echo "$ENABLE_GPIO $DEV_PIN $INVERT_PIN $X11_PIN $REARCAM_PIN $ANDROID_PIN " > /tmp/return_value
-fi
-
-if [ $1 == "setgpios" ] && [ ! -z $2 ]; then
-    crankshaft filesystem boot unlock
-    sudo sed -i 's/^ENABLE_GPIO=.*/ENABLE_GPIO='$(echo $2 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^DEV_PIN=.*/DEV_PIN='$(echo $3 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^INVERT_PIN=.*/INVERT_PIN='$(echo $4 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^X11_PIN=.*/X11_PIN='$(echo $5 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^REARCAM_PIN=.*/REARCAM_PIN='$(echo $6 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^ANDROID_PIN=.*/ANDROID_PIN='$(echo $7 | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    crankshaft filesystem boot lock
-fi
-
-if [ $1 == "getdaynight" ]; then
-    echo "$RTC_DAY_START $RTC_NIGHT_START " > /tmp/return_value
-fi
-
-if [ $1 == "setdaynight" ] && [ ! -z $2 ] && [ ! -z $3 ]; then
-    crankshaft timers daynight $2 $3
-fi
-
-if [ $1 == "gettzdata" ]; then
-    cat zone1970.tab | grep / | awk {'print $3'} | sort > /tmp/return_value
-fi
-
-if [ $1 == "getmodeflip" ]; then
-    echo "$START_X11 $FLIP_SCREEN " > /tmp/return_value
-fi
-
-if [ $1 == "setmode" ] && [ ! -z $2 ]; then
-    crankshaft filesystem boot unlock
-    sudo sed -i 's/^START_X11=.*/START_X11='$(echo $2)'/' /boot/crankshaft/crankshaft_env.sh
-    crankshaft filesystem boot lock
-fi
-
-if [ $1 == "setflip" ] && [ ! -z $2 ]; then
-    crankshaft filesystem boot unlock
-    sudo sed -i 's/^FLIP_SCREEN=.*/FLIP_SCREEN='$(echo $2)'/' /boot/crankshaft/crankshaft_env.sh
-    crankshaft filesystem boot lock
-fi
-
-if [ $1 == "getoutputs" ]; then
-    sudo rm /tmp/return_value
-    aplay -l | grep card | grep -v IEC958/HDMI | while read -r line; do
-        card=$(echo $line | cut -d":" -f1 | cut -d" " -f2)
-        device=$(echo $line | cut -d":" -f2 | cut -d"," -f2 | sed 's/^ //g' | cut -d" " -f2)
-        desc="$(echo $line | cut -d: -f3 | cut -d[ -f1 | sed 's/^ //g' | sed 's/ *$//') [$(echo $line | cut -d: -f2 | cut -d] -f1 | cut -d[ -f2)]"
-        echo "$card|$device - $desc" >> /tmp/return_value
-    done
-fi
-
-if [ $1 == "getinputs" ]; then
-    sudo rm /tmp/return_value
-    arecord -l | grep card | while read -r line; do
-        card=$(echo $line | cut -d":" -f1 | cut -d" " -f2)
-        device=$(echo $line | cut -d":" -f2 | cut -d"," -f2 | sed 's/^ //g' | cut -d" " -f2)
-        desc="$(echo $line | cut -d: -f3 | cut -d[ -f1 | sed 's/^ //g' | sed 's/ *$//') [$(echo $line | cut -d: -f2 | cut -d] -f1 | cut -d[ -f2)]"
-        echo "$card|$device - $desc" >> /tmp/return_value
-    done
-fi
-
-if [ $1 == "getdefaultoutput" ]; then
-    sudo rm /tmp/return_value
-    pulseid=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    defaultoutput=$(pactl list sinks short | awk {'print $1" "$2'} | grep $pulseid | awk {'print $2'})
-    card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    device=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    desc=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    desc2=$(pacmd list-sinks | grep -A35 $defaultoutput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    echo "$card|$device - $desc [$desc2]" > /tmp/return_value
-fi
-
-if [ $1 == "getdefaultinput" ]; then
-    sudo rm /tmp/return_value
-    pulseid=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    defaultinput=$(pactl list sources short | awk {'print $1" "$2'} | grep $pulseid | awk {'print $2'})
-    card=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    device=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    desc=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    desc2=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    echo "$card|$device - $desc [$desc2]" > /tmp/return_value
-fi
-
-if [ $1 == "setoutput" ]; then
-    receive=$(echo "$1 $2 $3 $4 $5 $6 $7" | cut -d" " -f2- | sed 's/^ //' | sed 's/ *$//')
-    card=$(echo $receive | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
-    device=$(echo $receive | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
-    desc=$(echo $receive | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
-    echo "Request: >$receive<" > /tmp/set_soundcard
+    # set audio output device
+    echo "${array[15]}" >> /tmp/autoapp_helper_command
+    card=$(echo ${array[15]} | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
+    device=$(echo ${array[15]} | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
+    desc=$(echo ${array[15]} | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
+    echo "Request: >${array[15]}<" > /tmp/set_soundcard
     echo "Card: >$card<" >> /tmp/set_soundcard
     echo "Device: >$device<" >> /tmp/set_soundcard
     echo "Desc: >$desc<" >> /tmp/set_soundcard
@@ -184,32 +78,27 @@ if [ $1 == "setoutput" ]; then
     echo "Pulse: >$pulsedevice<" >> /tmp/set_soundcard
     echo "Pulse ID: >$pulseid<" >> /tmp/set_soundcard
     if [ ! -z $pulsedevice ]; then
-        crankshaft filesystem system unlock
             sudo sed -i 's/.*default-sink.*//' /etc/pulse/client.conf
             sudo sed -i 's/^# Crankshaft selected output device.*//' /etc/pulse/client.conf
             sudo sed -i 's/^# no output selected -> default.*//' /etc/pulse/client.conf
             sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
             sudo sh -c 'echo "# Crankshaft selected output device" >> /etc/pulse/client.conf'
             sudo sh -c 'echo "default-sink = '$(echo $pulsedevice)'" >> /etc/pulse/client.conf'
-        crankshaft filesystem system lock
     else
-        crankshaft filesystem system unlock
             sudo sed -i 's/.*default-sink.*//' /etc/pulse/client.conf
             sudo sed -i 's/^# Crankshaft selected output device.*//' /etc/pulse/client.conf
             sudo sed -i 's/^# no output selected -> default.*//' /etc/pulse/client.conf
             sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
             sudo sh -c 'echo "# Crankshaft selected output device" >> /etc/pulse/client.conf'
             sudo sh -c 'echo "# no output selected -> default" >> /etc/pulse/client.conf'
-        crankshaft filesystem system lock
     fi
-fi
 
-if [ $1 == "setinput" ]; then
-    receive=$(echo "$1 $2 $3 $4 $5 $6 $7" | cut -d" " -f2- | sed 's/^ //' | sed 's/ *$//')
-    card=$(echo $receive | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
-    device=$(echo $receive | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
-    desc=$(echo $receive | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
-    echo "Request: >$receive<" > /tmp/set_mic
+    # set audio input device
+    echo "${array[16]}" >> /tmp/autoapp_helper_command
+    card=$(echo ${array[16]} | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
+    device=$(echo ${array[16]} | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
+    desc=$(echo ${array[16]} | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
+    echo "Request: >${array[16]}<" > /tmp/set_mic
     echo "Card: >$card<" >> /tmp/set_mic
     echo "Device: >$device<" >> /tmp/set_mic
     echo "Desc: >$desc<" >> /tmp/set_mic
@@ -218,25 +107,191 @@ if [ $1 == "setinput" ]; then
     echo "Pulse: >$pulsedevice<" >> /tmp/set_mic
     echo "Pulse ID: >$pulseid<" >> /tmp/set_mic
     if [ ! -z $pulsedevice ]; then
-        crankshaft filesystem system unlock
             sudo sed -i 's/.*default-source.*//' /etc/pulse/client.conf
             sudo sed -i 's/^# Crankshaft selected input device.*//' /etc/pulse/client.conf
             sudo sed -i 's/^# no input selected -> default.*//' /etc/pulse/client.conf
             sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
             sudo sh -c 'echo "# Crankshaft selected input device" >> /etc/pulse/client.conf'
             sudo sh -c 'echo "default-source = '$(echo $pulsedevice)'" >> /etc/pulse/client.conf'
-        crankshaft filesystem system lock
     else
-        crankshaft filesystem system unlock
             sudo sed -i 's/.*default-source.*//' /etc/pulse/client.conf
             sudo sed -i 's/^# Crankshaft selected input device.*//' /etc/pulse/client.conf
             sudo sed -i 's/^# no input selected -> default.*//' /etc/pulse/client.conf
             sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
             sudo sh -c 'echo "# Crankshaft selected input device" >> /etc/pulse/client.conf'
             sudo sh -c 'echo "# no input selected -> default" >> /etc/pulse/client.conf'
-        crankshaft filesystem system lock
     fi
+
+    # set playback volume
+    echo "${array[1]}" >> /tmp/autoapp_helper_command
+    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    pactl set-sink-volume $pulsedeviceplay ${array[1]}%
+
+    # set capture volume
+    echo "${array[2]}" >> /tmp/autoapp_helper_command
+    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    pactl set-source-volume $pulsedevicecap ${array[2]}%
+
+    # clean buffers
+    sync
+
+    # close filesystems
+    crankshaft filesystem boot lock
+    crankshaft filesystem system lock
+
+    # Done
+    echo "configure done" >> /tmp/autoapp_helper_command
+    echo "-------------------------------------" >> /tmp/autoapp_helper_command
+    sudo rm /tmp/config_in_progress
+fi
+
+# get params from system
+
+if [ "$1" == "getparams" ]; then
+
+    # Start
+    echo "-------------------------------------" >> /tmp/autoapp_helper_command
+    echo "get system values start" >> /tmp/autoapp_helper_command
+
+    # get master volume
+    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    levelplay=$(pactl list sinks | grep -A8 $pulsedeviceplay | grep Volume | cut -d/ -f2 | sed 's/%//' | sed 's/ //g')
+
+    # get capture volume
+    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    levelcap=$(pactl list sources | grep -A8 $pulsedevicecap | grep Volume | cut -d/ -f2 | sed 's/%//' | sed 's/ //g')
+
+    # get disconnect timeout
+    remainingdisconnect=$(systemctl list-timers disconnect.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
+    textdisconnect="Stopped"
+    if [ ! -z $remainingdisconnect ]; then
+        textdisconnect="$remainingdisconnect left"
+    fi
+
+    # get shutdown timeout
+    remainingshutdown=$(systemctl list-timers shutdown.timer | grep left | cut -dl -f1  | awk {'print $5 $6'})
+    textshutdown="Stopped"
+    if [ ! -z $remainingshutdown ]; then
+        textshutdown="$remainingshutdown left"
+    fi
+
+    # free mem
+    mem=$(free -h | grep Mem | awk {'print $4'})
+
+    # cpu freq
+    typeset -i freq
+    freq=$(sudo cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq)/1000
+
+    # cpu temp
+    temp=$(/opt/vc/bin/vcgencmd measure_temp | cut -d= -f2)
+
+    # get outputs
+    sudo rm /tmp/get_outputs > /dev/null 2>&1
+    pactl list sinks | grep -A26 'Sink #' | grep 'alsa.id =' | sed 's/\t//g' | sed 's/alsa.id =//' | sed 's/^ //' | sed 's/ *$//' | sed 's/"//g' | while read -r line; do
+        card=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        device=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        desc=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        desc2=$(pacmd list-sinks | grep -A35 "$line" | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        echo "$card|$device - $desc [$desc2]" >> /tmp/get_outputs
+    done
+
+    # default output
+    sudo rm /tmp/get_default_output > /dev/null 2>&1
+    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    defaultoutput=$(pactl list sinks short | awk {'print $1" "$2'} | grep $pulsedeviceplay | awk {'print $2'})
+    card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    device=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    desc=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    desc2=$(pacmd list-sinks | grep -A35 $defaultoutput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    echo "$card|$device - $desc [$desc2]" > /tmp/get_default_output
+
+    # get inputs
+    sudo rm /tmp/get_inputs > /dev/null 2>&1
+    pactl list sources | grep -A26 'Source #' | grep 'alsa.id =' | sed 's/\t//g' | sed 's/alsa.id =//' | sed 's/^ //' | sed 's/ *$//' | sed 's/"//g' | while read -r line; do
+        card=$(pacmd list-sources | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        device=$(pacmd list-sources | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        desc=$(pacmd list-sources | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        desc2=$(pacmd list-sources | grep -A35 "$line" | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        echo "$card|$device - $desc [$desc2]" >> /tmp/get_inputs
+    done
+
+    # default input
+    sudo rm /tmp/get_default_input > /dev/null 2>&1
+    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    defaultinput=$(pactl list sources short | awk {'print $1" "$2'} | grep $pulsedevicecap | awk {'print $2'})
+    card=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    device=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    desc=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    desc2=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    echo "$card|$device - $desc [$desc2]" > /tmp/get_default_input
+
+    # versiontring
+    versionstring=$(cat /etc/crankshaft.build)
+
+    # datestring
+    datestring=$(cat /etc/crankshaft.date)
+
+    # create return value string
+    sudo rm /tmp/return_value > /dev/null 2>&1
+    echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textdisconnect}#${DISCONNECTION_POWEROFF_MINS}#${textshutdown}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#" > /tmp/return_value
+    echo "get system values done" >> /tmp/autoapp_helper_command
+    echo "-------------------------------------" >> /tmp/autoapp_helper_command
+fi
+
+if [ $1 == "restorevolumes" ]; then
+    echo "-------------------------------------" >> /tmp/autoapp_helper_command
+    echo "autoapp start | volume restore" >> /tmp/autoapp_helper_command
+
+    # playback
+    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    pulseid=$(pactl list sinks | grep -B2 "Name: $pulsedeviceplay" | grep "Sink #" | sed 's/\t//g' | cut -d# -f2)
+    levelplay=$(cat /boot/crankshaft/volume)
+    if [ -z $levelplay ]; then
+        levelplay=100
+        echo "Failsave value volume loaded" >> /tmp/autoapp_helper_command
+    fi
+    #pactl set-sink-volume $pulseid ${levelplay}%
+    #sleep 2
+    #pactl set-sink-volume "$pulseid ${levelplay}%" >> /tmp/autoapp_helper_command
+    echo "Play: $pulseid - $pulsedeviceplay - $levelplay" >> /tmp/autoapp_helper_command
+
+    # capture
+    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    pulseid=$(pactl list sources | grep -B2 "Name: $pulsedevicecap" | grep "Source #" | sed 's/\t//g' | cut -d# -f2)
+    levelcap=$(cat /boot/crankshaft/capvolume)
+    if [ -z $levelcap ]; then
+        levelcap=100
+        echo "Failsave value capvolume loaded" >> /tmp/autoapp_helper_command
+    fi
+    #pactl set-source-volume $pulseid ${levelcap}%
+    #sleep 2
+    #pactl set-source-volume "$pulsedevicecap ${levelcap}%" >> /tmp/autoapp_helper_command
+    echo "Cap: $pulseid - $pulsedevicecap - $levelcap" >> /tmp/autoapp_helper_command
+
+    echo "autoapp start | volume restore done" >> /tmp/autoapp_helper_command
+    echo "-------------------------------------" >> /tmp/autoapp_helper_command
+fi
+
+if [ $1 == "savevolumes" ]; then
+    echo "-------------------------------------" >> /tmp/autoapp_helper_command
+    echo "autoapp exit start" >> /tmp/autoapp_helper_command
+    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    levelplay=$(pactl list sinks | grep -A8 $pulsedeviceplay | grep Volume | cut -d/ -f2 | sed 's/%//' | sed 's/ //g')
+    echo "Play: $pulsedeviceplay - $levelplay" >> /tmp/autoapp_helper_command
+    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    levelcap=$(pactl list sources | grep -A8 $pulsedevicecap | grep Volume | cut -d/ -f2 | sed 's/%//' | sed 's/ //g')
+    echo "Cap: $pulsedevicecap - $levelcap" >> /tmp/autoapp_helper_command
+
+    #crankshaft filesystem boot unlock
+    #sudo sh -c "echo $levelplay > /boot/crankshaft/volume"
+    #sudo sh -c "echo $levelcap > /boot/crankshaft/capvolume"
+    #crankshaft filesystem boot lock
+    echo "autoapp exit done" >> /tmp/autoapp_helper_command
+    echo "-------------------------------------" >> /tmp/autoapp_helper_command
+fi
+
+if [ $1 == "gettzdata" ]; then
+    cat zone1970.tab | grep / | awk {'print $3'} | sort > /tmp/return_value
 fi
 
 exit 0
-

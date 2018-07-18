@@ -12,11 +12,6 @@ chown root:root /tmp/.local-pi
 chown root:root /tmp/.config-pi
 chown root:root /tmp/.cache-pi
 
-# Restore alsa state
-if [ -f /boot/crankshaft/alsactl.state ]; then
-    alsactl -f /boot/crankshaft/alsactl.state restore
-fi
-
 # Check if wallpapers are present and non zero
 if [ ! -f /boot/crankshaft/wallpaper.png ] || [ ! -s /boot/crankshaft/wallpaper.png ]; then
     /usr/local/bin/crankshaft filesystem boot unlock

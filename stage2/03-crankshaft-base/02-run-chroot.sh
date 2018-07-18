@@ -40,7 +40,7 @@ cat /etc/pulse/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
 sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
 echo 'load-module module-mmkbd-evdev device=/dev/gpio2kbd' >> /etc/pulse/default.pa
 echo 'set-sink-volume 0 52428' >> /etc/pulse/default.pa
-rm pulseaudio_daemon.conf
+rm /etc/pulse/pulseaudio_daemon.conf
 
 # wallaper's
 ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png

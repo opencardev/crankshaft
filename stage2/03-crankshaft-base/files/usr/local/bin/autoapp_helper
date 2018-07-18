@@ -207,12 +207,11 @@ if [ "$1" == "getparams" ]; then
 
     # get inputs
     sudo rm /tmp/get_inputs > /dev/null 2>&1
-    pactl list sources | grep -A26 'Source #' | grep 'alsa.id =' | sed 's/\t//g' | sed 's/alsa.id =//' | sed 's/^ //' | sed 's/ *$//' | sed 's/"//g' | while read -r line; do
-        card=$(pacmd list-sources | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        device=$(pacmd list-sources | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        desc=$(pacmd list-sources | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        desc2=$(pacmd list-sources | grep -A35 "$line" | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        echo "$card|$device - $desc [$desc2]" >> /tmp/get_inputs
+    arecord -l | grep card | while read -r line; do
+        card=$(echo $line | cut -d":" -f1 | cut -d" " -f2)
+        device=$(echo $line | cut -d":" -f2 | cut -d"," -f2 | sed 's/^ //g' | cut -d" " -f2)
+        desc="$(echo $line | cut -d: -f3 | cut -d[ -f1 | sed 's/^ //g' | sed 's/ *$//') [$(echo $line | cut -d: -f2 | cut -d] -f1 | cut -d[ -f2)]"
+        echo "$card|$device - $desc" >> /tmp/get_inputs
     done
 
     # default input
@@ -235,58 +234,6 @@ if [ "$1" == "getparams" ]; then
     sudo rm /tmp/return_value > /dev/null 2>&1
     echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textdisconnect}#${DISCONNECTION_POWEROFF_MINS}#${textshutdown}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#" > /tmp/return_value
     echo "get system values done" >> /tmp/autoapp_helper_command
-    echo "-------------------------------------" >> /tmp/autoapp_helper_command
-fi
-
-if [ $1 == "restorevolumes" ]; then
-    echo "-------------------------------------" >> /tmp/autoapp_helper_command
-    echo "autoapp start | volume restore" >> /tmp/autoapp_helper_command
-
-    # playback
-    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    pulseid=$(pactl list sinks | grep -B2 "Name: $pulsedeviceplay" | grep "Sink #" | sed 's/\t//g' | cut -d# -f2)
-    levelplay=$(cat /boot/crankshaft/volume)
-    if [ -z $levelplay ]; then
-        levelplay=100
-        echo "Failsave value volume loaded" >> /tmp/autoapp_helper_command
-    fi
-    #pactl set-sink-volume $pulseid ${levelplay}%
-    #sleep 2
-    #pactl set-sink-volume "$pulseid ${levelplay}%" >> /tmp/autoapp_helper_command
-    echo "Play: $pulseid - $pulsedeviceplay - $levelplay" >> /tmp/autoapp_helper_command
-
-    # capture
-    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    pulseid=$(pactl list sources | grep -B2 "Name: $pulsedevicecap" | grep "Source #" | sed 's/\t//g' | cut -d# -f2)
-    levelcap=$(cat /boot/crankshaft/capvolume)
-    if [ -z $levelcap ]; then
-        levelcap=100
-        echo "Failsave value capvolume loaded" >> /tmp/autoapp_helper_command
-    fi
-    #pactl set-source-volume $pulseid ${levelcap}%
-    #sleep 2
-    #pactl set-source-volume "$pulsedevicecap ${levelcap}%" >> /tmp/autoapp_helper_command
-    echo "Cap: $pulseid - $pulsedevicecap - $levelcap" >> /tmp/autoapp_helper_command
-
-    echo "autoapp start | volume restore done" >> /tmp/autoapp_helper_command
-    echo "-------------------------------------" >> /tmp/autoapp_helper_command
-fi
-
-if [ $1 == "savevolumes" ]; then
-    echo "-------------------------------------" >> /tmp/autoapp_helper_command
-    echo "autoapp exit start" >> /tmp/autoapp_helper_command
-    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    levelplay=$(pactl list sinks | grep -A8 $pulsedeviceplay | grep Volume | cut -d/ -f2 | sed 's/%//' | sed 's/ //g')
-    echo "Play: $pulsedeviceplay - $levelplay" >> /tmp/autoapp_helper_command
-    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    levelcap=$(pactl list sources | grep -A8 $pulsedevicecap | grep Volume | cut -d/ -f2 | sed 's/%//' | sed 's/ //g')
-    echo "Cap: $pulsedevicecap - $levelcap" >> /tmp/autoapp_helper_command
-
-    #crankshaft filesystem boot unlock
-    #sudo sh -c "echo $levelplay > /boot/crankshaft/volume"
-    #sudo sh -c "echo $levelcap > /boot/crankshaft/capvolume"
-    #crankshaft filesystem boot lock
-    echo "autoapp exit done" >> /tmp/autoapp_helper_command
     echo "-------------------------------------" >> /tmp/autoapp_helper_command
 fi
 

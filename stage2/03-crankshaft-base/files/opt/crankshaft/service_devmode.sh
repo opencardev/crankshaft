@@ -30,6 +30,7 @@ if [ ! -f /tmp/usb_debug_mode ]; then
             systemctl start dhcpcd.service > /dev/null 2>&1
             systemctl start networking.service
             systemctl start systemd-timesyncd.service > /dev/null 2>&1
+            systemctl stop watchdog
             if [ $ENABLE_HOTSPOT == 1 ] ; then
                 systemctl start hotspot.service
             fi
@@ -48,6 +49,7 @@ if [ ! -f /tmp/usb_debug_mode ]; then
             systemctl start dhcpcd.service > /dev/null 2>&1
             systemctl start networking.service
             systemctl start systemd-timesyncd.service > /dev/null 2>&1
+            systemctl stop watchdog
             if [ $ENABLE_HOTSPOT == 1 ] ; then
                 systemctl start hotspot.service
             fi

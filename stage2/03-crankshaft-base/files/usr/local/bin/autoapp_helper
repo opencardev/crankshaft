@@ -136,9 +136,13 @@ if [ "${array[0]}" == "setparams" ]; then
     echo "${array[2]}" >> /tmp/autoapp_helper_command
     pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
     # unmute
-    pactl set-sink-mute $pulsedevicecap 0
+    pactl set-source-mute $pulsedevicecap 0
     # set volume
     pactl set-source-volume $pulsedevicecap ${array[2]}%
+
+    # wire volumes to boot
+    sudo sh -c 'echo "'${array[1]}'" > /boot/crankshaft/volume'
+    sudo sh -c 'echo "'${array[2]}'" > /boot/crankshaft/capvolume'
 
     # clean buffers
     sync

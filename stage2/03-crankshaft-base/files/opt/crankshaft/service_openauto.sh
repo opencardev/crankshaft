@@ -9,17 +9,8 @@ if [ -f /tmp/start_openauto ]; then
     # Restore openauto.ini
     /usr/local/bin/crankshaft settings restore
 
-    # kill possible running pulseaudio
-    sudo killall pulseaudio > /dev/null 2>&1
-
-    # restore alsa state
-    sudo alsactl -f /boot/crankshaft/alsactl.state restore
-
-    # start pulse if not started
-    CHECK=$(ps -ax | grep pulseaudio | grep -v grep | tail -n1 | awk {'print $1'})
-    if [ -z $CHECK ]; then
-        pulseaudio --start --log-target syslog
-    fi
+    # restore alsa state and volumes
+    /usr/local/bin/crankshaft audio volume restore
 
     # Make sure display is on
     /usr/local/bin/crankshaft display on
@@ -68,11 +59,7 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         /usr/local/bin/crankshaft settings save
         /usr/local/bin/crankshaft brightness save
-        # save alsa state
-        /usr/local/bin/crankshaft filesystem boot unlock
-        alsactl -f /tmp/alsactl.state store
-        sudo cp -f /tmp/alsactl.state /boot/crankshaft/alsactl.state
-        /usr/local/bin/crankshaft filesystem boot lock
+        /usr/local/bin/crankshaft audio volume save
 
         if [ ! -f /etc/cs_first_start_done ]; then
             /usr/local/bin/crankshaft filesystem system unlock

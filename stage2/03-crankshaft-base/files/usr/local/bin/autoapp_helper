@@ -5,8 +5,10 @@ source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
 echo "$@" >> /tmp/autoapp_helper_command
-if [ -z "$@" ]; then
+
+if [ -z $1 ]; then
     echo "got no params" >> /tmp/autoapp_helper_command
+    exit 0
 fi
 
 IFS="#" read -r -a array <<< "$@"
@@ -125,11 +127,17 @@ if [ "${array[0]}" == "setparams" ]; then
     # set playback volume
     echo "${array[1]}" >> /tmp/autoapp_helper_command
     pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    # unmute
+    pactl set-sink-mute $pulsedeviceplay 0
+    # set volume
     pactl set-sink-volume $pulsedeviceplay ${array[1]}%
 
     # set capture volume
     echo "${array[2]}" >> /tmp/autoapp_helper_command
     pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    # unmute
+    pactl set-sink-mute $pulsedevicecap 0
+    # set volume
     pactl set-source-volume $pulsedevicecap ${array[2]}%
 
     # clean buffers
@@ -198,12 +206,14 @@ if [ "$1" == "getparams" ]; then
     # default output
     sudo rm /tmp/get_default_output > /dev/null 2>&1
     pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    defaultoutput=$(pactl list sinks short | awk {'print $1" "$2'} | grep $pulsedeviceplay | awk {'print $2'})
-    card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    device=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    desc=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    desc2=$(pacmd list-sinks | grep -A35 $defaultoutput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    echo "$card|$device - $desc [$desc2]" > /tmp/get_default_output
+    if [ ! -z $pulsedeviceplay ]; then
+        defaultoutput=$(pactl list sinks short | awk {'print $1" "$2'} | grep $pulsedeviceplay | awk {'print $2'})
+        card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        device=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        desc=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        desc2=$(pacmd list-sinks | grep -A35 $defaultoutput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        echo "$card|$device - $desc [$desc2]" > /tmp/get_default_output
+    fi
 
     # get inputs
     sudo rm /tmp/get_inputs > /dev/null 2>&1
@@ -217,12 +227,14 @@ if [ "$1" == "getparams" ]; then
     # default input
     sudo rm /tmp/get_default_input > /dev/null 2>&1
     pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    defaultinput=$(pactl list sources short | awk {'print $1" "$2'} | grep $pulsedevicecap | awk {'print $2'})
-    card=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    device=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    desc=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    desc2=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    echo "$card|$device - $desc [$desc2]" > /tmp/get_default_input
+    if [ ! -z $pulsedevicecap ]; then
+        defaultinput=$(pactl list sources short | awk {'print $1" "$2'} | grep $pulsedevicecap | awk {'print $2'})
+        card=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        device=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        desc=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        desc2=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        echo "$card|$device - $desc [$desc2]" > /tmp/get_default_input
+    fi
 
     # versiontring
     versionstring=$(cat /etc/crankshaft.build)

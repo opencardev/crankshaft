@@ -9,7 +9,7 @@
  WorkingDirectory=/home/pi
  ExecStart=/opt/crankshaft/service_openauto.sh
  Restart=on-failure
- StartLimitIntervalSec=60
+ StartLimitInterval=60
  StartLimitBurst=5
  RestartSec=10
 

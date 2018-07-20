@@ -57,12 +57,12 @@ if [ "${array[0]}" == "setparams" ]; then
     # open filesystems
     crankshaft filesystem boot unlock
     crankshaft filesystem system unlock
-    sudo sed -i 's/^ENABLE_GPIO=.*/ENABLE_GPIO='$(echo ${array[7]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^DEV_PIN=.*/DEV_PIN='$(echo ${array[8]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^INVERT_PIN=.*/INVERT_PIN='$(echo ${array[9]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^X11_PIN=.*/X11_PIN='$(echo ${array[10]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^REARCAM_PIN=.*/REARCAM_PIN='$(echo ${array[11]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
-    sudo sed -i 's/^ANDROID_PIN=.*/ANDROID_PIN='$(echo ${array[12]} | sed 's/-/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^ENABLE_GPIO=.*/ENABLE_GPIO='$(echo ${array[7]} | sed 's/- - -/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^DEV_PIN=.*/DEV_PIN='$(echo ${array[8]} | sed 's/- - -/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^INVERT_PIN=.*/INVERT_PIN='$(echo ${array[9]} | sed 's/- - -/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^X11_PIN=.*/X11_PIN='$(echo ${array[10]} | sed 's/- - -/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^REARCAM_PIN=.*/REARCAM_PIN='$(echo ${array[11]} | sed 's/- - -/0/')'/' /boot/crankshaft/crankshaft_env.sh
+    sudo sed -i 's/^ANDROID_PIN=.*/ANDROID_PIN='$(echo ${array[12]} | sed 's/- - -/0/')'/' /boot/crankshaft/crankshaft_env.sh
     sudo sed -i 's/^START_X11=.*/START_X11='$(echo ${array[13]})'/' /boot/crankshaft/crankshaft_env.sh
     sudo sed -i 's/^FLIP_SCREEN=.*/FLIP_SCREEN='$(echo ${array[14]})'/' /boot/crankshaft/crankshaft_env.sh
 

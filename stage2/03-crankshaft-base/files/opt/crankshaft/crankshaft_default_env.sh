@@ -60,13 +60,13 @@ STARTUP_VOL_MAX=100
 
 ###  Power Mgmt Related Stuff ###
 # Timeout display after disconnect or after boot without connected device
-DISCONNECTION_POWEROFF_MINS=60
+DISCONNECTION_SCREEN_POWEROFF_SECS=120
 
 # Timeout shutdown after disconnect or after boot without connected device
 #
 # Note: on first boot timeout is set to 300 seconds - after first start
 # this value is used
-DISCONNECTION_SCREEN_POWEROFF_SECS=120
+DISCONNECTION_POWEROFF_MINS=60
 
 ### Wifi Setup ###
 # Hotspot (if enabled the wifi client is disabled and a hotspot is opened)

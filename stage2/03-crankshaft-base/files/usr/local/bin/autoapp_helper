@@ -299,6 +299,10 @@ if [ "$1" == "getparams" ]; then
 
     # get current dac
     dac=$(cat /boot/config.txt | grep -e 'dtoverlay=allo' -e 'dtoverlay=hifiberry' -e 'dtoverlay=audioinjector' | cut -d= -f2 | sed 's/dtoverlay=//')
+    # check for onboard if no dac
+    if [ -z $dac ]; then
+        dac=$(cat /boot/config.txt | grep -e 'dtparam=audio=on' | cut -d= -f2 | sed 's/dtoverlay=//')
+    fi
 
     # create return value string
     sudo rm /tmp/return_value > /dev/null 2>&1

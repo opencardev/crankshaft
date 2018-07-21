@@ -140,9 +140,51 @@ if [ "${array[0]}" == "setparams" ]; then
     # set volume
     pactl set-source-volume $pulsedevicecap ${array[2]}%
 
-    # wire volumes to boot
+    # writee volumes to boot
     sudo sh -c 'echo "'${array[1]}'" > /boot/crankshaft/volume'
     sudo sh -c 'echo "'${array[2]}'" > /boot/crankshaft/capvolume'
+
+    # rtc setup
+    echo "${array[17]}" >> /tmp/autoapp_helper_command
+    echo "${array[18]}" >> /tmp/autoapp_helper_command
+    if [ "${array[17]}" == "none" ]; then
+        /usr/local/bin/crankshaft rtc disable
+    else
+        /usr/local/bin/crankshaft rtc ${array[17]} ${array[18]}
+    fi
+
+    # dac setup
+    echo "${array[19]}" >> /tmp/autoapp_helper_command
+    if [ "${array[19]}" == "Custom" ]; then
+        /usr/local/bin/crankshaft audio clean
+    fi
+    if [ "${array[19]}" == "Allo - Boss" ]; then
+        /usr/local/bin/crankshaft audio allo boss
+    fi
+    if [ "${array[19]}" == "Allo - Piano" ]; then
+        /usr/local/bin/crankshaft audio allo piano
+    fi
+    if [ "${array[19]}" == "Audioinjector - Zero" ]; then
+        /usr/local/bin/crankshaft audio audioinjector zero
+    fi
+    if [ "${array[19]}" == "Audioinjector - Stereo" ]; then
+        /usr/local/bin/crankshaft audio audioinjector stereo
+    fi
+    if [ "${array[19]}" == "Hifiberry - DAC" ]; then
+        /usr/local/bin/crankshaft audio hifiberry dac
+    fi
+    if [ "${array[19]}" == "Hifiberry - DAC Plus" ]; then
+        /usr/local/bin/crankshaft audio hifiberry dacplus
+    fi
+    if [ "${array[19]}" == "Hifiberry - DAC Digi" ]; then
+        /usr/local/bin/crankshaft audio hifiberry digi
+    fi
+    if [ "${array[19]}" == "Hifiberry - DAC Amp" ]; then
+        /usr/local/bin/crankshaft audio hifiberry amp
+    fi
+    if [ "${array[19]}" == "Raspberry Pi - Onboard" ]; then
+        /usr/local/bin/crankshaft audio rpi
+    fi
 
     # clean buffers
     sync
@@ -246,15 +288,23 @@ if [ "$1" == "getparams" ]; then
     # datestring
     datestring=$(cat /etc/crankshaft.date)
 
+    # create tz listing
+    cat /usr/share/zoneinfo/zone1970.tab | grep / | awk {'print $3'} | sort > /tmp/timezone_listing
+
+    # get current timezone
+    timezone=$(cat /etc/timezone)
+
+    # get current rtc of present
+    rtc=$(cat /boot/config.txt | grep dtoverlay=i2c-rtc | cut -d, -f2)
+
+    # get current dac
+    dac=$(cat /boot/config.txt | grep -e 'dtoverlay=allo' -e 'dtoverlay=hifiberry' -e 'dtoverlay=audioinjector' | cut -d= -f2 | sed 's/dtoverlay=//')
+
     # create return value string
     sudo rm /tmp/return_value > /dev/null 2>&1
-    echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textshutdown}#${DISCONNECTION_POWEROFF_MINS}#${textdisconnect}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#" > /tmp/return_value
+    echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textshutdown}#${DISCONNECTION_POWEROFF_MINS}#${textdisconnect}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#${rtc}#${timezone}#${dac}#" > /tmp/return_value
     echo "get system values done" >> /tmp/autoapp_helper_command
     echo "-------------------------------------" >> /tmp/autoapp_helper_command
-fi
-
-if [ $1 == "gettzdata" ]; then
-    cat zone1970.tab | grep / | awk {'print $3'} | sort > /tmp/return_value
 fi
 
 exit 0

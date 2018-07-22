@@ -42,7 +42,10 @@ START_X11=0
 
 ### Screen ###
 # Brightness related stuff
+# When using custom brightness control you can set the BRIGHTNESS_COMMAND which will be executed on brightness change
+# Set BRIGHTNESS_FILE to somewhere with write access when using BRIGHTNESS_COMMAND you can use "/tmp/brightness" or similar
 BRIGHTNESS_FILE=/sys/class/backlight/rpi_backlight/brightness
+BRIGHTNESS_COMMAND=
 BR_MIN=30
 BR_MAX=255
 BR_STEP=25

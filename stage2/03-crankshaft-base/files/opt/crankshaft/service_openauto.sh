@@ -9,8 +9,8 @@ if [ -f /tmp/start_openauto ]; then
     # Restore openauto.ini
     /usr/local/bin/crankshaft settings restore
 
-    # restore alsa state and volumes
-    /usr/local/bin/crankshaft audio volume restore
+    # restore alsa state - volumes restored by openauto
+    /usr/local/bin/crankshaft audio alsastate restore
 
     # Make sure display is on
     /usr/local/bin/crankshaft display on
@@ -21,6 +21,9 @@ if [ -f /tmp/start_openauto ]; then
     else
         X11_MODE_GPIO=1 # 1 = untriggered
     fi
+
+    # start pulseaudio
+    sudo runuser -l pi -c 'pulseaudio -k --start --log-target syslog'
 
     if [ $START_X11 -ne 0 ] || [ $X11_MODE_GPIO -ne 1 ]; then
         # This is when the X11 pin is connected to ground (X11 enabled)
@@ -58,8 +61,16 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] Saving settings..." >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         /usr/local/bin/crankshaft settings save
+        echo "" >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] Saving brightness..." >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         /usr/local/bin/crankshaft brightness save
-        /usr/local/bin/crankshaft audio volume save
+        echo "" >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] Saving alsastate..." >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+        /usr/local/bin/crankshaft audio alsastate save
 
         if [ ! -f /etc/cs_first_start_done ]; then
             /usr/local/bin/crankshaft filesystem system unlock

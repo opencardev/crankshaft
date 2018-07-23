@@ -13,15 +13,6 @@ fi
 
 IFS="#" read -r -a array <<< "$@"
 
-# check if pulse is running
-CHECK=$(ps -ax | grep pulseaudio | grep -v grep | tail -n1 | awk {'print $1'})
-
-# start pulse if not started
-if [ -z $CHECK ]; then
-    pulseaudio --start --log-target syslog
-    sleep 3
-fi
-
 # set params to system
 if [ "${array[0]}" == "setparams" ]; then
 
@@ -338,6 +329,26 @@ if [ "$1" == "getparams" ]; then
     echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textshutdown}#${DISCONNECTION_POWEROFF_MINS}#${textdisconnect}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#${rtc}#${timezone}#${dac}#${DISCONNECTION_POWEROFF_DISABLE}#${DISCONNECTION_SCREEN_POWEROFF_DISABLE}#" > /tmp/return_value
     echo "get system values done" >> /tmp/autoapp_helper_command
     echo "-------------------------------------" >> /tmp/autoapp_helper_command
+fi
+
+if [ "$1" == "restorevolumes" ]; then
+    # set playback volume
+    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    if [ ! -z $pulsedeviceplay ]; then
+        # unmute
+        pactl set-sink-mute $pulsedeviceplay 0
+        # set volume
+        pactl set-sink-volume $pulsedeviceplay $(cat /boot/crankshaft/volume)%
+    fi
+
+    # set capture volume
+    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+    if [ ! -z $pulsedevicecap ]; then
+        # unmute
+        pactl set-source-mute $pulsedevicecap 0
+        # set volume
+        pactl set-source-volume $pulsedevicecap $(cat /boot/crankshaft/capvolume)%
+    fi
 fi
 
 exit 0

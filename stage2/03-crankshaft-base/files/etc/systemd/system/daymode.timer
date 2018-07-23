@@ -2,7 +2,8 @@
  Description=Crankshaft Day Mode Timer
 
 [Timer]
- OnCalendar=*-*-* 8..17:*:00
+ OnCalendar=*-*-* 8..19:*:00
+ AccuracySec=5s
 
 [Install]
  WantedBy=timers.target

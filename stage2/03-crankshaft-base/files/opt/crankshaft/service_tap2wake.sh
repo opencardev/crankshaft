@@ -11,7 +11,9 @@ readlines() {
             systemctl stop disconnect.service
             if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
                 systemctl stop disconnect.timer
-                systemctl start disconnect.timer
+		if [ $DISCONNECTION_SCREEN_POWEROFF_DISABLE -eq 0 ]; then
+            	    systemctl start disconnect.timer
+		fi
             fi
             sleep 30
             systemctl restart tap2wake

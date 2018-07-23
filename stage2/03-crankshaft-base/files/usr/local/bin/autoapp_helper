@@ -182,8 +182,37 @@ if [ "${array[0]}" == "setparams" ]; then
     if [ "${array[19]}" == "Hifiberry - DAC Amp" ]; then
         /usr/local/bin/crankshaft audio hifiberry amp
     fi
+    if [ "${array[19]}" == "IQaudIO - Pi-DAC Plus/Pro/Zero" ]; then
+        /usr/local/bin/crankshaft audio iqaudio dacplus
+    fi
+    if [ "${array[19]}" == "IQaudIO - Pi-Digi Amp Plus" ]; then
+        /usr/local/bin/crankshaft audio iqaudio digiampplus
+    fi
+    if [ "${array[19]}" == "IQaudIO - Pi-Digi Amp Plus - Automute" ]; then
+        /usr/local/bin/crankshaft audio iqaudio digiampplusauto
+    fi
+    if [ "${array[19]}" == "IQaudIO - Pi-Digi Plus" ]; then
+        /usr/local/bin/crankshaft audio iqaudio digiplus
+    fi
     if [ "${array[19]}" == "Raspberry Pi - Onboard" ]; then
         /usr/local/bin/crankshaft audio rpi
+    fi
+
+    # Enable/Disable Timers
+    echo "${array[20]}" >> /tmp/autoapp_helper_command
+    if [ "${array[20]}" == "1" ]; then
+        crankshaft timers shutdown disable
+    else
+        crankshaft timers shutdown enable
+        crankshaft timers shutdown start
+    fi
+
+    echo "${array[21]}" >> /tmp/autoapp_helper_command
+    if [ "${array[21]}" == "1" ]; then
+        crankshaft timers disconnect disable
+    else
+        crankshaft timers disconnect enable
+        crankshaft timers disconnect start
     fi
 
     # clean buffers
@@ -298,7 +327,7 @@ if [ "$1" == "getparams" ]; then
     rtc=$(cat /boot/config.txt | grep dtoverlay=i2c-rtc | cut -d, -f2)
 
     # get current dac
-    dac=$(cat /boot/config.txt | grep -e 'dtoverlay=allo' -e 'dtoverlay=hifiberry' -e 'dtoverlay=audioinjector' | cut -d= -f2 | sed 's/dtoverlay=//')
+    dac=$(cat /boot/config.txt | grep -e 'dtoverlay=allo' -e 'dtoverlay=hifiberry' -e 'dtoverlay=audioinjector' -e 'dtoverlay=iqaudio' | cut -d= -f2 | sed 's/dtoverlay=//')
     # check for onboard if no dac
     if [ -z $dac ]; then
         dac=$(cat /boot/config.txt | grep -e 'dtparam=audio=on' | cut -d= -f2 | sed 's/dtoverlay=//')
@@ -306,7 +335,7 @@ if [ "$1" == "getparams" ]; then
 
     # create return value string
     sudo rm /tmp/return_value > /dev/null 2>&1
-    echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textshutdown}#${DISCONNECTION_POWEROFF_MINS}#${textdisconnect}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#${rtc}#${timezone}#${dac}#" > /tmp/return_value
+    echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textshutdown}#${DISCONNECTION_POWEROFF_MINS}#${textdisconnect}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#${rtc}#${timezone}#${dac}#${DISCONNECTION_POWEROFF_DISABLE}#${DISCONNECTION_SCREEN_POWEROFF_DISABLE}#" > /tmp/return_value
     echo "get system values done" >> /tmp/autoapp_helper_command
     echo "-------------------------------------" >> /tmp/autoapp_helper_command
 fi

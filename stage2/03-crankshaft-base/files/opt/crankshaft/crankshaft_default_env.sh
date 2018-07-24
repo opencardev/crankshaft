@@ -47,6 +47,13 @@ BR_MIN=30
 BR_MAX=255
 BR_STEP=25
 
+# Custom brightness control
+# Note: this command is called after every brightness change - can slow down for example the brightness
+# slider depending on execution speed - the process is called with "&" so call is not waiting for exit!
+# Sample call which will be executed on request: "CUSTOM_BRIGHTNESS_COMMAND brightnessvalue &"
+# To disable leave empty
+CUSTOM_BRIGHTNESS_COMMAND=
+
 # Flip the screen 180°
 FLIP_SCREEN=0
 

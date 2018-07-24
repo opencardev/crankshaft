@@ -324,9 +324,14 @@ if [ "$1" == "getparams" ]; then
         dac=$(cat /boot/config.txt | grep -e 'dtparam=audio=on' | cut -d= -f2 | sed 's/dtoverlay=//')
     fi
 
+    custombrightness=0
+    if [ ! -z ${CUSTOM_BRIGHTNESS_COMMAND} ]; then
+        custombrightness=1
+    fi
+
     # create return value string
     sudo rm /tmp/return_value > /dev/null 2>&1
-    echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textshutdown}#${DISCONNECTION_POWEROFF_MINS}#${textdisconnect}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#${rtc}#${timezone}#${dac}#${DISCONNECTION_POWEROFF_DISABLE}#${DISCONNECTION_SCREEN_POWEROFF_DISABLE}#" > /tmp/return_value
+    echo "${versionstring}#${datestring}#${levelplay}#${levelcap}#${textshutdown}#${DISCONNECTION_POWEROFF_MINS}#${textdisconnect}#${DISCONNECTION_SCREEN_POWEROFF_SECS}#${RTC_DAY_START}#${RTC_NIGHT_START}#${ENABLE_GPIO}#${DEV_PIN}#${INVERT_PIN}#${X11_PIN}#${REARCAM_PIN}#${ANDROID_PIN}#${START_X11}#${FLIP_SCREEN}#${mem}#${freq}#${temp}#${rtc}#${timezone}#${dac}#${DISCONNECTION_POWEROFF_DISABLE}#${DISCONNECTION_SCREEN_POWEROFF_DISABLE}#$custombrightness#" > /tmp/return_value
     echo "get system values done" >> /tmp/autoapp_helper_command
     echo "-------------------------------------" >> /tmp/autoapp_helper_command
 fi
@@ -348,6 +353,12 @@ if [ "$1" == "restorevolumes" ]; then
         pactl set-source-mute $pulsedevicecap 0
         # set volume
         pactl set-source-volume $pulsedevicecap $(cat /boot/crankshaft/capvolume)%
+    fi
+fi
+
+if [ "$1" == "custombrightness" ]; then
+    if [ ! -z ${CUSTOM_BRIGHTNESS_COMMAND} ]; then
+        ${CUSTOM_BRIGHTNESS_COMMAND} $(cat /tmp/custombrightness) &
     fi
 fi
 

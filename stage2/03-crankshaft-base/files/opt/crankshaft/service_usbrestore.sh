@@ -134,14 +134,15 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Updating crankshaft_env.sh..." > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                        cat /boot/crankshaft/crankshaft_env.sh | grep = > /boot/crankshaft/crankshaft_env_bak.sh
+                        cat /boot/crankshaft/crankshaft_env.sh | grep "^[^#]" | grep = > /boot/crankshaft/crankshaft_env_bak.sh
                         cp -f /opt/crankshaft/crankshaft_default_env.sh /boot/crankshaft/crankshaft_env.sh
 
                         while read -r line; do
                             param=$(echo $line | cut -d= -f1)
                             value=$(echo $line | cut -d= -f2)
-                            #echo "$param - $value" > /dev/tty3
-                            sed -i 's#^'$param'=.*#'$param'='$value'#' /boot/crankshaft/crankshaft_env.sh
+                            if [ ! -z $param ] && [ ! -z $value ]; then
+                                sed -i 's#^'$param'=.*#'$param'='$value'#' /boot/crankshaft/crankshaft_env.sh
+                            fi
                         done < /boot/crankshaft/crankshaft_env_bak.sh
 
                         rm -f /boot/crankshaft/crankshaft_env_bak.sh

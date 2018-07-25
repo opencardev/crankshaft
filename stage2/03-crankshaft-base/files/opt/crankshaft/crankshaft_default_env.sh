@@ -35,6 +35,11 @@ DEV_MODE=0
 # Start openauto in dev mode if enabled
 DEV_MODE_APP=0
 
+### Debugging ###
+# Start Crankshaft in debug mode to get network, shell and ssh access
+# System will do a normal start in ro mode
+DEBUG_MODE=0
+
 ### OpenAuto ###
 # Start OpenAuto in X11 or EGL
 # By default, EGL, but if you can't get it to work, do X11

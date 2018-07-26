@@ -22,7 +22,40 @@ for _device in /sys/block/*/device; do
                 umount ${DEVICE} > /dev/null 2>&1
                 /usr/local/bin/crankshaft filesystem system unlock
                 mkdir -p /media/${LABEL}
-                mount -t auto ${DEVICE} /media/${LABEL} -o rw,umask=0000
+                ##############################################################
+                # check fs if needed
+                if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ]; then
+                    # check state of fs
+                    dosfsck -n $DEVICE
+                    if [ $? == "1" ]; then
+                        # 1 = errors detected - repair...
+                        show_cursor
+                        echo "${RESET}" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        dosfsck -y $DEVICE > /dev/tty3
+                        sync
+                        sleep 5
+                        reboot
+                    fi
+                fi
+                if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
+                    CHECK=`tune2fs -l /dev/devicename |awk -F':' '/^Filesystem s/ {print $2}' | sed 's/ //g'`
+                    if [ "$CHECK" != "clean" ]; then
+                        show_cursor
+                        echo "${RESET}" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        fsck.$FSTYPE -f -y $DEVICE > /dev/tty3
+                        sync
+                        sleep 5
+                        reboot
+                    fi
+                fi
+                ##############################################################
+                mount -t auto ${DEVICE} /media/${LABEL} -o rw,umask=0000,sync,user,errors=continue
                 if [ $? -eq 0 ]; then
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] CSSTORAGE mounted." > /dev/tty3
@@ -52,6 +85,39 @@ for _device in /sys/block/*/device; do
         if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ] || [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
             umount /tmp/${PARTITION} > /dev/null 2>&1
             mkdir /tmp/${PARTITION} > /dev/null 2>&1
+            ##############################################################
+            # check fs if needed
+            if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ]; then
+                # check state of fs
+                dosfsck -n $DEVICE
+                if [ $? == "1" ]; then
+                    # 1 = errors detected - repair...
+                    show_cursor
+                    echo "${RESET}" > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                    dosfsck -y $DEVICE > /dev/tty3
+                    sync
+                    sleep 5
+                    reboot
+                fi
+            fi
+            if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
+                CHECK=`tune2fs -l /dev/devicename |awk -F':' '/^Filesystem s/ {print $2}' | sed 's/ //g'`
+                if [ "$CHECK" != "clean" ]; then
+                    show_cursor
+                    echo "${RESET}" > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
+                    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                    fsck.$FSTYPE -f -y $DEVICE > /dev/tty3
+                    sync
+                    sleep 5
+                    reboot
+                fi
+            fi
+            ##############################################################
             mount -t auto ${DEVICE} /tmp/${PARTITION}
             if [ $? -eq 0 ]; then
                 USB_DEBUGMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEBUG | head -1)
@@ -76,7 +142,7 @@ for _device in /sys/block/*/device; do
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                     touch /tmp/usb_dev_mode
                 fi
-	        if [ $ALLOW_USB_FLASH -eq 1 ]; then
+                if [ $ALLOW_USB_FLASH -eq 1 ]; then
                     UPDATEZIP=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | tail -1)
                     FLAG=0
                     if [ ! -z ${UPDATEZIP} ]; then

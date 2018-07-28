@@ -72,6 +72,5 @@ fi
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************"
     echo "[${CYAN}${BOLD} INFO ${RESET}] Systemtime: $systime"
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************"
-    /opt/crankshaft/debug_systemdanalyze.sh &
 
 exit 0

@@ -15,6 +15,7 @@ echo "tmpfs		/tmp/.cache-pi		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.local-root	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.config-root	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.cache-root	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
+echo "tmpfs		/tmp/.backlight 	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 
 sed -i 's/root=ROOTDEV/root=\/dev\/mmcblk0p2/' /boot/cmdline.txt
 
@@ -34,6 +35,7 @@ ln -s /tmp/.cache-pi /home/pi/.cache
 ln -s /tmp/.config-root /root/.config
 ln -s /tmp/.local-root /root/.local
 ln -s /tmp/.cache-root /root/.cache
+ln -s /tmp/.backlight /var/lib/systemd/backlight
 ln -s /tmp/openauto.ini /home/pi/openauto.ini
 ln -s /tmp/resolv.conf /etc/resolv.conf
 

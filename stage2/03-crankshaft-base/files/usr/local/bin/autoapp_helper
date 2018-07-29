@@ -63,62 +63,67 @@ if [ "${array[0]}" == "setparams" ]; then
 
     # set audio output device
     echo "${array[15]}" >> /tmp/autoapp_helper_command
-    card=$(echo ${array[15]} | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
-    device=$(echo ${array[15]} | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
-    desc=$(echo ${array[15]} | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
-    echo "Request: >${array[15]}<" > /tmp/set_soundcard
-    echo "Card: >$card<" >> /tmp/set_soundcard
-    echo "Device: >$device<" >> /tmp/set_soundcard
-    echo "Desc: >$desc<" >> /tmp/set_soundcard
-    pulsedevice=$(pactl list sinks | grep -B25 -e 'alsa.card = "'$card'"' | grep -B24 -e 'alsa.device = "'$device'"' | grep -A0 'Name: ' | grep -v '.default' | sed 's/--//' | sed 's/Name: //' | tail -n1 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    pulseid=$(pactl list sinks short | grep $pulsedevice | awk {'print $1'} | sed 's/\t//g')
-    echo "Pulse: >$pulsedevice<" >> /tmp/set_soundcard
-    echo "Pulse ID: >$pulseid<" >> /tmp/set_soundcard
-    if [ ! -z $pulsedevice ]; then
-            sudo sed -i 's/.*default-sink.*//' /etc/pulse/client.conf
-            sudo sed -i 's/^# Crankshaft selected output device.*//' /etc/pulse/client.conf
-            sudo sed -i 's/^# no output selected -> default.*//' /etc/pulse/client.conf
-            sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
-            sudo sh -c 'echo "# Crankshaft selected output device" >> /etc/pulse/client.conf'
-            sudo sh -c 'echo "default-sink = '$(echo $pulsedevice)'" >> /etc/pulse/client.conf'
-    else
-            sudo sed -i 's/.*default-sink.*//' /etc/pulse/client.conf
-            sudo sed -i 's/^# Crankshaft selected output device.*//' /etc/pulse/client.conf
-            sudo sed -i 's/^# no output selected -> default.*//' /etc/pulse/client.conf
-            sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
-            sudo sh -c 'echo "# Crankshaft selected output device" >> /etc/pulse/client.conf'
-            sudo sh -c 'echo "# no output selected -> default" >> /etc/pulse/client.conf'
+    # only change client.conf if device is not dummy output
+    if [ "${array[15]}" != "No audio output hardware detected!" ]; then
+        card=$(echo ${array[15]} | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
+        device=$(echo ${array[15]} | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
+        desc=$(echo ${array[15]} | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
+        echo "Request: >${array[15]}<" > /tmp/set_soundcard
+        echo "Card: >$card<" >> /tmp/set_soundcard
+        echo "Device: >$device<" >> /tmp/set_soundcard
+        echo "Desc: >$desc<" >> /tmp/set_soundcard
+        pulsedevice=$(pactl list sinks | grep -B25 -e 'alsa.card = "'$card'"' | grep -B24 -e 'alsa.device = "'$device'"' | grep -A0 'Name: ' | grep -v '.default' | sed 's/--//' | sed 's/Name: //' | tail -n1 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        pulseid=$(pactl list sinks short | grep $pulsedevice | awk {'print $1'} | sed 's/\t//g')
+        echo "Pulse: >$pulsedevice<" >> /tmp/set_soundcard
+        echo "Pulse ID: >$pulseid<" >> /tmp/set_soundcard
+        if [ ! -z $pulsedevice ]; then
+                sudo sed -i 's/.*default-sink.*//' /etc/pulse/client.conf
+                sudo sed -i 's/^# Crankshaft selected output device.*//' /etc/pulse/client.conf
+                sudo sed -i 's/^# no output selected -> default.*//' /etc/pulse/client.conf
+                sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
+                sudo sh -c 'echo "# Crankshaft selected output device" >> /etc/pulse/client.conf'
+                sudo sh -c 'echo "default-sink = '$(echo $pulsedevice)'" >> /etc/pulse/client.conf'
+        else
+                sudo sed -i 's/.*default-sink.*//' /etc/pulse/client.conf
+                sudo sed -i 's/^# Crankshaft selected output device.*//' /etc/pulse/client.conf
+                sudo sed -i 's/^# no output selected -> default.*//' /etc/pulse/client.conf
+                sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
+                sudo sh -c 'echo "# Crankshaft selected output device" >> /etc/pulse/client.conf'
+                sudo sh -c 'echo "# no output selected -> default" >> /etc/pulse/client.conf'
+        fi
     fi
 
     # set audio input device
     echo "${array[16]}" >> /tmp/autoapp_helper_command
-    card=$(echo ${array[16]} | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
-    device=$(echo ${array[16]} | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
-    desc=$(echo ${array[16]} | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
-    echo "Request: >${array[16]}<" > /tmp/set_mic
-    echo "Card: >$card<" >> /tmp/set_mic
-    echo "Device: >$device<" >> /tmp/set_mic
-    echo "Desc: >$desc<" >> /tmp/set_mic
-    pulsedevice=$(pactl list sources | grep -B25 -e 'alsa.card = "'$card'"' | grep -B24 -e 'alsa.device = "'$device'"' | grep -A0 'Name: ' | grep -v '.default' | sed 's/--//' | sed 's/Name: //' | tail -n1 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    pulseid=$(pactl list sources short | grep $pulsedevice | awk {'print $1'} | sed 's/\t//g')
-    echo "Pulse: >$pulsedevice<" >> /tmp/set_mic
-    echo "Pulse ID: >$pulseid<" >> /tmp/set_mic
-    if [ ! -z $pulsedevice ]; then
-            sudo sed -i 's/.*default-source.*//' /etc/pulse/client.conf
-            sudo sed -i 's/^# Crankshaft selected input device.*//' /etc/pulse/client.conf
-            sudo sed -i 's/^# no input selected -> default.*//' /etc/pulse/client.conf
-            sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
-            sudo sh -c 'echo "# Crankshaft selected input device" >> /etc/pulse/client.conf'
-            sudo sh -c 'echo "default-source = '$(echo $pulsedevice)'" >> /etc/pulse/client.conf'
-    else
-            sudo sed -i 's/.*default-source.*//' /etc/pulse/client.conf
-            sudo sed -i 's/^# Crankshaft selected input device.*//' /etc/pulse/client.conf
-            sudo sed -i 's/^# no input selected -> default.*//' /etc/pulse/client.conf
-            sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
-            sudo sh -c 'echo "# Crankshaft selected input device" >> /etc/pulse/client.conf'
-            sudo sh -c 'echo "# no input selected -> default" >> /etc/pulse/client.conf'
+    # only change client.conf if device is not dummy output
+    if [ "${array[16]}" != "No audio input hardware detected!" ]; then
+        card=$(echo ${array[16]} | cut -d- -f1 | cut -d"|" -f1 | sed 's/^ //' | sed 's/ *$//')
+        device=$(echo ${array[16]} | cut -d- -f1 | cut -d"|" -f2 | sed 's/^ //' | sed 's/ *$//')
+        desc=$(echo ${array[16]} | cut -d- -f2- | sed 's/^ //' | sed 's/ *$//')
+        echo "Request: >${array[16]}<" > /tmp/set_mic
+        echo "Card: >$card<" >> /tmp/set_mic
+        echo "Device: >$device<" >> /tmp/set_mic
+        echo "Desc: >$desc<" >> /tmp/set_mic
+        pulsedevice=$(pactl list sources | grep -B25 -e 'alsa.card = "'$card'"' | grep -B24 -e 'alsa.device = "'$device'"' | grep -A0 'Name: ' | grep -v '.default' | sed 's/--//' | sed 's/Name: //' | tail -n1 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        pulseid=$(pactl list sources short | grep $pulsedevice | awk {'print $1'} | sed 's/\t//g')
+        echo "Pulse: >$pulsedevice<" >> /tmp/set_mic
+        echo "Pulse ID: >$pulseid<" >> /tmp/set_mic
+        if [ ! -z $pulsedevice ]; then
+                sudo sed -i 's/.*default-source.*//' /etc/pulse/client.conf
+                sudo sed -i 's/^# Crankshaft selected input device.*//' /etc/pulse/client.conf
+                sudo sed -i 's/^# no input selected -> default.*//' /etc/pulse/client.conf
+                sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
+                sudo sh -c 'echo "# Crankshaft selected input device" >> /etc/pulse/client.conf'
+                sudo sh -c 'echo "default-source = '$(echo $pulsedevice)'" >> /etc/pulse/client.conf'
+        else
+                sudo sed -i 's/.*default-source.*//' /etc/pulse/client.conf
+                sudo sed -i 's/^# Crankshaft selected input device.*//' /etc/pulse/client.conf
+                sudo sed -i 's/^# no input selected -> default.*//' /etc/pulse/client.conf
+                sudo sed -i '/./,/^$/!d' /etc/pulse/client.conf
+                sudo sh -c 'echo "# Crankshaft selected input device" >> /etc/pulse/client.conf'
+                sudo sh -c 'echo "# no input selected -> default" >> /etc/pulse/client.conf'
+        fi
     fi
-
     # set playback volume
     echo "${array[1]}" >> /tmp/autoapp_helper_command
     pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
@@ -264,45 +269,75 @@ if [ "$1" == "getparams" ]; then
 
     # get outputs
     sudo rm /tmp/get_outputs > /dev/null 2>&1
-    pactl list sinks | grep -A26 'Sink #' | grep 'alsa.id =' | sed 's/\t//g' | sed 's/alsa.id =//' | sed 's/^ //' | sed 's/ *$//' | sed 's/"//g' | while read -r line; do
-        card=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        device=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        desc=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        desc2=$(pacmd list-sinks | grep -A35 "$line" | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        echo "$card|$device - $desc [$desc2]" >> /tmp/get_outputs
-    done
+    # check for pulseaudio dummy output
+    nodevice=$(pactl list sinks | grep 'Description: Dummy Output' | sed 's/"//g' | sed 's/\t//g' | sed 's/ //g' | sed 's/://g' | tail -n1)
+    if [ -z $nodevice ]; then
+        pactl list sinks | grep -A26 'Sink #' | grep 'alsa.id =' | sed 's/\t//g' | sed 's/alsa.id =//' | sed 's/^ //' | sed 's/ *$//' | sed 's/"//g' | while read -r line; do
+            card=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+            device=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+            desc=$(pacmd list-sinks | grep -A34 "$line" | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+            desc2=$(pacmd list-sinks | grep -A35 "$line" | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+            echo "$card|$device - $desc [$desc2]" >> /tmp/get_outputs
+        done
 
-    # default output
-    sudo rm /tmp/get_default_output > /dev/null 2>&1
-    pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    if [ ! -z $pulsedeviceplay ]; then
-        defaultoutput=$(pactl list sinks short | awk {'print $1" "$2'} | grep $pulsedeviceplay | awk {'print $2'})
-        card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        device=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        desc=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        desc2=$(pacmd list-sinks | grep -A35 $defaultoutput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        echo "$card|$device - $desc [$desc2]" > /tmp/get_default_output
+        # default output
+        sudo rm /tmp/get_default_output > /dev/null 2>&1
+        pulsedeviceplay=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        if [ ! -z $pulsedeviceplay ]; then
+            defaultoutput=$(pactl list sinks short | awk {'print $1" "$2'} | grep $pulsedeviceplay | awk {'print $2'})
+            if [ ! -z $defaultoutput ]; then
+                card=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+                device=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+                desc=$(pacmd list-sinks | grep -A34 $defaultoutput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+                desc2=$(pacmd list-sinks | grep -A35 $defaultoutput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+                echo "$card|$device - $desc [$desc2]" > /tmp/get_default_output
+            else
+                echo "not selected" > /tmp/get_default_output
+                cp /tmp/get_outputs /tmp/get_outputs.tmp
+                echo "not selected" > /tmp/get_outputs
+                cat /tmp/get_outputs.tmp >> /tmp/get_outputs
+                sudo rm -f /tmp/get_outputs.tmp
+            fi
+        fi
+    else
+        echo "No audio output hardware detected!" > /tmp/get_outputs
+        echo "No audio output hardware detected!" > /tmp/get_default_output
     fi
+
 
     # get inputs
     sudo rm /tmp/get_inputs > /dev/null 2>&1
-    arecord -l | grep card | while read -r line; do
-        card=$(echo $line | cut -d":" -f1 | cut -d" " -f2)
-        device=$(echo $line | cut -d":" -f2 | cut -d"," -f2 | sed 's/^ //g' | cut -d" " -f2)
-        desc="$(echo $line | cut -d: -f3 | cut -d[ -f1 | sed 's/^ //g' | sed 's/ *$//') [$(echo $line | cut -d: -f2 | cut -d] -f1 | cut -d[ -f2)]"
-        echo "$card|$device - $desc" >> /tmp/get_inputs
-    done
-
-    # default input
-    sudo rm /tmp/get_default_input > /dev/null 2>&1
-    pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-    if [ ! -z $pulsedevicecap ]; then
-        defaultinput=$(pactl list sources short | awk {'print $1" "$2'} | grep $pulsedevicecap | awk {'print $2'})
-        card=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        device=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        desc=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        desc2=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
-        echo "$card|$device - $desc [$desc2]" > /tmp/get_default_input
+    # check in put device available
+    nodevice=$(arecord -l | sed 's/"//g' | sed 's/\t//g' | sed 's/ //g' | sed 's/://g' | tail -n1)
+    if [ ! -z $nodevice ]; then
+        arecord -l | grep card | while read -r line; do
+            card=$(echo $line | cut -d":" -f1 | cut -d" " -f2)
+            device=$(echo $line | cut -d":" -f2 | cut -d"," -f2 | sed 's/^ //g' | cut -d" " -f2)
+            desc="$(echo $line | cut -d: -f3 | cut -d[ -f1 | sed 's/^ //g' | sed 's/ *$//') [$(echo $line | cut -d: -f2 | cut -d] -f1 | cut -d[ -f2)]"
+            echo "$card|$device - $desc" >> /tmp/get_inputs
+        done
+        # default input
+        sudo rm /tmp/get_default_input > /dev/null 2>&1
+        pulsedevicecap=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+        if [ ! -z $pulsedevicecap ]; then
+            defaultinput=$(pactl list sources short | awk {'print $1" "$2'} | grep $pulsedevicecap | awk {'print $2'})
+            if [ ! -z $defaultinput ]; then
+                card=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.card =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+                device=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.device =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+                desc=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card =' | sed 's/\t//g' | grep 'alsa.id =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+                desc2=$(pacmd list-sources | grep -A34 $defaultinput | grep -B4 'alsa.card_name =' | sed 's/\t//g' | grep 'alsa.card_name =' | cut -d= -f2 | sed 's/"//g' | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+                echo "$card|$device - $desc [$desc2]" > /tmp/get_default_input
+            else
+                echo "not selected" > /tmp/get_default_input
+                cp /tmp/get_inputs /tmp/get_inputs.tmp
+                echo "not selected" > /tmp/get_inputs
+                cat /tmp/get_inputs.tmp >> /tmp/get_inputs
+                sudo rm -f /tmp/get_inputs.tmp
+            fi
+        fi
+    else
+        echo "No audio input hardware detected!" > /tmp/get_inputs
+        echo "No audio input hardware detected!" > /tmp/get_default_inputs
     fi
 
     # versiontring

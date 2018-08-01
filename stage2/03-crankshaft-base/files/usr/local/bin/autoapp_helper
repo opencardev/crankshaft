@@ -381,7 +381,11 @@ if [ "$1" == "restorevolumes" ]; then
         # unmute
         pactl set-sink-mute $pulsedeviceplay 0
         # set volume
-        pactl set-sink-volume $pulsedeviceplay $(cat /boot/crankshaft/volume)%
+        if [ -f /boot/crankshaft/volume ]; then
+            pactl set-sink-volume $pulsedeviceplay $(cat /boot/crankshaft/volume)%
+        else
+            pactl set-sink-volume $pulsedeviceplay 50%
+        fi
     fi
 
     # set capture volume
@@ -390,7 +394,11 @@ if [ "$1" == "restorevolumes" ]; then
         # unmute
         pactl set-source-mute $pulsedevicecap 0
         # set volume
-        pactl set-source-volume $pulsedevicecap $(cat /boot/crankshaft/capvolume)%
+        if [ -f /boot/crankshaft/capvolume ]; then
+            pactl set-source-volume $pulsedevicecap $(cat /boot/crankshaft/capvolume)%
+        else
+            pactl set-source-volume $pulsedevicecap 50%
+        fi
     fi
 fi
 

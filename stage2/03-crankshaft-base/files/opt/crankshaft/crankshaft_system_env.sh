@@ -25,6 +25,9 @@ if [ ! -z $ENABLE_GPIO ]; then
         if [ $REARCAM_PIN -ne 0 ]; then
             sudo /usr/bin/gpio -g mode $REARCAM_PIN up
         fi
+        if [ $IGNITION_PIN -ne 0 ]; then
+            sudo /usr/bin/gpio -g mode $IGNITION_PIN up
+        fi
     else
         # make sure flag is correctly set if
         # ENABLE_GPIO is not set to 1 or missing

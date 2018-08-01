@@ -99,7 +99,7 @@ if [ -f /tmp/start_openauto ]; then
                     echo "[${RED}${BOLD} INFO ${RESET}] You are in Dev Mode OpenAuto." >/dev/tty3
                     echo "[${RED}${BOLD} INFO ${RESET}] System will shutdown in 60 seconds automatically." >/dev/tty3
                     echo "[${RED}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
-                    sudo shutdown -P -t 1
+                    sudo shutdown -t 1
                 fi
             else
                 echo "" >/dev/tty3

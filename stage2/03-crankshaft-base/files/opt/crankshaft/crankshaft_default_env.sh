@@ -1,7 +1,8 @@
 ### Hardware ###
 # The hardware pins can be completly disabled with the global flag.
 
-# Global Flag (enables / disables gpio usage excluding device connected trigger gpio!)
+# Global Flag (enables / disables gpio usage excluding device connected
+# trigger gpio and ignition based shutdown!)
 ENABLE_GPIO=1
 
 # Possible used gpio's by hifiberry dac's depending on model:
@@ -115,6 +116,15 @@ RTC_DAYNIGHT=0
 # Use command 'crankshaft timers daynight xx xx' in shell!
 RTC_DAY_START=8
 RTC_NIGHT_START=18
+
+# Ignition Based Shutdown
+# This pin must be low to keep system running. If high for > IGNITION-DALAY (seconds)
+# system will do a shutdown
+# Note: this gpio depends NOT on ENABLE_GPIO!!!
+# To disable set to 0
+IGNITION_PIN=0
+# Time to wait until shutting down (seconds)
+IGNITION_DELAY=60
 
 # System updates
 ALLOW_USB_FLASH=1

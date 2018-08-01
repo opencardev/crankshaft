@@ -39,10 +39,12 @@ chmod 777 files/opt/crankshaft/gpio2kbd
 
 # openauto updates
 cp -f $BASE_DIR/prebuilts/openauto/autoapp files/usr/local/bin/autoapp
+cp -f $BASE_DIR/prebuilts/openauto/autoapp_helper files/usr/local/bin/autoapp_helper
 cp -f $BASE_DIR/prebuilts/openauto/btservice files/usr/local/bin/btservice
 cp -f $BASE_DIR/prebuilts/openauto/libaasdk.so files/usr/local/lib/libaasdk.so
 cp -f $BASE_DIR/prebuilts/openauto/libaasdk_proto.so files/usr/local/lib/libaasdk_proto.so
 chmod 777 files/usr/local/bin/autoapp
+chmod 777 files/usr/local/bin/autoapp_helper
 chmod 777 files/usr/local/bin/btservice
 chmod 666 files/usr/local/lib/libaasdk.so
 chmod 666 files/usr/local/lib/libaasdk_proto.so

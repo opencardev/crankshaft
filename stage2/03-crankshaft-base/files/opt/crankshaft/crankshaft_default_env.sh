@@ -82,17 +82,19 @@ DISCONNECTION_SCREEN_POWEROFF_DISABLE=0
 # this value is used
 DISCONNECTION_POWEROFF_MINS=60
 # Disable Timer
-DISCONNECTION_POWEROFF_DISABLE=1
+DISCONNECTION_POWEROFF_DISABLE=0
 
 ### Wifi Setup ###
+# Your country code like EN,DE,FR,UK etc.
+WIFI_COUNTRY=EN
+
+# Wifi client mode - Only used in dev mode
+WIFI_SSID=sample
+WIFI_PSK=sample
+
 # Hotspot (if enabled the wifi client is disabled and a hotspot is opened)
 ENABLE_HOTSPOT=0
 HOTSPOT_PSK=1234567890
-
-# Only used in dev mode
-WIFI_SSID=sample
-WIFI_PSK=sample
-WIFI_COUNTRY=EN
 
 ### RPi Camera Module ###
 # Overlay settings

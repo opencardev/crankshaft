@@ -12,7 +12,6 @@
     Optionally you can put downloaded zip to the stick which will be auto unpacked - make sure
     enough space is available.
     Crankshaft settings etc. will be safed and restored during flash.
-    Hint for kodi users: if /home/pi/.kodi exits it will be also saved and restored :-)
     Gui will show a kodi icon if /usr/bin/kodi exists to start it.
     But respect: no official support for kodi usage with crankshaft it's only a small gift :-)
 - Rework shutdown menu - shutdown and reboot available
@@ -25,13 +24,16 @@
     Free available storage is shown in dashcam window.
 - Rearcam can be triggered externally to show/hide by placing (or remove) file /tmp/rearcam_enabled
     Rearcam can also be activated via toogle button in dashcam window or by gpio service.
+    Rearcam can triggered via gpio.
 - Screen timeouts: redesigned to two timers.
     First:  Shutdown timer if no connected device for auto shutdown the rpi.
             Default 60 mins.
             (Stopped and resetted by device connect / disconnect)
+            It can be disabled via crankshaft_env.sh or settings in gui.
     Second: Screentimeout if no connected device.
             Default 120 seconds - on first boot 300 seconds.
             (Stopped and resetted by device connect / disconnect)
+            It can be disabled via crankshaft_env.sh or settings in gui.
     Hint:   In dev mode no timers are activated so no auto shutdown or screen timeout!
 - Tap2Wake: If screen has reached timeout it can be waked up by tap to display or keypress on input device
 - Dev Mode reworked
@@ -50,5 +52,6 @@
 - Android device detection via udev optimized and device list updateable (let us know if some manufacturer is missing!)
     GPIO can be set if device connected to switch exernal parts.
 - Optimized settings menu (slider size / textboxes)
-- New CS-NG tab in settings with system infos etc.
+- New CS-NG tabs in settings with system infos etc.
 - System volume and capture volume control added (experimental)
+- External rw storage: If a usb drive which is labeled "CSSTORAGE" is detected it will be mountet rw for kodi home folder and dashcam storage.

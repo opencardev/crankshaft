@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /opt/crankshaft/crankshaft_system_env.sh
+
 BASH_SCRIPT=/boot/crankshaft/startup.sh
 PYTHON_SCRIPT=/boot/crankshaft/startup.py
 

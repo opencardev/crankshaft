@@ -24,7 +24,7 @@ if [ $ENABLE_GPIO -eq 1 ]; then
                 if [ $IGNITION_GPIO -ne 0 ] ; then
                     IGN_COUNTER=$((IGN_COUNTER+1))
                     if [ $IGN_COUNTER -gt $IGNITION_DELAY ]; then
-                        shutdown now
+                        touch /tmp/external_exit
                     fi
                 else
                     IGN_COUNTER=0

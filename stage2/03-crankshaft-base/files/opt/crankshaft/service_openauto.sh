@@ -26,7 +26,14 @@ if [ -f /tmp/start_openauto ]; then
 
     # start pulseaudio
     log_echo "Starting pulseaudio"
-    sudo runuser -l pi -c 'pulseaudio -k --start --log-target syslog'
+    sudo killall pulseaudio
+    # remove old temp files
+    sudo rm -f /tmp/get_inputs > /dev/null 2>&1
+    sudo rm -f /tmp/get_outputs > /dev/null 2>&1
+    sudo rm -f /tmp/get_default_input > /dev/null 2>&1
+    sudo rm -f /tmp/get_default_output > /dev/null 2>&1
+    sudo runuser -l pi -c 'pulseaudio --start --log-target syslog'
+    sleep 1 # give a small relax time
     # check for pulseaudio dummy output
     nodevice=$(sudo runuser -l pi -c 'pactl list sinks' | grep 'Description: Dummy Output' | sed 's/"//g' | sed 's/\t//g' | sed 's/ //g' | sed 's/://g' | tail -n1)
     if [ -z $nodevice ]; then
@@ -36,7 +43,13 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio could not detect a device - Restarting..." >/dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
         # restart pulseaudio cause no hardware device was available
-        sudo runuser -l pi -c 'pulseaudio -k --start --log-target syslog'
+        sudo killall pulseaudio
+        # remove old temp files
+        sudo rm -f /tmp/get_inputs > /dev/null 2>&1
+        sudo rm -f /tmp/get_outputs > /dev/null 2>&1
+        sudo rm -f /tmp/get_default_input > /dev/null 2>&1
+        sudo rm -f /tmp/get_default_output > /dev/null 2>&1
+        sudo runuser -l pi -c 'pulseaudio --start --log-target syslog'
         sleep 1 # give a small relax time
     fi
     if [ $START_X11 -ne 0 ] || [ $X11_MODE_GPIO -ne 1 ]; then

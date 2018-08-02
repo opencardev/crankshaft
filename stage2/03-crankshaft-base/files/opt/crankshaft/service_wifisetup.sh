@@ -5,6 +5,7 @@ source /opt/crankshaft/crankshaft_system_env.sh
 source /boot/crankshaft/crankshaft_env.sh
 
 # Setup base file
+log_echo "Setting up wifi client credentials"
 echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" > /tmp/wpa_supplicant.conf
 echo "update_config=1" >> /tmp/wpa_supplicant.conf
 echo "country=${WIFI_COUNTRY}" >> /tmp/wpa_supplicant.conf

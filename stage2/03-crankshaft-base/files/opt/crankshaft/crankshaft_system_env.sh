@@ -58,3 +58,9 @@ hide_cursor() {
     setterm -cursor off > /dev/tty3
     setterm -blink off > /dev/tty3
 }
+
+log_echo() {
+    logger "CSNG-LOGGER: --------------------------------------------------------------------"
+    logger "CSNG-LOGGER: $1"
+    logger "CSNG-LOGGER: --------------------------------------------------------------------"
+}

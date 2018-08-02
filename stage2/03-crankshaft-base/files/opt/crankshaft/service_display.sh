@@ -25,6 +25,7 @@ fi
 
 if [ $FLIP_SCREEN -ne 0 ] || [ $INVERT_MODE_GPIO -ne 1 ] ; then
     if [ -z $flipset ]; then
+        log_echo "Activate display rotation"
         # Not there
         mount -o remount,rw /
         mount -o remount,rw /boot
@@ -47,6 +48,7 @@ if [ $FLIP_SCREEN -ne 0 ] || [ $INVERT_MODE_GPIO -ne 1 ] ; then
     fi
 else
     if [ ! -z $flipset ]; then
+        log_echo "Remove display rotation"
         # there
         mount -o remount,rw /
         mount -o remount,rw /boot

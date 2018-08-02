@@ -14,6 +14,7 @@ for _device in /sys/block/*/device; do
         LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1)
         FSTYPE=$(blkid /dev/${PARTITION} | sed 's/.*TYPE="//' | cut -d'"' -f1)
         if [ $LABEL == "CSSTORAGE" ]; then
+            log_echo "CSSTORAGE detected"
             echo "" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] External CS-USB-Storage detected - mounting..." > /dev/tty3
@@ -28,6 +29,7 @@ for _device in /sys/block/*/device; do
                     # check state of fs
                     dosfsck -n $DEVICE
                     if [ $? == "1" ]; then
+                        log_echo "CSSTORAGE - errors detected -> fixing"
                         # 1 = errors detected - repair...
                         show_cursor
                         echo "${RESET}" > /dev/tty3
@@ -43,6 +45,7 @@ for _device in /sys/block/*/device; do
                 if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
                     CHECK=`tune2fs -l /dev/devicename |awk -F':' '/^Filesystem s/ {print $2}' | sed 's/ //g'`
                     if [ "$CHECK" != "clean" ]; then
+                        log_echo "CSSTORAGE - errors detected -> fixing"
                         show_cursor
                         echo "${RESET}" > /dev/tty3
                         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
@@ -57,6 +60,7 @@ for _device in /sys/block/*/device; do
                 ##############################################################
                 mount -t auto ${DEVICE} /media/${LABEL} -o rw,umask=0000,sync,user,errors=continue
                 if [ $? -eq 0 ]; then
+                    log_echo "CSSTORAGE - mount successful"
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] CSSTORAGE mounted." > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -73,6 +77,7 @@ for _device in /sys/block/*/device; do
                     /usr/local/bin/crankshaft filesystem system lock
                     CSSTORAGE_DETECTED=1
                 else
+                    log_echo "CSSTORAGE - mount failed"
                     echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
                     echo "[${RED}${BOLD} FAIL ${RESET}] CSSTORAGE not mounted!" > /dev/tty3
                     echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
@@ -91,6 +96,7 @@ for _device in /sys/block/*/device; do
                 # check state of fs
                 dosfsck -n $DEVICE
                 if [ $? == "1" ]; then
+                    log_echo "${DEVICE} - errors detected -> fixing"
                     # 1 = errors detected - repair...
                     show_cursor
                     echo "${RESET}" > /dev/tty3
@@ -106,6 +112,7 @@ for _device in /sys/block/*/device; do
             if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
                 CHECK=`tune2fs -l /dev/devicename |awk -F':' '/^Filesystem s/ {print $2}' | sed 's/ //g'`
                 if [ "$CHECK" != "clean" ]; then
+                    log_echo "${DEVICE} - errors detected -> fixing"
                     show_cursor
                     echo "${RESET}" > /dev/tty3
                     echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
@@ -122,6 +129,7 @@ for _device in /sys/block/*/device; do
             if [ $? -eq 0 ]; then
                 USB_DEBUGMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEBUG | head -1)
                 if [ ! -z ${USB_DEBUGMODE} ]; then
+                    log_echo "${DEVICE} - Debug trigger file detected"
                     show_clear_screen
                     echo "" > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -133,6 +141,7 @@ for _device in /sys/block/*/device; do
                 fi
                 USB_DEVMODE=$(ls /tmp/${PARTITION} | grep ENABLE_DEVMODE | head -1)
                 if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ] && [ -z ${USB_DEBUGMODE} ]; then
+                    log_echo "${DEVICE} - Dev Mode trigger file detected"
                     show_clear_screen
                     echo "" > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3

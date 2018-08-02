@@ -9,6 +9,7 @@ model=$2
 usbpath=$3
 
 if [ $addremove == "add" ] && [ "$usbpath" != "" ]; then
+    log_echo "Device detected - $usbpath - $model"
     echo $usbpath > /tmp/android_device
     echo $model >> /tmp/android_device
     echo "" > /dev/tty3
@@ -19,6 +20,7 @@ if [ $addremove == "add" ] && [ "$usbpath" != "" ]; then
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     /usr/local/bin/crankshaft timers stop
     if [ $ANDROID_PIN -ne 0 ]; then
+        log_echo "Setting device gpio pin up"
         sudo /usr/bin/gpio -g mode $ANDROID_PIN up
     fi
 fi
@@ -27,6 +29,7 @@ if [ "$addremove" == "remove" ] && [ "$usbpath" != "" ]; then
     if [ -f /tmp/android_device ]; then
         CHECK=$(cat /tmp/android_device | grep $usbpath)
         if [ ! -z $CHECK ]; then
+            log_echo "Device removed - $usbpath - $model"
             sudo rm /tmp/android_device
             echo "" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
@@ -37,9 +40,11 @@ if [ "$addremove" == "remove" ] && [ "$usbpath" != "" ]; then
             sleep 1 # relax time for failsafe while android phone is switching mode
                     # while starting google auto
             if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
+                log_echo "Start timers"
                 /usr/local/bin/crankshaft timers start
             fi
             if [ $ANDROID_PIN -ne 0 ]; then
+                log_echo "Setting device gpio pin down"
                 sudo /usr/bin/gpio -g mode $ANDROID_PIN down
             fi
         fi

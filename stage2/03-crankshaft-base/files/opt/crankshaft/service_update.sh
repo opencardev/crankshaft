@@ -6,6 +6,7 @@ source /boot/crankshaft/crankshaft_env.sh
 
 
 if [ "`ping -c 1 google.com`" ];then
+    log_echo "Internet connection available"
     # Check udev rules
     wget -q -O /tmp/51-android.rules.md5 --no-check-certificate https://raw.githubusercontent.com/opencardev/prebuilts/master/udev/51-android.rules.md5
     REMOTE_UDEV=$(cat /tmp/51-android.rules.md5 | awk {'print $1'})
@@ -22,6 +23,7 @@ if [ "`ping -c 1 google.com`" ];then
 
     # udev
     if [ "$REMOTE_UDEV" != "$LOCAL_UDEV" ];then
+        log_echo "New udev rules available"
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] New udev device rules are available." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update udev' to update." >/dev/tty3
@@ -29,6 +31,7 @@ if [ "`ping -c 1 google.com`" ];then
     fi
     # csmt
     if [ "$REMOTE_CSMT" != "$LOCAL_CSMT" ];then
+        log_echo "New csmt available"
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] New crankshaft management tool is available." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update csmt' to update." >/dev/tty3

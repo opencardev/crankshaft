@@ -4,6 +4,7 @@
 [Service]
  Type=simple
  ExecStartPre=/usr/local/bin/crankshaft display on
- ExecStart=/sbin/shutdown -t 1 -P
+ ExecStart=/sbin/shutdown -t 1
+ ExecStartPost=/usr/bin/touch /tmp/external_exit
  ExecStop=/sbin/shutdown -c
  RemainAfterExit=yes

@@ -107,6 +107,7 @@ systemctl disable alsa-state.service
 systemctl disable apply_noobs_os_config.service
 systemctl disable wifi-country.service
 systemctl disable alsa-restore.service
+systemctl disable raspi-config.service
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
 rm /lib/systemd/system/apt-daily.timer

@@ -103,7 +103,9 @@ systemctl disable hciuart.service
 systemctl disable hostapd.service
 systemctl disable dnsmasq.service
 systemctl disable hotspot.service
-#systemctl disable systemd-backlight@.service
+systemctl disable alsa-state.service
+systemctl disable apply_noobs_os_config.service
+systemctl disable wifi-country.service
 systemctl disable alsa-restore.service
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
@@ -115,7 +117,10 @@ rm /etc/systemd/system/timers.target.wants/apt-daily.timer
 rm /etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer
 rm /lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
 rm /lib/systemd/system/alsa-restore.service
-#rm /lib/systemd/system/systemd-backlight@.service
+rm /lib/systemd/system/alsa-state.service
+rm /lib/systemd/system/apply_noobs_os_config.service
+rm /lib/systemd/system/wifi-country.service
+
 systemctl daemon-relaod
 
 # set custom boot splash

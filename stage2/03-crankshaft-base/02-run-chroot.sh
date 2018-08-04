@@ -176,5 +176,7 @@ sed -i 's/.*watchdog-device.*/watchdog-device		= \/dev\/watchdog/' /etc/watchdog
 sed -i 's/.*kernel-panic.*//g' /etc/sysctl.conf
 echo "kernel-panic = 10" >> /etc/sysctl.conf
 
+# Later start cpufrequtils
+sed -i 's/# Required-Start: $remote_fs loadcpufreq.*/# Required-Start: $remote_fs loadcpufreq rc.local/' /etc/init.d/cpufrequtils
 # Boost system performance
 sed -i 's/^GOVERNOR=.*/GOVERNOR="performance"/' /etc/init.d/cpufrequtils

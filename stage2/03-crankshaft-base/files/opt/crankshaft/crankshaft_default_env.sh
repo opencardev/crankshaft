@@ -68,6 +68,8 @@ FLIP_SCREEN=0
 DISPLAY_AUTO_DETECT=0
 
 ### Audio ###
+# If stored vol is lower than this set to this value
+STARTUP_VOL_MIN=30
 # If stored vol is greater than this limit to this value
 STARTUP_VOL_MAX=100
 

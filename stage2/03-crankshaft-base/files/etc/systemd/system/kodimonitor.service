@@ -1,0 +1,7 @@
+[Unit]
+ Description=Crankshaft Kodi Monitor Service
+
+[Service]
+ Type=simple
+ ExecStart=/opt/crankshaft/service_kodimonitor.sh
+ RemainAfterExit=yes

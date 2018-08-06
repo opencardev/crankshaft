@@ -1,3 +1,7 @@
+*** This doc is outdated! ***
+*** Check the new wiki section on github about Crankshaft NG ***
+*** The wiki will be updated step by step next time ***
+
 - New buildsystem based on pi-gen
 - Redesign system with systemd, startup service deps,timers etc. - no more sleep times in scripts
 - Usage of plymouth for splash during boot/shutdown

@@ -17,6 +17,15 @@ if [ -f /tmp/start_openauto ]; then
     # Make sure display is on
     /usr/local/bin/crankshaft display on
 
+    # check for day/night on startup
+    if [ $RTC_DAYNIGHT -eq 1 ] && [ $(date +%h) >= $RTC_DAY_START ] && [ $(date +%h) < $RTC_NIGHT_START ]; then
+        touch /tmp/night_mode_enabled
+        /usr/local/bin/crankshaft brightness restore
+    else
+        sudo rm /tmp/night_mode_enabled
+        /usr/local/bin/crankshaft brightness restore
+    fi
+
     # Check gpio if activated
     if [ $ENABLE_GPIO -eq 1 ] && [ $X11_PIN -ne 0 ]; then
         X11_MODE_GPIO=`gpio -g read $X11_PIN`
@@ -52,6 +61,7 @@ if [ -f /tmp/start_openauto ]; then
         sudo runuser -l pi -c 'pulseaudio --start --log-target syslog'
         sleep 1 # give a small relax time
     fi
+
     if [ $START_X11 -ne 0 ] || [ $X11_MODE_GPIO -ne 1 ]; then
         # This is when the X11 pin is connected to ground (X11 enabled)
         # We don't call autoapp here, we call it in .xinitrc

@@ -4,7 +4,9 @@
 
 source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
-source /boot/crankshaft/crankshaft_env.sh
+if [ -f /boot/crankshaft/crankshaft_env.sh ]; then
+    source /boot/crankshaft/crankshaft_env.sh
+fi
 
 if [ -f /tmp/usb_debug_mode ] || [ $DEBUG_MODE -eq 1 ]; then
     log_echo "Enable Debug Mode"

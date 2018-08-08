@@ -1,0 +1,7 @@
+[Unit]
+ Description=Crankshaft Custom Brightness Exec Service
+
+[Service]
+ Type=simple
+ ExecStart=/opt/crankshaft/service_custombrightness.sh
+ RemainAfterExit=yes

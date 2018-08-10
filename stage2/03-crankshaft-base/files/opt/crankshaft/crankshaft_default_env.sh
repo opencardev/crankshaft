@@ -92,6 +92,7 @@ DISCONNECTION_POWEROFF_DISABLE=0
 WIFI_COUNTRY=EN
 
 # Wifi client mode - Only used in dev mode
+# If your SSID or password contains special chars or spaces use quotation marks ="SSID" / ="password"
 WIFI_SSID=sample
 WIFI_PSK=sample
 

@@ -36,11 +36,10 @@ echo "# GPU Mem" >> /boot/config.txt
 echo "gpu_mem=256" >> /boot/config.txt
 
 # pulseaudio
-cat /etc/pulse/pulseaudio_daemon.conf >> /etc/pulse/daemon.conf
-sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
-echo 'load-module module-mmkbd-evdev device=/dev/gpio2kbd' >> /etc/pulse/default.pa
-echo 'set-sink-volume 0 52428' >> /etc/pulse/default.pa
-rm /etc/pulse/pulseaudio_daemon.conf
+cat /etc/pulse/csng_daemon.conf >> /etc/pulse/daemon.conf
+cat /etc/pulse/csng_default.pa > /etc/pulse/default.pa
+rm /etc/pulse/csng_daemon.conf
+rm /etc/pulse/csng_default.pa
 
 # wallaper's
 ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png

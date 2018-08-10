@@ -10,7 +10,8 @@ install -m 644 files/boot/crankshaft/triggerhappy.conf                  "${ROOTF
 install -m 755 files/opt/crankshaft/crankshaft_default_env.sh           "${ROOTFS_DIR}/boot/crankshaft/crankshaft_env.sh"
 
 # /etc
-install -m 644 files/etc/pulse/pulseaudio_daemon.conf                   "${ROOTFS_DIR}/etc/pulse/"
+install -m 644 files/etc/pulse/csng_daemon.conf                         "${ROOTFS_DIR}/etc/pulse/"
+install -m 644 files/etc/pulse/csng_default.pa                          "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/systemd/system/openauto.service                "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/crankshaft.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/daymode.service                 "${ROOTFS_DIR}/etc/systemd/system/"

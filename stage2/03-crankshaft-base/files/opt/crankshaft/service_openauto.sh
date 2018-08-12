@@ -20,12 +20,14 @@ if [ -f /tmp/start_openauto ]; then
     /usr/local/bin/crankshaft display on
 
     # check for day/night on startup
-    if [ $RTC_DAYNIGHT -eq 1 ] && [ $(date +%H) -gt $((RTC_DAY_START-1)) ] && [ $(date +%H) -lt $RTC_NIGHT_START ]; then
-        sudo rm /tmp/night_mode_enabled
-        /usr/local/bin/crankshaft brightness restore
-    else
-        touch /tmp/night_mode_enabled
-        /usr/local/bin/crankshaft brightness restore
+    if [ $RTC_DAYNIGHT -eq 1 ]; then
+        if [ $(date +%H) -gt $((RTC_DAY_START-1)) ] && [ $(date +%H) -lt $RTC_NIGHT_START ]; then
+            sudo rm /tmp/night_mode_enabled
+            /usr/local/bin/crankshaft brightness restore
+        else
+            touch /tmp/night_mode_enabled
+            /usr/local/bin/crankshaft brightness restore
+        fi
     fi
 
     # Check gpio if activated

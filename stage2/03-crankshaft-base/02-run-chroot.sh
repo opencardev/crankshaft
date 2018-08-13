@@ -52,8 +52,8 @@ sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service
 ln -s /boot/crankshaft/triggerhappy.conf /etc/triggerhappy/triggers.d/crankshaft.conf
 
 # set the hostname
-echo "crankshaft" > /etc/hostname
-sed -i "s/raspberrypi/crankshaft/" /etc/hosts
+echo "CRANKSHAFT-NG" > /etc/hostname
+sed -i "s/raspberrypi/CRANKSHAFT-NG/" /etc/hosts
 
 # fix watchdog module (seems to be renamed on latest versions)
 CHECK=`modprobe --dry-run bcm2835_wdt`

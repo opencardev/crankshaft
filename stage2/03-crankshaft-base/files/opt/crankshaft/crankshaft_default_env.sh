@@ -129,5 +129,9 @@ IGNITION_PIN=0
 # Time to wait until shutting down (seconds)
 IGNITION_DELAY=60
 
+# Enable experimental bluetooth stuff
+# don't use - only prepared for further releases!
+ENABLE_BLUETOOTH=0
+
 # System updates
 ALLOW_USB_FLASH=1

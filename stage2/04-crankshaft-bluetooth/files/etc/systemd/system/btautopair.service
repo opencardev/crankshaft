@@ -1,0 +1,14 @@
+[Unit]
+ Description=Crankshaft Bluetooth Auto Pairing Service
+
+[Service]
+ Type=simple
+ Restart=always
+ RestartSec=60
+ User=pi
+ WorkingDirectory=/home/pi
+ ExecStart=/opt/crankshaft/service_btautopair.py
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

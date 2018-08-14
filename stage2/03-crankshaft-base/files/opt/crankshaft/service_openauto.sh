@@ -119,6 +119,15 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         /usr/local/bin/crankshaft audio alsastate save
 
+        if [ $ENABLE_BLUETOOTH -eq 1 ]; then
+            log_echo "Saving bluetooth"
+            echo "" >/dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Saving bluetooth..." >/dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+            /usr/local/bin/crankshaft bluetooth save
+        fi
+
         if [ ! -f /etc/cs_first_start_done ]; then
             /usr/local/bin/crankshaft filesystem system unlock
             log_echo "Set first start done"

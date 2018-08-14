@@ -1,0 +1,12 @@
+[Unit]
+ Description=Crankshaft Bluetooth Auto Connect Service
+
+[Service]
+ Type=oneshot
+ User=pi
+ WorkingDirectory=/home/pi
+ ExecStart=/opt/crankshaft/service_btautoconnect.sh
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

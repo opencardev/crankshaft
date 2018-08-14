@@ -1,0 +1,13 @@
+[Unit]
+ Description=Crankshaft Bluetooth Service
+ After=rc.local.service
+
+[Service]
+ Type=oneshot
+ User=pi
+ WorkingDirectory=/home/pi
+ ExecStart=/opt/crankshaft/service_bluetooth.sh
+ RemainAfterExit=yes
+
+[Install]
+ WantedBy=multi-user.target

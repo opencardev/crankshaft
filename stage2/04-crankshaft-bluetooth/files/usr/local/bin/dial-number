@@ -1,0 +1,42 @@
+#!/usr/bin/python3
+
+import sys
+import dbus
+
+if (len(sys.argv) < 2):
+	print("Usage: %s [modem] <number> [hide_callerid]" % (sys.argv[0]))
+	sys.exit(1)
+
+bus = dbus.SystemBus()
+
+manager = dbus.Interface(bus.get_object('org.ofono', '/'),
+						'org.ofono.Manager')
+
+modems = manager.GetModems()
+modem = modems[0][0]
+
+hide_callerid = "default"
+
+if (len(sys.argv) == 2):
+	number = sys.argv[1]
+elif (len(sys.argv) == 3):
+	if (sys.argv[2] == "default") or (sys.argv[2] == "enabled") or \
+			(sys.argv[2] == "disabled"):
+		number = sys.argv[1]
+		hide_callerid = sys.argv[2]
+	else:
+		modem = sys.argv[1]
+		number = sys.argv[2]
+else:
+	modem = sys.argv[1]
+	number = sys.argv[2]
+	hide_callerid = sys.argv[3]
+
+print("Using modem %s" % modem)
+
+vcm = dbus.Interface(bus.get_object('org.ofono', modem),
+						'org.ofono.VoiceCallManager')
+
+path = vcm.Dial(number, hide_callerid)
+
+print(path)

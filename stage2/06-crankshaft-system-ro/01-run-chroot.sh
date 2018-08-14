@@ -16,13 +16,14 @@ echo "tmpfs		/tmp/.local-root	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.config-root	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.cache-root	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.backlight 	tmpfs			nodev,nosuid		0	0" >> /etc/fstab
+echo "tmpfs		/tmp/bluetooth		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 
 sed -i 's/root=ROOTDEV/root=\/dev\/mmcblk0p2/' /boot/cmdline.txt
 
 sed -i "s/#Storage=auto/Storage=volatile/" /etc/systemd/journald.conf
 
 # Link dirs for read only
-rm -rf /var/spool /var/lock /var/lib/dhcp /var/lib/dhcpcd5 /var/cache/apt/
+rm -rf /var/spool /var/lock /var/lib/dhcp /var/lib/dhcpcd5 /var/cache/apt/ /var/lib/bluetooth
 rm /etc/resolv.conf
 
 ln -s /tmp /var/lib/dhcp
@@ -36,6 +37,7 @@ ln -s /tmp/.config-root /root/.config
 ln -s /tmp/.local-root /root/.local
 ln -s /tmp/.cache-root /root/.cache
 ln -s /tmp/.backlight /var/lib/systemd/backlight
+ln -s /tmp/bluetooth /var/lib/bluetooth
 ln -s /tmp/openauto.ini /home/pi/openauto.ini
 ln -s /tmp/resolv.conf /etc/resolv.conf
 

@@ -1,5 +1,6 @@
 [Unit]
  Description=Crankshaft Bluetooth Auto Pairing Service
+ After=csng-bluetooth.service
 
 [Service]
  Type=simple

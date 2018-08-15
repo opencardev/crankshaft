@@ -3,7 +3,7 @@
  After=rc.local.service
 
 [Service]
- Type=oneshot
+ Type=simple
  User=pi
  WorkingDirectory=/home/pi
  ExecStart=/opt/crankshaft/service_bluetooth.sh

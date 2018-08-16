@@ -12,3 +12,7 @@ systemctl enable btautopair
 systemctl enable btautoconnect
 systemctl enable btdevicedetect
 
+# config.txt
+echo "" >> /boot/config.txt
+echo "# Bluetooth" >> /boot/config.txt
+echo "dtoverlay=pi3-disable-bt" >> /boot/config.txt

@@ -132,6 +132,10 @@ IGNITION_DELAY=60
 # Enable experimental bluetooth stuff
 # don't use - only prepared for further releases!
 ENABLE_BLUETOOTH=0
+# Allow to autopair devices
+ENABLE_PAIRABLE=0
+# Use external adapter not builtin
+EXTERNAL_BLUETOOTH=0
 
 # System updates
 ALLOW_USB_FLASH=1

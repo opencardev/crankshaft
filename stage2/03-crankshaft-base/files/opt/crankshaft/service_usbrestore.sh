@@ -190,6 +190,19 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             systemctl daemon-reload > /dev/null 2>&1
                         fi
 
+                        # restore bluetooth
+                        if [ ${ENABLE_BLUETOOTH} -eq 1 ]; then
+                            BT_CHECK=$(cat /boot/config.txt | grep '^dtoverlay=pi3-disable-bt' | tail -n1)
+                            if [ -z $BT_CHECK ]; then
+                                BTTYPE="builtin"
+                            else
+                                BTTYPE="external"
+                            fi
+                            /usr/local/bin/crankshaft bluetooth $BTTYPE
+                        else
+                            /usr/local/bin/crankshaft bluetooth disable
+                        fi
+
                         # restore day/night
                         if [ $RTC_DAYNIGHT -eq 1 ]; then
                             /usr/local/bin/crankshaft timers daynight $RTC_DAY_START $RTC_NIGHT_START > /dev/tty3
@@ -224,4 +237,3 @@ else
 fi
 
 exit 0
-

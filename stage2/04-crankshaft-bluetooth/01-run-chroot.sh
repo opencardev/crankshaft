@@ -6,11 +6,12 @@ sed -i 's/load-module module-bluetooth-discover.*/load-module module-bluetooth-d
 # enable correct service state
 systemctl disable bluetooth
 systemctl disable hciuart
-systemctl enable ofono
+systemctl disable ofono
 systemctl enable csng-bluetooth
 systemctl enable btautopair
 systemctl enable btautoconnect
 systemctl enable btdevicedetect
+systemctl enable btrestore
 
 # config.txt
 echo "" >> /boot/config.txt

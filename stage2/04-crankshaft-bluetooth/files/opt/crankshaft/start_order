@@ -25,6 +25,6 @@ openauto
 gpiotrigger
    |
 rc.local
-   |
-   |- - - - - - |
-update          csng-bluetooth | btautopair | btautoconnect | btdevicedetect
+   |            bluetooth.target
+   |                  |
+update                csng-bluetooth | btautopair | btautoconnect | btdevicedetect

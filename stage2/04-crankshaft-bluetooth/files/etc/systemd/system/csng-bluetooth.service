@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft Bluetooth Service
- After=rc.local.service
+ After=bluetooth.target
 
 [Service]
  Type=simple

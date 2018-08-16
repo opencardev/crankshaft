@@ -14,8 +14,6 @@ if [ $ENABLE_BLUETOOTH -eq 1 ]; then
     if [ $DEV_MODE -eq 0 ] && [ ! -f /tmp/usb_dev_mode ] && [ ! -f /tmp/usb_debug_mode ] && [ ! -f /tmp/dev_mode_enabled ]; then
         sudo ifconfig wlan0 down > /dev/null 2>&1
     fi
-    # restore possible pairings
-    /usr/local/bin/crankshaft bluetooth restore
 
     if [ $EXTERNAL_BLUETOOTH -eq 0 ]; then
         # Enable rpi hci sco fix

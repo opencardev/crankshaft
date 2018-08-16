@@ -48,7 +48,7 @@ if [ -f /tmp/start_openauto ]; then
     sudo runuser -l pi -c 'pulseaudio --start --log-target syslog'
     sleep 1 # give a small relax time
     # check for pulseaudio dummy output
-    nodevice=$(sudo runuser -l pi -c 'pactl list sinks' | grep 'Description: Dummy Output' | sed 's/"//g' | sed 's/\t//g' | sed 's/ //g' | sed 's/://g' | tail -n1)
+    nodevice=$(pactl list sinks | grep 'Description: Dummy Output' | sed 's/"//g' | sed 's/\t//g' | sed 's/ //g' | sed 's/://g' | tail -n1)
     if [ "$nodevice" == "" ]; then
         log_echo "Re-Starting pulseaudio cause no device available"
         echo "" >/dev/tty3

@@ -49,7 +49,7 @@ if [ -f /tmp/start_openauto ]; then
     sleep 1 # give a small relax time
     # check for pulseaudio dummy output
     nodevice=$(sudo runuser -l pi -c 'pactl list sinks' | grep 'Description: Dummy Output' | sed 's/"//g' | sed 's/\t//g' | sed 's/ //g' | sed 's/://g' | tail -n1)
-    if [ $nodevice == "" ]; then
+    if [ "$nodevice" == "" ]; then
         log_echo "Re-Starting pulseaudio cause no device available"
         echo "" >/dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3

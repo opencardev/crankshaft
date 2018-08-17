@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Try to connect previous paired devices
+sleep 5
 
 cs_autoconnect() {
 list=""

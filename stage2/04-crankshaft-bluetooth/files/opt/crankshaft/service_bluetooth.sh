@@ -9,7 +9,7 @@ fi
 
 
 if [ $ENABLE_BLUETOOTH -eq 1 ]; then
-
+    touch /tmp/button_bluetooth_visible
     # only disable wifi if system is in normal mode
     if [ $DEV_MODE -eq 0 ] && [ ! -f /tmp/usb_dev_mode ] && [ ! -f /tmp/usb_debug_mode ] && [ ! -f /tmp/dev_mode_enabled ]; then
         sudo ifconfig wlan0 down > /dev/null 2>&1

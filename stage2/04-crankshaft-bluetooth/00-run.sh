@@ -9,6 +9,7 @@ install -m 644 files/etc/systemd/system/csng-bluetooth.service          "${ROOTF
 install -m 644 files/etc/dbus-1/system.d/bluetooth2.conf                "${ROOTFS_DIR}/etc/dbus-1/system.d/"
 install -m 644 files/etc/dbus-1/system.d/dundee2.conf                   "${ROOTFS_DIR}/etc/dbus-1/system.d/"
 install -m 644 files/etc/dbus-1/system.d/ofono2.conf                    "${ROOTFS_DIR}/etc/dbus-1/system.d/"
+install -m 644 files/etc/dbus-1/system.d/pulse-bt.conf                  "${ROOTFS_DIR}/etc/dbus-1/system.d/"
 
 # /opt
 install -d "${ROOTFS_DIR}/opt/crankshaft"

@@ -1,7 +1,7 @@
 [Unit]
  Description=Crankshaft Timers Startup Service
  ConditionPathExists=/opt/crankshaft/service_timerstart.sh
- After=gpiotrigger.service
+ After=gpiotrigger.service devmode.service
  Before=rc-local.service
 
 [Service]

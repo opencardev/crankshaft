@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft Bluetooth Service
- After=bluetooth.target
+ After=bluetooth.target openauto.service @dbus-org.bluez.service sound.target
 
 [Service]
  Type=simple

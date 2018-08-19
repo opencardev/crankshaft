@@ -2,7 +2,6 @@
  Description=Crankshaft GPIO Trigger Service
  ConditionPathExists=/opt/crankshaft/service_gpiotrigger.sh
  After=openauto.service
- Before=timerstart.service
 
 [Service]
  Type=simple

@@ -1,8 +1,7 @@
 [Unit]
  Description=Crankshaft Tap2Wake Service
  ConditionPathExists=/opt/crankshaft/service_tap2wake.sh
- After=devmode.service
- Before=crankshaft.service
+ After=openauto.service
 
 [Service]
  Type=oneshot

@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft Bluetooth Auto Connect Service
- After=csng-bluetooth.service btautopair.service
+ After=csng-bluetooth.service btautopair.service openauto.service
 
 [Service]
  Type=oneshot

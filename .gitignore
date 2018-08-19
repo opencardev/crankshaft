@@ -3,7 +3,7 @@ work/*
 config
 SKIP
 SKIP_IMAGES
-prebuilts
+prebuilts/*
 stage2/03-crankshaft-base/files/usr/local/bin/autoapp
 stage2/03-crankshaft-base/files/usr/local/bin/btservice
 stage2/03-crankshaft-base/files/usr/local/lib/libaasdk.so

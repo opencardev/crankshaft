@@ -38,6 +38,15 @@ if [ "`ping -c 1 google.com`" ];then
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update csmt' to update." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
     fi
+    # no updates
+    if [ "$REMOTE_CSMT" == "$LOCAL_CSMT" ] && [ "$REMOTE_UDEV" == "$LOCAL_UDEV" ];then
+        log_echo "No new updates"
+        echo "[${GREEN}${BOLD}  OK  ${RESET}] *******************************************************" >/dev/tty3
+        echo "[${GREEN}${BOLD}  OK  ${RESET}] No new updates." >/dev/tty3
+        echo "[${GREEN}${BOLD}  OK  ${RESET}] *******************************************************" >/dev/tty3
+    fi
+
+
 fi
 
 exit 0

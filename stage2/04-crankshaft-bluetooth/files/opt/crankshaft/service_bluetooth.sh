@@ -15,10 +15,11 @@ if [ $ENABLE_BLUETOOTH -eq 1 ]; then
         sudo ifconfig wlan0 down > /dev/null 2>&1
     fi
 
-    if [ $EXTERNAL_BLUETOOTH -eq 0 ]; then
-        # Enable rpi hci sco fix
-        sudo hcitool cmd 0x3F 0x01C 0x01 0x02 0x00 0x01 0x01
-    fi
+    # not longer needed - raspbian bthelper.service does this job
+    #if [ $EXTERNAL_BLUETOOTH -eq 0 ]; then
+    #    # Enable rpi hci sco fix
+    #    sudo hcitool cmd 0x3F 0x01C 0x01 0x02 0x00 0x01 0x01
+    #fi
 
     # Set controller in correct mode
     sudo bt-adapter --set Powered 1

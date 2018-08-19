@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft Android Auto Headunit
- After=user_startup.service
+ After=user_startup.service usbdetect.service usbrestore.service
  Before=timerstart.service
 
 [Service]

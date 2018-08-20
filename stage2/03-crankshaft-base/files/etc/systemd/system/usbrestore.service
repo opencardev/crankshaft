@@ -1,7 +1,7 @@
 [Unit]
  Description=USB Backup Restore Service
  ConditionPathExists=/opt/crankshaft/service_usbrestore.sh
- Before=display.service local-fs.service bluetooth.service bthelper.service hciuart.service @hostname.service
+ Before=display.service local-fs.service bluetooth.service bthelper.service hciuart.service hostname.service
  After=basic.target plymouth-start.service local-fs.target
 
 [Service]

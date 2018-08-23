@@ -17,7 +17,7 @@ imageoverlay = "/boot/crankshaft/camera-overlay.png"
 if ((os.path.exists("/media/CSSTORAGE")) and (os.path.ismount("/media/CSSTORAGE"))):
     os.system("sudo mkdir -p /media/CSSTORAGE/RPIDC/AUTOSAVE")
     os.system("sudo mkdir -p /media/CSSTORAGE/RPIDC/EVENTS")
-    os.system("sudo chmod 777 /tmp/RPIDC -R")
+    os.system("sudo chmod 777 /media/RPIDC -R")
     recordpath = "/media/CSSTORAGE/RPIDC/"
     storagepath = "/media/CSSTORAGE/RPIDC/"
 else:

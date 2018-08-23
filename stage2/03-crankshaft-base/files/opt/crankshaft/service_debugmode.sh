@@ -15,8 +15,6 @@ if [ -f /tmp/usb_debug_mode ] || [ $DEBUG_MODE -eq 1 ]; then
         touch /tmp/usb_debug_mode
     fi
     echo "[${BLUE}${BOLD}ACTIVE${RESET}] Debug Mode Enabled"
-    log_echo "Start timers"
-    /usr/local/bin/crankshaft timers start &
     touch /tmp/start_openauto
     log_echo "Start wifisetup.service"
     systemctl start wifisetup.service

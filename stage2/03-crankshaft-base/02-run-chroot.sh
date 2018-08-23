@@ -35,6 +35,10 @@ echo "" >> /boot/config.txt
 echo "# GPU Mem" >> /boot/config.txt
 echo "gpu_mem=256" >> /boot/config.txt
 
+echo "" >> /boot/config.txt
+echo "# Overscan fix" >> /boot/config.txt
+echo "overscan_scale=1" >> /boot/config.txt
+
 # pulseaudio
 cat /etc/pulse/csng_daemon.conf >> /etc/pulse/daemon.conf
 cat /etc/pulse/csng_default.pa > /etc/pulse/default.pa

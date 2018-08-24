@@ -24,13 +24,51 @@ for _device in /sys/block/*/device; do
             if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ] || [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
                 umount ${DEVICE} > /dev/null 2>&1
                 /usr/local/bin/crankshaft filesystem system unlock
+                ##############################################################
+                # check fs if needed
+                if [ $FSTYPE == "fat" ] || [ $FSTYPE == "vfat" ]; then
+                    # check state of fs
+                    dosfsck -n $DEVICE
+                    if [ $? == "1" ]; then
+                        log_echo "CSSTORAGE - errors detected -> fixing"
+                        # 1 = errors detected - repair...
+                        show_clear_screen
+                        show_cursor
+                        echo "${RESET}" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        dosfsck -y $DEVICE > /dev/tty3
+                        sync
+                        sleep 5
+                        reboot
+                    fi
+                fi
+                if [ $FSTYPE == "ext3" ] || [ $FSTYPE == "ext4" ]; then
+                    CHECK=`tune2fs -l /dev/devicename |awk -F':' '/^Filesystem s/ {print $2}' | sed 's/ //g'`
+                    if [ "$CHECK" != "clean" ]; then
+                        log_echo "CSSTORAGE - errors detected -> fixing"
+                        show_clear_screen
+                        show_cursor
+                        echo "${RESET}" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] Errors on $DEVICE detected - repairing..." > /dev/tty3
+                        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+                        fsck.$FSTYPE -f -y $DEVICE > /dev/tty3
+                        sync
+                        sleep 5
+                        reboot
+                    fi
+                fi
+                ##############################################################
                 mkdir -p /media/${LABEL}
-                mount -t auto ${DEVICE} /media/${LABEL} -o rw,umask=0000,sync,user
+                mount -t auto ${DEVICE} /media/${LABEL} -o rw,umask=0000,async,user
                 if [ $? -eq 0 ]; then
                     log_echo "CSSTORAGE - mount successful"
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] CSSTORAGE mounted." > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+
                     # dashcam related
                     mkdir -p /media/${LABEL}/RPIDC/AUTOSAVE > /dev/null 2>&1
                     mkdir -p /media/${LABEL}/RPIDC/EVENTS > /dev/null 2>&1
@@ -40,7 +78,8 @@ for _device in /sys/block/*/device; do
                     ln -s /media/${LABEL}/KODI /home/pi/.kodi
                     chmod 777 /home/pi/.kodi > /dev/null 2>&1
                     # Allow all users rw to CSSTORAGE and subfolders/files
-                    chmod -r 777 /media/${LABEL} > /dev/null 2>&1
+                    chmod -R 777 /media/${LABEL} > /dev/null 2>&1
+                    chmown -R pi:pi /home/pi/.kodi > /dev/null 2>&1
                     /usr/local/bin/crankshaft filesystem system lock
                     CSSTORAGE_DETECTED=1
                 else
@@ -272,3 +311,4 @@ if [ $CSSTORAGE_DETECTED -eq 0 ]; then
 fi
 
 exit 0
+

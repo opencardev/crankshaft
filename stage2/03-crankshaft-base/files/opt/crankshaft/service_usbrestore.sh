@@ -183,11 +183,24 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         fi
 
                         # check camera setup
-                        CAM_CHECK=$(cat /boot/config.txt | grep "^start_x=1")
+                        CAM_CHECK=$(cat /boot/config.txt | grep "^start_x=1" | tail -n1)
                         if [ ! -z $CAM_CHECK ]; then
                             touch /etc/button_camera_visible
                             systemctl enable rpicamserver > /dev/null 2>&1
                             systemctl daemon-reload > /dev/null 2>&1
+                        fi
+
+                        # check overscan fix
+                        OVERSCAN_CHECK=$(cat /boot/config.txt | grep "^overscan_scale=1" | tail -n1)
+                        if [ -z $OVERSCAN_CHECK ]; then
+                            # remove possible existing lost boot entries
+                            sed -i 's/# Overscan fix.*//' /boot/config.txt
+                            sed -i 's/overscan_scale=.*//' /boot/config.txt
+                            # clean empty lines
+                            sed -i '/./,/^$/!d' /boot/config.txt
+                            echo "" >> /boot/config.txt
+                            echo "# Overscan fix" >> /boot/config.txt
+                            echo "overscan_scale=1" >> /boot/config.txt
                         fi
 
                         # restore bluetooth

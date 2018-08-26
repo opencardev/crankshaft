@@ -45,7 +45,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             _disk=$(echo "$_device" | cut -f4 -d/)
             DEVICE="/dev/${_disk}1"
             PARTITION="${_disk}1"
-            LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1)
+            LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1 | sed 's/ //g')
             FSTYPE=$(blkid /dev/${PARTITION} | sed 's/.*TYPE="//' | cut -d'"' -f1)
             echo "${RESET}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3

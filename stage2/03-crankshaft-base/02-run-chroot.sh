@@ -89,6 +89,7 @@ systemctl enable gpiotrigger.service
 systemctl enable timerstart.service
 systemctl enable regensshkeys.service
 systemctl enable ssh.service
+systemctl enable kodimonitor.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service
 systemctl disable networking.service
@@ -111,7 +112,7 @@ systemctl disable apply_noobs_os_config.service
 systemctl disable wifi-country.service
 systemctl disable alsa-restore.service
 systemctl disable raspi-config.service
-systemctl disable kodimonitor.service
+
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
 rm /lib/systemd/system/apt-daily.timer

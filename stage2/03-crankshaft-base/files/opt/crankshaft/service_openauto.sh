@@ -37,34 +37,18 @@ if [ -f /tmp/start_openauto ]; then
         X11_MODE_GPIO=1 # 1 = untriggered
     fi
 
-    # start pulseaudio
-    log_echo "Starting pulseaudio"
-    sudo killall pulseaudio
     # remove old temp files
     sudo rm -f /tmp/get_inputs > /dev/null 2>&1
     sudo rm -f /tmp/get_outputs > /dev/null 2>&1
     sudo rm -f /tmp/get_default_input > /dev/null 2>&1
     sudo rm -f /tmp/get_default_output > /dev/null 2>&1
+
+    # start pulseaudio
+    log_echo "Starting pulseaudio"
     sudo runuser -l pi -c 'pulseaudio --start --log-target syslog'
-    sleep 1 # give a small relax time
-    # check for pulseaudio dummy output
-    nodevice=$(pactl list sinks | grep 'Description: Dummy Output' | sed 's/"//g' | sed 's/\t//g' | sed 's/ //g' | sed 's/://g' | tail -n1)
-    if [ "$nodevice" == "" ]; then
-        log_echo "Re-Starting pulseaudio cause no device available"
-        echo "" >/dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio could not detect a device - Restarting..." >/dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
-        # restart pulseaudio cause no hardware device was available
-        sudo killall pulseaudio
-        # remove old temp files
-        sudo rm -f /tmp/get_inputs > /dev/null 2>&1
-        sudo rm -f /tmp/get_outputs > /dev/null 2>&1
-        sudo rm -f /tmp/get_default_input > /dev/null 2>&1
-        sudo rm -f /tmp/get_default_output > /dev/null 2>&1
-        sudo runuser -l pi -c 'pulseaudio --start --log-target syslog'
-        sleep 1 # give a small relax time
-    fi
+
+    # restore pulseaudio volume
+    /usr/local/bin/crankshaft audio volume restore
 
     if [ $START_X11 -ne 0 ] || [ $X11_MODE_GPIO -ne 1 ]; then
         # This is when the X11 pin is connected to ground (X11 enabled)
@@ -78,7 +62,7 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] Starting OpenAuto in X11 Mode" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         # short delay to be sure system is ready
-        sleep 2
+        sleep 5
         sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=0/" /tmp/openauto.ini
         # Starts the Autoapp (OpenAuto) main program via x-server
         sudo runuser -l pi -c 'xinit'

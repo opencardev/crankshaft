@@ -77,8 +77,12 @@ for _device in /sys/block/*/device; do
                     cp -f /tmp/bootfs/crankshaft/openauto.ini /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/wallpaper.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/wallpaper-night.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/wallpaper-devmode.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
-                    cp -f /tmp/bootfs/crankshaft/wallpaper-devmode-night.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/button_1 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/button_2 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/button_3 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/button_4 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/button_5 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/button_6 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/bluetooth-pairings.tar.gz /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/custom_brightness_command /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/rootfs/etc/timezone /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null

@@ -91,8 +91,6 @@ install -m 644 files/opt/crankshaft/start_order                         "${ROOTF
 install -d "${ROOTFS_DIR}/opt/crankshaft/wallpaper"
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper.png                   "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-night.png             "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
-install -m 644 files/opt/crankshaft/wallpaper/wallpaper-devmode.png           "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
-install -m 644 files/opt/crankshaft/wallpaper/wallpaper-devmode-night.png     "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/camera-overlay.png              "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 
 # /usr

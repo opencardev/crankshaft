@@ -140,6 +140,7 @@ systemctl enable getty@tty3.service
 
 # enable splash and set default console
 sed -i 's/console=tty1/console=tty3/' /boot/cmdline.txt
+sed -i 's/console=serial0,115200 //' /boot/cmdline.txt
 
 # add special settings
 sed -i 's/$/ logo.nologo loglevel=0 vt.global_cursor_default=0 noswap splash plymouth.ignore-serial-consoles consoleblank=0 ipv6.disable=1 fastboot/' /boot/cmdline.txt
@@ -185,3 +186,4 @@ echo "kernel-panic = 10" >> /etc/sysctl.conf
 sed -i 's/# Required-Start: $remote_fs loadcpufreq.*/# Required-Start: $remote_fs loadcpufreq rc.local/' /etc/init.d/cpufrequtils
 # Boost system performance
 sed -i 's/^GOVERNOR=.*/GOVERNOR="performance"/' /etc/init.d/cpufrequtils
+

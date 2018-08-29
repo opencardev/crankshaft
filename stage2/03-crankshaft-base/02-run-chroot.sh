@@ -48,6 +48,8 @@ rm /etc/pulse/csng_default.pa
 # wallaper's
 ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png
 ln -s /boot/crankshaft/wallpaper-night.png /home/pi/wallpaper-night.png
+ln -s /boot/crankshaft/wallpaper-classic.png /home/pi/wallpaper-classic.png
+ln -s /boot/crankshaft/wallpaper-classic-night.png /home/pi/wallpaper-classic-night.png
 
 # triggerhappy
 sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service

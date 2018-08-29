@@ -77,6 +77,8 @@ for _device in /sys/block/*/device; do
                     cp -f /tmp/bootfs/crankshaft/openauto.ini /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/wallpaper.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/wallpaper-night.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/wallpaper-classic.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/wallpaper-classic-night.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/button_1 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/button_2 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/button_3 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null

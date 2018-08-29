@@ -20,9 +20,11 @@ if [ $ENABLE_BLUETOOTH -eq 1 ]; then
         done
         if [ -f /tmp/new_btdevice ]; then
             mv /tmp/new_btdevice /tmp/btdevice
+            /usr/local/bin/crankshaft timers stop
         else
             if [ -f /tmp/btdevice ]; then
                 rm -f /tmp/btdevice
+                /usr/local/bin/crankshaft timers start
             fi
         fi
         sleep 1

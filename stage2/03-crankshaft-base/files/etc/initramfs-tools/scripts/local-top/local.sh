@@ -85,6 +85,8 @@ for _device in /sys/block/*/device; do
                     cp -f /tmp/bootfs/crankshaft/button_4 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/button_5 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/button_6 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/button_7 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/button_8 /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/bluetooth-pairings.tar.gz /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/custom_brightness_command /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/rootfs/etc/timezone /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null

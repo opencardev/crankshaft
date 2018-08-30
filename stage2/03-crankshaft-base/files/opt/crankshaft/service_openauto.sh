@@ -61,8 +61,6 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] Starting OpenAuto in X11 Mode" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
-        # short delay to be sure system is ready
-        sleep 5
         sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=0/" /tmp/openauto.ini
         # Starts the Autoapp (OpenAuto) main program via x-server
         sudo runuser -l pi -c 'xinit'
@@ -80,7 +78,9 @@ if [ -f /tmp/start_openauto ]; then
     fi
 
     # Check if autoapp crashed
-    if [ $? -eq 0 ]; then
+    if [ -f /tmp/reboot ] || [ -f /tmp/shutdown ]; then
+        # Check if autoapp crashed
+        #if [ $? -eq 0 ]; then
         log_echo "Clean exit openauto"
         # if it exits normally, it the user must have quit the app
         # save and shutdown
@@ -162,8 +162,8 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${RED}${BOLD} WARN ${RESET}] Unfortunately, OpenAuto crashed." >/dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] Please report this incident to Crankshaft." >/dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
+        exit 1
     fi
-
     exit 0
 else
     exit 1

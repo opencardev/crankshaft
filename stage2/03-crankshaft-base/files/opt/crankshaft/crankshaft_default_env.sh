@@ -61,8 +61,8 @@ BR_STEP=25
 # slider depending on execution speed - the process is called with "&" so call is not waiting for exit!
 # Sample call which will be executed on request: "CUSTOM_BRIGHTNESS_COMMAND brightnessvalue &"
 #
-# Note: To allow backup and restore your command must be named custom_brightness_command
-#       and located on /boot/crankshaft otherwise it will not be transfered during updates!
+# Note: To allow backup and restore your command must be located on /boot/crankshaft/custom/
+# otherwise it will not be transfered during updates!
 #
 # To disable leave empty
 CUSTOM_BRIGHTNESS_COMMAND=

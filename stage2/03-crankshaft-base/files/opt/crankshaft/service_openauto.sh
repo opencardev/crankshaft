@@ -22,7 +22,7 @@ if [ -f /tmp/start_openauto ]; then
     # check for day/night on startup
     if [ $RTC_DAYNIGHT -eq 1 ]; then
         if [ $(date +%H) -gt $((RTC_DAY_START-1)) ] && [ $(date +%H) -lt $RTC_NIGHT_START ]; then
-            sudo rm /tmp/night_mode_enabled
+            sudo rm -f /tmp/night_mode_enabled > /dev/null 2>&1
             /usr/local/bin/crankshaft brightness restore
         else
             touch /tmp/night_mode_enabled

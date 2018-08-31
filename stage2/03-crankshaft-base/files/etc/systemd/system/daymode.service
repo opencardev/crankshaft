@@ -1,6 +1,5 @@
 [Unit]
  Description=Crankshaft Day Mode Service
- After=rc.local.service
 
 [Service]
  Type=simple

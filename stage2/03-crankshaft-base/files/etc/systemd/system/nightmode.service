@@ -1,6 +1,5 @@
 [Unit]
  Description=Crankshaft Night Mode Service
- After=rc.local.service
 
 [Service]
  Type=simple

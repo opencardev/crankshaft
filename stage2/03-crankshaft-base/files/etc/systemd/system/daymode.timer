@@ -3,7 +3,7 @@
 
 [Timer]
  OnCalendar=*-*-* 8..17:*:00
- AccuracySec=5s
+ AccuracySec=1s
 
 [Install]
  WantedBy=timers.target

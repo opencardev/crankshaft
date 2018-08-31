@@ -8,6 +8,7 @@ install -m 644 files/boot/crankshaft/startup.py                         "${ROOTF
 install -m 644 files/boot/crankshaft/startup.sh                         "${ROOTFS_DIR}/boot/crankshaft/"
 install -m 644 files/boot/crankshaft/triggerhappy.conf                  "${ROOTFS_DIR}/boot/crankshaft/"
 install -m 755 files/opt/crankshaft/crankshaft_default_env.sh           "${ROOTFS_DIR}/boot/crankshaft/crankshaft_env.sh"
+install -d "${ROOTFS_DIR}/boot/crankshaft/custom"
 
 # /etc
 install -m 644 files/etc/pulse/csng_daemon.conf                         "${ROOTFS_DIR}/etc/pulse/"
@@ -91,8 +92,8 @@ install -m 644 files/opt/crankshaft/start_order                         "${ROOTF
 install -d "${ROOTFS_DIR}/opt/crankshaft/wallpaper"
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper.png                   "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-night.png             "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
-install -m 644 files/opt/crankshaft/wallpaper/wallpaper-devmode.png           "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
-install -m 644 files/opt/crankshaft/wallpaper/wallpaper-devmode-night.png     "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
+install -m 644 files/opt/crankshaft/wallpaper/wallpaper-classic.png           "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
+install -m 644 files/opt/crankshaft/wallpaper/wallpaper-classic-night.png     "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/camera-overlay.png              "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 
 # /usr

@@ -22,7 +22,7 @@
 
 ### Automatically load driver modules depending on the hardware available
 .ifexists module-udev-detect.so
-load-module module-udev-detect tsched=0
+load-module module-udev-detect tsched=yes
 .else
 ### Use the static hardware detection module (for systems that lack udev support)
 load-module module-detect

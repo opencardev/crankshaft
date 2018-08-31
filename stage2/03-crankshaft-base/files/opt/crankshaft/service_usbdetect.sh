@@ -13,7 +13,7 @@ for _device in /sys/block/*/device; do
         _disk=$(echo "$_device" | cut -f4 -d/)
         DEVICE="/dev/${_disk}1"
         PARTITION="${_disk}1"
-        LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1)
+        LABEL=$(blkid /dev/${PARTITION} | sed 's/.*LABEL="//' | cut -d'"' -f1 | sed 's/ //g')
         FSTYPE=$(blkid /dev/${PARTITION} | sed 's/.*TYPE="//' | cut -d'"' -f1)
         if [ $LABEL == "CSSTORAGE" ]; then
             log_echo "CSSTORAGE detected"

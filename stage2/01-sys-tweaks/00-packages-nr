@@ -34,3 +34,5 @@ cpufrequtils
 zip
 python-serial
 python3-serial
+libdouble-conversion1
+

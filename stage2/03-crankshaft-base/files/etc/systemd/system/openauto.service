@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft Android Auto Headunit
- After=user_startup.service usbdetect.service usbrestore.service
+ After=user_startup.service usbdetect.service usbrestore.service dbus.service
  Before=timerstart.service
 
 [Service]
@@ -10,8 +10,8 @@
  ExecStart=/opt/crankshaft/service_openauto.sh
  Restart=on-failure
  StartLimitInterval=60
- StartLimitBurst=5
- RestartSec=10
+ RestartSec=2
+ StartLimitBurst=3
 
 [Install]
  WantedBy=multi-user.target

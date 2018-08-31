@@ -48,8 +48,8 @@ rm /etc/pulse/csng_default.pa
 # wallaper's
 ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png
 ln -s /boot/crankshaft/wallpaper-night.png /home/pi/wallpaper-night.png
-ln -s /boot/crankshaft/wallpaper-devmode.png /home/pi/wallpaper-devmode.png
-ln -s /boot/crankshaft/wallpaper-devmode-night.png /home/pi/wallpaper-devmode-night.png
+ln -s /boot/crankshaft/wallpaper-classic.png /home/pi/wallpaper-classic.png
+ln -s /boot/crankshaft/wallpaper-classic-night.png /home/pi/wallpaper-classic-night.png
 
 # triggerhappy
 sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service
@@ -89,6 +89,7 @@ systemctl enable gpiotrigger.service
 systemctl enable timerstart.service
 systemctl enable regensshkeys.service
 systemctl enable ssh.service
+systemctl enable kodimonitor.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service
 systemctl disable networking.service
@@ -111,7 +112,7 @@ systemctl disable apply_noobs_os_config.service
 systemctl disable wifi-country.service
 systemctl disable alsa-restore.service
 systemctl disable raspi-config.service
-systemctl disable kodimonitor.service
+
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
 rm /lib/systemd/system/apt-daily.timer
@@ -139,6 +140,7 @@ systemctl enable getty@tty3.service
 
 # enable splash and set default console
 sed -i 's/console=tty1/console=tty3/' /boot/cmdline.txt
+sed -i 's/console=serial0,115200 //' /boot/cmdline.txt
 
 # add special settings
 sed -i 's/$/ logo.nologo loglevel=0 vt.global_cursor_default=0 noswap splash plymouth.ignore-serial-consoles consoleblank=0 ipv6.disable=1 fastboot/' /boot/cmdline.txt
@@ -184,3 +186,4 @@ echo "kernel-panic = 10" >> /etc/sysctl.conf
 sed -i 's/# Required-Start: $remote_fs loadcpufreq.*/# Required-Start: $remote_fs loadcpufreq rc.local/' /etc/init.d/cpufrequtils
 # Boost system performance
 sed -i 's/^GOVERNOR=.*/GOVERNOR="performance"/' /etc/init.d/cpufrequtils
+

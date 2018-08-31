@@ -30,17 +30,17 @@ if [ ! -f /boot/crankshaft/wallpaper-night.png ] || [ ! -s /boot/crankshaft/wall
     /usr/local/bin/crankshaft filesystem boot lock
 fi
 
-if [ ! -f /boot/crankshaft/wallpaper-devmode.png ] || [ ! -s /boot/crankshaft/wallpaper-devmode.png ]; then
-    log_echo "Place default wallpaper-devmode.png"
+if [ ! -f /boot/crankshaft/wallpaper-classic.png ] || [ ! -s /boot/crankshaft/wallpaper-classic.png ]; then
+    log_echo "Place default wallpaper-classic.png"
     /usr/local/bin/crankshaft filesystem boot unlock
-    cp /opt/crankshaft/wallpaper/wallpaper-devmode.png /boot/crankshaft/
+    cp /opt/crankshaft/wallpaper/wallpaper-classic.png /boot/crankshaft/
     /usr/local/bin/crankshaft filesystem boot lock
 fi
 
-if [ ! -f /boot/crankshaft/wallpaper-devmode-night.png ] || [ ! -s /boot/crankshaft/wallpaper-devmode-night.png ]; then
-    log_echo "Place default wallpaper-devmode-night.png"
+if [ ! -f /boot/crankshaft/wallpaper-classic-night.png ] || [ ! -s /boot/crankshaft/wallpaper-classic-night.png ]; then
+    log_echo "Place default wallpaper-classic-night.png"
     /usr/local/bin/crankshaft filesystem boot unlock
-    cp /opt/crankshaft/wallpaper/wallpaper-devmode-night.png /boot/crankshaft/
+    cp /opt/crankshaft/wallpaper/wallpaper-classic-night.png /boot/crankshaft/
     /usr/local/bin/crankshaft filesystem boot lock
 fi
 

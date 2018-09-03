@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft Bluetooth Device Detect Service
- After=csng-bluetooth.service btautopair.service btautoconnect.service openauto.service
+ After=csng-bluetooth.service btautopair.service btautoconnect.service
 
 [Service]
  Type=simple

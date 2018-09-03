@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft Bluetooth Pairing Restore Service
- Before=bluetooth.target openauto.service
+ Before=bluetooth.target
 
 [Service]
  Type=simple

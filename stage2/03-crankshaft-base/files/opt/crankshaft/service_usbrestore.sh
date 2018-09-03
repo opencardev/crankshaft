@@ -95,7 +95,6 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         reboot
                     fi
                 fi
-                echo "${RESET}" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Mounting..." > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -113,7 +112,13 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Backup found on $DEVICE (${LABEL}) - restoring backup..." > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                        mount -o remount,rw /boot
+                        echo "" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] Check /boot ..." > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                        umount /dev/mmcblk0p1
+                        fsck -f -y /dev/mmcblk0p1 > /dev/null 2>&1
+                        mount /dev/mmcblk0p1 /boot
                         mount -o remount,rw /
                         # restore files
                         cp -r -f /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/. /boot/ > /dev/null 2>&1
@@ -133,6 +138,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         sed -i '/./,/^$/!d' /boot/config.txt
 
                         # updating crankshaft-env.sh with possible new entries
+                        echo "" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] Updating crankshaft_env.sh..." > /dev/tty3
                         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -143,7 +149,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             param=$(echo $line | cut -d= -f1)
                             value=$(echo $line | cut -d= -f2)
                             if [ ! -z $param ] && [ ! -z $value ]; then
-                                sed -i 's#^'$param'=.*#'$param'='$value'#' /boot/crankshaft/crankshaft_env.sh
+                                sed -i 's#^'"$param"'=.*#'"$param"'='"$value"'#' /boot/crankshaft/crankshaft_env.sh
                             fi
                         done < /boot/crankshaft/crankshaft_env_bak.sh
 
@@ -155,6 +161,10 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         # check rtc setup
                         RTC_CHECK=$(cat /boot/config.txt | grep "^dtoverlay=i2c-rtc")
                         if [ ! -z $RTC_CHECK ]; then
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] Setup rtc..." > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             # check rtc services
                             CHECK_RTC_LOAD=$(systemctl -l --state enabled --all list-unit-files | grep hwclock-load | awk {'print $2'})
                             if [ "$CHECK_RTC_LOAD" != "enabled" ]; then
@@ -185,6 +195,10 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         # check camera setup
                         CAM_CHECK=$(cat /boot/config.txt | grep "^start_x=1" | tail -n1)
                         if [ ! -z $CAM_CHECK ]; then
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] Setup cam..." > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             touch /etc/button_camera_visible
                             systemctl enable rpicamserver > /dev/null 2>&1
                             systemctl daemon-reload > /dev/null 2>&1
@@ -193,6 +207,10 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         # check overscan fix
                         OVERSCAN_CHECK=$(cat /boot/config.txt | grep "^overscan_scale=1" | tail -n1)
                         if [ -z $OVERSCAN_CHECK ]; then
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] Setup overscan fix..." > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             # remove possible existing lost boot entries
                             sed -i 's/# Overscan fix.*//' /boot/config.txt
                             sed -i 's/overscan_scale=.*//' /boot/config.txt
@@ -211,23 +229,40 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             else
                                 BTTYPE="external"
                             fi
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] Setup bluetooth $BTTYPE..." > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             /usr/local/bin/crankshaft bluetooth $BTTYPE
                         else
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] Disable bluetooth ..." > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             /usr/local/bin/crankshaft bluetooth disable
                         fi
 
                         # restore day/night
                         if [ $RTC_DAYNIGHT -eq 1 ]; then
-                            /usr/local/bin/crankshaft timers daynight $RTC_DAY_START $RTC_NIGHT_START > /dev/tty3
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] Setup timer..." > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            /usr/local/bin/crankshaft timers daynight "$RTC_DAY_START" "$RTC_NIGHT_START" "skip" > /dev/tty3
                         fi
 
                         # set done
                         mount -o remount,rw /
                         touch /etc/cs_backup_restore_done
+                        echo "" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] All done." > /dev/tty3
+                        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
 
                         # sync wait and reboot
                         sync
                         sleep 5
+                        umount /tmp/${PARTITION}
                         reboot
                     fi
                     umount /tmp/${PARTITION}

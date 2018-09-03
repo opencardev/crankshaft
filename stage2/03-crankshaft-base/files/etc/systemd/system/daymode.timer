@@ -1,5 +1,6 @@
 [Unit]
  Description=Crankshaft Day Mode Timer
+ After=usbrestore.service usbdetect.service
 
 [Timer]
  OnCalendar=*-*-* 8..17:*:00

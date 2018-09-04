@@ -184,6 +184,9 @@ echo "kernel-panic = 10" >> /etc/sysctl.conf
 
 # Later start cpufrequtils
 sed -i 's/# Required-Start: $remote_fs loadcpufreq.*/# Required-Start: $remote_fs loadcpufreq rc.local/' /etc/init.d/cpufrequtils
+
+# Don't kill processes after exit session
+sed -i 's/#KillUserProcesses=.*/KillUserProcesses=no/' /etc/systemd/logind.conf
+
 # Boost system performance
 sed -i 's/^GOVERNOR=.*/GOVERNOR="performance"/' /etc/init.d/cpufrequtils
-

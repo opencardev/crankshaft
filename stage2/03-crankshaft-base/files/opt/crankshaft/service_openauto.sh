@@ -45,7 +45,7 @@ if [ -f /tmp/start_openauto ]; then
 
     # start pulseaudio
     log_echo "Starting pulseaudio"
-    pulseaudio --start --log-target syslog
+    sudo runuser -l pi -c 'pulseaudio --start --log-target syslog'
 
     # restore pulseaudio volume
     /usr/local/bin/crankshaft audio volume restore
@@ -63,7 +63,7 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=0/" /tmp/openauto.ini
         # Starts the Autoapp (OpenAuto) main program via x-server
-        xinit
+        sudo runuser -l pi -c 'xinit'
     else
         # EGLFS - crankshaft "normal" mode
         # we don't have to call xinit, just start autoapp directly
@@ -74,7 +74,7 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         sed -i "s/^OMXLayerIndex=0.*$/OMXLayerIndex=2/" /tmp/openauto.ini
         # Starts the Autoapp (OpenAuto) main program
-        /usr/local/bin/autoapp
+        sudo runuser -l pi -c '/usr/local/bin/autoapp'
     fi
 
     # Check if autoapp crashed

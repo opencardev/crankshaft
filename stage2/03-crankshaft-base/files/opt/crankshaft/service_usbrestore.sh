@@ -142,10 +142,10 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         cp -f /opt/crankshaft/crankshaft_default_env.sh /boot/crankshaft/crankshaft_env.sh
 
                         while read -r line; do
-                            param=$(echo $line | cut -d= -f1)
-                            value=$(echo $line | cut -d= -f2)
-                            if [ ! -z $param ] && [ ! -z $value ]; then
-                                sed -i 's#^'"$param"'=.*#'"$param"'='"$value"'#' /boot/crankshaft/crankshaft_env.sh
+                            param=$(echo "$line" | cut -d= -f1)
+                            value=$(echo "$line" | cut -d= -f2-)
+                            if [ ! -z "$param" ] && [ ! -z "$value" ]; then
+                                sed -i 's|^'"$param"'=.*|'"$param"'='"$value"'|' /boot/crankshaft/crankshaft_env.sh
                             fi
                         done < /boot/crankshaft/crankshaft_env_bak.sh
 

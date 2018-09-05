@@ -17,3 +17,7 @@ systemctl enable btrestore
 echo "" >> /boot/config.txt
 echo "# Bluetooth" >> /boot/config.txt
 echo "dtoverlay=pi3-disable-bt" >> /boot/config.txt
+
+usermod -G bluetooth -a pi
+usermod -G bluetooth -a pulse
+usermod -G bluetooth -a root

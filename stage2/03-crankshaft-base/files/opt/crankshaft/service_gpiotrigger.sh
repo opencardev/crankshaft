@@ -13,7 +13,9 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ]; then
         if [ $REARCAM_PIN -ne 0 ]; then
             REARCAM_GPIO=`gpio -g read $REARCAM_PIN`
             if [ $REARCAM_GPIO -ne 1 ] ; then
-                touch /tmp/rearcam_enabled
+                if [ ! -f /tmp/rearcam_enabled ]; then
+                    touch /tmp/rearcam_enabled
+                fi
             else
                 if [ -f /tmp/rearcam_enabled ]; then
                     rm /tmp/rearcam_enabled
@@ -25,7 +27,13 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ]; then
             if [ $IGNITION_GPIO -ne 0 ] ; then
                 IGN_COUNTER=$((IGN_COUNTER+1))
                 if [ $IGN_COUNTER -gt $IGNITION_DELAY ]; then
-                    touch /tmp/external_exit
+                    if [ ! -f /tmp/android_device ] && [ ! -f /tmp/btdevice ]; then
+                        if [ ! -f /tmp/external_exit ]; then
+                            touch /tmp/external_exit
+                        fi
+                    else
+                        IGN_COUNTER=0
+                    fi
                 fi
             else
                 IGN_COUNTER=0

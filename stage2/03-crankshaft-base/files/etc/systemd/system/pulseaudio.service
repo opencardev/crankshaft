@@ -1,0 +1,12 @@
+[Unit]
+ Description=PulseAudio system server
+ After=usbdetect.service usbrestore.service sound.target
+
+[Service]
+ Type=simple
+ ExecStart=/usr/bin/pulseaudio --daemonize=no --system --realtime --disable-shm --disallow-exit --log-target=journal
+ ExecStop=/usr/bin/killall pulseaudio
+ Restart=always
+
+[Install]
+ WantedBy=multi-user.target

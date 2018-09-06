@@ -42,8 +42,10 @@ echo "overscan_scale=1" >> /boot/config.txt
 # pulseaudio
 cat /etc/pulse/csng_daemon.conf >> /etc/pulse/daemon.conf
 cat /etc/pulse/csng_default.pa > /etc/pulse/default.pa
+cat /etc/pulse/csng_system.pa > /etc/pulse/system.pa
 rm /etc/pulse/csng_daemon.conf
 rm /etc/pulse/csng_default.pa
+rm /etc/pulse/csng_system.pa
 
 # wallaper's
 ln -s /boot/crankshaft/wallpaper.png /home/pi/wallpaper.png
@@ -90,6 +92,7 @@ systemctl enable timerstart.service
 systemctl enable regensshkeys.service
 systemctl enable ssh.service
 systemctl enable kodimonitor.service
+systemctl enable pulseaudio.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service
 systemctl disable networking.service
@@ -190,3 +193,8 @@ sed -i 's/#KillUserProcesses=.*/KillUserProcesses=no/' /etc/systemd/logind.conf
 
 # Boost system performance
 sed -i 's/^GOVERNOR=.*/GOVERNOR="performance"/' /etc/init.d/cpufrequtils
+
+# Grant access to system wide pulseaudio
+usermod -G pulse,pulse-access -a root
+usermod -G pulse,pulse-access -a pi
+usermod -G pulse,pulse-access -a pulse

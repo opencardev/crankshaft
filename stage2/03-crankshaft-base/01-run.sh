@@ -13,6 +13,7 @@ install -d "${ROOTFS_DIR}/boot/crankshaft/custom"
 # /etc
 install -m 644 files/etc/pulse/csng_daemon.conf                         "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/pulse/csng_default.pa                          "${ROOTFS_DIR}/etc/pulse/"
+install -m 644 files/etc/pulse/csng_system.pa                           "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/systemd/system/openauto.service                "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/crankshaft.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/daymode.service                 "${ROOTFS_DIR}/etc/systemd/system/"
@@ -42,6 +43,7 @@ install -m 644 files/etc/systemd/system/hotspot.service                 "${ROOTF
 install -m 644 files/etc/systemd/system/regensshkeys.service            "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/kodimonitor.service             "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/custombrightness.service        "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/pulseaudio.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/udev/rules.d/10-gpio2kbd.rules                 "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.rules                  "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.master                 "${ROOTFS_DIR}/etc/udev/rules.d/"
@@ -98,6 +100,7 @@ install -m 644 files/opt/crankshaft/wallpaper/wallpaper-classic-night.png     "$
 install -m 644 files/opt/crankshaft/wallpaper/camera-overlay.png              "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 
 # /usr
+install -m 755 files/usr/local/bin/pulseaudio-debug.sh                  "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/bin/autoapp                              "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/bin/btservice                            "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/bin/crankshaft                           "${ROOTFS_DIR}/usr/local/bin/"

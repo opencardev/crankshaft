@@ -125,6 +125,15 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         cp -r -f /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/. /etc/ > /dev/null 2>&1
                         cp -r -f /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/. /etc/ > /dev/null 2>&1
                         cp -r -f /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/pulse/. /etc/pulse/ > /dev/null 2>&1
+                        # check and setup client.conf for system wide usage
+                        sed -i 's/.*Make sure client is correct configured for system wide usage.*//g' /etc/pulse/client.conf
+                        sed -i 's/.*default-server =.*//g' /etc/pulse/client.conf
+                        sed -i 's/.*autospawn =.*//g' /etc/pulse/client.conf
+                        sed -i '$!N; /^\(.*\)\n\1$/!P; D' /etc/pulse/client.conf
+                        echo "# Make sure client is correct configured for system wide usage" >> /etc/pulse/client.conf
+                        echo "default-server = /var/run/pulse/native" >> /etc/pulse/client.conf
+                        echo "autospawn = no" >> /etc/pulse/client.conf
+
                         chmod 644 /etc/timezone > /dev/null 2>&1
                         # remove possible existing lost boot entries
                         sed -i 's/initramfs initrd.img followkernel//' /boot/config.txt
@@ -281,3 +290,4 @@ else
 fi
 
 exit 0
+

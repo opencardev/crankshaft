@@ -198,3 +198,12 @@ sed -i 's/^GOVERNOR=.*/GOVERNOR="performance"/' /etc/init.d/cpufrequtils
 usermod -G pulse,pulse-access -a root
 usermod -G pulse,pulse-access -a pi
 usermod -G pulse,pulse-access -a pulse
+
+# Set client conf for system wide usage
+sed -i 's/.*Make sure client is correct configured for system wide usage.*//g' /etc/pulse/client.conf
+sed -i 's/.*default-server =.*//g' /etc/pulse/client.conf
+sed -i 's/.*autospawn =.*//g' /etc/pulse/client.conf
+sed -i '$!N; /^\(.*\)\n\1$/!P; D' /etc/pulse/client.conf
+echo "# Make sure client is correct configured for system wide usage" >> /etc/pulse/client.conf
+echo "default-server = /var/run/pulse/native" >> /etc/pulse/client.conf
+echo "autospawn = no" >> /etc/pulse/client.conf

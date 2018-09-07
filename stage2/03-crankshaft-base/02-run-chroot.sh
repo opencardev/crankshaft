@@ -128,6 +128,8 @@ rm /etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer
 rm /lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
 rm /lib/systemd/system/alsa-restore.service
 rm /lib/systemd/system/alsa-state.service
+rm /lib/systemd/system/basic.target.wants/alsa-restore.service
+rm /lib/systemd/system/basic.target.wants/alsa-state.service
 rm /lib/systemd/system/apply_noobs_os_config.service
 rm /lib/systemd/system/wifi-country.service
 

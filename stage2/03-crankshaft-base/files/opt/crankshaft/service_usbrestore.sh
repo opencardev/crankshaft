@@ -131,7 +131,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                         sed -i 's/.*autospawn =.*//g' /etc/pulse/client.conf
                         sed -i '$!N; /^\(.*\)\n\1$/!P; D' /etc/pulse/client.conf
                         echo "# Make sure client is correct configured for system wide usage" >> /etc/pulse/client.conf
-                        echo "default-server = /var/run/pulse/native" >> /etc/pulse/client.conf
+                        echo "default-server = unix:/var/run/pulse/native" >> /etc/pulse/client.conf
                         echo "autospawn = no" >> /etc/pulse/client.conf
 
                         chmod 644 /etc/timezone > /dev/null 2>&1

@@ -41,7 +41,7 @@ load-module module-bluetooth-discover
 .ifexists module-esound-protocol-unix.so
 load-module module-esound-protocol-unix
 .endif
-load-module module-native-protocol-unix
+load-module module-native-protocol-unix auth-cookie-enabled=0
 
 ### Automatically move streams to the default sink if the sink they are
 ### connected to dies, similar for sources

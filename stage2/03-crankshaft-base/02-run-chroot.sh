@@ -71,6 +71,9 @@ if [ $CHECK == "" ]; then
     sed -i "s/bcm2708_wdog/2708_wdt/" /etc/modules
 fi
 
+# Boost system performance
+sed -i 's/reboot.target/shutdown.target/g' /lib/systemd/system/rpi-display-backlight.service
+
 # Set default startup services state
 systemctl enable gpio2kbd.service
 systemctl enable crankshaft.service
@@ -94,6 +97,8 @@ systemctl enable regensshkeys.service
 systemctl enable ssh.service
 systemctl enable kodimonitor.service
 systemctl enable pulseaudio.service
+systemctl disable rpi-display-backlight.service
+systemctl enable rpi-display-backlight.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service
 systemctl disable networking.service
@@ -133,7 +138,6 @@ rm /lib/systemd/system/basic.target.wants/alsa-restore.service
 rm /lib/systemd/system/basic.target.wants/alsa-state.service
 rm /lib/systemd/system/apply_noobs_os_config.service
 rm /lib/systemd/system/wifi-country.service
-
 rm /lib/udev/rules.d/90-alsa-restore.rules
 
 systemctl daemon-relaod
@@ -211,5 +215,5 @@ sed -i 's/.*default-server =.*//g' /etc/pulse/client.conf
 sed -i 's/.*autospawn =.*//g' /etc/pulse/client.conf
 sed -i '$!N; /^\(.*\)\n\1$/!P; D' /etc/pulse/client.conf
 echo "# Make sure client is correct configured for system wide usage" >> /etc/pulse/client.conf
-echo "default-server = /var/run/pulse/native" >> /etc/pulse/client.conf
+echo "default-server = unix:/var/run/pulse/native" >> /etc/pulse/client.conf
 echo "autospawn = no" >> /etc/pulse/client.conf

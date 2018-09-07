@@ -4,7 +4,7 @@
 
 [Service]
  Type=simple
- Restart=always
+ Restart=on-failure
  RestartSec=60
  User=pi
  WorkingDirectory=/home/pi

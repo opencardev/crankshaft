@@ -114,6 +114,7 @@ systemctl disable alsa-state.service
 systemctl disable apply_noobs_os_config.service
 systemctl disable wifi-country.service
 systemctl disable alsa-restore.service
+systemctl disable alsa-state.service
 systemctl disable raspi-config.service
 
 rm /lib/systemd/system/systemd-rfkill.service
@@ -129,6 +130,8 @@ rm /lib/systemd/system/alsa-restore.service
 rm /lib/systemd/system/alsa-state.service
 rm /lib/systemd/system/apply_noobs_os_config.service
 rm /lib/systemd/system/wifi-country.service
+
+rm /lib/udev/rules.d/90-alsa-restore.rules
 
 systemctl daemon-relaod
 

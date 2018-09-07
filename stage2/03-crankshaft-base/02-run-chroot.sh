@@ -83,6 +83,7 @@ systemctl enable fake-hwclock.service
 systemctl enable update.service
 systemctl enable usbrestore.service
 systemctl enable usbdetect.service
+systemctl enable usbunmount.service
 systemctl enable daymode.timer
 systemctl enable nightmode.timer
 systemctl enable tap2wake.service

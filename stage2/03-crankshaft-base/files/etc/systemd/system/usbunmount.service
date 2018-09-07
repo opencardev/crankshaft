@@ -1,0 +1,13 @@
+[Unit]
+ Description=Cranksahft USB Unmount Service
+ DefaultDependencies=no
+ Before=shutdown.target reboot.target poweroff.target
+
+[Service]
+ Type=oneshot
+ ExecStart=/opt/crankshaft/service_usbunmount.sh
+ StandardOutput=syslog
+
+[Install]
+ WantedBy=shutdown.target reboot.target poweroff.target
+

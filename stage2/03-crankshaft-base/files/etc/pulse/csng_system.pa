@@ -74,3 +74,6 @@ load-module module-role-cork
 ### loading modules and rerouting streams.
 load-module module-filter-heuristics
 load-module module-filter-apply
+
+### Make some devices default
+load-module module-mmkbd-evdev device=/dev/gpio2kbd

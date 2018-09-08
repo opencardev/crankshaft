@@ -209,6 +209,9 @@ usermod -G pulse,pulse-access -a root
 usermod -G pulse,pulse-access -a pi
 usermod -G pulse,pulse-access -a pulse
 
+# Grant pulse access to input for keyboard control
+usermod -G input -a pulse
+
 # Set client conf for system wide usage
 sed -i 's/.*Make sure client is correct configured for system wide usage.*//g' /etc/pulse/client.conf
 sed -i 's/.*default-server =.*//g' /etc/pulse/client.conf

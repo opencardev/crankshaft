@@ -8,6 +8,7 @@ sed -i '/^$/d' /etc/fstab
 echo "tmpfs		/var/log		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/var/tmp		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/var/lib/alsa		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
+echo "tmpfs		/var/lib/pulse		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp			tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.local-pi		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
 echo "tmpfs		/tmp/.config-pi		tmpfs			nodev,nosuid		0	0" >> /etc/fstab
@@ -43,3 +44,6 @@ ln -s /tmp/resolv.conf /etc/resolv.conf
 
 # Change spool permissions in var.conf (rondie/Margaret fix)
 sed -i 's/spool 0755/spool 1777/' /usr/lib/tmpfiles.d/var.conf
+
+# Create pulse dir
+mkdir /var/lib/pulse

@@ -53,15 +53,6 @@ load-module module-always-sink
 ### Honour intended role device property
 load-module module-intended-roles
 
-### If autoexit on idle is enabled we want to make sure we only quit
-### when no local session needs us anymore.
-.ifexists module-console-kit.so
-load-module module-console-kit
-.endif
-.ifexists module-systemd-login.so
-load-module module-systemd-login
-.endif
-
 ### Enable positioned event sounds
 load-module module-position-event-sounds
 

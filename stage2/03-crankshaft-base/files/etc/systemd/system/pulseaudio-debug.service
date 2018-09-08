@@ -1,11 +1,11 @@
 [Unit]
- Description=Crankshaft PulseAudio system server
+ Description=Crankshaft PulseAudio Debug system server
  After=usbdetect.service usbrestore.service sound.target
  Before=openauto.service
 
 [Service]
  Type=simple
- ExecStart=/usr/bin/pulseaudio --daemonize=no --system --disable-shm --disallow-exit --log-target=journal
+ ExecStart=/usr/bin/pulseaudio --daemonize=no --system --disable-shm --disallow-exit --log-target=newfile:/tmp/pulseaudio-debug.log -vvvv
  ExecStop=/usr/bin/killall pulseaudio
  Restart=on-failure
 

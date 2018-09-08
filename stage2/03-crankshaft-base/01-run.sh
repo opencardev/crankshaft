@@ -45,6 +45,7 @@ install -m 644 files/etc/systemd/system/regensshkeys.service            "${ROOTF
 install -m 644 files/etc/systemd/system/kodimonitor.service             "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/custombrightness.service        "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/pulseaudio.service              "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/pulseaudio-debug.service        "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/udev/rules.d/10-gpio2kbd.rules                 "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.rules                  "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.master                 "${ROOTFS_DIR}/etc/udev/rules.d/"

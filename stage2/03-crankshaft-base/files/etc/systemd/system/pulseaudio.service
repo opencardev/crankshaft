@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft PulseAudio system server
- After=usbdetect.service usbrestore.service sound.target
+ After=usbdetect.service usbrestore.service sound.target gpio2kbd.service
  Before=openauto.service
 
 [Service]

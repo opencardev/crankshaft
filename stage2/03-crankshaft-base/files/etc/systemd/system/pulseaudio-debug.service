@@ -1,6 +1,6 @@
 [Unit]
  Description=Crankshaft PulseAudio Debug system server
- After=usbdetect.service usbrestore.service sound.target
+ After=usbdetect.service usbrestore.service sound.target gpio2kbd.service
  Before=openauto.service
  ConditionPathExists=/tmp/usb_debug_mode
 

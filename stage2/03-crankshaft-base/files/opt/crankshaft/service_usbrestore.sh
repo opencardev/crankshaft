@@ -170,6 +170,12 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] Setup rtc..." > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            # try to set systime from rtc
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            hwclock --hctosys
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] RTC Time: $(hwclock -r)" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             # check rtc services
                             CHECK_RTC_LOAD=$(systemctl -l --state enabled --all list-unit-files | grep hwclock-load | awk {'print $2'})
                             if [ "$CHECK_RTC_LOAD" != "enabled" ]; then
@@ -195,6 +201,10 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             sed -i '/./,/^$/!d' /etc/modules
                             # set modules
                             echo 'i2c_dev' >> /etc/modules
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] RTC Time: $(hwclock -r)" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                         fi
 
                         # check camera setup
@@ -290,4 +300,3 @@ else
 fi
 
 exit 0
-

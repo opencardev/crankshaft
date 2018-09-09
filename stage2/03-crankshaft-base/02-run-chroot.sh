@@ -220,3 +220,7 @@ sed -i '$!N; /^\(.*\)\n\1$/!P; D' /etc/pulse/client.conf
 echo "# Make sure client is correct configured for system wide usage" >> /etc/pulse/client.conf
 echo "default-server = unix:/var/run/pulse/native" >> /etc/pulse/client.conf
 echo "autospawn = no" >> /etc/pulse/client.conf
+
+# Add i2c
+echo "" /etc/modules
+echo "i2c_dev" /etc/modules

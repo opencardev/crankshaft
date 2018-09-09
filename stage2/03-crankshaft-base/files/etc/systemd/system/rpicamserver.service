@@ -9,7 +9,9 @@
  Type=simple
  ExecStart=/opt/crankshaft/cameraserver.py
  Restart=on-failure
+ StartLimitInterval=60
  RestartSec=5
+ StartLimitBurst=3
 
 [Install]
  WantedBy=multi-user.target

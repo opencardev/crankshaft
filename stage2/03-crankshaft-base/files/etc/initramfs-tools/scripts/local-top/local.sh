@@ -57,7 +57,7 @@ for _device in /sys/block/*/device; do
                     mount -o ro /dev/mmcblk0p2 /tmp/rootfs
                     rm -rf /tmp/${PARTITION}/cs-backup/${SERIAL}
                     mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft
-                    mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/custom
+                    mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/custom
                     mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/etc
                     mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/
                     mkdir -p /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/pulse

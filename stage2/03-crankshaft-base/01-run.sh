@@ -103,7 +103,6 @@ install -m 644 files/opt/crankshaft/wallpaper/wallpaper-classic-night.png     "$
 install -m 644 files/opt/crankshaft/wallpaper/camera-overlay.png              "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 
 # /usr
-install -m 755 files/usr/local/bin/pulseaudio-debug.sh                  "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/bin/autoapp                              "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/bin/btservice                            "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/bin/crankshaft                           "${ROOTFS_DIR}/usr/local/bin/"

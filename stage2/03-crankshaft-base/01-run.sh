@@ -90,6 +90,7 @@ install -m 755 files/opt/crankshaft/service_user_startup.sh             "${ROOTF
 install -m 755 files/opt/crankshaft/service_hotspot.sh                  "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_kodimonitor.sh              "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_custombrightness.sh         "${ROOTFS_DIR}/opt/crankshaft/"
+install -m 755 files/opt/crankshaft/service_pacheck.sh                  "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/gpio2kbd                            "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 644 files/opt/crankshaft/triggerhappy.conf                   "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/usb_action.sh                       "${ROOTFS_DIR}/opt/crankshaft/"

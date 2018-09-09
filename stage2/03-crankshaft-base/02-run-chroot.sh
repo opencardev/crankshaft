@@ -202,7 +202,7 @@ sed -i 's/# Required-Start: $remote_fs loadcpufreq.*/# Required-Start: $remote_f
 sed -i 's/#KillUserProcesses=.*/KillUserProcesses=no/' /etc/systemd/logind.conf
 
 # Boost system performance
-sed -i 's/^GOVERNOR=.*/GOVERNOR="performance"/' /etc/init.d/cpufrequtils
+sed -i 's/^GOVERNOR=.*/GOVERNOR="conservative"/' /etc/init.d/cpufrequtils
 
 # Grant access to system wide pulseaudio
 usermod -G pulse,pulse-access -a root

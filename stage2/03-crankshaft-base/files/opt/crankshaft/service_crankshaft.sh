@@ -11,6 +11,10 @@ chown pi:pi /tmp/.local-pi
 chown pi:pi /tmp/.config-pi
 chown pi:pi /tmp/.cache-pi
 
+chmod 777 /tmp/.local-pi
+chmod 777 /tmp/.config-pi
+chmod 777 /tmp/.cache-pi
+
 chown root:root /tmp/.local-pi
 chown root:root /tmp/.config-pi
 chown root:root /tmp/.cache-pi

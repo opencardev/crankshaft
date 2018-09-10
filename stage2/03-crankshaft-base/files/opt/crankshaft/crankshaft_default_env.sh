@@ -133,6 +133,8 @@ RTC_NIGHT_START=18
 # Note: this gpio depends NOT on ENABLE_GPIO!!!
 # To disable set to 0
 IGNITION_PIN=0
+# Invert ignition pin behavior
+IGNITION_INVERT=0
 # Time to wait until shutting down (seconds)
 IGNITION_DELAY=60
 

@@ -8,7 +8,7 @@ fi
 IGN_COUNTER=0
 
 # check gpio pin if activated
-if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne $IGNITION_INVERT ]; then
+if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ]; then
     while true; do
         if [ $REARCAM_PIN -ne 0 ]; then
             REARCAM_GPIO=`gpio -g read $REARCAM_PIN`
@@ -22,7 +22,7 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne $IGNITION_INVERT ]; then
                 fi
             fi
         fi
-        if [ $IGNITION_PIN -ne $IGNITION_INVERT ]; then
+        if [ $IGNITION_PIN -ne 0 ]; then
             IGNITION_GPIO=`gpio -g read $IGNITION_PIN`
             if [ $IGNITION_GPIO -ne $IGNITION_INVERT ] ; then
                 IGN_COUNTER=$((IGN_COUNTER+1))

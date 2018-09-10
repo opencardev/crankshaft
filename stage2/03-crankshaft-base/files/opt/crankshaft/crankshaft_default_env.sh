@@ -128,7 +128,7 @@ RTC_DAY_START=8
 RTC_NIGHT_START=18
 
 # Ignition Based Shutdown
-# This pin must be low to keep system running. If high for > IGNITION-DALAY (seconds)
+# This pin must be low to keep system running. If high for > IGNITION-DELAY (seconds)
 # system will do a shutdown
 # Note: this gpio depends NOT on ENABLE_GPIO!!!
 # To disable set to 0

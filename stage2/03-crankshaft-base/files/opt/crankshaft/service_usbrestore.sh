@@ -176,35 +176,21 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             hwclock --hctosys
                             echo "[${CYAN}${BOLD} INFO ${RESET}] RTC Time: $(hwclock -r)" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                            # check rtc services
-                            CHECK_RTC_LOAD=$(systemctl -l --state enabled --all list-unit-files | grep hwclock-load | awk {'print $2'})
-                            if [ "$CHECK_RTC_LOAD" != "enabled" ]; then
-                                systemctl enable hwclock-load.service > /dev/null 2>&1
-                            fi
-
-                            CHECK_RTC_SAVE=$(systemctl -l --state enabled --all list-unit-files | grep hwclock-save | awk {'print $2'})
-                            if [ "$CHECK_RTC_SAVE" != "enabled" ]; then
-                                systemctl enable hwclock-load.service > /dev/null 2>&1
-                            fi
-                            systemctl disable fake-hwclock > /dev/null 2>&1
-                            # reload services
-                            systemctl daemon-reload > /dev/null 2>&1
                             # set tzdata
                             timedatectl set-timezone $(cat /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/timezone) > /dev/null 2>&1
-                            # failsafe for coming from pre1
-                            if [ -d /tmp/${PARTITION}/cs-backup/etc ]; then
-                                timedatectl set-timezone $(cat /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/timezone) > /dev/null 2>&1
-                            fi
-                            # reset i2c modules
-                            sed -i '/i2c/d' /etc/modules
-                            # clean empty lines
-                            sed -i '/./,/^$/!d' /etc/modules
-                            # set modules
-                            echo 'i2c_dev' >> /etc/modules
                             echo "" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] RTC Time: $(hwclock -r)" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                        else
+                            echo "" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] Setup fake hwclock..." > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            systemctl disable hwclock-load.service > /dev/null 2>&1
+                            systemctl disable hwclock-save.service > /dev/null 2>&1
+                            systemctl enable fake-hwclock > /dev/null 2>&1
+                            systemctl daemon-reload > /dev/null 2>&1
                         fi
 
                         # check camera setup

@@ -82,7 +82,6 @@ systemctl enable devmode.service
 systemctl enable debugmode.service
 systemctl enable display.service
 systemctl enable user_startup.service
-systemctl enable fake-hwclock.service
 systemctl enable update.service
 systemctl enable usbrestore.service
 systemctl enable usbdetect.service
@@ -99,6 +98,9 @@ systemctl enable kodimonitor.service
 systemctl enable pulseaudio.service
 systemctl disable rpi-display-backlight.service
 systemctl enable rpi-display-backlight.service
+systemctl enable hwclock-load.service
+systemctl enable hwclock-save.service
+systemctl disable fake-hwclock.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service
 systemctl disable networking.service
@@ -108,8 +110,6 @@ systemctl disable wifisetup.service
 systemctl disable systemd-rfkill.service
 systemctl disable systemd-rfkill.socket
 systemctl disable systemd-timesyncd.service
-systemctl disable hwclock-load.service
-systemctl disable hwclock-save.service
 systemctl disable resize2fs_once.service
 systemctl disable bluetooth.service
 systemctl disable hciuart.service

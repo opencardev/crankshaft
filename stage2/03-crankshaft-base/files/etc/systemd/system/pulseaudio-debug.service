@@ -8,6 +8,7 @@
  Type=simple
  ExecStartPre=/bin/rm -f /tmp/pulseaudio-debug.log
  ExecStart=/usr/bin/pulseaudio --daemonize=no --system --disable-shm --disallow-exit --log-target=newfile:/tmp/pulseaudio-debug.log -vvvv
+ ExecStartPost=/opt/crankshaft/service_pacheck.sh
  ExecStop=/usr/bin/killall pulseaudio
  Restart=on-failure
 

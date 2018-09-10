@@ -92,7 +92,11 @@ if [ ! -z $pa_device ] && [ ! -z $hw_samplerate ] && [ ! -z $hw_sampleformat ] &
         echo "# Crankshaft detected sample format" >>  /etc/pulse/daemon.conf
         echo "default-sample-format = $hw_sampleformat" >>  /etc/pulse/daemon.conf
         /usr/local/bin/crankshaft filesystem system lock
-        systemctl restart pulseaudio
+        if [ -f /tmp/usb_debug_mode ]; then
+            systemctl restart pulseaudio-debug
+        else
+            systemctl restart pulseaudio
+        fi
     else
         echo "[${GREEN}${BOLD}  OK  ${RESET}] *******************************************************" > /dev/tty3
         echo "[${GREEN}${BOLD}  OK  ${RESET}] Pulseaudio setup is ok" > /dev/tty3

@@ -1,8 +1,6 @@
 [Unit]
  Description=Crankshaft Wifi Hotspot Service
  ConditionPathExists=/opt/crankshaft/service_hotspot.sh
- Before=hostapd.service dnsmasq.service
- Requires=hostapd.service dnsmasq.service
 
 [Service]
  Type=oneshot

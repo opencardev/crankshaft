@@ -37,7 +37,7 @@ if [ -f /tmp/dev_mode_enabled ]; then
 	    	break
 	    fi
 	fi
-	((counter++))
+	counter=$((counter+1))
 	sleep 1
     done
     # get latest state

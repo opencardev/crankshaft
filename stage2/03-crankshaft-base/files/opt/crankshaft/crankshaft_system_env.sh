@@ -22,18 +22,20 @@ if [ ! -z $ENABLE_GPIO ]; then
         if [ $X11_PIN -ne 0 ]; then
             sudo /usr/bin/gpio -g mode $X11_PIN up
         fi
-        if [ $REARCAM_PIN -ne 0 ]; then
-            sudo /usr/bin/gpio -g mode $REARCAM_PIN up
-        fi
-        if [ $IGNITION_PIN -ne 0 ]; then
-            sudo /usr/bin/gpio -g mode $IGNITION_PIN up
-        fi
     else
         # make sure flag is correctly set if
         # ENABLE_GPIO is not set to 1 or missing
         # to prevent from errors
         ENABLE_GPIO=0
     fi
+fi
+
+# set predefined state for standalone gpio's
+if [ $REARCAM_PIN -ne 0 ]; then
+    sudo /usr/bin/gpio -g mode $REARCAM_PIN up
+fi
+if [ $IGNITION_PIN -ne 0 ]; then
+    sudo /usr/bin/gpio -g mode $IGNITION_PIN up
 fi
 
 # callable functions

@@ -12,10 +12,6 @@ if [ -f /tmp/start_openauto ]; then
     log_echo "Restoring settings"
     /usr/local/bin/crankshaft settings restore
 
-    # restore alsa state - volumes restored by openauto
-    log_echo "Restoring alsastate"
-    /usr/local/bin/crankshaft audio alsastate restore
-
     # Make sure display is on
     /usr/local/bin/crankshaft display on
 
@@ -42,9 +38,6 @@ if [ -f /tmp/start_openauto ]; then
     sudo rm -f /tmp/get_outputs > /dev/null 2>&1
     sudo rm -f /tmp/get_default_input > /dev/null 2>&1
     sudo rm -f /tmp/get_default_output > /dev/null 2>&1
-
-    # restore pulseaudio volume
-    /usr/local/bin/crankshaft audio volume restore
 
     if [ $START_X11 -ne 0 ] || [ $X11_MODE_GPIO -ne 1 ]; then
         # This is when the X11 pin is connected to ground (X11 enabled)

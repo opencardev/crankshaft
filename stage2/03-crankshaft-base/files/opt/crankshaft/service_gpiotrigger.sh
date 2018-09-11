@@ -24,7 +24,7 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ]; then
         fi
         if [ $IGNITION_PIN -ne 0 ]; then
             IGNITION_GPIO=`gpio -g read $IGNITION_PIN`
-            if [ $IGNITION_GPIO -ne 0 ] ; then
+            if [ $IGNITION_GPIO -ne $IGNITION_INVERT ] ; then
                 IGN_COUNTER=$((IGN_COUNTER+1))
                 if [ $IGN_COUNTER -gt $IGNITION_DELAY ]; then
                     if [ ! -f /tmp/android_device ] && [ ! -f /tmp/btdevice ]; then

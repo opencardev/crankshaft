@@ -27,17 +27,6 @@ if [ ! -f /tmp/usb_debug_mode ]; then
             touch /tmp/dev_mode_enabled
             show_screen
             echo "[${RED}${BOLD}ACTIVE${RESET}] Dev Mode Enabled - Shell"
-            echo "nameserver 8.8.8.8" > /tmp/resolv.conf
-            echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
-            systemctl start wifisetup.service
-            systemctl start dhcpcd.service > /dev/null 2>&1
-            systemctl start networking.service
-            systemctl start systemd-timesyncd.service > /dev/null 2>&1
-            systemctl stop watchdog
-            if [ $ENABLE_HOTSPOT == 1 ] ; then
-                systemctl start hotspot.service
-            fi
-            show_cursor
         else
             log_echo "Enable Dev Mode OpenAuto"
             # dev mode with start of openauto
@@ -47,24 +36,20 @@ if [ ! -f /tmp/usb_debug_mode ]; then
             show_screen
             echo "[${RED}${BOLD}ACTIVE${RESET}] Dev Mode Enabled - OpenAuto"
             touch /tmp/start_openauto
-            echo "nameserver 8.8.8.8" > /tmp/resolv.conf
-            echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
-            log_echo "Start wifisetup.service"
-            systemctl start wifisetup.service
-            log_echo "Start dhcpcd.service"
-            systemctl start dhcpcd.service > /dev/null 2>&1
-            log_echo "Start networking.service"
-            systemctl start networking.service
-            log_echo "Start systemd-timesyncd.service"
-            systemctl start systemd-timesyncd.service > /dev/null 2>&1
-            log_echo "Stop watchdog.service"
-            systemctl stop watchdog
-            if [ $ENABLE_HOTSPOT == 1 ] ; then
-                log_echo "Start hotspot.service"
-                systemctl start hotspot.service
-            fi
-            show_cursor
         fi
+        echo "nameserver 8.8.8.8" > /tmp/resolv.conf
+        echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
+        log_echo "Start wifisetup.service"
+        systemctl start wifisetup.service
+        log_echo "Start dhcpcd.service"
+        systemctl start dhcpcd.service > /dev/null 2>&1
+        log_echo "Start networking.service"
+        systemctl start networking.service
+        log_echo "Start systemd-timesyncd.service"
+        systemctl start systemd-timesyncd.service > /dev/null 2>&1
+        log_echo "Stop watchdog.service"
+        systemctl stop watchdog
+        show_cursor
     else
         touch /tmp/start_openauto
     fi

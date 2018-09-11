@@ -8,6 +8,7 @@ fi
 
 if [ $ENABLE_HOTSPOT -eq 1 ]; then
     if [ $1 == "start" ]; then
+	crankshaft filesystem system unlock
         # cleanup possible lost state file
         rm -f /tmp/hotspot_active > /dev/null 2>$1
         log_echo "Kill running wpa clients"
@@ -68,6 +69,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
         if [ "$HOSTAPD" == "running" ] && [ "$DNSMASQ" == "running" ]; then
     	touch /tmp/hotspot_active > /dev/null 2>$1
         fi
+	crankshaft filesystem system lock
         # show infos
         _SSID_WLAN0=$(cat /etc/hostapd/hostapd.conf | grep '^ssid' | cut -d= -f2)
         _PSK_WLAN0=$(cat /etc/hostapd/hostapd.conf | grep '^wpa_passphrase' | cut -d= -f2)

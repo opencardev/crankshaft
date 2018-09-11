@@ -1,6 +1,7 @@
 [Unit]
  Description=Crankshaft Wifi Hotspot Service
  ConditionPathExists=/opt/crankshaft/service_hotspot.sh
+ After=update.service
 
 [Service]
  Type=oneshot

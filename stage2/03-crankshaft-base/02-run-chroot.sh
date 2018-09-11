@@ -100,6 +100,7 @@ systemctl disable rpi-display-backlight.service
 systemctl enable rpi-display-backlight.service
 systemctl enable hwclock-load.service
 systemctl enable hwclock-save.service
+systemctl enable hotspot.service
 systemctl disable fake-hwclock.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service
@@ -115,7 +116,6 @@ systemctl disable bluetooth.service
 systemctl disable hciuart.service
 systemctl disable hostapd.service
 systemctl disable dnsmasq.service
-systemctl disable hotspot.service
 systemctl disable alsa-state.service
 systemctl disable apply_noobs_os_config.service
 systemctl disable wifi-country.service

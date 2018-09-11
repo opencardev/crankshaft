@@ -22,5 +22,5 @@ while [ $counter -lt 5 ]; do
     sleep 5
     cs_autoconnect
     echo "Loop: $counter"
-    ((counter++))
+    counter=$((counter+1))
 done

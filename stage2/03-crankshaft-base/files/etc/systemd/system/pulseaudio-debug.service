@@ -6,11 +6,9 @@
 
 [Service]
  Type=simple
- ExecStartPre=/usr/local/bin/crankshaft audio alsastate restore
  ExecStartPre=/bin/rm -f /tmp/pulseaudio-debug.log
  ExecStart=/usr/bin/pulseaudio --daemonize=no --system --disable-shm --disallow-exit --log-target=newfile:/tmp/pulseaudio-debug.log -vvvv
  ExecStartPost=/opt/crankshaft/service_pacheck.sh
- ExecStartPost=/usr/local/bin/crankshaft audio volume restore
  ExecStop=/usr/bin/killall pulseaudio
  Restart=on-failure
 

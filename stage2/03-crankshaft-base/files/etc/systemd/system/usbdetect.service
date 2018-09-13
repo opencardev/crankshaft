@@ -1,7 +1,7 @@
 [Unit]
  Description=Crankshaft USB Detect Service
  ConditionPathExists=/opt/crankshaft/service_usbdetect.sh
- After=display.service
+ After=display.service hwclock-load.service
  Before=gpio2kbd.service bluetooth.service bthelper.service hciuart.service hostname.service
 
 [Service]

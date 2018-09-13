@@ -112,7 +112,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
         log_echo "Cleanup ip address for wlan0"
         ip address del 192.168.254.1/29 dev wlan0
         # start wpa client only if not in dev or debug mode
-	if [ ! -f /tmp/usb_debug_mode ] && [ ! -f /tmp/dev_mode_enabled ]; then
+	if [ -f /tmp/usb_debug_mode ] || [ -f /tmp/dev_mode_enabled ]; then
     	    # start wpa_supplicant
             echo "[${CYAN}${BOLD} INFO ${RESET}] Start wpa_supplicant (client mode)"
             log_echo "Cleanup ip address for wlan0"

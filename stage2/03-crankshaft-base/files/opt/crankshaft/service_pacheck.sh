@@ -57,11 +57,19 @@ else
         show_cursor
         splash=0
     fi
-    echo "${RESET}" > /dev/tty3
-    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-    echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple outputs!" > /dev/tty3
-    echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
-    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+    if [ "$countdevices" == "0" ]; then
+	echo "${RESET}" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected no outputs!" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] Add an audio output device!" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+    else
+	echo "${RESET}" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple outputs!" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+    fi
 fi
 
 #
@@ -111,11 +119,19 @@ else
         show_cursor
         splash=0
     fi
-    echo "${RESET}" > /dev/tty3
-    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-    echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple inputs!" > /dev/tty3
-    echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
-    echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+    if [ "$countinputdevices" == "0" ]; then
+	echo "${RESET}" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected no inputs!" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] Add an audio input device!" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+    else
+	echo "${RESET}" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple inputs!" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
+	echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+    fi
 fi
 
 # Set samplerate and sampleformat

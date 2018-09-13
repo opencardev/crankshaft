@@ -11,6 +11,8 @@
  StandardOutput=syslog
  Restart=on-failure
  RestartSec=5
+ StartLimitBurst=3
+ StartLimitInterval=20
 
 [Install]
  WantedBy=sysinit.target

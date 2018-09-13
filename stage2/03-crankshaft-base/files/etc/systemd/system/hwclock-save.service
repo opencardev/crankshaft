@@ -2,6 +2,7 @@
  Description=Cranksahft Sync System Clock to Hardware Clock
  DefaultDependencies=no
  Before=shutdown.target
+ After=hwclock-load.service
 
 [Service]
  Type=oneshot

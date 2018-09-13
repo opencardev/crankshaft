@@ -75,6 +75,7 @@ for _device in /sys/block/*/device; do
                     cp -f /tmp/bootfs/crankshaft/brightness-night /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/volume /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/capvolume /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+                    cp -f /tmp/bootfs/crankshaft/alsactl.state /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/openauto.ini /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/wallpaper.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
                     cp -f /tmp/bootfs/crankshaft/wallpaper-night.png /tmp/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null

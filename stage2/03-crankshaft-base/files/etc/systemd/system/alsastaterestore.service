@@ -1,0 +1,7 @@
+[Unit]
+ Description=Crankshaft alsa state restore
+ After=sysinit.target
+
+[Service]
+ Type=oneshot
+ ExecStart=/usr/local/bin/crankshaft audio alsastate restore

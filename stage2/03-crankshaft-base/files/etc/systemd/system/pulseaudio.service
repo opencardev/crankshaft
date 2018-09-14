@@ -5,7 +5,6 @@
 
 [Service]
  Type=simple
- ExecStartPre=/usr/local/bin/crankshaft audio alsastate restore
  ExecStart=/usr/bin/pulseaudio --daemonize=no --system --disable-shm --disallow-exit --log-target=journal
  ExecStartPost=/opt/crankshaft/service_pacheck.sh
  ExecStartPost=/usr/local/bin/crankshaft audio volume restore

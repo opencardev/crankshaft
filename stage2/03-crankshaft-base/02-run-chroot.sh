@@ -101,6 +101,7 @@ systemctl enable rpi-display-backlight.service
 systemctl enable hwclock-load.service
 systemctl enable hwclock-save.service
 systemctl enable hotspot.service
+systemctl enable alsastaterestore.service
 systemctl disable fake-hwclock.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service

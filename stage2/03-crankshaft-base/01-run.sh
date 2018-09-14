@@ -121,6 +121,9 @@ install -m 644 files/usr/share/plymouth/themes/crankshaft/shutdown.png          
 install -m 644 files/usr/share/plymouth/themes/crankshaft/progress_bar.png      "${ROOTFS_DIR}/usr/share/plymouth/themes/crankshaft/"
 install -m 644 files/usr/share/plymouth/themes/crankshaft/progress_box.png      "${ROOTFS_DIR}/usr/share/plymouth/themes/crankshaft/"
 
+# /lib
+install -m 644 files/lib/udev/hwclock-set                               "${ROOTFS_DIR}/lib/udev/"
+
 #qt5
 pv -p  -w 80 files/qt5/Qt5_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/
 pv -p  -w 80 files/qt5/Qt5_libs_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/

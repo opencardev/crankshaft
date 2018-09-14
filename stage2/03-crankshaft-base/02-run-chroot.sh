@@ -103,6 +103,7 @@ systemctl enable fake-hwclock.service
 systemctl enable alsastaterestore.service
 systemctl disable hwclock-load.service
 systemctl disable hwclock-save.service
+systemctl disable systemd-timesyncd.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service
 systemctl disable networking.service
@@ -111,7 +112,6 @@ systemctl disable regenerate_ssh_host_keys.service
 systemctl disable wifisetup.service
 systemctl disable systemd-rfkill.service
 systemctl disable systemd-rfkill.socket
-systemctl disable systemd-timesyncd.service
 systemctl disable resize2fs_once.service
 systemctl disable bluetooth.service
 systemctl disable hciuart.service

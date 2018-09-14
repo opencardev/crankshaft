@@ -178,19 +178,18 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             # set tzdata
                             timedatectl set-timezone $(cat /tmp/${PARTITION}/cs-backup/${SERIAL}/etc/timezone) > /dev/null 2>&1
-                            echo "" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] RTC Time: $(hwclock -r)" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                            systemctl enable hwclock-load.service > /dev/null 2>&1
+                            systemctl enable hwclock-save.service > /dev/null 2>&1
+                            systemctl disable fake-hwclock > /dev/null 2>&1
+                            systemctl daemon-reload > /dev/null 2>&1
                         else
                             echo "" > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                            echo "[${CYAN}${BOLD} INFO ${RESET}] Setup fake hwclock..." > /dev/tty3
+                            echo "[${CYAN}${BOLD} INFO ${RESET}] No rtc - still using fake hwclock..." > /dev/tty3
                             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                            systemctl disable hwclock-load.service > /dev/null 2>&1
-                            systemctl disable hwclock-save.service > /dev/null 2>&1
-                            systemctl enable fake-hwclock > /dev/null 2>&1
-                            systemctl daemon-reload > /dev/null 2>&1
                         fi
 
                         # check camera setup

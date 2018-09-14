@@ -1,8 +1,8 @@
 [Unit]
  Description=Crankshaft Sync Hardware Clock to System Clock
  DefaultDependencies=no
- After=sysinit.target
- Before=shutdown.target rc.local.service usbdetect.service usbrestore.service
+ After=sysinit.target usbdetect.service usbrestore.service
+ Before=shutdown.target rc.local.service
  Conflicts=shutdown.target
 
 [Service]

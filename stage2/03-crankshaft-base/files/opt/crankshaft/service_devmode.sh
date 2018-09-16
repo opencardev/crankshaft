@@ -7,9 +7,6 @@ if [ ! -f /tmp/usb_debug_mode ]; then
     # dev mode related utility
     source /opt/crankshaft/crankshaft_default_env.sh
     source /opt/crankshaft/crankshaft_system_env.sh
-    if [ -f /boot/crankshaft/crankshaft_env.sh ]; then
-        source /boot/crankshaft/crankshaft_env.sh
-    fi
 
     # Check gpio pin if activated
     if [ $ENABLE_GPIO -eq 1 ] && [ $DEV_PIN -ne 0 ]; then

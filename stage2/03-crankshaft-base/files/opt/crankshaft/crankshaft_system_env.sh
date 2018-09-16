@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source /opt/crankshaft/crankshaft_default_env.sh
 if [ -f /boot/crankshaft/crankshaft_env.sh ]; then
     source /boot/crankshaft/crankshaft_env.sh
 fi

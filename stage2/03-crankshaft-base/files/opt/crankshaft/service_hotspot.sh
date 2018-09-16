@@ -2,13 +2,10 @@
 
 source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
-if [ -f /boot/crankshaft/crankshaft_env.sh ];then
-    source /boot/crankshaft/crankshaft_env.sh
-fi
 
 if [ $ENABLE_HOTSPOT -eq 1 ]; then
     if [ $1 == "start" ]; then
-	crankshaft filesystem system unlock
+        crankshaft filesystem system unlock
         # cleanup possible lost state file
         sudo rm -f /tmp/hotspot_active > /dev/null 2>$1
         log_echo "Kill running wpa clients"
@@ -67,9 +64,9 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
             echo "[${RED}${BOLD} FAIL ${RESET}] Dnsmasq has failed to start!"
         fi
         if [ "$HOSTAPD" == "running" ] && [ "$DNSMASQ" == "running" ]; then
-    	touch /tmp/hotspot_active > /dev/null 2>$1
+        touch /tmp/hotspot_active > /dev/null 2>$1
         fi
-	crankshaft filesystem system lock
+        crankshaft filesystem system lock
         # show infos
         _SSID_WLAN0=$(cat /etc/hostapd/hostapd.conf | grep '^ssid' | cut -d= -f2)
         _PSK_WLAN0=$(cat /etc/hostapd/hostapd.conf | grep '^wpa_passphrase' | cut -d= -f2)
@@ -84,7 +81,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
     fi
 
     if [ $1 == "stop" ]; then
-	crankshaft filesystem system unlock
+        crankshaft filesystem system unlock
         # clanup state file
         sudo rm -f /tmp/hotspot_active > /dev/null 2>$1
         log_echo "Stop hotspot"
@@ -112,12 +109,12 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
         log_echo "Cleanup ip address for wlan0"
         ip address del 192.168.254.1/29 dev wlan0
         # start wpa client only if not in dev or debug mode
-	if [ -f /tmp/usb_debug_mode ] || [ -f /tmp/dev_mode_enabled ]; then
-    	    # start wpa_supplicant
+        if [ -f /tmp/usb_debug_mode ] || [ -f /tmp/dev_mode_enabled ]; then
+            # start wpa_supplicant
             echo "[${CYAN}${BOLD} INFO ${RESET}] Start wpa_supplicant (client mode)"
             log_echo "Cleanup ip address for wlan0"
             sudo wpa_supplicant -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B > /dev/null 2>$1
-	    crankshaft filesystem system lock
+            crankshaft filesystem system lock
             echo "[${CYAN}${BOLD} INFO ${RESET}] Waiting for ip release..."
             log_echo "Waitin for ip release"
             # check 15 secs for valid ip config

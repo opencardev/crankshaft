@@ -102,7 +102,6 @@ systemctl enable hotspot.service
 systemctl enable fake-hwclock.service
 systemctl enable alsastaterestore.service
 systemctl disable hwclock-load.service
-systemctl disable hwclock-save.service
 systemctl disable systemd-timesyncd.service
 systemctl disable rpicamserver.service
 systemctl disable wpa_supplicant.service

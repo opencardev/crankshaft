@@ -1,13 +1,12 @@
 [Unit]
  Description=Crankshaft Sync Hardware Clock to System Clock
  DefaultDependencies=no
- After=sysinit.target usbdetect.service usbrestore.service
- Before=shutdown.target rc.local.service
- Conflicts=shutdown.target
+ After=sysinit.target
+ Before=rc.local.service openauto.service
 
 [Service]
  Type=simple
- ExecStart=/sbin/hwclock --hctosys
+ ExecStart=/opt/crankshaft/service_hwclock.sh
  StandardOutput=syslog
  Restart=on-failure
  RestartSec=5

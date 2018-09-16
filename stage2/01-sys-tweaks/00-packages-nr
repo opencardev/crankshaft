@@ -20,7 +20,6 @@ rsyslog
 mc
 nano
 i2c-tools
-fake-hwclock
 python-picamera
 python3-gpiozero
 pv
@@ -35,4 +34,3 @@ zip
 python-serial
 python3-serial
 libdouble-conversion1
-

@@ -41,6 +41,8 @@ ln -s /tmp/bluetooth /var/lib/bluetooth
 ln -s /tmp/openauto.ini /home/pi/openauto.ini
 ln -s /tmp/openauto_wifi_recent.ini /home/pi/openauto_wifi_recent.ini
 ln -s /tmp/resolv.conf /etc/resolv.conf
+echo "nameserver 8.8.8.8" > /tmp/resolv.conf
+echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
 
 # Change spool permissions in var.conf (rondie/Margaret fix)
 sed -i 's/spool 0755/spool 1777/' /usr/lib/tmpfiles.d/var.conf

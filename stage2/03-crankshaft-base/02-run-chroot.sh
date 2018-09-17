@@ -99,7 +99,6 @@ systemctl enable pulseaudio.service
 systemctl disable rpi-display-backlight.service
 systemctl enable rpi-display-backlight.service
 systemctl enable hotspot.service
-systemctl enable fake-hwclock.service
 systemctl enable alsastaterestore.service
 systemctl disable hwclock-load.service
 systemctl disable systemd-timesyncd.service

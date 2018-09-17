@@ -48,8 +48,8 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
         # set wpa password
         log_echo "Set wpa credentials"
         echo "[${CYAN}${BOLD} INFO ${RESET}] Setup hotspod credentials from config"
-        sed -i "s/^wpa_passphrase=.*$/wpa_passphrase=${HOTSPOT_PSK}/" /etc/hostapd/hostapd.conf
-        sed -i "s/^country_code=.*$/country_code=${WIFI_COUNTRY}/" /etc/hostapd/hostapd.conf
+        sed -i 's/^wpa_passphrase=.*$/wpa_passphrase='"${HOTSPOT_PSK}"'/' /etc/hostapd/hostapd.conf
+        sed -i 's/^country_code=.*$/country_code='"${WIFI_COUNTRY}"'/' /etc/hostapd/hostapd.conf
         # start services
         echo "[${CYAN}${BOLD} INFO ${RESET}] Start dnsmasq"
         systemctl start dnsmasq

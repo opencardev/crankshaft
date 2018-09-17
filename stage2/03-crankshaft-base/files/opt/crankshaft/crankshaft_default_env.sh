@@ -99,13 +99,14 @@ DISCONNECTION_POWEROFF_DISABLE=0
 WIFI_COUNTRY=EN
 
 # Wifi client mode - Only used in dev mode
-# If your SSID or password contains special chars or spaces use quotation marks ="SSID" / ="password"
-WIFI_SSID=sample
-WIFI_PSK=sample
+# If your SSID or password contains special chars or spaces make sure using quotation marks ="SSID" / ="password"
+WIFI_SSID="sample"
+WIFI_PSK="sample"
 
 # Hotspot (if enabled the wifi client is disabled and a hotspot is opened)
+# If your SSID or password contains special chars or spaces make sure using quotation marks ="SSID" / ="password"
 ENABLE_HOTSPOT=0
-HOTSPOT_PSK=1234567890
+HOTSPOT_PSK="1234567890"
 
 ### RPi Camera Module ###
 # Overlay settings

@@ -61,11 +61,14 @@ else
         echo "[${RED}${BOLD} WARN ${RESET}] Add an audio output device!" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
     else
-        echo "${RESET}" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple outputs!" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+        if [ "$pa_device" != "" ]; then
+            echo "${RESET}" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple outputs!" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] No default was selected." > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+        fi
     fi
 fi
 
@@ -123,11 +126,14 @@ else
         echo "[${RED}${BOLD} WARN ${RESET}] Add an audio input device!" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
     else
-        echo "${RESET}" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple inputs!" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+        if [ "$pa_inputdevice" != "" ]; then
+            echo "${RESET}" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple inputs!" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] No default was selected." > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+        fi
     fi
 fi
 

@@ -66,5 +66,8 @@ load-module module-role-cork
 load-module module-filter-heuristics
 load-module module-filter-apply
 
+### Automatically suspend sinks/sources that become idle for too long
+load-module module-suspend-on-idle
+
 ### Make some devices default
 load-module module-mmkbd-evdev device=/dev/gpio2kbd

@@ -18,6 +18,7 @@ echo "ramfs		/tmp/.cache-pi		ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
 echo "ramfs		/tmp/.local-root	ramfs			size=8m,nodev,nosuid		0	0" >> /etc/fstab
 echo "ramfs		/tmp/.config-root	ramfs			size=8m,nodev,nosuid		0	0" >> /etc/fstab
 echo "ramfs		/tmp/.cache-root	ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.mymedia		ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
 
 sed -i 's/root=ROOTDEV/root=\/dev\/mmcblk0p2/' /boot/cmdline.txt
 sed -i "s/#Storage=auto/Storage=volatile/" /etc/systemd/journald.conf
@@ -41,6 +42,7 @@ ln -s /tmp/bluetooth /var/lib/bluetooth
 ln -s /tmp/openauto.ini /home/pi/openauto.ini
 ln -s /tmp/openauto_wifi_recent.ini /home/pi/openauto_wifi_recent.ini
 ln -s /tmp/resolv.conf /etc/resolv.conf
+ln -s /tmp/.mymedia /media/MYMEDIA
 echo "nameserver 8.8.8.8" > /tmp/resolv.conf
 echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
 

@@ -12,9 +12,12 @@ chmod 777 /tmp/.local-pi
 chmod 777 /tmp/.config-pi
 chmod 777 /tmp/.cache-pi
 
-chown root:root /tmp/.local-pi
-chown root:root /tmp/.config-pi
-chown root:root /tmp/.cache-pi
+chown root:root /tmp/.local-root
+chown root:root /tmp/.config-root
+chown root:root /tmp/.cache-root
+
+chmod 777 /tmp/.mymedia
+chmod 777 /tmp/.usbdrives
 
 # Check if wallpapers are present and non zero
 if [ ! -f /boot/crankshaft/wallpaper.png ] || [ ! -s /boot/crankshaft/wallpaper.png ]; then

@@ -208,6 +208,9 @@ usermod -G pulse,pulse-access -a root
 usermod -G pulse,pulse-access -a pi
 usermod -G pulse,pulse-access -a pulse
 
+# Grant disk access for pi user
+usermod -G disk -a pi
+
 # Grant pulse access to input for keyboard control
 usermod -G input -a pulse
 

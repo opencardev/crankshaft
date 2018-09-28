@@ -61,7 +61,7 @@ else
         echo "[${RED}${BOLD} WARN ${RESET}] Add an audio output device!" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
     else
-        if [ "$pa_device" != "" ]; then
+        if [ "$pa_device" == "" ]; then
             echo "${RESET}" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple outputs!" > /dev/tty3
@@ -126,7 +126,7 @@ else
         echo "[${RED}${BOLD} WARN ${RESET}] Add an audio input device!" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
     else
-        if [ "$pa_inputdevice" != "" ]; then
+        if [ "$pa_inputdevice" == "" ]; then
             echo "${RESET}" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple inputs!" > /dev/tty3

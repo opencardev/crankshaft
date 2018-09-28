@@ -34,3 +34,9 @@ zip
 python-serial
 python3-serial
 libdouble-conversion1
+exfat-fuse
+exfat-utils
+hfsprogs
+hfsutils
+hfsplus
+ntfs-3g

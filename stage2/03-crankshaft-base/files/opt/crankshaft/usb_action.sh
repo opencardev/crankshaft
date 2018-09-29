@@ -38,7 +38,7 @@ if [ "$addremove" == "remove" ] && [ "$usbpath" != "" ]; then
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
             sleep 1 # relax time for failsafe while android phone is switching mode
                     # while starting google auto
-            if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
+            if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ] && [ ! -f /tmp/aa_device ]; then
                 log_echo "Start timers"
                 /usr/local/bin/crankshaft timers start
             fi

@@ -95,6 +95,7 @@ install -m 755 files/opt/crankshaft/service_hwclock.sh                  "${ROOTF
 install -m 755 files/opt/crankshaft/gpio2kbd                            "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 644 files/opt/crankshaft/triggerhappy.conf                   "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/usb_action.sh                       "${ROOTFS_DIR}/opt/crankshaft/"
+install -m 755 files/opt/crankshaft/aa_device_state.sh                  "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 644 files/opt/crankshaft/start_order                         "${ROOTFS_DIR}/opt/crankshaft/"
 
 install -d "${ROOTFS_DIR}/opt/crankshaft/wallpaper"

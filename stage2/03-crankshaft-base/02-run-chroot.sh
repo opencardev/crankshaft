@@ -94,7 +94,6 @@ systemctl enable gpiotrigger.service
 systemctl enable timerstart.service
 systemctl enable regensshkeys.service
 systemctl enable ssh.service
-systemctl enable kodimonitor.service
 systemctl enable pulseaudio.service
 systemctl disable rpi-display-backlight.service
 systemctl enable rpi-display-backlight.service

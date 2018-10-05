@@ -10,7 +10,7 @@ sleep 2
 #
 # check outputs
 #
-pa_device=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+pa_device=$(cat /etc/pulse/client.conf | grep '^default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
 # available device count
 countdevices=$(pactl list sinks short | grep -v bluez | awk {'print $2'} | wc -l)
 
@@ -75,7 +75,7 @@ fi
 #
 # check inputs
 #
-pa_inputdevice=$(cat /etc/pulse/client.conf | grep 'default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+pa_inputdevice=$(cat /etc/pulse/client.conf | grep '^default-source =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
 # available device count
 countinputdevices=$(pactl list sources short | grep -v bluez | grep -v monitor | awk {'print $2'} | wc -l)
 
@@ -138,7 +138,7 @@ else
 fi
 
 # Set samplerate and sampleformat
-pa_device=$(cat /etc/pulse/client.conf | grep 'default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
+pa_device=$(cat /etc/pulse/client.conf | grep '^default-sink =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
 pa_samplerate=$(cat /etc/pulse/daemon.conf | grep 'default-sample-rate =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
 pa_sampleformat=$(cat /etc/pulse/daemon.conf | grep 'default-sample-format =' | cut -d= -f2 | sed 's/\t//g' | sed 's/^ //' | sed 's/ *$//')
 

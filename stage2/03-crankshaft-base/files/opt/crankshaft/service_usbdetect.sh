@@ -177,10 +177,10 @@ for _device in /sys/block/*/device; do
                     touch /tmp/usb_dev_mode
                 fi
                 if [ $ALLOW_USB_FLASH -eq 1 ]; then
-                    UPDATEZIP=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | tail -1)
+                    UPDATEZIP=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | grep -v ^._ | tail -1)
                     FLAG=0
                     if [ ! -z ${UPDATEZIP} ]; then
-                        UNPACKED=$(unzip -l /tmp/${PARTITION}/${UPDATEZIP} | grep crankshaft-ng | grep .img | grep -v md5 | awk {'print $4'})
+                        UNPACKED=$(unzip -l /tmp/${PARTITION}/${UPDATEZIP} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | awk {'print $4'})
                         if [ ! -f /tmp/${PARTITION}/${UNPACKED} ]; then
                             show_clear_screen
                             echo "" > /dev/tty3
@@ -199,7 +199,7 @@ for _device in /sys/block/*/device; do
                             FLAG=1
                         fi
                     fi
-                    UPDATEFILE=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | tail -1)
+                    UPDATEFILE=$(ls -Art /tmp/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | tail -1)
                     if [ ! -z ${UPDATEFILE} ]; then
                         if [ ${FLAG} -ne 1 ]; then
                             show_clear_screen

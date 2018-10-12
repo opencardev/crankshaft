@@ -145,5 +145,9 @@ ENABLE_PAIRABLE=0
 # Use external adapter not builtin
 EXTERNAL_BLUETOOTH=0
 
+# Skip usb flash and usb detect for debug mode and dev mode - This overrides ALLOW_USB_FLASH!
+# CSSTORAGE will still be searched for and mounted.
+SKIP_USB_DETECT=0
+
 # System updates
 ALLOW_USB_FLASH=1

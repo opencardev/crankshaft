@@ -137,6 +137,7 @@ rm /lib/systemd/system/basic.target.wants/alsa-state.service
 rm /lib/systemd/system/apply_noobs_os_config.service
 rm /lib/systemd/system/wifi-country.service
 rm /lib/udev/rules.d/90-alsa-restore.rules
+rm /lib/dhcpcd/dhcpcd-hooks/50-ntp.conf
 
 systemctl daemon-relaod
 

@@ -102,10 +102,9 @@ systemctl enable alsastaterestore.service
 systemctl enable systemd-timesyncd.service
 systemctl enable networking.service
 systemctl enable dhcpcd.service
-systemctl enable wifisetup.service
+systemctl disable wpa_supplicant.service
 systemctl disable hwclock-load.service
 systemctl disable rpicamserver.service
-systemctl disable wpa_supplicant.service
 systemctl disable regenerate_ssh_host_keys.service
 systemctl disable wifisetup.service
 systemctl disable systemd-rfkill.service

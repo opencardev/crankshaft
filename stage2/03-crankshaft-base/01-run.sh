@@ -38,7 +38,6 @@ install -m 644 files/etc/systemd/system/hwclock-load.service            "${ROOTF
 install -m 644 files/etc/systemd/system/nightmode.service               "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/nightmode.timer                 "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/user_startup.service            "${ROOTFS_DIR}/etc/systemd/system/"
-install -m 644 files/etc/systemd/system/wifisetup.service               "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/hotspot.service                 "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/regensshkeys.service            "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/custombrightness.service        "${ROOTFS_DIR}/etc/systemd/system/"
@@ -125,6 +124,9 @@ install -m 755 files/lib/udev/hwclock-set                               "${ROOTF
 
 # custom resolv.conf hook
 install -m 644 files/lib/dhcpcd/dhcpcd-hooks/20-resolv.conf             "${ROOTFS_DIR}/lib/dhcpcd/dhcpcd-hooks/"
+
+# custom dhcpcd service withh added pre wifisetup
+install -m 644 files/lib/systemd/system/dhcpcd.service                  "${ROOTFS_DIR}/lib/systemd/system/"
 
 #qt5
 pv -p  -w 80 files/qt5/Qt5_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/

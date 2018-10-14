@@ -123,6 +123,9 @@ install -m 644 files/usr/share/plymouth/themes/crankshaft/progress_box.png      
 # /lib
 install -m 755 files/lib/udev/hwclock-set                               "${ROOTFS_DIR}/lib/udev/"
 
+# custom resolv.conf hook
+install -m 644 files/lib/dhcpcd/dhcpcd-hooks/20-resolv.conf             "${ROOTFS_DIR}/lib/dhcpcd/dhcpcd-hooks/"
+
 #qt5
 pv -p  -w 80 files/qt5/Qt5_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/
 pv -p  -w 80 files/qt5/Qt5_libs_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/

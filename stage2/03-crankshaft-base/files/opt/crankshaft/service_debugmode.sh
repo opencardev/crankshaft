@@ -17,14 +17,6 @@ if [ -f /tmp/usb_debug_mode ] || [ $DEBUG_MODE -eq 1 ]; then
     fi
     echo "[${BLUE}${BOLD}ACTIVE${RESET}] Debug Mode Enabled"
     touch /tmp/start_openauto
-    echo "nameserver 8.8.8.8" > /tmp/resolv.conf
-    echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
-    log_echo "Start wifisetup.service"
-    systemctl start wifisetup.service
-    log_echo "Start dhcpcd.service"
-    systemctl start dhcpcd.service > /dev/null 2>&1
-    log_echo "Start networking.service"
-    systemctl start networking.service
     show_cursor
 fi
 

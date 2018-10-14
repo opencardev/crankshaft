@@ -34,16 +34,6 @@ if [ ! -f /tmp/usb_debug_mode ]; then
             echo "[${RED}${BOLD}ACTIVE${RESET}] Dev Mode Enabled - OpenAuto"
             touch /tmp/start_openauto
         fi
-        echo "nameserver 8.8.8.8" > /tmp/resolv.conf
-        echo "nameserver 8.8.4.4" >> /tmp/resolv.conf
-        log_echo "Start wifisetup.service"
-        systemctl start wifisetup.service
-        log_echo "Start dhcpcd.service"
-        systemctl start dhcpcd.service > /dev/null 2>&1
-        log_echo "Start networking.service"
-        systemctl start networking.service
-        log_echo "Start systemd-timesyncd.service"
-        systemctl start systemd-timesyncd.service > /dev/null 2>&1
         log_echo "Stop watchdog.service"
         systemctl stop watchdog
         show_cursor

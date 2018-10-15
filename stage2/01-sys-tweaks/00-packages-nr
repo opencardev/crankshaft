@@ -14,7 +14,6 @@ apt-transport-https
 libpam-chksshpwd
 rpi-update
 libmtp-runtime
-rsync
 systemd-sysv
 rsyslog
 mc

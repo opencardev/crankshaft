@@ -2,10 +2,10 @@
  Description=Crankshaft USB Detect Service
  ConditionPathExists=/opt/crankshaft/service_usbdetect.sh
  After=display.service
- Before=gpio2kbd.service bluetooth.service bthelper.service hciuart.service hostname.service
+ Before=gpio2kbd.service bluetooth.service bthelper.service hciuart.service hostname.service network.target dhcpcd.service cpufrequtils.service
 
 [Service]
- Type=simple
+ Type=oneshot
  ExecStart=/opt/crankshaft/service_usbdetect.sh
  TimeoutStartSec=infinity
  StandardInput=tty

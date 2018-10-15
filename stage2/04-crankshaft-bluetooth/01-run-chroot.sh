@@ -10,7 +10,6 @@ systemctl disable hciuart
 systemctl disable ofono
 systemctl enable csng-bluetooth
 systemctl enable btautopair
-systemctl enable btautoconnect
 systemctl enable btdevicedetect
 systemctl enable btrestore
 

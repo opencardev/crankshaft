@@ -27,4 +27,4 @@ gpiotrigger
 rc.local
    |            bluetooth.target
    |                  |
-update                csng-bluetooth | btautopair | btautoconnect | btdevicedetect
+update                csng-bluetooth | btautopair | btdevicedetect

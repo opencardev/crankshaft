@@ -3,7 +3,7 @@
  After=bluetooth.target dbus-org.bluez.service sound.target rc.local.service
 
 [Service]
- Type=simple
+ Type=oneshot
  User=pi
  WorkingDirectory=/home/pi
  ExecStart=/opt/crankshaft/service_bluetooth.sh

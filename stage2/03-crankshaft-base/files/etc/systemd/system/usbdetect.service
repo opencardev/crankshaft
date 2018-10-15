@@ -5,7 +5,7 @@
  Before=gpio2kbd.service bluetooth.service bthelper.service hciuart.service hostname.service
 
 [Service]
- Type=oneshot
+ Type=simple
  ExecStart=/opt/crankshaft/service_usbdetect.sh
  TimeoutStartSec=infinity
  StandardInput=tty

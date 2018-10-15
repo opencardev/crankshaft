@@ -1,11 +1,11 @@
 [Unit]
  Description=USB Backup Restore Service
  ConditionPathExists=/opt/crankshaft/service_usbrestore.sh
- Before=display.service local-fs.service bluetooth.service bthelper.service hciuart.service hostname.service timers.target
+ Before=display.service bluetooth.service bthelper.service hciuart.service hostname.service timers.target
  After=sysinit.target
 
 [Service]
- Type=oneshot
+ Type=simple
  ExecStart=/opt/crankshaft/service_usbrestore.sh
  StandardInput=tty
  StandardOutput=tty

@@ -5,7 +5,7 @@
  Before=usbdetect.service
 
 [Service]
- Type=oneshot
+ Type=simple
  ExecStart=/opt/crankshaft/service_display.sh
  RemainAfterExit=yes
 

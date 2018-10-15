@@ -108,37 +108,33 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] Reconfigure ip wlan0"
         log_echo "Cleanup ip address for wlan0"
         ip address del 192.168.254.1/29 dev wlan0
-        # start wpa client only if not in dev or debug mode
-        if [ -f /tmp/usb_debug_mode ] || [ -f /tmp/dev_mode_enabled ]; then
-            # start wpa_supplicant
-            echo "[${CYAN}${BOLD} INFO ${RESET}] Start wpa_supplicant (client mode)"
-            log_echo "Cleanup ip address for wlan0"
-            sudo wpa_supplicant -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B > /dev/null 2>$1
-            crankshaft filesystem system lock
-            echo "[${CYAN}${BOLD} INFO ${RESET}] Waiting for ip release..."
-            log_echo "Waitin for ip release"
-            # check 15 secs for valid ip config
-            counter=0
-            while [ $counter -lt 15 ]; do
-                # Get ip addresses by interface
-                if [ -d /sys/class/net/wlan0 ]; then
-                    _IP_WLAN0=$(ifconfig wlan0 | grep 'inet ' | awk '{print $2}')
-                    if [ "$_IP_WLAN0" ]; then
-                        break
-                    fi
+        # restaret dhcpcd to bring up network
+        sudo systemctl restart dhcpcd
+        echo "[${CYAN}${BOLD} INFO ${RESET}] Waiting for ip release..."
+        log_echo "Waitin for ip release"
+        # check 15 secs for valid ip config
+        counter=0
+        while [ $counter -lt 15 ]; do
+            # Get ip addresses by interface
+            if [ -d /sys/class/net/wlan0 ]; then
+                _IP_WLAN0=$(ifconfig wlan0 | grep 'inet ' | awk '{print $2}')
+                if [ "$_IP_WLAN0" ]; then
+                    break
                 fi
-                counter=$((counter+1))
-                sleep 1
-            done
-            _SSID_WLAN0=$(wpa_cli -i wlan0 status | grep '^ssid' | cut -d= -f2)
-            _FREQ_WLAN0=$(wpa_cli -i wlan0 status | grep '^freq' | cut -d= -f2)
-            _ENC_WLAN0=$(wpa_cli -i wlan0 status | grep '^key_mgmt' | cut -d= -f2)
-            echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Mode       ${CYAN}Client${RESET}"
-            echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}IP         ${MAGENTA}$_IP_WLAN0${RESET}"
-            echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}SSID       ${YELLOW}$_SSID_WLAN0${RESET}"
-            echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Frequency  ${YELLOW}$_FREQ_WLAN0 MHz${RESET}"
-            echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Type       ${YELLOW}$_ENC_WLAN0${RESET}"
-        fi
+            fi
+            counter=$((counter+1))
+            sleep 1
+        done
+        crankshaft filesystem system lock
+        # show infos
+        _SSID_WLAN0=$(wpa_cli -i wlan0 status | grep '^ssid' | cut -d= -f2)
+        _FREQ_WLAN0=$(wpa_cli -i wlan0 status | grep '^freq' | cut -d= -f2)
+        _ENC_WLAN0=$(wpa_cli -i wlan0 status | grep '^key_mgmt' | cut -d= -f2)
+        echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Mode       ${CYAN}Client${RESET}"
+        echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}IP         ${MAGENTA}$_IP_WLAN0${RESET}"
+        echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}SSID       ${YELLOW}$_SSID_WLAN0${RESET}"
+        echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Frequency  ${YELLOW}$_FREQ_WLAN0 MHz${RESET}"
+        echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Type       ${YELLOW}$_ENC_WLAN0${RESET}"
         exit 0
     fi
 else

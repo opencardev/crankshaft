@@ -2,8 +2,7 @@
  Description=Crankshaft RPiCamServer Service
  ConditionPathExists=/opt/crankshaft/cameraserver.py
  ConditionPathExists=/etc/button_camera_visible
- After=devmode.service
- Before=rc.local.service
+ After=usbdetect.service getty.target
 
 [Service]
  Type=simple

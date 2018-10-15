@@ -142,7 +142,8 @@ rm /lib/dhcpcd/dhcpcd-hooks/50-ntp.conf
 systemctl daemon-relaod
 
 # set custom boot splash
-plymouth-set-default-theme crankshaft
+#plymouth-set-default-theme crankshaft
+plymouth-set-default-theme csnganimation
 
 # create lib cache
 ldconfig

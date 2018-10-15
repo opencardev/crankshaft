@@ -118,6 +118,17 @@ install -m 644 files/usr/share/plymouth/themes/crankshaft/splash.png            
 install -m 644 files/usr/share/plymouth/themes/crankshaft/shutdown.png          "${ROOTFS_DIR}/usr/share/plymouth/themes/crankshaft/"
 install -m 644 files/usr/share/plymouth/themes/crankshaft/progress_bar.png      "${ROOTFS_DIR}/usr/share/plymouth/themes/crankshaft/"
 install -m 644 files/usr/share/plymouth/themes/crankshaft/progress_box.png      "${ROOTFS_DIR}/usr/share/plymouth/themes/crankshaft/"
+install -d "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/csnganimation.plymouth   "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/csnganimation.script     "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/box.png                  "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/bullet.png               "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/entry.png                "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/lock.png                 "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/logo.png                 "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/progress_bar.png         "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/share/plymouth/themes/csnganimation/progress_box.png         "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
+install -m 644 files/usr/lib/arm-linux-gnueabihf/plymouth/csnganimation.so            "${ROOTFS_DIR}/usr/lib/arm-linux-gnueabihf/plymouth/"
 
 # /lib
 install -m 755 files/lib/udev/hwclock-set                               "${ROOTFS_DIR}/lib/udev/"

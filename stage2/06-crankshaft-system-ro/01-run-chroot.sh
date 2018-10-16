@@ -1,25 +1,25 @@
 #!/bin/bash
 
 sed -i 's/.*tmp.*//g' /etc/fstab
-sed -i 's/.*proc.*/proc\t\t\/proc\t\tproc\t\t\tdefaults\t\t0\t0/g' /etc/fstab
-sed -i 's/.*BOOTDEV.*/\/dev\/mmcblk0p1\t\/boot\t\tvfat\t\t\tro,defaults\t\t0\t2/g' /etc/fstab
-sed -i 's/.*ROOTDEV.*/\/dev\/mmcblk0p2\t\/\t\text4\t\t\tro,defaults,noatime\t0\t1/g' /etc/fstab
+sed -i 's/.*proc.*/proc\t\t\/proc\t\tproc\t\t\tdefaults,noatime,nodiratime\t\t0\t0/g' /etc/fstab
+sed -i 's/.*BOOTDEV.*/\/dev\/mmcblk0p1\t\/boot\t\tvfat\t\t\tro,defaults,noatime,nodiratime\t\t0\t2/g' /etc/fstab
+sed -i 's/.*ROOTDEV.*/\/dev\/mmcblk0p2\t\/\t\text4\t\t\tro,defaults,noatime,nodiratime\t0\t1/g' /etc/fstab
 sed -i '/^$/d' /etc/fstab
-echo "ramfs		/tmp			ramfs			size=128m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/var/tmp		ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/var/log		ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/var/lib/alsa		ramfs			size=1m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/var/lib/pulse		ramfs			size=1m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.backlight 	ramfs			size=1m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/bluetooth		ramfs			size=1m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.local-pi		ramfs			size=8m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.config-pi		ramfs			size=8m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.cache-pi		ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.local-root	ramfs			size=8m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.config-root	ramfs			size=8m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.cache-root	ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.mymedia		ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
-echo "ramfs		/tmp/.usbdrives		ramfs			size=16m,nodev,nosuid		0	0" >> /etc/fstab
+echo "ramfs		/tmp			ramfs			size=128m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/tmp		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/log		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/lib/alsa		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/lib/pulse		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.backlight 	ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/bluetooth		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.local-pi		ramfs			size=8m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.config-pi		ramfs			size=8m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.cache-pi		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.local-root	ramfs			size=8m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.config-root	ramfs			size=8m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.cache-root	ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.mymedia		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/tmp/.usbdrives		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 
 sed -i 's/root=ROOTDEV/root=\/dev\/mmcblk0p2/' /boot/cmdline.txt
 sed -i "s/#Storage=auto/Storage=volatile/" /etc/systemd/journald.conf

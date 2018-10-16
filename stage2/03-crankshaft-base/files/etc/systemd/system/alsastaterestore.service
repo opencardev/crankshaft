@@ -4,7 +4,7 @@
  Before=pulseaudio.service
 
 [Service]
- Type=simple
+ Type=oneshot
  ExecStart=/usr/local/bin/crankshaft audio alsastate restore
 
 [Install]

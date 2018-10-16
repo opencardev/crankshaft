@@ -4,7 +4,7 @@
  After=update.service
 
 [Service]
- Type=oneshot
+ Type=simple
  ExecStart=/opt/crankshaft/service_hotspot.sh start
  ExecStop=/opt/crankshaft/service_hotspot.sh stop
  RemainAfterExit=yes

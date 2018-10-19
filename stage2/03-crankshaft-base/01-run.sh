@@ -141,4 +141,4 @@ install -m 644 files/lib/systemd/system/dhcpcd.service                  "${ROOTF
 
 #qt5
 pv -p  -w 80 files/qt5/Qt5_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/
-pv -p  -w 80 files/qt5/Qt5_libs_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/
+

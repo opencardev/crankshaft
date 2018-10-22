@@ -39,6 +39,8 @@ for _device in /sys/block/sd*/device; do
                     # Allow all users rw to CSSTORAGE and subfolders/files
                     chmod -R 777 /media/${LABEL} > /dev/null 2>&1
                     chmown -R pi:pi /home/pi/.kodi > /dev/null 2>&1
+                    # Add media links
+                    ln -s /media/CSSTORAGE/Music/* /media/MYMEDIA
                     /usr/local/bin/crankshaft filesystem system lock
                     CSSTORAGE_DETECTED=1
                 else

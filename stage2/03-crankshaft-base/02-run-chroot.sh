@@ -227,6 +227,3 @@ echo "autospawn = no" >> /etc/pulse/client.conf
 # Add i2c
 echo "" /etc/modules
 echo "i2c_dev" /etc/modules
-
-# Configure preload
-sed -i 's/sortstrategy = 3/sortstrategy = 0/g' /etc/preload.conf

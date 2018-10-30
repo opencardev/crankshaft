@@ -47,6 +47,7 @@ install -m 644 files/etc/systemd/system/alsastaterestore.service        "${ROOTF
 install -m 644 files/etc/udev/rules.d/10-gpio2kbd.rules                 "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.rules                  "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.master                 "${ROOTFS_DIR}/etc/udev/rules.d/"
+install -m 644 files/etc/udev/rules.d/10-automount.rules                "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 755 files/etc/rc.local                                       "${ROOTFS_DIR}/etc/"
 install -m 644 files/etc/issue                                          "${ROOTFS_DIR}/etc/"
 install -m 644 files/etc/issue.net                                      "${ROOTFS_DIR}/etc/"

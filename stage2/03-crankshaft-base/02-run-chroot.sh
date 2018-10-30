@@ -227,3 +227,6 @@ echo "autospawn = no" >> /etc/pulse/client.conf
 # Add i2c
 echo "" /etc/modules
 echo "i2c_dev" /etc/modules
+
+# Make udev mountpoints shared
+sed -i 's/^MountFlags=.*/MountFlags=shared/' /etc/init.d/cpufrequtils

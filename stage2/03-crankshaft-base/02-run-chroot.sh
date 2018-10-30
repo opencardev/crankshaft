@@ -229,4 +229,4 @@ echo "" /etc/modules
 echo "i2c_dev" /etc/modules
 
 # Make udev mountpoints shared
-sed -i 's/^MountFlags=.*/MountFlags=shared/' /etc/init.d/cpufrequtils
+sed -i 's/^MountFlags=.*/MountFlags=shared/' /lib/systemd/system/systemd-udevd.service

@@ -20,28 +20,32 @@ SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: -f2 | sed 's/ //g')
 if [ ! -f /etc/cs_backup_restore_done ]; then
     if [ ! -f /etc/cs_first_start_done ]; then
         show_clear_screen
+        # give udev time to finish mounts
+        sleep 10
     fi
+    show_screen
+    show_cursor
     echo "${RESET}" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] Checking for cs backups to restore..." > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-    for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
+    for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
         DEVICE="/dev/$(basename ${FSMOUNTPOINT})"
         LABEL=$(blkid ${DEVICE} | sed 's/.*LABEL="//' | cut -d'"' -f1 | sed 's/ //g')
         FSTYPE=$(blkid ${DEVICE} | sed 's/.*TYPE="//' | cut -d'"' -f1)
         echo "${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] Detected Drive: ${DEVICE}" > /dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] Label 1st Part: ${LABEL}" > /dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] PartFilesystem: ${FSTYPE}" > /dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] Detected  Drive: ${DEVICE}" > /dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] Partition Label: ${LABEL}" > /dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] Part Filesystem: ${FSTYPE}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
 
         echo "${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] Checking if backup folder is present..." > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-        if [ -d ${FSMOUNTPOINT}/cs-backup/${SERIAL} ] || [ -d ${FSMOUNTPOINT}/cs-backup/boot ]; then
-            sleep 2
+        sleep 2
+        if [ -d ${FSMOUNTPOINT}/cs-backup/${SERIAL} ]; then
             show_screen
             show_cursor
             echo "${RESET}" > /dev/tty3

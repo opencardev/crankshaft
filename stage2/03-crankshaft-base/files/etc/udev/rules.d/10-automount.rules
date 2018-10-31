@@ -5,8 +5,6 @@ IMPORT{program}="/sbin/blkid -o udev -p %N"
 
 ENV{ID_FS_LABEL}!="", ENV{dir_name}="%E{ID_FS_LABEL}"
 
-#ENV{ID_FS_LABEL}=="CSSTORAGE", GOTO="my_media_automount_end"
-
 ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", RUN+="/bin/mkdir -p /media/USBDRIVES/%k"
 ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", RUN+="/bin/mkdir -p /media/USBDRIVES/CSSTORAGE"
 
@@ -20,14 +18,18 @@ ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{ID_FS_TYPE}=="vfat", RUN+="/bi
 ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{ID_FS_TYPE}=="exfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
 ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{ID_FS_TYPE}=="ext*", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
 ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", RUN+="/bin/chmod 777 /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", RUN+="/usr/local/bin/autoapp_helper addsymlinks %k"
 
 ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{ID_FS_TYPE}=="ntfs", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/CSSTORAGE"
 ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{ID_FS_TYPE}=="vfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/CSSTORAGE"
 ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{ID_FS_TYPE}=="exfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/CSSTORAGE"
 ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{ID_FS_TYPE}=="ext*", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/CSSTORAGE"
 ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", RUN+="/bin/chmod 777 /media/USBDRIVES/CSSTORAGE"
+ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", RUN+="/usr/local/bin/autoapp_helper addsymlinks CSSTORAGE"
 
 ACTION=="remove", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{dir_name}!="", RUN+="/bin/umount -fl /media/USBDRIVES/%k", RUN+="/bin/rmdir /media/USBDRIVES/%k"
 ACTION=="remove", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{dir_name}!="", RUN+="/bin/umount -fl /media/USBDRIVES/CSSTORAGE", RUN+="/bin/rmdir /media/USBDRIVES/CSSTORAGE"
+
+ACTION=="remove", RUN+="/usr/local/bin/autoapp_helper cleansymlinks"
 
 LABEL="my_media_automount_end"

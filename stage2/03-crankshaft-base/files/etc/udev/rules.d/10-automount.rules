@@ -5,25 +5,29 @@ IMPORT{program}="/sbin/blkid -o udev -p %N"
 
 ENV{ID_FS_LABEL}!="", ENV{dir_name}="%E{ID_FS_LABEL}"
 
-ENV{ID_FS_LABEL}=="CSSTORAGE", GOTO="my_media_automount_end"
+#ENV{ID_FS_LABEL}=="CSSTORAGE", GOTO="my_media_automount_end"
 
-ACTION=="add", RUN+="/bin/mkdir -p /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", RUN+="/bin/mkdir -p /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", RUN+="/bin/mkdir -p /media/USBDRIVES/CSSTORAGE"
 
 ACTION=="add", ENV{mount_options}="relatime"
 
 ACTION=="add", ENV{ID_FS_TYPE}=="vfat|ntfs|exfat", ENV{mount_options}="$env{mount_options},utf8,gid=100,umask=000"
 ACTION=="add", ENV{ID_FS_TYPE}=="ext*", ENV{mount_options}="$env{mount_options},rw,user"
 
-ACTION=="add", ENV{ID_FS_TYPE}=="ntfs", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{ID_FS_TYPE}=="ntfs", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{ID_FS_TYPE}=="vfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{ID_FS_TYPE}=="exfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{ID_FS_TYPE}=="ext*", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", RUN+="/bin/chmod 777 /media/USBDRIVES/%k"
 
-ACTION=="add", ENV{ID_FS_TYPE}=="vfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
+ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{ID_FS_TYPE}=="ntfs", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/CSSTORAGE"
+ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{ID_FS_TYPE}=="vfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/CSSTORAGE"
+ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{ID_FS_TYPE}=="exfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/CSSTORAGE"
+ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{ID_FS_TYPE}=="ext*", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/CSSTORAGE"
+ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", RUN+="/bin/chmod 777 /media/USBDRIVES/CSSTORAGE"
 
-ACTION=="add", ENV{ID_FS_TYPE}=="exfat", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
-
-ACTION=="add", ENV{ID_FS_TYPE}=="ext*", RUN+="/bin/mount -o %E{mount_options} /dev/%k /media/USBDRIVES/%k"
-
-ACTION=="add", RUN+="/bin/chmod 777 /media/USBDRIVES/%k"
-
-ACTION=="remove", ENV{dir_name}!="", RUN+="/bin/umount -fl /media/USBDRIVES/%k", RUN+="/bin/rmdir /media/USBDRIVES/%k"
+ACTION=="remove", ENV{ID_FS_LABEL}!="CSSTORAGE", ENV{dir_name}!="", RUN+="/bin/umount -fl /media/USBDRIVES/%k", RUN+="/bin/rmdir /media/USBDRIVES/%k"
+ACTION=="remove", ENV{ID_FS_LABEL}=="CSSTORAGE", ENV{dir_name}!="", RUN+="/bin/umount -fl /media/USBDRIVES/CSSTORAGE", RUN+="/bin/rmdir /media/USBDRIVES/CSSTORAGE"
 
 LABEL="my_media_automount_end"

@@ -76,6 +76,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                     echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                     show_cursor
+                    sudo mount -o remount,rw ${DEVICE}
                     rm /media/USBDRIVES/${PARTITION}/*.md5 > /dev/null 2>&1
                     rm /media/USBDRIVES/${PARTITION}/*.img > /dev/null 2>&1
                     unzip -q -o /media/USBDRIVES/${PARTITION}/${UPDATEZIP} -d /media/USBDRIVES/${PARTITION}
@@ -149,6 +150,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                     sed -i 's/$/ rootdelay=10/' /boot/cmdline.txt
                     sed -i 's/$/ initrd=-1/' /boot/cmdline.txt
                     # remove possible existing force trigger to prevent flash loop
+                    sudo mount -o remount,rw ${DEVICE}
                     rm /media/USBDRIVES/${PARTITION}/FORCE_FLASH > /dev/null 2>&1
                     echo "${RESET}" > /dev/tty3
                     echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
@@ -156,6 +158,8 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                     echo "[${GREEN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3
                     echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
                     echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
+                    sudo sync
+                    sudo umount ${DEVICE}
                     sleep 5
                     reboot
                 else

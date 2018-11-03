@@ -14,7 +14,7 @@ from PIL import Image
 # set default paths
 imageoverlay = "/boot/crankshaft/camera-overlay.png"
 
-if ((os.path.exists("/media/CSSTORAGE")) and (os.path.ismount("/media/CSSTORAGE"))):
+if ((os.path.exists("/media/CSSTORAGE")) and (os.path.ismount("/media/USBDRIVES/CSSTORAGE"))):
     os.system("sudo mkdir -p /media/CSSTORAGE/RPIDC/AUTOSAVE")
     os.system("sudo mkdir -p /media/CSSTORAGE/RPIDC/EVENTS")
     os.system("sudo chmod 777 /media/CSSTORAGE/RPIDC -R")

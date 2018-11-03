@@ -3,7 +3,7 @@
 source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
 
-if [ $ENABLE_HOTSPOT -eq 1 ]; then
+if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
     if [ $1 == "start" ]; then
         crankshaft filesystem system unlock
         log_echo "Kill running wpa clients"
@@ -74,11 +74,14 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
         _PSK_WLAN0=$(cat /etc/hostapd/hostapd.conf | grep '^wpa_passphrase' | cut -d= -f2)
         _ENC_WLAN0=$(cat /etc/hostapd/hostapd.conf | grep '^wpa=' | cut -d= -f2)
         _IP_WLAN0=$(ifconfig wlan0 | grep 'inet ' | awk '{print $2}')
+        echo "" >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Mode       ${CYAN}Hotspot${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}IP         ${MAGENTA}$_IP_WLAN0${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}SSID       ${YELLOW}$_SSID_WLAN0${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}PSK        ${YELLOW}$_PSK_WLAN0${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Type       ${YELLOW}WPA$_ENC_WLAN0${RESET}" > /dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         exit 0
     fi
 
@@ -133,13 +136,17 @@ if [ $ENABLE_HOTSPOT -eq 1 ]; then
         _SSID_WLAN0=$(wpa_cli -i wlan0 status | grep '^ssid' | cut -d= -f2)
         _FREQ_WLAN0=$(wpa_cli -i wlan0 status | grep '^freq' | cut -d= -f2)
         _ENC_WLAN0=$(wpa_cli -i wlan0 status | grep '^key_mgmt' | cut -d= -f2)
+        echo "" >/dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Mode       ${CYAN}Client${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}IP         ${MAGENTA}$_IP_WLAN0${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}SSID       ${YELLOW}$_SSID_WLAN0${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Frequency  ${YELLOW}$_FREQ_WLAN0 MHz${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Type       ${YELLOW}$_ENC_WLAN0${RESET}" > /dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         exit 0
     fi
 else
     exit 1
 fi
+

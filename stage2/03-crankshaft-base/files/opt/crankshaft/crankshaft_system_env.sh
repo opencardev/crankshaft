@@ -45,16 +45,18 @@ fi
 # callable functions
 show_clear_screen() {
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
+    sleep 1
+    plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
     chvt 3
     printf "\033[2J" > /dev/tty3 # clear screen
     printf "\033[0;0H\n" > /dev/tty3 # Move to 0,0
-    plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
 }
 
 show_screen() {
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
-    chvt 3
+    sleep 1
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
+    chvt 3
 }
 
 show_cursor() {

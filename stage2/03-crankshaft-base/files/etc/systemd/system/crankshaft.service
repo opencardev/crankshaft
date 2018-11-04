@@ -1,7 +1,7 @@
 [Unit]
  Description=Crankshaft Startup Service
  ConditionPathExists=/opt/crankshaft/service_crankshaft.sh
- After=tap2wake.service
+ After=devmode.service
  Before=user_startup.service
 
 [Service]

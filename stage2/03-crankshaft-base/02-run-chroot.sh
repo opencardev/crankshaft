@@ -88,7 +88,6 @@ systemctl enable usbdetect.service
 systemctl enable usbunmount.service
 systemctl enable daymode.timer
 systemctl enable nightmode.timer
-systemctl enable tap2wake.service
 systemctl enable openauto.service
 systemctl enable gpiotrigger.service
 systemctl enable timerstart.service
@@ -102,6 +101,7 @@ systemctl enable alsastaterestore.service
 systemctl enable systemd-timesyncd.service
 systemctl enable networking.service
 systemctl enable dhcpcd.service
+systemctl disable tap2wake.service
 systemctl disable wpa_supplicant.service
 systemctl disable hwclock-load.service
 systemctl disable rpicamserver.service

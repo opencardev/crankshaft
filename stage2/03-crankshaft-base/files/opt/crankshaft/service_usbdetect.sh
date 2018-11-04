@@ -134,13 +134,16 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                     mount -o remount,rw /boot
                     mkinitramfs -o /boot/initrd.img > /dev/null 2>&1
                     # cleanup
+                    sed -i 's/^# Initramfs params for flashsystem//' /boot/config.txt
                     sed -i 's/^initramfs initrd.img followkernel//' /boot/config.txt
                     sed -i 's/^ramfsfile=initrd.img//' /boot/config.txt
                     sed -i 's/^ramfsaddr=-1//' /boot/config.txt
-                    sed -i '/./,/^$/!d' /boot/config.txt
                     sed -i 's/rootdelay=10//' /boot/cmdline.txt
                     sed -i 's/initrd=-1//' /boot/cmdline.txt
+                    sed -i '/./,/^$/!d' /boot/config.txt
                     # Set entries
+                    echo "" >> /boot/config.txt
+                    echo "# Initramfs params for flashsystem" >> /boot/config.txt
                     echo "initramfs initrd.img followkernel" >> /boot/config.txt
                     echo "ramfsfile=initrd.img" >> /boot/config.txt
                     echo "ramfsaddr=-1" >> /boot/config.txt
@@ -150,7 +153,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                     sed -i 's/$/ rootdelay=10/' /boot/cmdline.txt
                     sed -i 's/$/ initrd=-1/' /boot/cmdline.txt
                     # remove possible existing force trigger to prevent flash loop
-                    sudo mount -o remount,rw ${DEVICE}
+                    sudo mount -o remount,rw ${DEVICE} > /dev/null 2>&1
                     rm /media/USBDRIVES/${PARTITION}/FORCE_FLASH > /dev/null 2>&1
                     echo "${RESET}" > /dev/tty3
                     echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
@@ -159,7 +162,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                     echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
                     echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
                     sudo sync
-                    sudo umount ${DEVICE}
+                    sudo umount ${DEVICE} > /dev/null 2>&1
                     sleep 5
                     reboot
                 else

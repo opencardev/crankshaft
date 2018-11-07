@@ -1,7 +1,8 @@
 #!/bin/bash
 
 LOCALE=`git log -n 1 --pretty=format:"%H"`
-REMOTE=`git ls-remote git://github.com/opencardev/crankshaft.git | grep refs/heads/crankshaft-ng | cut -f 1`
+BRANCH=`git branch | grep \* | cut -d ' ' -f2`
+REMOTE=`git ls-remote git://github.com/opencardev/crankshaft.git | grep refs/heads/$BRANCH | cut -f 1`
 
 if [ $LOCALE == $REMOTE ]; then
     echo "***************************************************************************************"

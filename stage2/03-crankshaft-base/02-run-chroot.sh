@@ -120,6 +120,7 @@ systemctl disable wifi-country.service
 systemctl disable alsa-restore.service
 systemctl disable alsa-state.service
 systemctl disable raspi-config.service
+systemctl disable systemd-fsck@.service
 
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
@@ -158,7 +159,7 @@ sed -i 's/console=tty1/console=tty3/' /boot/cmdline.txt
 sed -i 's/console=serial0,115200 //' /boot/cmdline.txt
 
 # add special settings
-sed -i 's/$/ logo.nologo loglevel=0 vt.global_cursor_default=0 noswap splash plymouth.ignore-serial-consoles consoleblank=0 ipv6.disable=1 fsck.mode=skip/' /boot/cmdline.txt
+sed -i 's/$/ logo.nologo loglevel=0 vt.global_cursor_default=0 noswap splash plymouth.ignore-serial-consoles consoleblank=0 ipv6.disable=1/' /boot/cmdline.txt
 
 # Banner for ssh
 sed -i 's/#Banner none/Banner \/etc\/issue.net/' /etc/ssh/sshd_config

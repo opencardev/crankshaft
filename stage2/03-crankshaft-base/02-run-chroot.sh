@@ -150,6 +150,8 @@ ldconfig
 
 # add gettys
 systemctl enable getty@tty3.service
+# Don't kill still running getty - fixes restart in x11 mode during boot
+sed -i 's/^TTYVHangup=.*/TTYVHangup=no/' /lib/systemd/system/getty@.service
 
 # enable splash and set default console
 sed -i 's/console=tty1/console=tty3/' /boot/cmdline.txt

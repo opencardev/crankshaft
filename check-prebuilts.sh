@@ -7,7 +7,7 @@ if [ -d $BASEDIR/prebuilts ]; then
     echo "Checking for prebuilt updates..."
     echo "***************************************************************************************"
     cd prebuilts
-    git reset --hard
+    git reset --hard HEAD~1
     git clean -f -d
     git pull
     cd $BASEDIR

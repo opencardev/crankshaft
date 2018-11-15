@@ -6,8 +6,6 @@
  Type=simple
  Restart=on-failure
  RestartSec=60
- User=pi
- WorkingDirectory=/home/pi
  ExecStart=/opt/crankshaft/service_btautopair.py
  RemainAfterExit=yes
 

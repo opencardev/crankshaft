@@ -38,3 +38,4 @@ hfsprogs
 hfsutils
 hfsplus
 ntfs-3g
+python3-smbus

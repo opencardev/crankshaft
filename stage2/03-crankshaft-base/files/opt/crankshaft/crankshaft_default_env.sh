@@ -145,9 +145,19 @@ ENABLE_PAIRABLE=0
 # Use external adapter not builtin
 EXTERNAL_BLUETOOTH=0
 
-# Skip usb flash and usb detect for debug mode and dev mode - This overrides ALLOW_USB_FLASH!
-# CSSTORAGE will still be searched for and mounted.
-SKIP_USB_DETECT=0
-
 # System updates
 ALLOW_USB_FLASH=1
+
+# Auto brightness control based on tsl2561 light sensor
+# Switch levels for brightness sensor in lux
+LUX_LEVEL_1=5
+LUX_LEVEL_2=50
+LUX_LEVEL_3=100
+LUX_LEVEL_4=500
+LUX_LEVEL_5=1000
+# Set this display brightness by switch levels
+DISP_BRIGHTNESS_1=30
+DISP_BRIGHTNESS_2=90
+DISP_BRIGHTNESS_3=150
+DISP_BRIGHTNESS_4=210
+DISP_BRIGHTNESS_5=255

@@ -1,0 +1,16 @@
+[Unit]
+ Description=Crankshaft Lightsensor Service
+ ConditionPathExists=/opt/crankshaft/service_lightsensor.py
+ ConditionPathExists=/etc/cs_lightsensor
+ After=usbdetect.service getty.target openauto.service
+
+[Service]
+ Type=simple
+ ExecStart=/opt/crankshaft/service_lightsensor.py
+ Restart=on-failure
+ StartLimitInterval=60
+ RestartSec=5
+ StartLimitBurst=3
+
+[Install]
+ WantedBy=multi-user.target

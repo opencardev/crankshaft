@@ -88,6 +88,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
         cp -f /tmp/bootfs/crankshaft/wpa_supplicant.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -rf /tmp/bootfs/crankshaft/custom/. /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/custom/ 2>/dev/null
         cp -f /tmp/rootfs/etc/timezone /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
+        cp -f /tmp/rootfs/etc/modules /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
         cp -f /tmp/rootfs/etc/X11/xorg.conf.d/99-calibration.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/ 2>/dev/null
         cp -f /tmp/rootfs/etc/pulse/client.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/pulse/ 2>/dev/null
         sleep 1
@@ -162,9 +163,12 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
             printf "\n" >/dev/tty3
             sync
             mount -o rw /dev/mmcblk0p1 /tmp/bootfs
+            mount -o rw /dev/mmcblk0p2 /tmp/rootfs
             cp -f  /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/config.txt /tmp/bootfs/ 2>/dev/null
-            cp -f  /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/crankshaft_env.sh /tmp/bootfs/crankshaft/ 2>/dev/null
+            cp -f  /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/modules /tmp/rootfs/etc/ 2>/dev/null
+            chmod 644 /tmp/rootfs/etc/ 2>/dev/null
             umount /tmp/bootfs
+            umount /tmp/rootfs
             printf "[ ${GREEN}EXEC${GRAY} ] *******************************************************\n" >/dev/tty3
             printf "[ ${GREEN}EXEC${GRAY} ] Reboot...\n" > /dev/tty3
             printf "[ ${GREEN}EXEC${GRAY} ] *******************************************************\n" >/dev/tty3

@@ -151,10 +151,10 @@ ALLOW_USB_FLASH=1
 # Auto brightness control based on tsl2561 light sensor
 # Switch levels for brightness sensor in lux
 LUX_LEVEL_1=5
-LUX_LEVEL_2=50
+LUX_LEVEL_2=20
 LUX_LEVEL_3=100
-LUX_LEVEL_4=500
-LUX_LEVEL_5=1000
+LUX_LEVEL_4=200
+LUX_LEVEL_5=500
 # Set this display brightness by switch levels
 DISP_BRIGHTNESS_1=30
 DISP_BRIGHTNESS_2=90

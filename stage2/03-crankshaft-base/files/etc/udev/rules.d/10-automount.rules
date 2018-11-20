@@ -8,7 +8,7 @@ ENV{ID_FS_LABEL}!="", ENV{dir_name}="%E{ID_FS_LABEL}"
 ACTION=="add", ENV{ID_FS_LABEL}!="CSSTORAGE", RUN+="/bin/mkdir -p /media/USBDRIVES/%k"
 ACTION=="add", ENV{ID_FS_LABEL}=="CSSTORAGE", RUN+="/bin/mkdir -p /media/USBDRIVES/CSSTORAGE"
 
-ACTION=="add", ENV{mount_options}="relatime,async"
+ACTION=="add", ENV{mount_options}="noatime,nodiratime,sync"
 
 ACTION=="add", ENV{ID_FS_TYPE}=="vfat|ntfs|exfat", ENV{mount_options}="$env{mount_options},utf8,gid=100,umask=000"
 ACTION=="add", ENV{ID_FS_TYPE}=="ext*", ENV{mount_options}="$env{mount_options},user"

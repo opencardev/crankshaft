@@ -166,7 +166,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
             mount -o rw /dev/mmcblk0p2 /tmp/rootfs
             cp -f  /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/config.txt /tmp/bootfs/ 2>/dev/null
             cp -f  /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/modules /tmp/rootfs/etc/ 2>/dev/null
-            chmod 644 /tmp/rootfs/etc/ 2>/dev/null
+            chmod 644 /tmp/rootfs/etc/modules 2>/dev/null
             umount /tmp/bootfs
             umount /tmp/rootfs
             printf "[ ${GREEN}EXEC${GRAY} ] *******************************************************\n" >/dev/tty3

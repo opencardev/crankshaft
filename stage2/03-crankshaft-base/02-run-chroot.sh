@@ -169,7 +169,7 @@ sed -i 's/#Banner none/Banner \/etc\/issue.net/' /etc/ssh/sshd_config
 sed -i 's/^#ListenAddress 0.0.0.0/ListenAddress 0.0.0.0/' /etc/ssh/sshd_config
 
 # OS Name
-STRING="Welcome to Crankshaft CarOS Alpha (${IMG_DATE} / ${BUILDHASH})"
+STRING="Welcome to Crankshaft CarOS (${IMG_DATE} / Build ${BUILDHASH})"
 sed -i 's/PRETTY_NAME=.*/PRETTY_NAME="'${STRING}'"/g' /usr/lib/os-release
 echo "$STRING" > /etc/issue
 echo "" >> /etc/issue

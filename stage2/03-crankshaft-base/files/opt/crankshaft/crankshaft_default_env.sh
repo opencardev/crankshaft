@@ -29,6 +29,12 @@ ANDROID_PIN=0
 # To disable set to 0
 REARCAM_PIN=0
 
+# GPIO Trigger for Day/Night
+# GPIO wich triggers Day (open gpio)/Night (closed to gnd) of GUI
+# To disable set to 0
+# If enabled it overrides lightsensor!
+DAYNIGHT_PIN=0
+
 ### Maintenance / Initial Setup ###
 # Start Crankshaft in dev mode to get network, shell and ssh access
 # openauto won't be started automatically

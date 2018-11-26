@@ -42,6 +42,10 @@ if [ $IGNITION_PIN -ne 0 ]; then
     sudo /usr/bin/gpio -g mode $IGNITION_PIN up
 fi
 
+if [ $DAYNIGHT_PIN -ne 0 ]; then
+    sudo /usr/bin/gpio -g mode $DAYNIGHT_PIN up
+fi
+
 # callable functions
 show_clear_screen() {
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash

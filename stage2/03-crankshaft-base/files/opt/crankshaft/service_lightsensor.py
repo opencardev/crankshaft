@@ -33,6 +33,7 @@ display_brigthness_3 = get_var('DISP_BRIGHTNESS_3')
 display_brigthness_4 = get_var('DISP_BRIGHTNESS_4')
 display_brigthness_5 = get_var('DISP_BRIGHTNESS_5')
 
+daynight_gpio = get_var('DAYNIGHT_PIN')
 # ---------------------------------
 
 i2cBus = smbus.SMBus(BUS)
@@ -85,19 +86,20 @@ while True:
     print ("Lux = {}\n".format(Luxrounded))
 
     #Set display brigthness
-    if Luxrounded <= level_1:
-        os.system("crankshaft brightness set " + str(display_brigthness_1))
-        os.system("touch /tmp/night_mode_enabled >/dev/null 2>&1")
-    elif Luxrounded > level_1 and Luxrounded < level_2:
-        os.system("crankshaft brightness set " + str(display_brigthness_2))
-        os.system("touch /tmp/night_mode_enabled >/dev/null 2>&1")
-    elif Luxrounded >= level_2 and Luxrounded < level_3:
-        os.system("crankshaft brightness set " + str(display_brigthness_3))
-        os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
-    elif Luxrounded >= level_3 and Luxrounded < level_4:
-        os.system("crankshaft brightness set " + str(display_brigthness_4))
-        os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
-    elif Luxrounded >= level_5:
-        os.system("crankshaft brightness set " + str(display_brigthness_5))
-        os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
-  sleep (10)
+    if daynight_gpio == 0:
+        if Luxrounded <= level_1:
+            os.system("crankshaft brightness set " + str(display_brigthness_1))
+            os.system("touch /tmp/night_mode_enabled >/dev/null 2>&1")
+        elif Luxrounded > level_1 and Luxrounded < level_2:
+            os.system("crankshaft brightness set " + str(display_brigthness_2))
+            os.system("touch /tmp/night_mode_enabled >/dev/null 2>&1")
+        elif Luxrounded >= level_2 and Luxrounded < level_3:
+            os.system("crankshaft brightness set " + str(display_brigthness_3))
+            os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
+        elif Luxrounded >= level_3 and Luxrounded < level_4:
+            os.system("crankshaft brightness set " + str(display_brigthness_4))
+            os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
+        elif Luxrounded >= level_5:
+            os.system("crankshaft brightness set " + str(display_brigthness_5))
+            os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
+    sleep (10)

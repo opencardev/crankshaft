@@ -234,3 +234,6 @@ echo "i2c_dev" /etc/modules
 
 # Make udev mountpoints shared
 sed -i 's/^MountFlags=.*/MountFlags=shared/' /lib/systemd/system/systemd-udevd.service
+
+# link csmt
+ln -s /usr/local/bin/crankshaft /usr/local/bin/csmt

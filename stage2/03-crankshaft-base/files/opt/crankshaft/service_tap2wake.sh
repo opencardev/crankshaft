@@ -8,10 +8,15 @@ readlines() {
         check=$(echo $line | grep "^Event:")
         if [ -n "$check" ]; then
             systemctl stop disconnect.service
+            systemctl stop shutdown.service
             if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
                 systemctl stop disconnect.timer
+                systemctl stop shutdown.timer
                 if [ $DISCONNECTION_SCREEN_POWEROFF_DISABLE -eq 0 ]; then
                     systemctl start disconnect.timer
+                fi
+                if [ $DISCONNECTION_POWEROFF_DISABLE -eq 0 ]; then
+                    systemctl start shutdown.timer
                 fi
             fi
             sleep 30

@@ -112,6 +112,7 @@ install -m 755 files/usr/local/bin/crankshaft                           "${ROOTF
 install -m 755 files/usr/local/bin/autoapp_helper                       "${ROOTFS_DIR}/usr/local/bin/"
 install -m 755 files/usr/local/lib/libaasdk.so                          "${ROOTFS_DIR}/usr/local/lib/"
 install -m 755 files/usr/local/lib/libaasdk_proto.so                    "${ROOTFS_DIR}/usr/local/lib/"
+install -m 755 files/usr/local/bin/usbreset                             "${ROOTFS_DIR}/usr/local/bin/"
 
 # plymouth
 install -d "${ROOTFS_DIR}/usr/share/plymouth/themes/crankshaft"

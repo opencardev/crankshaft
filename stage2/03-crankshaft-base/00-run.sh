@@ -43,24 +43,28 @@ cp -f $BASE_DIR/prebuilts/openauto/autoapp_helper files/usr/local/bin/autoapp_he
 cp -f $BASE_DIR/prebuilts/openauto/btservice files/usr/local/bin/btservice
 cp -f $BASE_DIR/prebuilts/openauto/libaasdk.so files/usr/local/lib/libaasdk.so
 cp -f $BASE_DIR/prebuilts/openauto/libaasdk_proto.so files/usr/local/lib/libaasdk_proto.so
+cp -f $BASE_DIR/prebuilts/usbreset/usbreset files/usr/local/bin/usbreset
 # checksum files
 cp -f $BASE_DIR/prebuilts/openauto/autoapp.md5 files/usr/local/bin/autoapp.md5
 cp -f $BASE_DIR/prebuilts/openauto/autoapp_helper.md5 files/usr/local/bin/autoapp_helper.md5
 cp -f $BASE_DIR/prebuilts/openauto/btservice.md5 files/usr/local/bin/btservice.md5
 cp -f $BASE_DIR/prebuilts/openauto/libaasdk.so.md5 files/usr/local/lib/libaasdk.so.md5
 cp -f $BASE_DIR/prebuilts/openauto/libaasdk_proto.so.md5 files/usr/local/lib/libaasdk_proto.so.md5
+cp -f $BASE_DIR/prebuilts/usbreset/usbreset.md5 files/usr/local/bin/usbreset.md5
 
 chmod 777 files/usr/local/bin/autoapp
 chmod 777 files/usr/local/bin/autoapp_helper
 chmod 777 files/usr/local/bin/btservice
 chmod 666 files/usr/local/lib/libaasdk.so
 chmod 666 files/usr/local/lib/libaasdk_proto.so
+chmod 777 files/usr/local/bin/usbreset
 
 chmod 644 files/usr/local/bin/autoapp.md5
 chmod 644 files/usr/local/bin/autoapp_helper.md5
 chmod 644 files/usr/local/bin/btservice.md5
 chmod 644 files/usr/local/lib/libaasdk.so.md5
 chmod 644 files/usr/local/lib/libaasdk_proto.so.md5
+chmod 644 files/usr/local/bin/usbreset.md5
 
 # qt5
 # combine splitted archive

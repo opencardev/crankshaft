@@ -35,6 +35,7 @@ if [ -f /tmp/start_openauto ]; then
     sudo rm -f /tmp/get_outputs > /dev/null 2>&1
     sudo rm -f /tmp/get_default_input > /dev/null 2>&1
     sudo rm -f /tmp/get_default_output > /dev/null 2>&1
+    sudo rm -f /tmp/entityexit > /dev/null 2>&1
 
     if [ $START_X11 -ne 0 ] || [ $X11_MODE_GPIO -ne 1 ]; then
         # This is when the X11 pin is connected to ground (X11 enabled)

@@ -4,7 +4,7 @@ source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
 
 if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
-    if [ $1 == "start" ]; then
+    if [ "$1" == "start" ]; then
         if [ ! -f /tmp/hotspot_active ]; then
             crankshaft filesystem system unlock
                 log_echo "Kill running wpa clients"
@@ -49,6 +49,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
                 log_echo "Set wpa credentials"
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Setup hotspod credentials from config" > /dev/tty3
                 sed -i 's/^wpa_passphrase=.*$/wpa_passphrase='"${HOTSPOT_PSK}"'/' /etc/hostapd/hostapd.conf
+                sed -i '/./,/^$/!d' /etc/hostapd/hostapd.conf
                 sed -i 's/^country_code=.*$/country_code='"${WIFI_COUNTRY}"'/' /etc/hostapd/hostapd.conf
                 # start services
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Start dnsmasq" > /dev/tty3
@@ -91,7 +92,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
         fi
     fi
 
-    if [ $1 == "stop" ]; then
+    if [ "$1" == "stop" ]; then
         if [ -f /tmp/hotspot_active ]; then
             crankshaft filesystem system unlock
             log_echo "Stop hotspot"

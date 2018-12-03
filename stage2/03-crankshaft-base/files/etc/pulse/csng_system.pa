@@ -34,7 +34,7 @@ load-module module-bluetooth-policy
 .endif
 
 .ifexists module-bluetooth-discover.so
-load-module module-bluetooth-discover
+load-module module-bluetooth-discover headset=auto
 .endif
 
 ### Load several protocols
@@ -71,3 +71,10 @@ load-module module-suspend-on-idle
 
 ### Make some devices default
 load-module module-mmkbd-evdev device=/dev/gpio2kbd
+
+### Echo cancel and noise reduction
+.ifexists module-echo-cancel.so
+load-module module-echo-cancel aec_method=webrtc aec_args="mobile=1 analog_gain_control=0 digital_gain_control=1 comfort_noise=0 noise_suppression=1 voice_detection=0 routing_mode=loud-speakerphone" source_name=echoCancel_source sink_name=echoCancel_sink
+set-default-source echoCancel_source
+set-default-sink echoCancel_sink
+.endif

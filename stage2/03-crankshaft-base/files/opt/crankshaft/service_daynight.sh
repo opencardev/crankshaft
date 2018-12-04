@@ -4,7 +4,7 @@ source /opt/crankshaft/crankshaft_default_env.sh
 source /opt/crankshaft/crankshaft_system_env.sh
 
 # service can only trigger if rtc is set and enabled in crankshaft env
-if [ $RTC_DAYNIGHT -eq 1 ] && [ ! -f /tmp/auto_brightness_active ]; then
+if [ $RTC_DAYNIGHT -eq 1 ] && [ ! -f /tmp/auto_brightness_active ] && [ $DAYNIGHT_PIN -eq 0 ]; then
     if [ ! -z $1 ]; then
         if [ $1 == "day" ] && [ -f /tmp/night_mode_enabled ]; then
             log_echo "Restore brightness day"

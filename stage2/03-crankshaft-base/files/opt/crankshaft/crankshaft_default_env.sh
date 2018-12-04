@@ -110,9 +110,8 @@ WIFI_SSID="sample"
 WIFI_PSK="sample"
 
 # Hotspot (if enabled the wifi client is disabled and a hotspot is opened)
-# If your SSID or password contains special chars or spaces make sure using quotation marks ="SSID" / ="password"
+# Hotspot has now a default password (1234567890) -> changeable in /etc/hostapd/hostapd.conf if really needed!
 ENABLE_HOTSPOT=0
-HOTSPOT_PSK="1234567890"
 
 ### RPi Camera Module ###
 # Overlay settings

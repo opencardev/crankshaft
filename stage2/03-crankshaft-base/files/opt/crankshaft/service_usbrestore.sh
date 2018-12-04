@@ -65,6 +65,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             cp -r -f ${FSMOUNTPOINT}/cs-backup/${SERIAL}/etc/. /etc/ > /dev/null 2>&1
             cp -r -f ${FSMOUNTPOINT}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/. /etc/ > /dev/null 2>&1
             cp -r -f ${FSMOUNTPOINT}/cs-backup/${SERIAL}/etc/pulse/. /etc/pulse/ > /dev/null 2>&1
+            cp -r -f ${FSMOUNTPOINT}/cs-backup/${SERIAL}/etc/hostapd/. /etc/hostapd/ > /dev/null 2>&1
             # check and setup client.conf for system wide usage
             sed -i 's/.*Make sure client is correct configured for system wide usage.*//g' /etc/pulse/client.conf
             sed -i 's/.*default-server =.*//g' /etc/pulse/client.conf

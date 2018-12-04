@@ -11,56 +11,55 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
                 echo "" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Exit/kill wpa_supplicant (wifi client mode)" > /dev/tty3
                 # exit possible running wpa client sessions
-                wpa_cli terminate > /dev/null 2>$1
-                killall wpa_supplicant > /dev/null 2>$1
+                sudo wpa_cli terminate > /dev/null 2>$1
+                sudo killall wpa_supplicant > /dev/null 2>$1
                 # switch of down to re setup
                 log_echo "Switch off wlan0"
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Switch wifi off" > /dev/tty3
-                ifconfig wlan0 down
+                sudo ifconfig wlan0 down
                 # configure interface
                 log_echo "Configure ip for wlan0"
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Configure interface ip" > /dev/tty3
                 # 5 client ip's available (sum 6)
-                ifconfig wlan0 192.168.254.1 netmask 255.255.255.248 broadcast 192.168.254.7
+                sudo ifconfig wlan0 192.168.254.1 netmask 255.255.255.248 broadcast 192.168.254.7
                 #switch power management
                 log_echo "Switch on wlan0"
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Switch wifi on" > /dev/tty3
-                iwconfig wlan0 power on
+                #sudo iwconfig wlan0 power on
                 # delete existing rules
                 log_echo "Delete iptables"
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Deleting iptable rules" > /dev/tty3
-                /sbin/iptables -F
-                /sbin/iptables -X
-                /sbin/iptables -t nat -F
+                sudo /sbin/iptables -F
+                sudo /sbin/iptables -X
+                sudo /sbin/iptables -t nat -F
                 # allow lookup
                 log_echo "Setup iptables"
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Setup iptables for rounting" > /dev/tty3
-                /sbin/iptables -A INPUT -i lo -j ACCEPT
-                /sbin/iptables -A OUTPUT -o lo -j ACCEPT
+                sudo /sbin/iptables -A INPUT -i lo -j ACCEPT
+                sudo /sbin/iptables -A OUTPUT -o lo -j ACCEPT
                 # enable nat and Masq
-                /sbin/iptables -A FORWARD -o eth0 -i wlan0 -m conntrack --ctstate NEW -j ACCEPT
-                /sbin/iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-                /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+                sudo /sbin/iptables -A FORWARD -o eth0 -i wlan0 -m conntrack --ctstate NEW -j ACCEPT
+                sudo /sbin/iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+                sudo /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
                 # ip forwarding
                 log_echo "Allow forwarding"
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Allow forwarding" > /dev/tty3
-                sysctl -w net.ipv4.ip_forward=1 > /dev/null 2>$1
-                # set wpa password
-                log_echo "Set wpa credentials"
-                echo "[${CYAN}${BOLD} INFO ${RESET}] Setup hotspod credentials from config" > /dev/tty3
-                sed -i 's/^wpa_passphrase=.*$/wpa_passphrase='"${HOTSPOT_PSK}"'/' /etc/hostapd/hostapd.conf
-                sed -i '/./,/^$/!d' /etc/hostapd/hostapd.conf
-                sed -i 's/^country_code=.*$/country_code='"${WIFI_COUNTRY}"'/' /etc/hostapd/hostapd.conf
+                sudo sysctl -w net.ipv4.ip_forward=1 > /dev/null 2>$1
+                # set wifi country
+                sudo sh -c "sed -i 's/^country_code=.*$/country_code='"${WIFI_COUNTRY}"'/' /etc/hostapd/hostapd.conf"
                 # start services
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Start dnsmasq" > /dev/tty3
-                systemctl start dnsmasq
+                sudo systemctl start dnsmasq
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Start hostapd" > /dev/tty3
-                systemctl start hostapd
+                sudo systemctl start hostapd
                 HOSTAPD=`systemctl status hostapd | grep running | awk {'print $3'} | cut -d'(' -f2 | cut -d')' -f1`
                 if [ "$HOSTAPD" != "running" ]; then
                     echo "[${RED}${BOLD} FAIL ${RESET}] Hostapd has failed to start!" > /dev/tty3
+                else
+                    sudo killall hostapd_cli > /dev/null 2>$1
+                    sudo hostapd_cli -a '/opt/crankshaft/service_hostapdchange.sh' &
                 fi
-                DNSMASQ=`systemctl status hostapd | grep running | awk {'print $3'} | cut -d'(' -f2 | cut -d')' -f1`
+                DNSMASQ=`systemctl status dnsmasq | grep running | awk {'print $3'} | cut -d'(' -f2 | cut -d')' -f1`
                 if [ "$DNSMASQ" != "running" ]; then
                     echo "[${RED}${BOLD} FAIL ${RESET}] Dnsmasq has failed to start!" > /dev/tty3
                 fi
@@ -100,26 +99,27 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
             log_echo "Stop hostapd"
             echo "" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Stopping hostapd" > /dev/tty3
-            systemctl stop hostapd
+            sudo systemctl stop hostapd
+            sudo killall hostapd_cli > /dev/null 2>$1
             log_echo "Stop dnsmasq"
             echo "[${CYAN}${BOLD} INFO ${RESET}] Stopping dnsmasq" > /dev/tty3
-            systemctl stop dnsmasq
+            sudo systemctl stop dnsmasq
             # delete existing rules
             log_echo "Delete iptables"
             echo "[${CYAN}${BOLD} INFO ${RESET}] Deleting iptable rules" > /dev/tty3
-            /sbin/iptables -F
-            /sbin/iptables -X
-            /sbin/iptables -t nat -F
+            sudo /sbin/iptables -F
+            sudo /sbin/iptables -X
+            sudo /sbin/iptables -t nat -F
             #switch power management
             log_echo "Switch on wlan0"
-            iwconfig wlan0 power on
+            #sudo iwconfig wlan0 power on
             log_echo "Bring wlan0 up"
             echo "[${CYAN}${BOLD} INFO ${RESET}] Bring up wlan0 interface" > /dev/tty3
-            ifconfig wlan0 up
+            sudo ifconfig wlan0 up
             # configure blank interface
             echo "[${CYAN}${BOLD} INFO ${RESET}] Reconfigure ip wlan0" > /dev/tty3
             log_echo "Cleanup ip address for wlan0"
-            ip address del 192.168.254.1/29 dev wlan0
+            sudo ip address del 192.168.254.1/29 dev wlan0
             # restaret dhcpcd to bring up network
             sudo systemctl restart dhcpcd
             echo "[${CYAN}${BOLD} INFO ${RESET}] Waiting for ip release..." > /dev/tty3

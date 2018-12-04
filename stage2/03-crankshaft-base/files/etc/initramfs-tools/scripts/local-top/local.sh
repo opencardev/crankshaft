@@ -56,6 +56,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
         mkdir -p /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc
         mkdir -p /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/
         mkdir -p /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/pulse
+        mkdir -p /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/hostapd
         printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
         printf "[ ${CYAN}INFO${GRAY} ] Backing up cranksahft config files...\n" > /dev/tty3
         printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
@@ -91,6 +92,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
         cp -f /tmp/rootfs/etc/modules /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
         cp -f /tmp/rootfs/etc/X11/xorg.conf.d/99-calibration.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/ 2>/dev/null
         cp -f /tmp/rootfs/etc/pulse/client.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/pulse/ 2>/dev/null
+        cp -f /tmp/rootfs/etc/hostapd/hostapd.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/hostapd/ 2>/dev/null
         cp -f /tmp/rootfs/etc/cs_lightsensor /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
         sleep 1
         # umount after backup

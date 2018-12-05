@@ -88,6 +88,7 @@ install -m 755 files/opt/crankshaft/service_usbdetect.sh                "${ROOTF
 install -m 755 files/opt/crankshaft/service_usbunmount.sh               "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_user_startup.sh             "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_hotspot.sh                  "${ROOTFS_DIR}/opt/crankshaft/"
+install -m 755 files/opt/crankshaft/service_hostapdchange.sh            "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_custombrightness.sh         "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_pacheck.sh                  "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_hwclock.sh                  "${ROOTFS_DIR}/opt/crankshaft/"

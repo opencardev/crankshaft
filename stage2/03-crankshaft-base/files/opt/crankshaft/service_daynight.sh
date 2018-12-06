@@ -9,13 +9,13 @@ if [ $RTC_DAYNIGHT -eq 1 ] && [ ! -f /tmp/auto_brightness_active ] && [ $DAYNIGH
         if [ $1 == "day" ] && [ -f /tmp/night_mode_enabled ]; then
             log_echo "Restore brightness day"
             sudo rm /tmp/night_mode_enabled
-            crankshaft brightness restore
+            crankshaft brightness restore &
         fi
         if [ $1 == "night" ] && [ ! -f /tmp/night_mode_enabled ]; then
             log_echo "Restore brightness night"
             touch /tmp/night_mode_enabled
             chmod 666 /tmp/night_mode_enabled
-            crankshaft brightness restore
+            crankshaft brightness restore &
         fi
     fi
 fi
@@ -26,14 +26,14 @@ if [ ! -z $1 ] && [ ! -z $2 ]; then
         log_echo "Save brightness night"
         sudo rm /tmp/night_mode_enabled
         log_echo "Restore brightness day"
-        crankshaft brightness restore
+        crankshaft brightness restore &
     fi
     if [ $1 == "app" ] && [ $2 == "night" ] && [ ! -f /tmp/night_mode_enabled ]; then
         log_echo "Save brightness day"
         touch /tmp/night_mode_enabled
         chmod 666 /tmp/night_mode_enabled
         log_echo "Restore brightness night"
-        crankshaft brightness restore
+        crankshaft brightness restore &
     fi
 fi
 

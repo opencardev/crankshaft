@@ -61,6 +61,8 @@ BRIGHTNESS_FILE=/sys/class/backlight/rpi_backlight/brightness
 BR_MIN=30
 BR_MAX=255
 BR_STEP=25
+BR_DAY=255
+BR_NIGHT=30
 
 # Custom brightness control
 # Note: this command is called after every brightness change - can slow down for example the brightness

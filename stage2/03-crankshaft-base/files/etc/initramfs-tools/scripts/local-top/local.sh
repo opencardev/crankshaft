@@ -67,8 +67,6 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
         cp -f /tmp/bootfs/crankshaft/startup.py /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/startup.sh /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/triggerhappy.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
-        cp -f /tmp/bootfs/crankshaft/brightness /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
-        cp -f /tmp/bootfs/crankshaft/brightness-night /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/volume /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/capvolume /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/alsactl.state /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null

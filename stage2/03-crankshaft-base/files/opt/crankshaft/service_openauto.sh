@@ -16,10 +16,10 @@ if [ -f /tmp/start_openauto ]; then
     if [ $RTC_DAYNIGHT -eq 1 ]; then
         if [ $(date +%H) -gt $((RTC_DAY_START-1)) ] && [ $(date +%H) -lt $RTC_NIGHT_START ]; then
             sudo rm -f /tmp/night_mode_enabled > /dev/null 2>&1
-            /usr/local/bin/crankshaft brightness restore
+            /usr/local/bin/crankshaft brightness restore &
         else
             touch /tmp/night_mode_enabled
-            /usr/local/bin/crankshaft brightness restore
+            /usr/local/bin/crankshaft brightness restore &
         fi
     fi
 
@@ -77,12 +77,6 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] Saving settings..." >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         /usr/local/bin/crankshaft settings save
-        log_echo "Saving brightness"
-        echo "" >/dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] Saving brightness..." >/dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
-        /usr/local/bin/crankshaft brightness save
         log_echo "Saving alsastate"
         echo "" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3

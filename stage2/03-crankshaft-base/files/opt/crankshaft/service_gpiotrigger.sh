@@ -25,10 +25,12 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
             if [ $DAYNIGHT_GPIO -ne 1 ] ; then
                 if [ ! -f /tmp/night_mode_enabled ]; then
                     touch /tmp/night_mode_enabled
+                    crankshaft brightness restore &
                 fi
             else
                 if [ -f /tmp/night_mode_enabled ]; then
                     rm /tmp/night_mode_enabled
+                    crankshaft brightness restore &
                 fi
             fi
         fi

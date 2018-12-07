@@ -20,18 +20,6 @@ def get_var(varname):
 # 0x29, 0x39 or 0x49
 BUS = 1
 TSL2561_ADDR = 0x39
-# init from crankshaft_env
-level_1 = get_var('LUX_LEVEL_1')
-level_2 = get_var('LUX_LEVEL_2')
-level_3 = get_var('LUX_LEVEL_3')
-level_4 = get_var('LUX_LEVEL_4')
-level_5 = get_var('LUX_LEVEL_5')
-
-display_brigthness_1 = get_var('DISP_BRIGHTNESS_1')
-display_brigthness_2 = get_var('DISP_BRIGHTNESS_2')
-display_brigthness_3 = get_var('DISP_BRIGHTNESS_3')
-display_brigthness_4 = get_var('DISP_BRIGHTNESS_4')
-display_brigthness_5 = get_var('DISP_BRIGHTNESS_5')
 
 daynight_gpio = get_var('DAYNIGHT_PIN')
 # ---------------------------------
@@ -86,29 +74,32 @@ while True:
       Lux = 0
     Luxrounded=round(Lux,1)
     if lastvalue != Luxrounded:
-        print ("Lux = {}\n".format(Luxrounded))
+        #print ("Lux = {}\n".format(Luxrounded))
         os.system("echo {} > /tmp/tsl2561".format(Luxrounded))
         lastvalue = Luxrounded
-
         #Set display brigthness
-        if Luxrounded <= level_1:
-            os.system("crankshaft brightness set " + str(display_brigthness_1))
-            if daynight_gpio == 0:
+        if Luxrounded <= get_var('LUX_LEVEL_1'):
+            os.system("crankshaft brightness set " + str(get_var('DISP_BRIGHTNESS_1')) + " &")
+            step = 1
+        elif Luxrounded > get_var('LUX_LEVEL_1') and Luxrounded < get_var('LUX_LEVEL_2'):
+            os.system("crankshaft brightness set " + str(get_var('DISP_BRIGHTNESS_2')) + " &")
+            step = 2
+        elif Luxrounded >= get_var('LUX_LEVEL_2') and Luxrounded < get_var('LUX_LEVEL_3'):
+            os.system("crankshaft brightness set " + str(get_var('DISP_BRIGHTNESS_3')) + " &")
+            step = 3
+        elif Luxrounded >= get_var('LUX_LEVEL_3') and Luxrounded < get_var('LUX_LEVEL_4'):
+            os.system("crankshaft brightness set " + str(get_var('DISP_BRIGHTNESS_4')) + " &")
+            step = 4
+        elif Luxrounded >= get_var('LUX_LEVEL_5'):
+            os.system("crankshaft brightness set " + str(get_var('DISP_BRIGHTNESS_5')) + " &")
+            step = 5
+
+        if daynight_gpio == 0:
+            if step <= get_var('TSL2561_DAYNIGHT_ON_STEP'):
+                print("Lux = {} | ".format(Luxrounded) + "Level " + str(step) + " -> trigger night")
                 os.system("touch /tmp/night_mode_enabled >/dev/null 2>&1")
-        elif Luxrounded > level_1 and Luxrounded < level_2:
-            os.system("crankshaft brightness set " + str(display_brigthness_2))
-            if daynight_gpio == 0:
-                os.system("touch /tmp/night_mode_enabled >/dev/null 2>&1")
-        elif Luxrounded >= level_2 and Luxrounded < level_3:
-            os.system("crankshaft brightness set " + str(display_brigthness_3))
-            if daynight_gpio == 0:
-                os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
-        elif Luxrounded >= level_3 and Luxrounded < level_4:
-            os.system("crankshaft brightness set " + str(display_brigthness_4))
-            if daynight_gpio == 0:
-                os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
-        elif Luxrounded >= level_5:
-            os.system("crankshaft brightness set " + str(display_brigthness_5))
-            if daynight_gpio == 0:
-                os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
-  sleep (10)
+            else:
+                if  step > get_var('TSL2561_DAYNIGHT_ON_STEP'):
+                    print("Lux = {} | ".format(Luxrounded) + "Level " + str(step) + " -> trigger day")
+                    os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
+  sleep (get_var('TSL2561_CHECK_INTERVAL'))

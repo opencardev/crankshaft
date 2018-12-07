@@ -156,6 +156,10 @@ EXTERNAL_BLUETOOTH=0
 ALLOW_USB_FLASH=1
 
 # Auto brightness control based on tsl2561 light sensor
+# Check interval sensor 5,10,15,20,25,30
+TSL2561_CHECK_INTERVAL=10
+# Switch to night on this level or lower (0 = disabled / 1-5)
+TSL2561_DAYNIGHT_ON_STEP=2
 # Switch levels for brightness sensor in lux
 LUX_LEVEL_1=5
 LUX_LEVEL_2=20

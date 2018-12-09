@@ -3,5 +3,5 @@
 
 [Service]
  Type=simple
- ExecStart=/opt/crankshaft/service_daynight.sh night
+ ExecStart=/opt/crankshaft/service_daynight.sh night &
 

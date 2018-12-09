@@ -10,11 +10,11 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
     PARTITION=$(basename ${DEVICE})
 
     if [ "$PARTITION" == "CSSTORAGE" ]; then
-        log_echo "CSSTORAGE detected"
         echo "" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] CSSTORAGE detected" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+        log_echo "CSSTORAGE detected"
         /usr/local/bin/crankshaft filesystem system unlock
         ln -s /media/USBDRIVES/$PARTITION /media/$PARTITION
         # dashcam related
@@ -36,7 +36,6 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
 
         USB_DEBUGMODE=$(ls /media/USBDRIVES/${PARTITION} | grep ENABLE_DEBUG | head -1)
         if [ ! -z ${USB_DEBUGMODE} ]; then
-            log_echo "${DEVICE} - Debug trigger file detected"
             show_clear_screen
             echo "" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -44,12 +43,12 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
             echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Starting in debug mode...${RESET}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "${DEVICE} - Debug trigger file detected"
             touch /tmp/usb_debug_mode
         fi
 
         USB_DEVMODE=$(ls /media/USBDRIVES/${PARTITION} | grep ENABLE_DEVMODE | head -1)
         if [ ! -z ${USB_DEVMODE} ] && [ ${DEV_MODE} -ne 1 ] && [ -z ${USB_DEBUGMODE} ]; then
-            log_echo "${DEVICE} - Dev Mode trigger file detected"
             show_clear_screen
             echo "" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -57,6 +56,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
             echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Starting in dev mode...${RESET}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "${DEVICE} - Dev Mode trigger file detected"
             touch /tmp/usb_dev_mode
         fi
 

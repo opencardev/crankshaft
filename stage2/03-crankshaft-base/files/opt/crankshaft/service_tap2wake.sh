@@ -7,11 +7,11 @@ readlines() {
     while read line; do
         check=$(echo $line | grep "^Event:")
         if [ -n "$check" ]; then
-            systemctl stop disconnect.service
-            systemctl stop shutdown.service
+            systemctl stop disconnect.service > /dev/null 2>&1
+            systemctl stop shutdown.service > /dev/null 2>&1
             if [ ! -f /tmp/dev_mode_enabled ] && [ ! -f /tmp/android_device ]; then
-                systemctl stop disconnect.timer
-                systemctl stop shutdown.timer
+                systemctl stop disconnect.timer > /dev/null 2>&1
+                systemctl stop shutdown.timer > /dev/null 2>&1
                 if [ $DISCONNECTION_SCREEN_POWEROFF_DISABLE -eq 0 ]; then
                     systemctl start disconnect.timer
                 fi
@@ -26,7 +26,7 @@ readlines() {
 }
 
 # Kill all possile running evtest's
-killall evtest
+killall evtest > /dev/null 2>&1
 
 # Start new evtest's on all input devices
 cat /proc/bus/input/devices | grep Handler | sed 's/^.*event//' | while read -r input; do

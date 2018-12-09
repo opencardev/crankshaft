@@ -21,26 +21,26 @@ if [ "`ping -c 1 google.com`" ];then
 
     # udev
     if [ "$REMOTE_UDEV" != "$LOCAL_UDEV" ];then
-        log_echo "New udev rules available"
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] New udev device rules are available." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update udev' to update." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
+        log_echo "New udev rules available"
     fi
     # csmt
     if [ "$REMOTE_CSMT" != "$LOCAL_CSMT" ];then
-        log_echo "New csmt available"
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] New crankshaft management tool is available." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update csmt' to update." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
+        log_echo "New csmt available"
     fi
     # no updates
     if [ "$REMOTE_CSMT" == "$LOCAL_CSMT" ] && [ "$REMOTE_UDEV" == "$LOCAL_UDEV" ];then
-        log_echo "No new updates"
         echo "[${GREEN}${BOLD}  OK  ${RESET}] *******************************************************" >/dev/tty3
         echo "[${GREEN}${BOLD}  OK  ${RESET}] No new updates." >/dev/tty3
         echo "[${GREEN}${BOLD}  OK  ${RESET}] *******************************************************" >/dev/tty3
+        log_echo "No new updates"
     fi
 
 

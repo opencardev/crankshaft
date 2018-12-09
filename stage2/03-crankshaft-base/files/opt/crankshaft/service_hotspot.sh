@@ -24,8 +24,6 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
                 sudo ifconfig wlan0 192.168.254.1 netmask 255.255.255.248 broadcast 192.168.254.7
                 #switch power management
                 log_echo "Switch on wlan0"
-                echo "[${CYAN}${BOLD} INFO ${RESET}] Switch wifi on" > /dev/tty3
-                #sudo iwconfig wlan0 power on
                 # delete existing rules
                 log_echo "Delete iptables"
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Deleting iptable rules" > /dev/tty3
@@ -94,7 +92,6 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
     if [ "$1" == "stop" ]; then
         if [ -f /tmp/hotspot_active ]; then
             crankshaft filesystem system unlock
-            log_echo "Stop hotspot"
             # stop hostapd and dnsmasq dhcp server
             log_echo "Stop hostapd"
             echo "" > /dev/tty3

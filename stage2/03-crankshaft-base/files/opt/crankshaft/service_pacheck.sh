@@ -21,22 +21,26 @@ if [ "$countdevices" == "1" ]; then
             show_clear_screen
             show_cursor
             splash=0
+            log_echo "Pulseaudio: 1"
         fi
         echo "${RESET}" > /dev/tty3
         echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
         echo "[${RED}${BOLD} FAIL ${RESET}] Pulseaudio: no output device!" > /dev/tty3
         echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+        log_echo "Pulseaudio: no output device!"
     else
         if [ "$card" != "$pa_device" ]; then
             if [ $splash -eq 1 ]; then
                 show_clear_screen
                 show_cursor
                 splash=0
+                log_echo "Pulseaudio: 2"
             fi
             echo "${RESET}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Pulseaudio: changed output device! -> Configure..." > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "Pulseaudio: changed output device! -> Configure..."
             /usr/local/bin/crankshaft filesystem system unlock
             sed -i 's/.*default-sink.*//' /etc/pulse/client.conf
             sed -i 's/^# Crankshaft selected output device.*//' /etc/pulse/client.conf
@@ -49,25 +53,34 @@ if [ "$countdevices" == "1" ]; then
         fi
     fi
 else
-    if [ $splash -eq 1 ]; then
-        show_clear_screen
-        show_cursor
-        splash=0
-    fi
     if [ "$countdevices" == "0" ]; then
+        if [ $splash -eq 1 ]; then
+            show_clear_screen
+            show_cursor
+            splash=0
+            log_echo "Pulseaudio: 3"
+        fi
         echo "${RESET}" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected no outputs!" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] Add an audio output device!" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+        log_echo "Pulseaudio has detected no outputs!"
     else
         if [ "$pa_device" == "" ]; then
+            if [ $splash -eq 1 ]; then
+                show_clear_screen
+                show_cursor
+                splash=0
+                log_echo "Pulseaudio: 4"
+            fi
             echo "${RESET}" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple outputs!" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] No default was selected." > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "Pulseaudio has detected multiple outputs!"
         fi
     fi
 fi
@@ -86,22 +99,26 @@ if [ "$countinputdevices" == "1" ]; then
             show_clear_screen
             show_cursor
             splash=0
+            log_echo "Pulseaudio: 5"
         fi
         echo "${RESET}" > /dev/tty3
         echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
         echo "[${RED}${BOLD} FAIL ${RESET}] Pulseaudio: no input device!" > /dev/tty3
         echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+        log_echo "Pulseaudio: no input device!"
     else
         if [ "$inputcard" != "$pa_inputdevice" ]; then
             if [ $splash -eq 1 ]; then
                 show_clear_screen
                 show_cursor
                 splash=0
+                log_echo "Pulseaudio: 6"
             fi
             echo "${RESET}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Pulseaudio: changed input device! -> Configure..." > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "Pulseaudio: changed input device! -> Configure..."
             /usr/local/bin/crankshaft filesystem system unlock
             sed -i 's/.*default-source.*//' /etc/pulse/client.conf
             sed -i 's/^# Crankshaft selected input device.*//' /etc/pulse/client.conf
@@ -114,25 +131,34 @@ if [ "$countinputdevices" == "1" ]; then
         fi
     fi
 else
-    if [ $splash -eq 1 ]; then
-        show_clear_screen
-        show_cursor
-        splash=0
-    fi
     if [ "$countinputdevices" == "0" ]; then
+        if [ $splash -eq 1 ]; then
+            show_clear_screen
+            show_cursor
+            splash=0
+            log_echo "Pulseaudio: 7"
+        fi
         echo "${RESET}" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected no inputs!" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] Add an audio input device!" > /dev/tty3
         echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+        log_echo "Pulseaudio has detected no inputs!"
     else
         if [ "$pa_inputdevice" == "" ]; then
+            if [ $splash -eq 1 ]; then
+                show_clear_screen
+                show_cursor
+                splash=0
+                log_echo "Pulseaudio: 8"
+            fi
             echo "${RESET}" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Pulseaudio has detected multiple inputs!" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] No default was selected." > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Enter settings in openauto and select your card!" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "Pulseaudio has detected multiple inputs!"
         fi
     fi
 fi
@@ -153,6 +179,7 @@ if [ ! -z $pa_device ] && [ ! -z $hw_samplerate ] && [ ! -z $hw_sampleformat ] &
             show_clear_screen
             show_cursor
             splash=0
+            log_echo "Pulseaudio: 9"
         fi
         echo "${RESET}" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -162,6 +189,7 @@ if [ ! -z $pa_device ] && [ ! -z $hw_samplerate ] && [ ! -z $hw_sampleformat ] &
         echo "[${CYAN}${BOLD} INFO ${RESET}] HW Samplerate  : $hw_samplerate" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] HW Sampleformat: $hw_sampleformat" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+        log_echo "Pulseaudio: params need adjustment - Configure..."
         /usr/local/bin/crankshaft filesystem system unlock
         # sample rate
         sed -i 's/^# Crankshaft detected sample rate.*//' /etc/pulse/daemon.conf

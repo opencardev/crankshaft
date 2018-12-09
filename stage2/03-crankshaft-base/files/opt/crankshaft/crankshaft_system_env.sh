@@ -38,6 +38,7 @@ fi
 if [ $REARCAM_PIN -ne 0 ]; then
     sudo /usr/bin/gpio -g mode $REARCAM_PIN up
 fi
+
 if [ $IGNITION_PIN -ne 0 ]; then
     sudo /usr/bin/gpio -g mode $IGNITION_PIN up
 fi
@@ -54,6 +55,7 @@ show_clear_screen() {
     chvt 3
     printf "\033[2J" > /dev/tty3 # clear screen
     printf "\033[0;0H\n" > /dev/tty3 # Move to 0,0
+    log_echo "Show Clear Screen"
 }
 
 show_screen() {
@@ -61,20 +63,24 @@ show_screen() {
     sleep 1
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
     chvt 3
+    log_echo "Show Screen"
 }
 
 show_cursor() {
     setterm -cursor on > /dev/tty3
     setterm -blink on > /dev/tty3
+    log_echo "Show Cursor"
 }
 
 hide_cursor() {
     setterm -cursor off > /dev/tty3
     setterm -blink off > /dev/tty3
+    log_echo "Hide Cursor"
 }
 
 log_echo() {
-    logger "CSNG-LOGGER: --------------------------------------------------------------------"
-    logger "CSNG-LOGGER: $1"
-    logger "CSNG-LOGGER: --------------------------------------------------------------------"
+    logger "SERV-LOGGER: --------------------------------------------------------------------"
+    logger "SERV-LOGGER: Caller: $0"
+    logger "SERV-LOGGER: $1"
+    logger "SERV-LOGGER: --------------------------------------------------------------------"
 }

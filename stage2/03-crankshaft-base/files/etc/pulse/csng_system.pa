@@ -34,7 +34,7 @@ load-module module-bluetooth-policy
 .endif
 
 .ifexists module-bluetooth-discover.so
-load-module module-bluetooth-discover
+load-module module-bluetooth-discover headset=auto
 .endif
 
 ### Load several protocols

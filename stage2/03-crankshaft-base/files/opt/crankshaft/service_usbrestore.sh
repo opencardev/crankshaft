@@ -174,6 +174,13 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 /usr/local/bin/crankshaft timers daynight "$RTC_DAY_START" "$RTC_NIGHT_START" "skip" > /dev/tty3
             fi
+            # restore lightsensor
+            if [ -f /etc/cs_lightsensor ]; then
+                sed -i 's/i2c_dev//' /etc/modules
+                # clean empty lines
+                sed -i '/./,/^$/!d' /etc/modules
+                echo "i2c_dev" >> /etc/modules
+            fi
             # set done
             mount -o remount,rw /
             touch /etc/cs_backup_restore_done

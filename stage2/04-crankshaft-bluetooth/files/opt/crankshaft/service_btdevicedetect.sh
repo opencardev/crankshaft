@@ -17,9 +17,11 @@ if [ $ENABLE_BLUETOOTH -eq 1 ]; then
                     /usr/local/bin/crankshaft timers stop
                 fi
             else
-                rm -f /tmp/btdevice
-                log_echo "Bluetooth device removed -> start timers"
-                /usr/local/bin/crankshaft timers start
+                if [ -f /tmp/btdevice ]; then
+                    rm -f /tmp/btdevice
+                    log_echo "Bluetooth device removed -> start timers"
+                    /usr/local/bin/crankshaft timers start
+                fi
             fi
         done
         sleep 5

@@ -62,14 +62,7 @@ echo "CRANKSHAFT-NG" > /etc/hostname
 sed -i "s/raspberrypi/CRANKSHAFT-NG/" /etc/hosts
 
 # fix watchdog module (seems to be renamed on latest versions)
-CHECK=`modprobe --dry-run bcm2835_wdt`
-if [ $CHECK == "" ]; then
-    sed -i "s/bcm2835_wdog/bcm2835_wdt/" /etc/modules
-fi
-CHECK=`modprobe --dry-run bcm2708_wdt`
-if [ $CHECK == "" ]; then
-    sed -i "s/bcm2708_wdog/2708_wdt/" /etc/modules
-fi
+echo "bcm2835_wdt" | sudo tee -a /etc/modules
 
 # Boost system performance
 sed -i 's/reboot.target/shutdown.target/g' /lib/systemd/system/rpi-display-backlight.service
@@ -229,8 +222,7 @@ echo "default-server = unix:/var/run/pulse/native" >> /etc/pulse/client.conf
 echo "autospawn = no" >> /etc/pulse/client.conf
 
 # Add i2c
-echo "" /etc/modules
-echo "i2c_dev" /etc/modules
+echo "i2c_dev" | sudo tee -a /etc/modules
 
 # Make udev mountpoints shared
 sed -i 's/^MountFlags=.*/MountFlags=shared/' /lib/systemd/system/systemd-udevd.service

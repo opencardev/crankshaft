@@ -8,8 +8,8 @@ if [ $ENABLE_BLUETOOTH -eq 1 ]; then
     while true; do
         bt-device -l | grep -e '(' | grep -e ':' | cut -d'(' -f2 | cut -d')' -f1 | while read paired; do
             info=$(bt-device --info=$paired | grep -e 'Name:' -e 'Connected:' | cut -d: -f2 | sed 's/^ *//g' | sed 's/ *$//g' | tr '\n' '#')
-            device=$(echo $info | cut -d# -f1)
-            state=$(echo $info | cut -d# -f2)
+            device=$(echo $info | cut -d# -f1 | tr -d '\n')
+            state=$(echo $info | cut -d# -f2 | tr -d '\n')
             if [ $state -eq 1 ]; then
                 if [ ! -f /tmp/btdevice ]; then
                     echo "${device}" > /tmp/btdevice

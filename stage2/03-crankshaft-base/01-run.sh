@@ -105,6 +105,7 @@ install -m 644 files/opt/crankshaft/wallpaper/wallpaper-night.png             "$
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-classic.png           "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-classic-night.png     "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/camera-overlay.png              "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
+install -m 644 files/opt/crankshaft/wallpaper/wallpaper-eq.png                "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 
 # /usr
 install -m 755 files/usr/local/bin/autoapp                              "${ROOTFS_DIR}/usr/local/bin/"

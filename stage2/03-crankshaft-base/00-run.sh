@@ -68,5 +68,5 @@ chmod 644 files/usr/local/bin/usbreset.md5
 
 # qt5
 # combine splitted archive
-cat $BASE_DIR/prebuilts/qt5/Qt_5112_OpenGLES2.tar.xz.part* > $BASE_DIR/prebuilts/qt5/Qt_5112_OpenGLES2.tar.xz
-mv -f $BASE_DIR/prebuilts/qt5/Qt_5112_OpenGLES2.tar.xz files/qt5/Qt5_OpenGLES2.tar.xz
+cat $BASE_DIR/prebuilts/qt5/Qt_5113_OpenGLES2.tar.xz.part* > $BASE_DIR/prebuilts/qt5/Qt_5113_OpenGLES2.tar.xz
+mv -f $BASE_DIR/prebuilts/qt5/Qt_5113_OpenGLES2.tar.xz files/qt5/Qt5_OpenGLES2.tar.xz

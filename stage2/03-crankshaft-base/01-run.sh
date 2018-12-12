@@ -135,6 +135,13 @@ install -m 644 files/usr/share/plymouth/themes/csnganimation/logo.png           
 install -m 644 files/usr/share/plymouth/themes/csnganimation/progress_bar.png         "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
 install -m 644 files/usr/share/plymouth/themes/csnganimation/progress_box.png         "${ROOTFS_DIR}/usr/share/plymouth/themes/csnganimation/"
 install -m 644 files/usr/lib/arm-linux-gnueabihf/plymouth/csnganimation.so            "${ROOTFS_DIR}/usr/lib/arm-linux-gnueabihf/plymouth/"
+install -d "${ROOTFS_DIR}/usr/share/plymouth/themes/custom"
+install -m 644 files/usr/share/plymouth/themes/custom/custom.plymouth       "${ROOTFS_DIR}/usr/share/plymouth/themes/custom/"
+install -m 644 files/usr/share/plymouth/themes/custom/custom.script         "${ROOTFS_DIR}/usr/share/plymouth/themes/custom/"
+install -m 644 files/usr/share/plymouth/themes/custom/progress_bar.png      "${ROOTFS_DIR}/usr/share/plymouth/themes/custom/"
+install -m 644 files/usr/share/plymouth/themes/custom/progress_box.png      "${ROOTFS_DIR}/usr/share/plymouth/themes/custom/"
+install -m 644 files/usr/share/plymouth/themes/custom/splash.png            "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
+install -m 644 files/usr/share/plymouth/themes/custom/shutdown.png          "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 
 # /lib
 install -m 755 files/lib/udev/hwclock-set                               "${ROOTFS_DIR}/lib/udev/"

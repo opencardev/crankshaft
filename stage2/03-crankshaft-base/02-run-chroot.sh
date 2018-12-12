@@ -54,6 +54,10 @@ ln -s /boot/crankshaft/wallpaper-classic.png /home/pi/wallpaper-classic.png
 ln -s /boot/crankshaft/wallpaper-classic-night.png /home/pi/wallpaper-classic-night.png
 ln -s /boot/crankshaft/wallpaper-eq.png /home/pi/wallpaper-eq.png
 
+# custom plymouth
+ln -s /boot/crankshaft/splash.png /usr/share/plymouth/themes/custom/splash.png
+ln -s /boot/crankshaft/shutdown.png /usr/share/plymouth/themes/custom/shutdown.png
+
 # triggerhappy
 sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service
 ln -s /boot/crankshaft/triggerhappy.conf /etc/triggerhappy/triggers.d/crankshaft.conf

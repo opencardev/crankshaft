@@ -62,4 +62,18 @@ if [ ! -f /boot/crankshaft/camera-overlay.png ] || [ ! -s /boot/crankshaft/camer
     /usr/local/bin/crankshaft filesystem boot lock
 fi
 
+if [ ! -f /boot/crankshaft/splash.png ] || [ ! -s /boot/crankshaft/splash.png ]; then
+    log_echo "Place default splash.png"
+    /usr/local/bin/crankshaft filesystem boot unlock
+    cp /opt/crankshaft/wallpaper/splash.png /boot/crankshaft/
+    /usr/local/bin/crankshaft filesystem boot lock
+fi
+
+if [ ! -f /boot/crankshaft/shutdown.png ] || [ ! -s /boot/crankshaft/shutdown.png ]; then
+    log_echo "Place default shutdown.png"
+    /usr/local/bin/crankshaft filesystem boot unlock
+    cp /opt/crankshaft/wallpaper/shutdown.png /boot/crankshaft/
+    /usr/local/bin/crankshaft filesystem boot lock
+fi
+
 exit 0

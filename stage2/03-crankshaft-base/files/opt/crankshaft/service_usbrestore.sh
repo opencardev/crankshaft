@@ -63,6 +63,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             umount /dev/mmcblk0p1
             fsck -f -y /dev/mmcblk0p1 > /dev/null 2>&1
             mount /dev/mmcblk0p1 /boot
+            touch /tmp/keeprw
             mount -o remount,rw /
             # restore files
             cp -r -f ${FSMOUNTPOINT}/cs-backup/${SERIAL}/boot/. /boot/ > /dev/null 2>&1
@@ -179,6 +180,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 /usr/local/bin/crankshaft timers daynight "$RTC_DAY_START" "$RTC_NIGHT_START" "skip" > /dev/tty3
             fi
+
             # clean default modules
             sed -i 's/i2c_dev//' /etc/modules
             sed -i 's/bcm2835_wdt//' /etc/modules

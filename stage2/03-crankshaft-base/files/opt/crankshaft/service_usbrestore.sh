@@ -29,6 +29,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] Checking for cs backups to restore..." > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    log_echo "Checking for cs backups to restore..."
     for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
         DEVICE="/dev/$(basename ${FSMOUNTPOINT})"
         LABEL=$(blkid ${DEVICE} | sed 's/.*LABEL="//' | cut -d'"' -f1 | sed 's/ //g')
@@ -44,6 +45,8 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] Checking if backup folder is present..." > /dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+        log_echo "Checking for cs backups to restore..."
+        log_echo "Checking if backup folder is present on ${DEVICE} (${LABEL} / ${FSTYPE}) ..."
         sleep 2
         if [ -d ${FSMOUNTPOINT}/cs-backup/${SERIAL} ]; then
             show_screen
@@ -52,6 +55,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Backup found on $DEVICE (${LABEL}) - restoring backup..." > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "Backup found on $DEVICE (${LABEL}) - restoring backup ..."
             echo "" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Check /boot ..." > /dev/tty3
@@ -182,7 +186,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             # add default modules
             echo "i2c_dev" >> /etc/modules
             echo "bcm2835_wdt" >> /etc/modules
-            fi
+
             # set done
             mount -o remount,rw /
             touch /etc/cs_backup_restore_done
@@ -194,6 +198,8 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             sync
             sleep 5
             reboot
+        else
+            log_echo "No Backup found on $DEVICE (${LABEL}) - skip ..."
         fi
     done
 else
@@ -201,6 +207,7 @@ else
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] Backup already restored." > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    log_echo "Backup already restored."
 fi
 
 exit 0

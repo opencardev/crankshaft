@@ -23,4 +23,7 @@ else
     chmod 644 /tmp/wpa_supplicant.conf
 fi
 
+# disable wifi power management
+iw wlan0 set power_save off
+
 exit 0

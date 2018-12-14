@@ -8,6 +8,8 @@ if [ -f /tmp/start_openauto ]; then
     # Restore openauto.ini
     log_echo "Restoring settings"
     /usr/local/bin/crankshaft settings restore
+    touch /tmp/openauto_wifi_recent.ini
+    chmod 666 /tmp/openauto_wifi_recent.ini
 
     # Make sure display is on
     /usr/local/bin/crankshaft display on

@@ -52,6 +52,8 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         sed -i "s/^OMXLayerIndex=.*$/OMXLayerIndex=0/" /tmp/openauto.ini
         # Starts the Autoapp (OpenAuto) main program via x-server
+        echo "Session start ****************************************************************************" >> /tmp/openauto.log
+        echo "******************************************************************************************" >> /tmp/openauto.log
         xinit
     else
         # EGLFS - crankshaft "normal" mode
@@ -63,7 +65,9 @@ if [ -f /tmp/start_openauto ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         sed -i "s/^OMXLayerIndex=0.*$/OMXLayerIndex=2/" /tmp/openauto.ini
         # Starts the Autoapp (OpenAuto) main program
-        /usr/local/bin/autoapp
+        echo "Session start ****************************************************************************" >> /tmp/openauto.log
+        echo "******************************************************************************************" >> /tmp/openauto.log
+        stdbuf -i0 -o0 -e0 /usr/local/bin/autoapp >> /tmp/openauto.log
     fi
 
     # Check if autoapp crashed

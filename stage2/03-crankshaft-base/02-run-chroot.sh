@@ -193,7 +193,7 @@ echo "alias mc='. /usr/share/mc/bin/mc-wrapper.sh'" >> /etc/bash.bashrc
 sed -i 's/.*max-load-1	.*/max-load-1		= 2/' /etc/watchdog.conf
 sed -i 's/.*watchdog-device.*/watchdog-device		= \/dev\/watchdog/' /etc/watchdog.conf
 sed -i 's/.*temperatur-sensor.*/temperatur-sensor		= \/sys\/class\/thermal\/thermal_zone0\/temp/' /etc/watchdog.conf
-sed -i 's/.*max-temperature.*/max-temperaturee		= 75/' /etc/watchdog.conf
+sed -i 's/.*max-temperature.*/max-temperature		= 75/' /etc/watchdog.conf
 
 # Setup kernel panic behaviour
 sed -i 's/.*kernel-panic.*//g' /etc/sysctl.conf

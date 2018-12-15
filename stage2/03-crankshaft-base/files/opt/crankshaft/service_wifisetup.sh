@@ -21,6 +21,7 @@ else
     log_echo "Copy wifi client config"
     cp /boot/crankshaft/wpa_supplicant.conf /tmp/
     chmod 644 /tmp/wpa_supplicant.conf
+    sed -i 's/country=.*$/country='"${WIFI_COUNTRY}"'/' /tmp/wpa_supplicant.conf
 fi
 
 # disable wifi power management

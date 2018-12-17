@@ -82,6 +82,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             echo "autospawn = no" >> /etc/pulse/client.conf
             chmod 644 /etc/timezone > /dev/null 2>&1
             # remove possible existing lost boot entries
+            sed -i 's/# Initramfs params for flashsystem//' /boot/config.txt
             sed -i 's/initramfs initrd.img followkernel//' /boot/config.txt
             sed -i 's/ramfsfile=initrd.img//' /boot/config.txt
             sed -i 's/ramfsaddr=-1//' /boot/config.txt

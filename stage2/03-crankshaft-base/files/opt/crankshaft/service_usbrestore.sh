@@ -183,13 +183,16 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             fi
 
             # clean default modules
-            sed -i 's/i2c_dev//' /etc/modules
             sed -i 's/bcm2835_wdt//' /etc/modules
             # clean empty lines
             sed -i '/./,/^$/!d' /etc/modules
             # add default modules
-            echo "i2c_dev" >> /etc/modules
             echo "bcm2835_wdt" >> /etc/modules
+
+            # check for lightsnsor (i2c)
+            if [ -f /etc/cs_lightsensor ]; then
+                crankshaft lightsensor enable
+            fi
 
             # set done
             mount -o remount,rw /

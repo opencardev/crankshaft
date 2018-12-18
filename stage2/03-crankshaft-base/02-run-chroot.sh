@@ -228,9 +228,6 @@ echo "# Make sure client is correct configured for system wide usage" >> /etc/pu
 echo "default-server = unix:/var/run/pulse/native" >> /etc/pulse/client.conf
 echo "autospawn = no" >> /etc/pulse/client.conf
 
-# Add i2c
-echo "i2c_dev" | sudo tee -a /etc/modules
-
 # Make udev mountpoints shared
 sed -i 's/^MountFlags=.*/MountFlags=shared/' /lib/systemd/system/systemd-udevd.service
 

@@ -17,6 +17,12 @@ if [ "`ping -c 1 google.com`" ];then
     LOCAL_CSMT=$(md5sum /usr/local/bin/crankshaft | awk {'print $1'})
     rm /tmp/crankshaft.md5
 
+    # Check openauto
+    wget -q --no-check-certificate -O /tmp/autoapp.md5 https://raw.githubusercontent.com/opencardev/prebuilts/master/openauto/autoapp.md5
+    REMOTE_OPENAUTO=$(cat /tmp/autoapp.md5 | awk {'print $1'})
+    LOCAL_OPENAUTO=$(md5sum /usr/local/bin/autoapp | awk {'print $1'})
+    rm /tmp/autoapp.md5
+
     # Notifications
 
     # udev
@@ -26,6 +32,7 @@ if [ "`ping -c 1 google.com`" ];then
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update udev' to update." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         log_echo "New udev rules available"
+        touch /tmp/udev_update_available
     fi
     # csmt
     if [ "$REMOTE_CSMT" != "$LOCAL_CSMT" ];then
@@ -34,9 +41,19 @@ if [ "`ping -c 1 google.com`" ];then
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update csmt' to update." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         log_echo "New csmt available"
+        touch /tmp/csmt_update_available
+    fi
+    # openauto
+    if [ "$REMOTE_OPENAUTO" != "$LOCAL_OPENAUTO" ];then
+        echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
+        echo "[${RED}${BOLD} NOTE ${RESET}] New openauto build is available." >/dev/tty3
+        echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update openauto' to update." >/dev/tty3
+        echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
+        log_echo "New openauto available"
+        touch /tmp/openauto_update_available
     fi
     # no updates
-    if [ "$REMOTE_CSMT" == "$LOCAL_CSMT" ] && [ "$REMOTE_UDEV" == "$LOCAL_UDEV" ];then
+    if [ "$REMOTE_CSMT" == "$LOCAL_CSMT" ] && [ "$REMOTE_UDEV" == "$LOCAL_UDEV" ] && [ "$REMOTE_OPENAUTO" == "$LOCAL_OPENAUTO" ];then
         echo "[${GREEN}${BOLD}  OK  ${RESET}] *******************************************************" >/dev/tty3
         echo "[${GREEN}${BOLD}  OK  ${RESET}] No new updates." >/dev/tty3
         echo "[${GREEN}${BOLD}  OK  ${RESET}] *******************************************************" >/dev/tty3

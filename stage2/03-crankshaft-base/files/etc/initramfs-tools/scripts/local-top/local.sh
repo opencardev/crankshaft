@@ -76,6 +76,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
         cp -f /tmp/bootfs/crankshaft/wallpaper-night.png /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/wallpaper-classic.png /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/wallpaper-classic-night.png /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+        cp -f /tmp/bootfs/crankshaft/wallpaper-eq.png /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/splash.png /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/shutdown.png /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
         cp -f /tmp/bootfs/crankshaft/button_1 /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null

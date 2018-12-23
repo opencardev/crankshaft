@@ -32,7 +32,10 @@ if [ "`ping -c 1 google.com`" ];then
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update udev' to update." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         log_echo "New udev rules available"
+        sudo rm /tmp/udev_update_available > /dev/null 2>&1
         touch /tmp/udev_update_available
+    else
+        sudo rm /tmp/udev_update_available > /dev/null 2>&1
     fi
     # csmt
     if [ "$REMOTE_CSMT" != "$LOCAL_CSMT" ];then
@@ -41,7 +44,10 @@ if [ "`ping -c 1 google.com`" ];then
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update csmt' to update." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         log_echo "New csmt available"
+        sudo rm /tmp/csmt_update_available > /dev/null 2>&1
         touch /tmp/csmt_update_available
+    else
+        sudo rm /tmp/csmt_update_available > /dev/null 2>&1
     fi
     # openauto
     if [ "$REMOTE_OPENAUTO" != "$LOCAL_OPENAUTO" ];then
@@ -50,7 +56,10 @@ if [ "`ping -c 1 google.com`" ];then
         echo "[${RED}${BOLD} NOTE ${RESET}] Login and use 'crankshaft update openauto' to update." >/dev/tty3
         echo "[${RED}${BOLD} NOTE ${RESET}] *******************************************************" >/dev/tty3
         log_echo "New openauto available"
+        sudo rm /tmp/openauto_update_available > /dev/null 2>&1
         touch /tmp/openauto_update_available
+    else
+        sudo rm /tmp/openauto_update_available > /dev/null 2>&1
     fi
     # no updates
     if [ "$REMOTE_CSMT" == "$LOCAL_CSMT" ] && [ "$REMOTE_UDEV" == "$LOCAL_UDEV" ] && [ "$REMOTE_OPENAUTO" == "$LOCAL_OPENAUTO" ];then

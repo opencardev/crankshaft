@@ -11,7 +11,9 @@ fi
 TODAY_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"}"
 
 BUILDHASH=`git rev-parse --short HEAD | awk '{print toupper($0)}'`
+BUILDBRANCH=`cat ./.git/HEAD | cut -d'/' -f3`
 export BUILDHASH
+export BUILDBRANCH
 
 # enable all build stages
 rm ./stage0/SKIP &>/dev/null
@@ -34,15 +36,18 @@ echo "Start build..."
 echo "***************************************************************************************"
 echo ""
 echo "***************************************************************************************"
-echo "Build Hash: "$BUILDHASH
-echo "Build Date: "$TODAY_DATE
+echo "Build Hash:   "$BUILDHASH
+echo "Build Date:   "$TODAY_DATE
+echo "Build Branch: "$BUILDBRANCH
+echo ""
+git log -n1 --no-merges
 echo "***************************************************************************************"
 
 # check prebuilts
 ./check-prebuilts.sh
 
 # run pi-gen buildsystem
-./build.sh
+#./build.sh
 
 # unmount possible left mounts
 ./build-unmount.sh

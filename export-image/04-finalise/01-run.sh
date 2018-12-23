@@ -8,6 +8,7 @@ on_chroot << EOF
 hardlink -t /usr/share/doc
 echo ${BUILDHASH} > /etc/crankshaft.build
 echo ${IMG_DATE} > /etc/crankshaft.date
+echo ${BUILDBRANCH} > /etc/crankshaft.branch
 EOF
 
 if [ -d "${ROOTFS_DIR}/home/pi/.config" ]; then

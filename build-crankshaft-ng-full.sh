@@ -47,7 +47,7 @@ echo "**************************************************************************
 ./check-prebuilts.sh
 
 # run pi-gen buildsystem
-#./build.sh
+./build.sh
 
 # unmount possible left mounts
 ./build-unmount.sh

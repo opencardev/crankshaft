@@ -80,7 +80,7 @@ systemctl enable devmode.service
 systemctl enable debugmode.service
 systemctl enable display.service
 systemctl enable user_startup.service
-systemctl enable update.service
+systemctl enable update.timer
 systemctl enable usbrestore.service
 systemctl enable usbdetect.service
 systemctl enable usbunmount.service

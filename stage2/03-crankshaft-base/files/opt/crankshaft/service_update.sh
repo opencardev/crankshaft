@@ -6,19 +6,31 @@ source /opt/crankshaft/crankshaft_system_env.sh
 if [ "`ping -c 1 google.com`" ];then
     log_echo "Internet connection available"
     # Check udev rules
-    wget -q -O /tmp/51-android.rules.md5 --no-check-certificate https://raw.githubusercontent.com/opencardev/prebuilts/master/udev/51-android.rules.md5
+    if [ "$(cat /etc/crankshaft.branch)" == "csng-dev" ]; then
+        wget -q -O /tmp/51-android.rules.md5 --no-check-certificate https://raw.githubusercontent.com/opencardev/prebuilts/csng-dev/udev/51-android.rules.md5
+    else
+        wget -q -O /tmp/51-android.rules.md5 --no-check-certificate https://raw.githubusercontent.com/opencardev/prebuilts/master/udev/51-android.rules.md5
+    fi
     REMOTE_UDEV=$(cat /tmp/51-android.rules.md5 | awk {'print $1'})
     LOCAL_UDEV=$(md5sum /etc/udev/rules.d/51-android.master | awk {'print $1'})
     rm /tmp/51-android.rules.md5
 
     # Check crankshaft amangement tool
-    wget -q --no-check-certificate -O /tmp/crankshaft.md5 https://raw.githubusercontent.com/opencardev/prebuilts/master/csmt/crankshaft.md5
+    if [ "$(cat /etc/crankshaft.branch)" == "csng-dev" ]; then
+        wget -q --no-check-certificate -O /tmp/crankshaft.md5 https://raw.githubusercontent.com/opencardev/prebuilts/csng-dev/csmt/crankshaft.md5
+    else
+        wget -q --no-check-certificate -O /tmp/crankshaft.md5 https://raw.githubusercontent.com/opencardev/prebuilts/master/csmt/crankshaft.md5
+    fi
     REMOTE_CSMT=$(cat /tmp/crankshaft.md5 | awk {'print $1'})
     LOCAL_CSMT=$(md5sum /usr/local/bin/crankshaft | awk {'print $1'})
     rm /tmp/crankshaft.md5
 
     # Check openauto
-    wget -q --no-check-certificate -O /tmp/autoapp.md5 https://raw.githubusercontent.com/opencardev/prebuilts/master/openauto/autoapp.md5
+    if [ "$(cat /etc/crankshaft.branch)" == "csng-dev" ]; then
+        wget -q --no-check-certificate -O /tmp/autoapp.md5 https://raw.githubusercontent.com/opencardev/prebuilts/csng-dev/openauto/autoapp.md5
+    else
+        wget -q --no-check-certificate -O /tmp/autoapp.md5 https://raw.githubusercontent.com/opencardev/prebuilts/master/openauto/autoapp.md5
+    fi
     REMOTE_OPENAUTO=$(cat /tmp/autoapp.md5 | awk {'print $1'})
     LOCAL_OPENAUTO=$(md5sum /usr/local/bin/autoapp | awk {'print $1'})
     rm /tmp/autoapp.md5

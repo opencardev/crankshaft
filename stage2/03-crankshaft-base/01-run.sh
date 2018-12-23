@@ -30,6 +30,7 @@ install -m 644 files/etc/systemd/system/shutdown.timer                  "${ROOTF
 install -m 644 files/etc/systemd/system/tap2wake.service                "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/timerstart.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/update.service                  "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/update.timer                    "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/usbrestore.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/usbdetect.service               "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/usbunmount.service              "${ROOTFS_DIR}/etc/systemd/system/"

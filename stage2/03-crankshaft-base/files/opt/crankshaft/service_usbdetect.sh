@@ -30,10 +30,15 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
         chmown -R pi:pi /home/pi/.kodi > /dev/null 2>&1
         /usr/local/bin/crankshaft filesystem system lock
         CSSTORAGE_DETECTED=1
-    else
-        LABEL=$(blkid ${DEVICE} | sed 's/.*LABEL="//' | cut -d'"' -f1 | sed 's/ //g')
-        FSTYPE=$(blkid ${DEVICE} | sed 's/.*TYPE="//' | cut -d'"' -f1)
+        # set correct device for csstorage
+        DEVICE=$(mount | grep CSSTORAGE | awk {'print $1'})
+    fi
 
+    LABEL=$(blkid ${DEVICE} | sed 's/.*LABEL="//' | cut -d'"' -f1 | sed 's/ //g')
+    FSTYPE=$(blkid ${DEVICE} | sed 's/.*TYPE="//' | cut -d'"' -f1)
+
+    # Check for trigger files excluding CSSTORAGE
+    if [ "$PARTITION" != "CSSTORAGE" ]; then
         USB_DEBUGMODE=$(ls /media/USBDRIVES/${PARTITION} | grep ENABLE_DEBUG | head -1)
         if [ ! -z ${USB_DEBUGMODE} ]; then
             show_clear_screen
@@ -59,121 +64,121 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
             log_echo "${DEVICE} - Dev Mode trigger file detected"
             touch /tmp/usb_dev_mode
         fi
+    fi
 
-        if [ $ALLOW_USB_FLASH -eq 1 ]; then
-            UPDATEZIP=$(ls -Art /media/USBDRIVES/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | grep -v ^._ | tail -1)
-            FLAG=0
-            if [ ! -z ${UPDATEZIP} ]; then
-                UNPACKED=$(unzip -l /media/USBDRIVES/${PARTITION}/${UPDATEZIP} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | awk {'print $4'})
-                if [ ! -f /media/USBDRIVES/${PARTITION}/${UNPACKED} ]; then
-                    show_clear_screen
-                    echo "" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] Update zip found on ${DEVICE} (${LABEL})" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] Unpacking file $UNPACKED" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                    show_cursor
-                    sudo mount -o remount,rw ${DEVICE}
-                    rm /media/USBDRIVES/${PARTITION}/*.md5 > /dev/null 2>&1
-                    rm /media/USBDRIVES/${PARTITION}/*.img > /dev/null 2>&1
-                    unzip -q -o /media/USBDRIVES/${PARTITION}/${UPDATEZIP} -d /media/USBDRIVES/${PARTITION}
-                    hide_cursor
-                    FLAG=1
-                fi
-            fi
-            UPDATEFILE=$(ls -Art /media/USBDRIVES/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | tail -1)
-            if [ ! -z ${UPDATEFILE} ]; then
-                if [ ${FLAG} -ne 1 ]; then
-                    show_clear_screen
-                else
-                    show_screen
-                fi
+    if [ $ALLOW_USB_FLASH -eq 1 ]; then
+        UPDATEZIP=$(ls -Art /media/USBDRIVES/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | grep -v ^._ | tail -1)
+        FLAG=0
+        if [ ! -z ${UPDATEZIP} ]; then
+            UNPACKED=$(unzip -l /media/USBDRIVES/${PARTITION}/${UPDATEZIP} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | awk {'print $4'})
+            if [ ! -f /media/USBDRIVES/${PARTITION}/${UNPACKED} ]; then
+                show_clear_screen
                 echo "" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                echo "[${CYAN}${BOLD} INFO ${RESET}] Update file found on ${DEVICE} (${LABEL})" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] Update zip found on ${DEVICE} (${LABEL})" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
-                if [ -f /etc/crankshaft.build ] && [ -f /etc/crankshaft.date ]; then
-                    CURRENT="$(cat /etc/crankshaft.date)-$(cat /etc/crankshaft.build)"
-                else
-                    CURRENT=""
-                fi
-                NEW=$(basename ${UPDATEFILE} | cut -d- -f1-3,6 | cut -d. -f1) # use date and hash
-                FORCEFLASH=$(ls /media/USBDRIVES/${PARTITION} | grep FORCE_FLASH | head -1)
-                if [ "$CURRENT" == "$NEW" ] && [ -z $FORCEFLASH ]; then
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] IMAGE already flashed - ignoring." > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                    continue
-                fi
-                echo "[${CYAN}${BOLD} INFO ${RESET}] Checking file ${UPDATEFILE}${RESET}" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] Unpacking file $UNPACKED" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 show_cursor
-                if [ -f /media/USBDRIVES/${PARTITION}/${UPDATEFILE} ]; then
-                    SIZE=$(($(wc -c < "/media/USBDRIVES/${PARTITION}/${UPDATEFILE}") / 1024 / 1024 / 1014))
-                else
-                    echo "" > /dev/tty3
-                    echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
-                    echo "[${RED}${BOLD} FAIL ${RESET}] Image check has failed - abort.${RESET}" > /dev/tty3
-                    echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
-                    continue
-                fi
-                cd /media/USBDRIVES/${PARTITION}
-                MD5SUM=$(md5sum -c ${UPDATEFILE}.md5 | grep OK | cut -d: -f2)
-                if [ ! -z ${MD5SUM} ]; then
-                    echo "${RESET}" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] Image is consistent -> Preparing flash mode...${RESET}" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
-                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                    # mount /boot rw to init flash mode
-                    mount -o remount,rw /boot
-                    mkinitramfs -o /boot/initrd.img > /dev/null 2>&1
-                    # cleanup
-                    sed -i 's/^# Initramfs params for flashsystem//' /boot/config.txt
-                    sed -i 's/^initramfs initrd.img followkernel//' /boot/config.txt
-                    sed -i 's/^ramfsfile=initrd.img//' /boot/config.txt
-                    sed -i 's/^ramfsaddr=-1//' /boot/config.txt
-                    sed -i 's/rootdelay=10//' /boot/cmdline.txt
-                    sed -i 's/initrd=-1//' /boot/cmdline.txt
-                    sed -i '/./,/^$/!d' /boot/config.txt
-                    # Set entries
-                    echo "" >> /boot/config.txt
-                    echo "# Initramfs params for flashsystem" >> /boot/config.txt
-                    echo "initramfs initrd.img followkernel" >> /boot/config.txt
-                    echo "ramfsfile=initrd.img" >> /boot/config.txt
-                    echo "ramfsaddr=-1" >> /boot/config.txt
-                    sed -i 's/splash //' /boot/cmdline.txt
-                    sed -i 's/vt.global_cursor_default=0 //' /boot/cmdline.txt
-                    sed -i 's/plymouth.ignore-serial-consoles //' /boot/cmdline.txt
-                    sed -i 's/$/ rootdelay=10/' /boot/cmdline.txt
-                    sed -i 's/$/ initrd=-1/' /boot/cmdline.txt
-                    # remove possible existing force trigger to prevent flash loop
-                    sudo mount -o remount,rw ${DEVICE} > /dev/null 2>&1
-                    rm /media/USBDRIVES/${PARTITION}/FORCE_FLASH > /dev/null 2>&1
-                    echo "${RESET}" > /dev/tty3
-                    echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
-                    echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
-                    echo "[${GREEN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3
-                    echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
-                    echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
-                    sudo sync
-                    sudo umount ${DEVICE} > /dev/null 2>&1
-                    sleep 5
-                    reboot
-                else
-                    echo "${RESET}" > /dev/tty3
-                    echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
-                    echo "[${RED}${BOLD} FAIL ${RESET}]" > /dev/tty3
-                    echo "[${RED}${BOLD} FAIL ${RESET}] Image check has failed - abort.${RESET}" > /dev/tty3
-                    echo "[${RED}${BOLD} FAIL ${RESET}]" > /dev/tty3
-                    echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
-                    continue
-                fi
+                sudo mount -o remount,rw ${DEVICE}
+                rm /media/USBDRIVES/${PARTITION}/*.md5 > /dev/null 2>&1
+                rm /media/USBDRIVES/${PARTITION}/*.img > /dev/null 2>&1
+                /bin/echo "n" | unzip -q -o /media/USBDRIVES/${PARTITION}/${UPDATEZIP} -d /media/USBDRIVES/${PARTITION}
+                hide_cursor
+                FLAG=1
+            fi
+        fi
+        UPDATEFILE=$(ls -Art /media/USBDRIVES/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | tail -1)
+        if [ ! -z ${UPDATEFILE} ]; then
+            if [ ${FLAG} -ne 1 ]; then
+                show_clear_screen
+            else
+                show_screen
+            fi
+            echo "" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Update file found on ${DEVICE} (${LABEL})" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+            if [ -f /etc/crankshaft.build ] && [ -f /etc/crankshaft.date ]; then
+                CURRENT="$(cat /etc/crankshaft.date)-$(cat /etc/crankshaft.build)"
+            else
+                CURRENT=""
+            fi
+            NEW=$(basename ${UPDATEFILE} | cut -d- -f1-3,6 | cut -d. -f1) # use date and hash
+            FORCEFLASH=$(ls /media/USBDRIVES/${PARTITION} | grep FORCE_FLASH | head -1)
+            if [ "$CURRENT" == "$NEW" ] && [ -z $FORCEFLASH ]; then
+                echo "[${CYAN}${BOLD} INFO ${RESET}] IMAGE already flashed - ignoring." > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                continue
+            fi
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Checking file ${UPDATEFILE}${RESET}" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            show_cursor
+            if [ -f /media/USBDRIVES/${PARTITION}/${UPDATEFILE} ]; then
+                SIZE=$(($(wc -c < "/media/USBDRIVES/${PARTITION}/${UPDATEFILE}") / 1024 / 1024 / 1014))
+            else
+                echo "" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}] Image check has failed - abort.${RESET}" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                continue
+            fi
+            cd /media/USBDRIVES/${PARTITION}
+            MD5SUM=$(md5sum -c ${UPDATEFILE}.md5 | grep OK | cut -d: -f2)
+            if [ ! -z ${MD5SUM} ]; then
+                echo "${RESET}" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] Image is consistent -> Preparing flash mode...${RESET}" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                # mount /boot rw to init flash mode
+                mount -o remount,rw /boot
+                mkinitramfs -o /boot/initrd.img > /dev/null 2>&1
+                # cleanup
+                sed -i 's/^# Initramfs params for flashsystem//' /boot/config.txt
+                sed -i 's/^initramfs initrd.img followkernel//' /boot/config.txt
+                sed -i 's/^ramfsfile=initrd.img//' /boot/config.txt
+                sed -i 's/^ramfsaddr=-1//' /boot/config.txt
+                sed -i 's/rootdelay=10//' /boot/cmdline.txt
+                sed -i 's/initrd=-1//' /boot/cmdline.txt
+                sed -i '/./,/^$/!d' /boot/config.txt
+                # Set entries
+                echo "" >> /boot/config.txt
+                echo "# Initramfs params for flashsystem" >> /boot/config.txt
+                echo "initramfs initrd.img followkernel" >> /boot/config.txt
+                echo "ramfsfile=initrd.img" >> /boot/config.txt
+                echo "ramfsaddr=-1" >> /boot/config.txt
+                sed -i 's/splash //' /boot/cmdline.txt
+                sed -i 's/vt.global_cursor_default=0 //' /boot/cmdline.txt
+                sed -i 's/plymouth.ignore-serial-consoles //' /boot/cmdline.txt
+                sed -i 's/$/ rootdelay=10/' /boot/cmdline.txt
+                sed -i 's/$/ initrd=-1/' /boot/cmdline.txt
+                # remove possible existing force trigger to prevent flash loop
+                sudo mount -o remount,rw ${DEVICE} > /dev/null 2>&1
+                rm /media/USBDRIVES/${PARTITION}/FORCE_FLASH > /dev/null 2>&1
+                echo "${RESET}" > /dev/tty3
+                echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
+                echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
+                echo "[${GREEN}${BOLD} EXEC ${RESET}] System is ready for flashing - reboot...${RESET}" > /dev/tty3
+                echo "[${GREEN}${BOLD} EXEC ${RESET}]" > /dev/tty3
+                echo "[${GREEN}${BOLD} EXEC ${RESET}] *******************************************************" > /dev/tty3
+                sudo sync
+                sudo umount ${DEVICE} > /dev/null 2>&1
+                sleep 5
+                reboot
+            else
+                echo "${RESET}" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}]" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}] Image check has failed - abort.${RESET}" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}]" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                continue
             fi
         fi
     fi

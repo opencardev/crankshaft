@@ -30,8 +30,11 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
     echo "[${CYAN}${BOLD} INFO ${RESET}] Checking for cs backups to restore..." > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     log_echo "Checking for cs backups to restore..."
-    for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* | grep -v CSSTORAGE); do
+    for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
         DEVICE="/dev/$(basename ${FSMOUNTPOINT})"
+        if [ "$DEVICE" == "/dev/CSSTORAGE" ]; then
+            DEVICE=$(mount | grep CSSTORAGE | awk {'print $1'})
+        fi
         LABEL=$(blkid ${DEVICE} | sed 's/.*LABEL="//' | cut -d'"' -f1 | sed 's/ //g')
         FSTYPE=$(blkid ${DEVICE} | sed 's/.*TYPE="//' | cut -d'"' -f1)
         echo "${RESET}" > /dev/tty3

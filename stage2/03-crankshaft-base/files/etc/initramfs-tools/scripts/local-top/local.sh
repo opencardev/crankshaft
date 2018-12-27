@@ -15,7 +15,7 @@ printf "\n" >/dev/tty3
 
 SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: -f2 | sed 's/ //g')
 
-for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
+for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* 2>/dev/null); do
     DEVICE="/dev/$(basename ${FSMOUNTPOINT})"
     if [ "$DEVICE" == "/dev/CSSTORAGE" ]; then
         DEVICE="$(mount | grep CSSTORAGE | awk {'print $1'})"
@@ -93,8 +93,6 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
             cp -f /tmp/bootfs/crankshaft/button_4 /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
             cp -f /tmp/bootfs/crankshaft/button_5 /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
             cp -f /tmp/bootfs/crankshaft/button_6 /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
-            cp -f /tmp/bootfs/crankshaft/button_7 /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
-            cp -f /tmp/bootfs/crankshaft/button_8 /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
             cp -f /tmp/bootfs/crankshaft/bluetooth-pairings.tar.gz /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
             cp -f /tmp/bootfs/crankshaft/wpa_supplicant.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
             cp -rf /tmp/bootfs/crankshaft/custom/. /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/custom/ 2>/dev/null
@@ -192,5 +190,10 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
         fi
     fi
 done
-
+printf "[ ${RED}WARN${GRAY} ] *******************************************************\n" >/dev/tty3
+printf "[ ${RED}WARN${GRAY} ] No flash file found.\n" > /dev/tty3
+printf "[ ${RED}WARN${GRAY} ] \n" > /dev/tty3
+printf "[ ${RED}WARN${GRAY} ] Ignoring flash and booting to system in 10 seconds ...\n" > /dev/tty3
+printf "[ ${RED}WARN${GRAY} ] *******************************************************\n" >/dev/tty3
+sleep 10
 exit 0

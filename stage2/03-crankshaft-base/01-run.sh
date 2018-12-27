@@ -83,7 +83,6 @@ install -m 755 files/opt/crankshaft/service_openauto.sh                 "${ROOTF
 install -m 755 files/opt/crankshaft/service_tap2wake.sh                 "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_timerstart.sh               "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_wifisetup.sh                "${ROOTFS_DIR}/opt/crankshaft/"
-install -m 755 files/opt/crankshaft/service_update.sh                   "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_usbrestore.sh               "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_usbdetect.sh                "${ROOTFS_DIR}/opt/crankshaft/"
 install -m 755 files/opt/crankshaft/service_usbunmount.sh               "${ROOTFS_DIR}/opt/crankshaft/"

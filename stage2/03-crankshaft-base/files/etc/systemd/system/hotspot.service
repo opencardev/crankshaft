@@ -1,13 +1,11 @@
 [Unit]
  Description=Crankshaft Wifi Hotspot Service
  ConditionPathExists=/opt/crankshaft/service_hotspot.sh
- After=update.service
+ After=openauto.service
 
 [Service]
  Type=simple
  ExecStart=/opt/crankshaft/service_hotspot.sh start
- ExecStop=/opt/crankshaft/service_hotspot.sh stop
- RemainAfterExit=yes
 
 [Install]
  WantedBy=multi-user.target

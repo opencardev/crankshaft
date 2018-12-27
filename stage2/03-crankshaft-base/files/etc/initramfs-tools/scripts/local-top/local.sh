@@ -189,11 +189,48 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* 2>/dev/null); do
             fi
         fi
     fi
+    umount /media/USBDRIVES/${PARTITION}
 done
+
+# No flash file detected / switch system back to normal mode
 printf "[ ${RED}WARN${GRAY} ] *******************************************************\n" >/dev/tty3
 printf "[ ${RED}WARN${GRAY} ] No flash file found.\n" > /dev/tty3
 printf "[ ${RED}WARN${GRAY} ] \n" > /dev/tty3
-printf "[ ${RED}WARN${GRAY} ] Ignoring flash and booting to system in 10 seconds ...\n" > /dev/tty3
+printf "[ ${RED}WARN${GRAY} ] Removing setup for flash mode and rebooting to normal\n" > /dev/tty3
+printf "[ ${RED}WARN${GRAY} ] system in 5 seconds ...\n" > /dev/tty3
 printf "[ ${RED}WARN${GRAY} ] *******************************************************\n" >/dev/tty3
-sleep 10
+printf "\n" >/dev/tty3
+sleep 5
+printf "[ ${RED}WARN${GRAY} ] *******************************************************\n" >/dev/tty3
+printf "[ ${RED}WARN${GRAY} ] Switching back to normal boot ...\n" > /dev/tty3
+printf "[ ${RED}WARN${GRAY} ] *******************************************************\n" >/dev/tty3
+printf "\n" >/dev/tty3
+
+mkdir /tmp/bootfs > /dev/null 2>&1
+mount -o rw /dev/mmcblk0p1 /tmp/bootfs
+rm /boot/initrd.img > /dev/null 2>&1
+sed -i '/./,/^$/!d' /tmp/bootfs/config.txt
+sed -i 's/^# Initramfs params for flashsystem//' /tmp/bootfs/config.txt
+sed -i 's/^initramfs initrd.img followkernel//' /tmp/bootfs/config.txt
+sed -i 's/^ramfsfile=initrd.img//' /tmp/bootfs/config.txt
+sed -i 's/^ramfsaddr=-1//' /tmp/bootfs/config.txt
+sed -i 's/rootdelay=10//' /tmp/bootfs/cmdline.txt
+sed -i 's/initrd=-1//' /tmp/bootfs/cmdline.txt
+sed -i 's/splash //' /tmp/bootfs/cmdline.txt
+sed -i 's/vt.global_cursor_default=0 //' /tmp/bootfs/cmdline.txt
+sed -i 's/plymouth.ignore-serial-consoles //' /tmp/bootfs/cmdline.txt
+sed -i 's/ *$//' /tmp/bootfs/cmdline.txt
+sed -i 's/$/ vt.global_cursor_default=0/' /tmp/bootfs/cmdline.txt
+sed -i 's/$/ plymouth.ignore-serial-consoles/' /tmp/bootfs/cmdline.txt
+sed -i 's/$/ splash/' /tmp/bootfs/cmdline.txt
+sed -i '/./,/^$/!d' /tmp/bootfs/config.txt
+sync
+umount /tmp/bootfs
+
+printf "[ ${GREEN}DONE${GRAY} ] *******************************************************\n" >/dev/tty3
+printf "[ ${GREEN}DONE${GRAY} ] Done. Rebooting now ...\n" > /dev/tty3
+printf "[ ${GREEN}DONE${GRAY} ] *******************************************************\n" >/dev/tty3
+sleep 3
+reboot -f
+
 exit 0

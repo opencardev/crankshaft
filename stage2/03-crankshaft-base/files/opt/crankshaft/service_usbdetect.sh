@@ -111,6 +111,14 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
             if [ "$CURRENT" == "$NEW" ] && [ -z $FORCEFLASH ]; then
                 echo "[${CYAN}${BOLD} INFO ${RESET}] IMAGE already flashed - ignoring." > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                if [ "${PARTITION}" == "CSSTORAGE" ]; then
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] Cleanup old flash files on CSSTORAGE ..." > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    sudo rm /media/USBDRIVES/${PARTITION}/*.zip > /dev/null 2>&1
+                    sudo rm /media/USBDRIVES/${PARTITION}/*.md5 > /dev/null 2>&1
+                    sudo rm /media/USBDRIVES/${PARTITION}/*.img > /dev/null 2>&1
+                fi
                 continue
             fi
             echo "[${CYAN}${BOLD} INFO ${RESET}] Checking file ${UPDATEFILE}${RESET}" > /dev/tty3

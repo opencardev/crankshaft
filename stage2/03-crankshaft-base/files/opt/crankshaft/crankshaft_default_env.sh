@@ -106,10 +106,15 @@ DISCONNECTION_POWEROFF_DISABLE=0
 # Your country code like EN,DE,FR,UK etc.
 WIFI_COUNTRY=EN
 
-# Wifi client mode - Only used in dev mode
+# Wifi client mode
 # If your SSID or password contains special chars or spaces make sure using quotation marks ="SSID" / ="password"
 WIFI_SSID="sample"
 WIFI_PSK="sample"
+# Optinal 2nd config for example to allow access to phone's hotspot
+# Note: if second config is configured system will use first connectable wifi
+# Warning: if you change the password for 2nd wifi make sure password for 1st is also set cause config is created on one shot!
+WIFI2_SSID="sample"
+WIFI2_PSK="sample"
 
 # Hotspot (if enabled the wifi client is disabled and a hotspot is opened)
 # Hotspot has now a default password (1234567890) -> changeable in /etc/hostapd/hostapd.conf if really needed!

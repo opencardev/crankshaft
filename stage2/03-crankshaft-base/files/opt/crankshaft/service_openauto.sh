@@ -39,6 +39,18 @@ if [ -f /tmp/start_openauto ]; then
     sudo rm -f /tmp/get_default_output > /dev/null 2>&1
     sudo rm -f /tmp/entityexit > /dev/null 2>&1
 
+    if [ -f /tmp/openauto_restart_updated ]; then
+        log_echo "Openauto updated. Restart"
+        show_clear_screen
+        echo "" >/dev/tty3
+        echo "[${GREEN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+        echo "[${GREEN}${BOLD} INFO ${RESET}] Openauto was updated." >/dev/tty3
+        echo "[${GREEN}${BOLD} INFO ${RESET}] " >/dev/tty3
+        echo "[${GREEN}${BOLD} INFO ${RESET}] Restart ..." >/dev/tty3
+        echo "[${GREEN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+        sudo rm /tmp/openauto_restart_updated > /dev/null 2>&1
+    fi
+
     if [ $START_X11 -ne 0 ] || [ $X11_MODE_GPIO -ne 1 ]; then
         # This is when the X11 pin is connected to ground (X11 enabled)
         # We don't call autoapp here, we call it in .xinitrc
@@ -143,13 +155,18 @@ if [ -f /tmp/start_openauto ]; then
             fi
         fi
     else
-        log_echo "Openauto crashed"
-        echo "" >/dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Unfortunately, OpenAuto crashed." >/dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Please report this incident to Crankshaft." >/dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
-        exit 1
+        if [ ! -f /tmp/openauto_restart_updated ]; then
+            log_echo "Openauto crashed"
+            echo "" >/dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Unfortunately, OpenAuto crashed." >/dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Please report this incident to Crankshaft." >/dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] " >/dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Restart in 5 seconds ..." >/dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
+            sleep 5
+            exit 1
+        fi
     fi
     exit 0
 else

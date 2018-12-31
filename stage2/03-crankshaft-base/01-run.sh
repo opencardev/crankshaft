@@ -40,6 +40,7 @@ install -m 644 files/etc/systemd/system/nightmode.service               "${ROOTF
 install -m 644 files/etc/systemd/system/nightmode.timer                 "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/user_startup.service            "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/hotspot.service                 "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/hotspot-monitor.service         "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/regensshkeys.service            "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/custombrightness.service        "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/pulseaudio.service              "${ROOTFS_DIR}/etc/systemd/system/"

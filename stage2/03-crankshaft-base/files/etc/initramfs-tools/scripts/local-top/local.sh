@@ -95,6 +95,8 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* 2>/dev/null); do
             cp -f /tmp/bootfs/crankshaft/button_6 /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
             cp -f /tmp/bootfs/crankshaft/bluetooth-pairings.tar.gz /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
             cp -f /tmp/bootfs/crankshaft/wpa_supplicant.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+            cp -f /tmp/bootfs/crankshaft/network0.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
+            cp -f /tmp/bootfs/crankshaft/network1.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/ 2>/dev/null
             cp -rf /tmp/bootfs/crankshaft/custom/. /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/boot/crankshaft/custom/ 2>/dev/null
             cp -f /tmp/rootfs/etc/timezone /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
             cp -f /tmp/rootfs/etc/X11/xorg.conf.d/99-calibration.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/X11/xorg.conf.d/ 2>/dev/null

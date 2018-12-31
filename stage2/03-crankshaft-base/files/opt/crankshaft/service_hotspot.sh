@@ -53,8 +53,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
             if [ "$HOSTAPD" != "running" ]; then
                 echo "[${RED}${BOLD} FAIL ${RESET}] Hostapd has failed to start!" > /dev/tty3
             else
-                sudo killall hostapd_cli > /dev/null 2>&1
-                sudo hostapd_cli -a '/opt/crankshaft/service_hostapdchange.sh' &
+                sudo systemctl start hotspot-monitor
             fi
             DNSMASQ=`systemctl status dnsmasq | grep running | awk {'print $3'} | cut -d'(' -f2 | cut -d')' -f1`
             if [ "$DNSMASQ" != "running" ]; then

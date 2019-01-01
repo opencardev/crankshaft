@@ -93,6 +93,8 @@ STARTUP_VOL_MAX=100
 DISCONNECTION_SCREEN_POWEROFF_SECS=120
 # Disable Timer
 DISCONNECTION_SCREEN_POWEROFF_DISABLE=0
+# Use screensaver (bg+clock) instead of display off
+SCREEN_POWEROFF_OVERRIDE=0
 
 # Timeout shutdown after disconnect or after boot without connected device
 #

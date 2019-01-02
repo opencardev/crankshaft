@@ -54,4 +54,5 @@ sed -i 's/spool 0755/spool 1777/' /usr/lib/tmpfiles.d/var.conf
 
 # Create pulse dir
 mkdir /var/lib/pulse
+mkdir /var/lib/dhcp
 mkdir /var/spool/rsyslogd

@@ -140,22 +140,40 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                 systemctl enable rpicamserver > /dev/null 2>&1
                 systemctl daemon-reload > /dev/null 2>&1
             fi
-            # check overscan fix
-            OVERSCAN_CHECK=$(cat /boot/config.txt | grep "^overscan_scale=1" | tail -n1)
-            if [ -z $OVERSCAN_CHECK ]; then
-                echo "" > /dev/tty3
-                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                echo "[${CYAN}${BOLD} INFO ${RESET}] Setup overscan fix..." > /dev/tty3
-                echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                # remove possible existing lost boot entries
-                sed -i 's/# Overscan fix.*//' /boot/config.txt
-                sed -i 's/overscan_scale=.*//' /boot/config.txt
-                # clean empty lines
-                sed -i '/./,/^$/!d' /boot/config.txt
-                echo "" >> /boot/config.txt
-                echo "# Overscan fix" >> /boot/config.txt
-                echo "overscan_scale=1" >> /boot/config.txt
-            fi
+            # make sure deault params are set correct set
+            echo "" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Setup default config.txt params..." > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            # remove possible existing lost boot entries
+            sed -i 's/# Overscan fix.*//' /boot/config.txt
+            sed -i 's/overscan_scale=.*//' /boot/config.txt
+            sed -i 's/# Disable Rainbow splash.*//' /boot/config.txt
+            sed -i 's/disable_splash=.*//' /boot/config.txt
+            sed -i 's/# Disable the PWR LED.*//' /boot/config.txt
+            sed -i 's/dtparam=pwr_led_trigger.*//' /boot/config.txt
+            sed -i 's/dtparam=pwr_led_activelow=.*//' /boot/config.txt
+            sed -i 's/# GPU Mem.*//' /boot/config.txt
+            sed -i 's/gpu_mem=.*//' /boot/config.txt
+
+            # clean empty lines
+            sed -i '/./,/^$/!d' /boot/config.txt
+            sed -i '/./,/^$/!d' /boot/config.txt
+            echo "" >> /boot/config.txt
+            # Crankshaft Base params
+            echo "# Overscan fix" >> /boot/config.txt
+            echo "overscan_scale=1" >> /boot/config.txt
+            echo "" >> /boot/config.txt
+            echo "# Disable Rainbow splash" >> /boot/config.txt
+            echo "disable_splash=1" >> /boot/config.txt
+            echo "" >> /boot/config.txt
+            echo "# Disable the PWR LED." >> /boot/config.txt
+            echo "dtparam=pwr_led_trigger=none" >> /boot/config.txt
+            echo "dtparam=pwr_led_activelow=off" >> /boot/config.txt
+            echo "" >> /boot/config.txt
+            echo "# GPU Mem" >> /boot/config.txt
+            echo "gpu_mem=256" >> /boot/config.txt
+
             # restore bluetooth
             if [ ${ENABLE_BLUETOOTH} -eq 1 ]; then
                 BT_CHECK=$(cat /boot/config.txt | grep '^dtoverlay=pi3-disable-bt' | tail -n1)
@@ -221,3 +239,4 @@ else
 fi
 
 exit 0
+

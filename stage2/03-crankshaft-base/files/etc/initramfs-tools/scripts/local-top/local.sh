@@ -135,6 +135,14 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* 2>/dev/null); do
             printf "[ ${BLUE}INFO${GRAY} ] Crankshaft Flash & Backup System\n" >/dev/tty3
             printf "[ ${BLUE}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
             printf "\n" >/dev/tty3
+            printf "[ ${RED}WARN${GRAY} ] *******************************************************\n" >/dev/tty3
+            printf "[ ${RED}WARN${GRAY} ] Don't remove the USB drive on first boot!\n" >/dev/tty3
+            printf "[ ${RED}WARN${GRAY} ] It contains current crankshaft config backup.\n" > /dev/tty3
+            printf "[ ${RED}WARN${GRAY} ] A backup restore will executed only one time!\n" > /dev/tty3
+            printf "[ ${RED}WARN${GRAY} ]\n" > /dev/tty3
+            printf "[ ${RED}WARN${GRAY} ] Don't power off now or you brick your system!\n" > /dev/tty3
+            printf "[ ${RED}WARN${GRAY} ] *******************************************************\n" >/dev/tty3
+            printf "\n" >/dev/tty3
             printf "Flashing file ${YELLOW}${UPDATEFILE}${GRAY} to SD-Card...\n" >/dev/tty3
             printf "\n" >/dev/tty3
 

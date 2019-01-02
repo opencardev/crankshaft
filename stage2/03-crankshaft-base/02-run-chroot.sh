@@ -101,6 +101,7 @@ systemctl enable systemd-timesyncd.service
 systemctl enable networking.service
 systemctl enable dhcpcd.service
 systemctl enable lightsensor.service
+systemctl enable i2ccheck.service
 systemctl disable hotspot-monitor.service
 systemctl disable wpa_supplicant.service
 systemctl disable hwclock-load.service
@@ -236,4 +237,4 @@ sed -i 's/^MountFlags=.*/MountFlags=shared/' /lib/systemd/system/systemd-udevd.s
 ln -s /usr/local/bin/crankshaft /usr/local/bin/csmt
 
 # Set path for rsyslogd
-sed -i '/$WorkDirectory \/var\/spoo\/rsyslog/$WorkDirectory \/var\/spool' /etc/rsyslog.conf
+sed -i 's/\$WorkDirectory \/var\/spool\/rsyslog/\$WorkDirectory \/var\/spool/' /etc/rsyslog.conf

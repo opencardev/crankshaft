@@ -9,7 +9,6 @@ echo "ramfs		/tmp			ramfs			size=128m,nodev,nosuid,noatime,nodiratime		0	0" >> /
 echo "ramfs		/var/tmp		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/log		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/spool		ramfs			size=8m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
-echo "ramfs		/var/lock		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/lib/alsa		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/lib/pulse		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/lib/dbus		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab

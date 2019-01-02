@@ -234,3 +234,6 @@ sed -i 's/^MountFlags=.*/MountFlags=shared/' /lib/systemd/system/systemd-udevd.s
 
 # link csmt
 ln -s /usr/local/bin/crankshaft /usr/local/bin/csmt
+
+# Set path for rsyslogd
+sed -i '/$WorkDirectory \/var\/spoo\/rsyslog/$WorkDirectory \/var\/spool' /etc/rsyslog.conf

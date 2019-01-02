@@ -8,8 +8,13 @@ sed -i '/^$/d' /etc/fstab
 echo "ramfs		/tmp			ramfs			size=128m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/tmp		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/log		ramfs			size=16m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/spool		ramfs			size=8m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/lock		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/lib/alsa		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/lib/pulse		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/lib/dbus		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/lib/dhcp		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/lib/dhcpcd5	ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/tmp/.backlight 	ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/tmp/bluetooth		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/tmp/.local-pi		ramfs			size=8m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
@@ -25,13 +30,9 @@ sed -i 's/root=ROOTDEV/root=\/dev\/mmcblk0p2/' /boot/cmdline.txt
 sed -i "s/#Storage=auto/Storage=volatile/" /etc/systemd/journald.conf
 
 # Link dirs for read only
-rm -rf /var/spool /var/lock /var/lib/dhcp /var/lib/dhcpcd5 /var/cache/apt/ /var/lib/bluetooth
+rm -rf /var/cache/apt/ /var/lib/bluetooth
 rm /etc/resolv.conf
 
-ln -s /tmp /var/lib/dhcp
-ln -s /tmp /var/lib/dhcpcd5
-ln -s /tmp /var/spool
-ln -s /tmp /var/lock
 ln -s /tmp/.config-pi /home/pi/.config
 ln -s /tmp/.local-pi /home/pi/.local
 ln -s /tmp/.cache-pi /home/pi/.cache
@@ -53,3 +54,4 @@ sed -i 's/spool 0755/spool 1777/' /usr/lib/tmpfiles.d/var.conf
 
 # Create pulse dir
 mkdir /var/lib/pulse
+mkdir /var/spool/rsyslogd

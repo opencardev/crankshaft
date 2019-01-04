@@ -118,6 +118,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
                 sudo ip address del 192.168.254.1/29 dev wlan0
                 # restaret dhcpcd to bring up network
                 sudo systemctl restart dhcpcd
+                sudo systemctl restart wpa-monitor
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Waiting for ip release..." > /dev/tty3
                 log_echo "Waitin for ip release"
                 # check 15 secs for valid ip config

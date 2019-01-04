@@ -102,6 +102,7 @@ systemctl enable networking.service
 systemctl enable dhcpcd.service
 systemctl enable lightsensor.service
 systemctl enable i2ccheck.service
+systemctl enable wpa-monitor.service
 systemctl disable hotspot-monitor.service
 systemctl disable wpa_supplicant.service
 systemctl disable hwclock-load.service

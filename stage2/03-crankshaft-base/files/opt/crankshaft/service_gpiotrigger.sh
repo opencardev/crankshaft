@@ -21,6 +21,9 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
             fi
         fi
         if [ $DAYNIGHT_PIN -ne 0 ]; then
+            if [ ! -f /tmp/daynight_gpio ]; then
+                touch /tmp/daynight_gpio
+            fi
             DAYNIGHT_GPIO=`gpio -g read $DAYNIGHT_PIN`
             if [ $DAYNIGHT_GPIO -ne 1 ] ; then
                 if [ ! -f /tmp/night_mode_enabled ]; then
@@ -32,6 +35,10 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
                     rm /tmp/night_mode_enabled
                     crankshaft brightness restore &
                 fi
+            fi
+        else
+            if [ -f /tmp/daynight_gpio ]; then
+                rm /tmp/daynight_gpio
             fi
         fi
         if [ $IGNITION_PIN -ne 0 ]; then

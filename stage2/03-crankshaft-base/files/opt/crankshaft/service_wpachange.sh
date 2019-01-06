@@ -16,8 +16,8 @@ function update_network() {
         log_echo "WPA-EVENT: USING WIFI SSID: $SSID"
         echo $SSID > /tmp/wifi_ssid
         COUNTER=0
-        #check for 10 seconds for dhcp lease assigned
-        while [ $COUNTER -lt 15 ]; do
+        #check for 30 seconds for dhcp lease assigned
+        while [ $COUNTER -lt 30 ]; do
             if [ -f /var/run/dhcpcd/resolv.conf/wlan0.dhcp ]; then
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] DHCP-EVENT: $SSID got a lease" >/dev/tty3
@@ -25,6 +25,7 @@ function update_network() {
                 log_echo "DHCP-EVENT: $SSID got a lease"
                 DEFROUTE=$(route -n | grep '^0.0.0.0' | grep wlan0 | awk {'print $2'})
                 if [ "$DEFROUTE" != "" ]; then
+                    sudo rm /tmp/gateway_wlan0 >/dev/null 2>&1
                     echo $DEFROUTE > /tmp/gateway_wlan0
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] ROUTE: Default route set to $DEFROUTE" >/dev/tty3

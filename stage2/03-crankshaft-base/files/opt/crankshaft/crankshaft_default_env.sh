@@ -108,7 +108,7 @@ DISCONNECTION_POWEROFF_DISABLE=0
 # Your country code like EN,DE,FR,UK etc.
 WIFI_COUNTRY=EN
 
-# Wifi client mode
+# Wifi client mode (use this entry for home/work wifi - not for phone's hotspot)
 # If your SSID or password contains special chars or spaces make sure using quotation marks ="SSID" / ="password"
 WIFI_SSID="sample"
 WIFI_PSK="sample"

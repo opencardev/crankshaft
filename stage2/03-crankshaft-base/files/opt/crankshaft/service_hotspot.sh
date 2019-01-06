@@ -78,6 +78,10 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
             echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}PSK        ${YELLOW}$_PSK_WLAN0${RESET}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Type       ${YELLOW}WPA$_ENC_WLAN0${RESET}" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+            rm /tmp/wifi_ssid > /dev/null 2>&1
+            echo "$_SSID_WLAN0" > /tmp/wifi_ssid
+            rm /tmp/gateway_wlan0 > /dev/null 2>&1
+            echo "eth0" > /tmp/gateway_wlan0
             exit 0
         else
             log_echo "Hotspot start trigger ignored - hotspot mode still active"

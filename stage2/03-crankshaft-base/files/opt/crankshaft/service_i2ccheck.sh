@@ -45,38 +45,50 @@ function checkdevice {
     done
 }
 
-# check for rtc in config.txt
-RTC=$(cat /boot/config.txt | grep dtoverlay=i2c-rtc | tail -n1)
+if [ "$(i2cdetect -l | grep i2c-1)" != "" ]; then
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] I2C bus enabled." > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    log_echo "I2C bus enabled."
 
-if [ "$RTC" != "" ]; then
-    checkdevice 68
-    if [ $? -eq 1 ]; then
-        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] Check for rtc ok. Device at 0x68 is present." > /dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-    else
-        show_screen
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Check for rtc failed. Device at 0x68 is missing!" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-        log_echo "Check for rtc failed. Seems device at 0x68 is missing!"
-    fi
-fi
+    # check for rtc in config.txt
+    RTC=$(cat /boot/config.txt | grep dtoverlay=i2c-rtc | tail -n1)
 
-# check for lightsensor
-if [ -f /etc/cs_lightsensor ]; then
-    checkdevice 39
-    if [ $? -eq 1 ]; then
-        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] Check for tsl2561 ok. Device at 0x39 is present." > /dev/tty3
-        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-    else
-        show_screen
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] Check for tsl2561 failed. Device at 0x39 is missing!" > /dev/tty3
-        echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-        log_echo "Check for tsl2561 failed. Seems device at 0x39 is missing!"
+    if [ "$RTC" != "" ]; then
+        checkdevice 68
+        if [ $? -eq 1 ]; then
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Check for rtc ok. Device at 0x68 is present." > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+        else
+            show_screen
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Check for rtc failed. Device at 0x68 is missing!" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "Check for rtc failed. Seems device at 0x68 is missing!"
+        fi
     fi
+
+    # check for lightsensor
+    if [ -f /etc/cs_lightsensor ]; then
+        checkdevice 39
+        if [ $? -eq 1 ]; then
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Check for tsl2561 ok. Device at 0x39 is present." > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+        else
+            show_screen
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Check for tsl2561 failed. Device at 0x39 is missing!" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "Check for tsl2561 failed. Seems device at 0x39 is missing!"
+        fi
+    fi
+else
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] I2C bus disabled - skip checks." > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    log_echo "I2C bus disabled - skip checks."
 fi
 
 exit 0

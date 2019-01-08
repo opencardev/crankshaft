@@ -22,8 +22,7 @@ function update_recent() {
     fi
 }
 
-if [[ $2 == "AP-STA-CONNECTED" ]]
-then
+if [[ $2 == "AP-STA-CONNECTED" ]]; then
   echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
   echo "[${CYAN}${BOLD} INFO ${RESET}] Someone has connected:" >/dev/tty3
   echo "[${CYAN}${BOLD} INFO ${RESET}] mac id $3 on $1" >/dev/tty3
@@ -33,8 +32,7 @@ then
   update_recent
 fi
 
-if [[ $2 == "AP-STA-DISCONNECTED" ]]
-then
+if [[ $2 == "AP-STA-DISCONNECTED" ]]; then
   echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
   echo "[${CYAN}${BOLD} INFO ${RESET}] Someone has disconnected:" >/dev/tty3
   echo "[${CYAN}${BOLD} INFO ${RESET}] mac id $3 on $1" >/dev/tty3

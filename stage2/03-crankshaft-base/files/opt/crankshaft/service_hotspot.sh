@@ -11,6 +11,8 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
             log_echo "Kill running wpa clients"
             echo "" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Exit/kill wpa_supplicant (wifi client mode)" > /dev/tty3
+            # stop wpa monitor
+            sudo systemctl stop wpa-monitor
             # exit possible running wpa client sessions
             sudo wpa_cli terminate > /dev/null 2>&1
             sudo killall wpa_supplicant > /dev/null 2>&1

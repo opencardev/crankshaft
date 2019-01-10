@@ -11,6 +11,9 @@ if [ -f /tmp/start_openauto ]; then
     touch /tmp/openauto_wifi_recent.ini
     chmod 666 /tmp/openauto_wifi_recent.ini
 
+    # grant access to read cpu freq
+    sudo chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+
     # Make sure display is on
     /usr/local/bin/crankshaft display on
 
@@ -172,3 +175,4 @@ if [ -f /tmp/start_openauto ]; then
 else
     exit 1
 fi
+

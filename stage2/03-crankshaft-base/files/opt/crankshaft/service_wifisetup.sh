@@ -39,9 +39,9 @@ if [ ! -f /boot/crankshaft/wpa_supplicant.conf ] || [ $WIFI_UPDATE_CONFIG -eq 1 
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Ignoring config 0 - password must have 8 chars or more!" >/dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
-            echo "" > /boot/crankshaft/network0.conf
+            sudo rm /boot/crankshaft/network0.conf
         else
-            echo "" > /boot/crankshaft/network0.conf
+            sudo rm /boot/crankshaft/network0.conf
         fi
     fi
 
@@ -64,9 +64,9 @@ if [ ! -f /boot/crankshaft/wpa_supplicant.conf ] || [ $WIFI_UPDATE_CONFIG -eq 1 
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] Ignoring config 1 - password must have 8 chars or more!" >/dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" >/dev/tty3
-            echo "" > /boot/crankshaft/network1.conf
+            sudo rm /boot/crankshaft/network1.conf
         else
-            echo "" > /boot/crankshaft/network1.conf
+            sudo rm /boot/crankshaft/network1.conf
         fi
     fi
 

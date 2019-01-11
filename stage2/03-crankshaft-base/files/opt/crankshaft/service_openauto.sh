@@ -42,6 +42,11 @@ if [ -f /tmp/start_openauto ]; then
     sudo rm -f /tmp/get_default_output > /dev/null 2>&1
     sudo rm -f /tmp/entityexit > /dev/null 2>&1
 
+    # generate listing of audio devices
+    /usr/local/bin/autoapp_helper getparams
+    /usr/local/bin/autoapp_helper getoutputs
+    /usr/local/bin/autoapp_helper getinputs
+
     if [ -f /tmp/openauto_restart_updated ]; then
         log_echo "Openauto updated. Restart"
         show_clear_screen

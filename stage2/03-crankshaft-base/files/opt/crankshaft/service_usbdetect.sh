@@ -77,6 +77,18 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Update zip found on ${DEVICE} (${LABEL})" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                if [ -f /etc/crankshaft.build ] && [ -f /etc/crankshaft.date ]; then
+                    CURRENT="$(cat /etc/crankshaft.date)-$(cat /etc/crankshaft.build)"
+                else
+                    CURRENT=""
+                fi
+                NEW=$(basename ${UPDATEFILE} | cut -d- -f1-3,6 | cut -d. -f1) # use date and hash
+                FORCEFLASH=$(ls /media/USBDRIVES/${PARTITION} | grep FORCE_FLASH | head -1)
+                if [ "$CURRENT" == "$NEW" ] && [ -z $FORCEFLASH ]; then
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] ZIP VERSION already flashed - skip unpacking." > /dev/tty3
+                    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    continue
+                fi
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Unpacking file $UNPACKED" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3

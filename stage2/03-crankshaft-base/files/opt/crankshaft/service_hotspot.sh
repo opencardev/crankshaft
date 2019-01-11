@@ -8,6 +8,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
     if [ "$1" == "start" ]; then
         log_echo "Hotspot start triggered"
         if [ ! -f /tmp/hotspot_active ]; then
+            touch /tmp/mode_change_progress
             log_echo "Kill running wpa clients"
             echo "" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Exit/kill wpa_supplicant (wifi client mode)" > /dev/tty3
@@ -84,6 +85,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
             echo "$_SSID_WLAN0" > /tmp/wifi_ssid
             rm /tmp/gateway_wlan0 > /dev/null 2>&1
             echo "eth0" > /tmp/gateway_wlan0
+            sudo rm /tmp/mode_change_progress > /dev/null 2>&1
             exit 0
         else
             log_echo "Hotspot start trigger ignored - hotspot mode still active"
@@ -97,6 +99,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
         if [ "$1" == "stop" ]; then
             log_echo "Hotspot stop triggered"
             if [ -f /tmp/hotspot_active ]; then
+                touch /tmp/mode_change_progress
                 # stop hostapd and dnsmasq dhcp server
                 log_echo "Stop hostapd"
                 echo "" > /dev/tty3
@@ -154,6 +157,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
                 echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Frequency  ${YELLOW}$_FREQ_WLAN0 MHz${RESET}" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] ${BLUE}${BOLD}${GREEN}wlan0: ${RESET}Type       ${YELLOW}$_ENC_WLAN0${RESET}" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
+                sudo rm /tmp/mode_change_progress > /dev/null 2>&1
                 exit 0
             else
                 log_echo "Hotspot stop trigger ignored - client mode still active"

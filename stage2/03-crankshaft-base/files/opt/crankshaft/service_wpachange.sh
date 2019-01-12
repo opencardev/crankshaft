@@ -9,7 +9,7 @@ function update_network() {
     sudo rm /tmp/gateway_wlan0 >/dev/null 2>&1
     sudo rm /tmp/wifi_ssid >/dev/null 2>&1
     SSID=`wpa_cli -iwlan0 status | grep ^ssid | cut -d= -f2`
-    if [ ! -z $SSID ]; then
+    if [ ! -z "$SSID" ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] WPA-EVENT: USING WIFI SSID: $SSID" >/dev/tty3
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3

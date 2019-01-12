@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 # check for updates
 ./check-updates.sh
 
@@ -29,20 +31,20 @@ echo "IMG_NAME='crankshaft'" > config
 ./build-unmount.sh
 
 # cleanup work dir
+echo "***************************************************************************************"
+echo "Cleanup work dir..."
 rm -rf ./work/$TODAY_DATE-* 2>&1>/dev/null
 
-clear
 echo "***************************************************************************************"
 echo "Start build..."
-echo "***************************************************************************************"
 echo ""
 echo "***************************************************************************************"
 echo "Build Hash:   "$BUILDHASH
 echo "Build Date:   "$TODAY_DATE
 echo "Build Branch: "$BUILDBRANCH
-echo ""
-git log -n1 --no-merges
 echo "***************************************************************************************"
+echo "Current commit crankshaft-ng:"
+git log -n1 --no-merges
 
 # check prebuilts
 ./check-prebuilts.sh

@@ -7,16 +7,14 @@ REMOTE=`git ls-remote git://github.com/opencardev/crankshaft.git | grep refs/hea
 if [ $LOCALE == $REMOTE ]; then
     echo "***************************************************************************************"
     echo "Locale repo clone is up-to-date"
-    echo "***************************************************************************************"
 else
-    clear
     echo "***************************************************************************************"
     echo "New commits - available - please update before building!"
-    echo "***************************************************************************************"
     echo ""
     echo "use following:"
     echo ""
     echo "git reset --hard"
+    echo "git clean -f -d"
     echo "git pull"
     exit 1
 fi

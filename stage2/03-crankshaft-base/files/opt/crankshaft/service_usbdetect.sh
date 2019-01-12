@@ -82,7 +82,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                 else
                     CURRENT=""
                 fi
-                NEW=$(basename ${UPDATEFILE} | cut -d- -f1-3,6 | cut -d. -f1) # use date and hash
+                NEW=$(basename ${UPDATEZIP} | cut -d- -f1-3,6 | cut -d. -f1) # use date and hash
                 FORCEFLASH=$(ls /media/USBDRIVES/${PARTITION} | grep FORCE_FLASH | head -1)
                 if [ "$CURRENT" == "$NEW" ] && [ -z $FORCEFLASH ]; then
                     echo "[${CYAN}${BOLD} INFO ${RESET}] ZIP VERSION already flashed - skip unpacking." > /dev/tty3

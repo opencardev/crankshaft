@@ -16,9 +16,9 @@ export BUILDHASH
 export BUILDBRANCH
 
 # enable all build stages
-rm ./stage0/SKIP &>/dev/null
-rm ./stage1/SKIP &>/dev/null
-rm ./stage2/SKIP &>/dev/null
+touch ./stage0/SKIP &>/dev/null
+touch ./stage1/SKIP &>/dev/null
+touch ./stage2/SKIP &>/dev/null
 rm ./stage3/SKIP &>/dev/null
 rm ./stage4/SKIP &>/dev/null
 
@@ -29,7 +29,9 @@ echo "IMG_NAME='crankshaft'" > config
 ./build-unmount.sh
 
 # cleanup work dir
-rm -rf ./work/$TODAY_DATE-* 2>&1>/dev/null
+rm -rf ./work/$TODAY_DATE-*/stage3 2>&1>/dev/null
+rm -rf ./work/$TODAY_DATE-*/stage4 2>&1>/dev/null
+rm -rf ./work/$TODAY_DATE-*/export-image 2>&1>/dev/null
 
 clear
 echo "***************************************************************************************"

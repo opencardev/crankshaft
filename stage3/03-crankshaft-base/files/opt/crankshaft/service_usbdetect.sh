@@ -77,6 +77,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Update zip found on ${DEVICE} (${LABEL})" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+                log_echo "Update zip found on ${DEVICE} (${LABEL})"
                 if [ -f /etc/crankshaft.build ] && [ -f /etc/crankshaft.date ]; then
                     CURRENT="$(cat /etc/crankshaft.date)-$(cat /etc/crankshaft.build)"
                 else
@@ -87,12 +88,14 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                 if [ "$CURRENT" == "$NEW" ] && [ -z $FORCEFLASH ]; then
                     echo "[${CYAN}${BOLD} INFO ${RESET}] ZIP VERSION already flashed - skip unpacking." > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    log_echo "ZIP VERSION already flashed - skip unpacking."
                     continue
                 fi
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Unpacking file $UNPACKED" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                log_echo "Unpacking file $UNPACKED"
                 show_cursor
                 sudo mount -o remount,rw ${DEVICE}
                 rm /media/USBDRIVES/${PARTITION}/*.md5 > /dev/null 2>&1
@@ -113,6 +116,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Update file found on ${DEVICE} (${LABEL})" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
+            log_echo "Update file found on ${DEVICE} (${LABEL})"
             if [ -f /etc/crankshaft.build ] && [ -f /etc/crankshaft.date ]; then
                 CURRENT="$(cat /etc/crankshaft.date)-$(cat /etc/crankshaft.build)"
             else
@@ -123,10 +127,12 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
             if [ "$CURRENT" == "$NEW" ] && [ -z $FORCEFLASH ]; then
                 echo "[${CYAN}${BOLD} INFO ${RESET}] IMAGE already flashed - ignoring." > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                log_echo "IMAGE already flashed - ignoring."
                 if [ "${PARTITION}" == "CSSTORAGE" ]; then
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] Cleanup old flash files on CSSTORAGE ..." > /dev/tty3
                     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                    log_echo "Cleanup old flash files on CSSTORAGE ..."
                     sudo rm /media/USBDRIVES/${PARTITION}/*.zip > /dev/null 2>&1
                     sudo rm /media/USBDRIVES/${PARTITION}/*.md5 > /dev/null 2>&1
                     sudo rm /media/USBDRIVES/${PARTITION}/*.img > /dev/null 2>&1
@@ -137,6 +143,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
             echo "[${CYAN}${BOLD} INFO ${RESET}]" > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] Please wait..." > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+            log_echo "Checking file ${UPDATEFILE}${RESET}"
             show_cursor
             if [ -f /media/USBDRIVES/${PARTITION}/${UPDATEFILE} ]; then
                 SIZE=$(($(wc -c < "/media/USBDRIVES/${PARTITION}/${UPDATEFILE}") / 1024 / 1024 / 1014))
@@ -145,6 +152,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                 echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
                 echo "[${RED}${BOLD} FAIL ${RESET}] Image check has failed - abort.${RESET}" > /dev/tty3
                 echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                log_echo "Image check has failed - abort."
                 continue
             fi
             cd /media/USBDRIVES/${PARTITION}
@@ -195,9 +203,10 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                 echo "${RESET}" > /dev/tty3
                 echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
                 echo "[${RED}${BOLD} FAIL ${RESET}]" > /dev/tty3
-                echo "[${RED}${BOLD} FAIL ${RESET}] Image check has failed - abort.${RESET}" > /dev/tty3
+                echo "[${RED}${BOLD} FAIL ${RESET}] Image check has failed - abort. (CRC)${RESET}" > /dev/tty3
                 echo "[${RED}${BOLD} FAIL ${RESET}]" > /dev/tty3
                 echo "[${RED}${BOLD} FAIL ${RESET}] *******************************************************" > /dev/tty3
+                log_echo "Image check has failed - abort. (CRC)"
                 continue
             fi
         fi

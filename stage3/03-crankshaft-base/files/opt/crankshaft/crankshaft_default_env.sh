@@ -133,6 +133,11 @@ RPICAM_HEIGTH=366
 RPICAM_HFLIP=0
 RPICAM_VFLIP=0
 RPICAM_ROTATION=0
+# Res: 720/1080 (default:720)
+RPICAM_RESOLUTION=1080
+# Don't manually edit this both values
+RPICAM_ZOOM=0
+RPICAM_YCORRECTION=0
 
 # RTC Related Settings ###
 # Enables day/night switch by rtc - don't change manually!

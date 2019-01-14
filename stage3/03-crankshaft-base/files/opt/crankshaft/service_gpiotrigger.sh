@@ -13,10 +13,13 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
             if [ $REARCAM_GPIO -ne 1 ] ; then
                 if [ ! -f /tmp/rearcam_enabled ]; then
                     touch /tmp/rearcam_enabled
+                    touch /tmp/blackscreen
                 fi
             else
                 if [ -f /tmp/rearcam_enabled ]; then
                     rm /tmp/rearcam_enabled
+                    sleep 0.5
+                    rm /tmp/blackscreen
                 fi
             fi
         fi

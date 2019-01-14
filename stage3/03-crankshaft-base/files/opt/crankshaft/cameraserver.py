@@ -54,7 +54,10 @@ resy = int(resarray[2])
 
 # Initial Parameters for Cam
 camera = PiCamera()
-camera.resolution = (1280, 720)
+if (int(get_var('RPICAM_RESOLUTION')) == 1080):
+    camera.resolution = (1920, 1080)
+else:
+    camera.resolution = (1280, 720)
 camera.framerate = 24
 camera.annotate_text_size = 45
 camera.awb_mode = 'auto'
@@ -81,15 +84,18 @@ if vflip == 1:
 else:
     camera.vflip = False
 
-respreview_y_correction = 0
-respreview_zoom = 1
+respreview_y_correction = int(get_var('RPICAM_YCORRECTION'))
+respreview_zoom = int(get_var('RPICAM_ZOOM'))
 
+print("RPi-Camera: Res - " + str(get_var('RPICAM_RESOLUTION')))
 print("RPi-Camera: Width  - " + str(respreview_w))
 print("RPi-Camera: Heigth - " + str(respreview_h))
 print("RPi-Camera: X - " + str(respreview_x))
 print("RPi-Camera: Y - " + str(respreview_y))
 print("RPi-Camera: HFlip - " + str(hflip))
 print("RPi-Camera: VFlip - " + str(vflip))
+print("RPi-Camera: YCorrection - " + str(respreview_y_correction))
+print("RPi-Camera: Zoom - " + str(respreview_zoom))
 
 # Bind the socket to the address given on the command line
 server_address = ('127.0.0.1', 6000)
@@ -187,7 +193,7 @@ def cameraStartPreview():
     global camera_rearcam, overlay, rearcamoverlay, rearcammode
     if rearcammode == "false":
         camera.start_preview(fullscreen=False,
-                             window=(respreview_x, respreview_y + respreview_y_correction, respreview_w, respreview_h))
+                             window=(respreview_x, respreview_y + respreview_y_correction, respreview_w + respreview_zoom, respreview_h + respreview_zoom))
         if camera_rearcam == 1:
             overlay.layer = 0
             overlay.alpha = 0
@@ -292,18 +298,23 @@ while exit != 1:
         respreview_y_correction = int(splitposy[1])
 
     if "PosYUp" in data:
-        splitposy = data.split(',')
-        respreview_y_correction = int(splitposy[1])
+        respreview_y_correction = respreview_y_correction - 1
+        os.system("echo " + str(respreview_y_correction) + " > /tmp/ycorrection")
         cameraStartPreview()
 
     if "PosYDown" in data:
-        splitposy = data.split(',')
-        respreview_y_correction = int(splitposy[1])
+        respreview_y_correction = respreview_y_correction + 1
+        os.system("echo " + str(respreview_y_correction) + " > /tmp/ycorrection")
         cameraStartPreview()
 
-    if "Zoom" in data:
-        splitzoom = data.split(',')
-        respreview_zoom = float(splitzoom[1])
+    if "ZoomPlus" in data:
+        respreview_zoom = respreview_zoom + 1
+        os.system("echo " + str(respreview_zoom) + " > /tmp/zoomlevel")
+        cameraStartPreview()
+
+    if "ZoomMinus" in data:
+        respreview_zoom = respreview_zoom - 1
+        os.system("echo " + str(respreview_zoom) + " > /tmp/zoomlevel")
         cameraStartPreview()
 
     if "Path" in data:

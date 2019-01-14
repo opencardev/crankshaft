@@ -46,6 +46,18 @@ if extcommand == "Record":
     PiCam_SendCommand("RecordMode,true,0")
     PiCam_SendCommand("Record")
 
+if extcommand == "PosYUp":
+    PiCam_SendCommand("PosYUp")
+
+if extcommand == "PosYDown":
+    PiCam_SendCommand("PosYDown")
+
+if extcommand == "ZoomPlus":
+    PiCam_SendCommand("ZoomPlus")
+
+if extcommand == "ZoomMinus":
+    PiCam_SendCommand("ZoomMinus")
+
 if extcommand == "Rearcam":
     PiCam_SendCommand("Background")
     PiCam_SendCommand("Stop")

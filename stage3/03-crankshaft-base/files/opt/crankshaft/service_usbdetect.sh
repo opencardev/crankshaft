@@ -16,17 +16,16 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
         log_echo "CSSTORAGE detected"
         /usr/local/bin/crankshaft filesystem system unlock
-        ln -s /media/USBDRIVES/$PARTITION /media/$PARTITION
         # dashcam related
-        mkdir -p /media/$PARTITION/RPIDC/AUTOSAVE > /dev/null 2>&1
-        mkdir -p /media/$PARTITION/RPIDC/EVENTS > /dev/null 2>&1
+        mkdir -p /media/USBDRIVES/$PARTITION/RPIDC/AUTOSAVE > /dev/null 2>&1
+        mkdir -p /media/USBDRIVES/$PARTITION/RPIDC/EVENTS > /dev/null 2>&1
         # kodi related
-        mkdir -p /media/$PARTITION/KODI > /dev/null 2>&1
+        mkdir -p /media/USBDRIVES/$PARTITION/KODI > /dev/null 2>&1
         rm -rf /home/pi/.kodi > /dev/null 2>&1
-        ln -s /media/$PARTITION/KODI /home/pi/.kodi
+        ln -s /media/USBDRIVES/$PARTITION/KODI /home/pi/.kodi
         chmod 777 /home/pi/.kodi > /dev/null 2>&1
         # Allow all users rw to CSSTORAGE and subfolders/files
-        chmod -R 777 /media/$PARTITION > /dev/null 2>&1
+        chmod -R 777 /media/USBDRIVES/$PARTITION > /dev/null 2>&1
         chmown -R pi:pi /home/pi/.kodi > /dev/null 2>&1
         /usr/local/bin/crankshaft filesystem system lock
         CSSTORAGE_DETECTED=1

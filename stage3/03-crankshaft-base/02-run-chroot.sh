@@ -203,6 +203,12 @@ sed -i 's/.*max-temperature.*/max-temperature		= 75/' /etc/watchdog.conf
 sed -i 's/.*kernel-panic.*//g' /etc/sysctl.conf
 echo "kernel-panic = 10" >> /etc/sysctl.conf
 
+# optimize wifi
+echo "net.ipv4.tcp_window_scaling = 1" >> /etc/sysctl.conf
+echo "net.core.rmem_max = 16777216" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_rmem = 4096 87380 16777216" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_wmem = 4096 16384 16777216" >> /etc/sysctl.conf
+
 # Later start cpufrequtils
 sed -i 's/# Required-Start: $remote_fs loadcpufreq.*/# Required-Start: $remote_fs loadcpufreq rc.local/' /etc/init.d/cpufrequtils
 

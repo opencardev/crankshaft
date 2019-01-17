@@ -48,4 +48,6 @@ if [ "$addremove" == "remove" ] && [ "$usbpath" != "" ]; then
             fi
         fi
     fi
+    # retrigger udev to prevent from failed detect
+    sudo udevadm control --reload-rules && sudo udevadm trigger
 fi

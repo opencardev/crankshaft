@@ -8,6 +8,7 @@ model=$2
 usbpath=$3
 
 if [ $addremove == "add" ] && [ "$usbpath" != "" ]; then
+    sleep 1
     echo $usbpath > /tmp/android_device
     echo $model >> /tmp/android_device
     echo "" > /dev/tty3

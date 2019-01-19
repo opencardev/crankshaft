@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
 # enable headset mode and allow auto switch between hfp and a2dp
-sed -i 's/load-module module-bluetooth-discover.*/load-module module-bluetooth-discover headset=auto/' /etc/pulse/default.pa
-sed -i 's/load-module module-bluetooth-discover.*/load-module module-bluetooth-discover headset=auto/' /etc/pulse/system.pa
+sed -i 's/load-module module-bluetooth-discover.*/load-module module-bluetooth-discover headset=ofono/' /etc/pulse/default.pa
+sed -i 's/load-module module-bluetooth-discover.*/load-module module-bluetooth-discover headset=ofono/' /etc/pulse/system.pa
 
 # enable correct service state
 systemctl disable bluetooth

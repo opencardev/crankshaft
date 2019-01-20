@@ -26,7 +26,7 @@ usermod -G bluetooth -a root
 sed -i 's/ExecStart=.*/ExecStart=\/usr\/lib\/bluetooth\/bluetoothd --compat --noplugin=sap/' /lib/systemd/system/bluetooth.service
 
 # Set default bt privacy
-sed -i '/# Privacy = off/Privacy = off/' /etc/bluetooth/main.conf
+sed -i 's/# Privacy = off/Privacy = off/' /etc/bluetooth/main.conf
 
 #link test script files
 ln -s /usr/share/doc/bluez-test-scripts/examples/list-devices /usr/local/bin/list-devices

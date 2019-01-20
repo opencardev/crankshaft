@@ -14,6 +14,7 @@ echo "ramfs		/var/lib/pulse		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	
 echo "ramfs		/var/lib/dbus		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/lib/dhcp		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/var/lib/dhcpcd5	ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
+echo "ramfs		/var/lib/samba		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/tmp/.backlight 	ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/tmp/bluetooth		ramfs			size=1m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab
 echo "ramfs		/tmp/.local-pi		ramfs			size=8m,nodev,nosuid,noatime,nodiratime		0	0" >> /etc/fstab

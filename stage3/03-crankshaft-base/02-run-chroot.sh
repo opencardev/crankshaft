@@ -124,6 +124,8 @@ systemctl disable alsa-restore.service
 systemctl disable alsa-state.service
 systemctl disable raspi-config.service
 systemctl disable systemd-fsck@.service
+systemctl disable smbd.service
+systemctl disable nmbd.service
 
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket

@@ -70,6 +70,9 @@ install -m 644 files/etc/default/hostapd                                "${ROOTF
 install -m 644 files/etc/hostapd/hostapd.conf                           "${ROOTFS_DIR}/etc/hostapd/"
 install -m 644 files/etc/dnsmasq.conf                                   "${ROOTFS_DIR}/etc/"
 
+install -d "${ROOTFS_DIR}/etc/samba"
+install -m 644 files/etc/samba/smb.conf                                 "${ROOTFS_DIR}/etc/samba/"
+
 # /opt
 install -d "${ROOTFS_DIR}/opt/crankshaft"
 install -m 755 files/opt/crankshaft/crankshaft_default_env.sh           "${ROOTFS_DIR}/opt/crankshaft/"

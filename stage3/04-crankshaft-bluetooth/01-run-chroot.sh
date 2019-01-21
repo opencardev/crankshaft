@@ -28,6 +28,9 @@ sed -i 's/ExecStart=.*/ExecStart=\/usr\/lib\/bluetooth\/bluetoothd --compat --no
 # Set default bt privacy
 sed -i 's/# Privacy = off/Privacy = off/' /etc/bluetooth/main.conf
 
+# Set default controller mode
+sed -i 's/#ControllerMode = dual/ControllerMode = bredr/' /etc/bluetooth/main.conf
+
 #link test script files
 ln -s /usr/share/doc/bluez-test-scripts/examples/list-devices /usr/local/bin/list-devices
 ln -s /usr/share/doc/bluez-test-scripts/examples/monitor-bluetooth /usr/local/bin/monitor-bluetooth

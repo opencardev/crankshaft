@@ -19,7 +19,7 @@ readlines() {
                     systemctl start shutdown.timer
                 fi
             fi
-            sleep 30
+            sleep 15
             systemctl restart tap2wake
         fi
     done

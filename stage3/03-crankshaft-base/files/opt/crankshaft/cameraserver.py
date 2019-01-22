@@ -173,7 +173,7 @@ def updateWindow():
                     destination = storagepath + 'AUTOSAVE/RPIDC_AUTOSAVE_' + dt.datetime.now().strftime('%d%m%Y') + '_' + dt.datetime.now().strftime('%H%M%S') + '.h264'
                     print("Moving current recording file to archive...")
                     os.system("mv " + source + " " + destination)
-                    print("Cleaning archived loop files to max of " + loopcount + "...")
+                    print("Cleaning archived loop files to max of " + str(loopcount) + "...")
                     os.system("ls -tpd " + recordpath + "AUTOSAVE/* | grep -v '/$' | tail -n +" + str(loopcount+1) + " | xargs -d '\n' -r rm -- &")
                     camera.start_recording(recordpath + 'RPIDC_' + dt.datetime.now().strftime('%d%m%Y') + '.h264')
                     counter = 0

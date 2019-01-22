@@ -7,17 +7,15 @@ if [ -d $BASEDIR/prebuilts ]; then
     echo "Checking for prebuilt updates..."
     cd prebuilts
     if [ "$BUILDBRANCH" == "csng-dev" ]; then
+        git fetch --all >/dev/null 2>&1
         git reset --hard >/dev/null 2>&1
-        git checkout csng-dev >/dev/null 2>&1
-        git reset --hard HEAD~1 >/dev/null 2>&1
         git clean -f -d >/dev/null 2>&1
-        git pull >/dev/null 2>&1
+        git reset --hard origin/csng-dev >/dev/null 2>&1
     else
+        git fetch --all >/dev/null 2>&1
         git reset --hard >/dev/null 2>&1
-        git checkout master >/dev/null 2>&1
-        git reset --hard HEAD~1 >/dev/null 2>&1
         git clean -f -d >/dev/null 2>&1
-        git pull >/dev/null 2>&1
+        git reset --hard origin/master >/dev/null 2>&1
     fi
     echo "***************************************************************************************"
     echo "Current commit prebuilts:"

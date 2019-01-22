@@ -136,6 +136,13 @@ RPICAM_ROTATION=0
 RPICAM_FPS=24
 RPICAM_AWB=auto
 RPICAM_EXP=auto
+### Dashcam realted stuff ###
+# Time for a recording segment
+RPICAM_LOOPTIME=300
+# Max archived recording files / oldest will be removed if newer is created
+RPICAM_LOOPCOUNT=3
+# Start recording on system startup (0|1)
+RPICAM_AUTORECORDING=0
 # Res: 720/1080 (default:720)
 RPICAM_RESOLUTION=720
 # Don't manually edit this values (use gui)

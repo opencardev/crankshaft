@@ -43,7 +43,6 @@ if extcommand == "Save":
 
 if extcommand == "Record":
     PiCam_SendCommand("RearcamMode,false")
-    PiCam_SendCommand("RecordMode,true,0")
     PiCam_SendCommand("Record")
 
 if extcommand == "PosYUp":

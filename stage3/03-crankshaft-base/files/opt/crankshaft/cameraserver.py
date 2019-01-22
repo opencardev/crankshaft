@@ -87,6 +87,9 @@ camera.rotation = int(get_var('RPICAM_ROTATION'))
 camera.framerate = int(get_var('RPICAM_FPS'))
 camera.awb_mode = get_var('RPICAM_AWB')
 camera.exposure_mode = get_var('RPICAM_EXP')
+recordtime = int(get_var('RPICAM_LOOPTIME'))
+loopcount = int(get_var('RPICAM_LOOPCOUNT'))
+start_recording = int(get_var('RPICAM_AUTORECORDING'))
 
 hflip = int(get_var('RPICAM_HFLIP'))
 if hflip == 1:
@@ -115,6 +118,9 @@ print("RPi-Camera: HFlip - " + str(hflip))
 print("RPi-Camera: VFlip - " + str(vflip))
 print("RPi-Camera: YCorrection - " + str(respreview_y_correction))
 print("RPi-Camera: Zoom - " + str(respreview_zoom))
+print("RPi-Camera: Loop Time - " + str(recordtime))
+print("RPi-Camera: Loop Count - " + str(loopcount))
+print("RPi-Camera: Start Recording - " + str(start_recording))
 
 # Bind the socket to the address given on the command line
 server_address = ('127.0.0.1', 6000)
@@ -123,11 +129,11 @@ print("RPi-Camera: Starting Server...")
 sockdc.listen(1)
 
 # define default values
+
 camera_recording = 0
-loop_recording = 0
+loop_recording = 1
 camera_preview = 0
 camera_rearcam = 0
-recordtime = 300
 savingfile = 0
 exit = 0
 
@@ -162,10 +168,13 @@ def updateWindow():
                 if counter > recordtime:
                     camera.stop_recording()
                     time.sleep(1.0)
-                    camera.annotate_text = "RPi-Dashcam - " + dt.datetime.now().strftime('%d-%m-%Y %H:%M:%S') + " (Saving file...)"
+                    camera.annotate_text = "RPi-Dashcam - " + dt.datetime.now().strftime('%d-%m-%Y %H:%M:%S') + " (Moving file to archive...)"
                     source = recordpath + 'RPIDC_' + dt.datetime.now().strftime('%d%m%Y') + '.h264'
                     destination = storagepath + 'AUTOSAVE/RPIDC_AUTOSAVE_' + dt.datetime.now().strftime('%d%m%Y') + '_' + dt.datetime.now().strftime('%H%M%S') + '.h264'
-                    os.system("cp " + source + " " + destination)
+                    print("Moving current recording file to archive...")
+                    os.system("mv " + source + " " + destination)
+                    print("Cleaning archived loop files to max of " + loopcount + "...")
+                    os.system("ls -tpd " + recordpath + "AUTOSAVE/* | grep -v '/$' | tail -n +" + str(loopcount+1) + " | xargs -d '\n' -r rm -- &")
                     camera.start_recording(recordpath + 'RPIDC_' + dt.datetime.now().strftime('%d%m%Y') + '.h264')
                     counter = 0
         if camera_recording == 0 and camera_preview == 1:
@@ -232,11 +241,15 @@ sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind((UDP_IP, UDP_PORT))
 
 while exit != 1:
-    dataudp, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
-    try:
-        data = str(dataudp.rstrip('\x00'))
-    except:
-        data = str(dataudp)
+    if (start_recording == 1):
+        start_recording = 0
+        data = "Record"
+    else:
+        dataudp, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
+        try:
+            data = str(dataudp.rstrip('\x00'))
+        except:
+            data = str(dataudp)
 
     print("RPi-Camera: received command: " + data)
 
@@ -277,6 +290,7 @@ while exit != 1:
             updateStatus()
 
     if data == "Record":
+
         if free <= 128:
             camera.annotate_text = 'Recording not possible - Storage device is full.'
         else:

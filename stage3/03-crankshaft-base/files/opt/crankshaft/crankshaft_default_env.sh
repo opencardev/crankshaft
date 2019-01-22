@@ -133,9 +133,12 @@ RPICAM_HEIGTH=366
 RPICAM_HFLIP=0
 RPICAM_VFLIP=0
 RPICAM_ROTATION=0
+RPICAM_FPS=24
+RPICAM_AWB=auto
+RPICAM_EXP=auto
 # Res: 720/1080 (default:720)
 RPICAM_RESOLUTION=720
-# Don't manually edit this both values
+# Don't manually edit this values (use gui)
 RPICAM_ZOOM=0
 RPICAM_YCORRECTION=0
 

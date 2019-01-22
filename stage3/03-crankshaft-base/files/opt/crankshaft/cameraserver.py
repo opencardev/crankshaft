@@ -35,13 +35,27 @@ except ImportError:
     quit()
 
 def get_var(varname):
+    #print("Request:" + varname)
+    CMD = 'echo $(source /boot/crankshaft/crankshaft_env.sh; echo $%s)' % varname
+    p = subprocess.Popen(CMD, stdout=subprocess.PIPE, shell=True, executable='/bin/bash')
+    try:
+        result = p.stdout.readlines()[0].strip()
+    except:
+        result = ""
+
     CMD = 'echo $(source /opt/crankshaft/crankshaft_default_env.sh; echo $%s)' % varname
     p = subprocess.Popen(CMD, stdout=subprocess.PIPE, shell=True, executable='/bin/bash')
-    CMD = 'echo $(source /boot/crankshaft/crankshaft_env.sh; echo $%s)' % varname
-    p2 = subprocess.Popen(CMD, stdout=subprocess.PIPE, shell=True, executable='/bin/bash')
-    if p2 != "":
-        p = p2
-    return p.stdout.readlines()[0].strip()
+    try:
+        resultfb = p.stdout.readlines()[0].strip()
+    except:
+        resultfb = ""
+
+    if (result != ""):
+        #print("Result:" + result)
+        return result
+    else:
+        #print("Result Fallback:" + resultfb)
+        return resultfb
 
 # Create a TCP/IP socket
 sockdc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -54,14 +68,13 @@ resy = int(resarray[2])
 
 # Initial Parameters for Cam
 camera = PiCamera()
-if (int(get_var('RPICAM_RESOLUTION')) == 1080):
+if (get_var('RPICAM_RESOLUTION') == "1080"):
     camera.resolution = (1920, 1080)
 else:
     camera.resolution = (1280, 720)
-camera.framerate = 24
+
 camera.annotate_text_size = 45
-camera.awb_mode = 'auto'
-camera.exposure_mode = 'auto'
+
 rearcammode = "false"
 rearcamoverlay = "false"
 
@@ -71,6 +84,9 @@ respreview_h = int(get_var('RPICAM_HEIGTH'))
 respreview_x = int(get_var('RPICAM_X'))
 respreview_y = int(get_var('RPICAM_Y'))
 camera.rotation = int(get_var('RPICAM_ROTATION'))
+camera.framerate = int(get_var('RPICAM_FPS'))
+camera.awb_mode = get_var('RPICAM_AWB')
+camera.exposure_mode = get_var('RPICAM_EXP')
 
 hflip = int(get_var('RPICAM_HFLIP'))
 if hflip == 1:
@@ -90,6 +106,9 @@ respreview_zoom = int(get_var('RPICAM_ZOOM'))
 print("RPi-Camera: Res - " + str(get_var('RPICAM_RESOLUTION')))
 print("RPi-Camera: Width  - " + str(respreview_w))
 print("RPi-Camera: Heigth - " + str(respreview_h))
+print("RPi-Camera: FPS - " + str(camera.framerate))
+print("RPi-Camera: AWB - " + str(camera.awb_mode))
+print("RPi-Camera: EXP - " + str(camera.exposure_mode))
 print("RPi-Camera: X - " + str(respreview_x))
 print("RPi-Camera: Y - " + str(respreview_y))
 print("RPi-Camera: HFlip - " + str(hflip))
@@ -107,8 +126,6 @@ sockdc.listen(1)
 camera_recording = 0
 loop_recording = 0
 camera_preview = 0
-camera_awbmode = "auto"
-camera_expmode = "auto"
 camera_rearcam = 0
 recordtime = 300
 savingfile = 0

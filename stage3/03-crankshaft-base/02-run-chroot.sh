@@ -201,7 +201,7 @@ sed -i 's/.*watchdog-device.*/watchdog-device		= \/dev\/watchdog/' /etc/watchdog
 sed -i 's/.*temperatur-sensor.*/temperatur-sensor		= \/sys\/class\/thermal\/thermal_zone0\/temp/' /etc/watchdog.conf
 sed -i 's/.*max-temperature.*/max-temperature		= 75/' /etc/watchdog.conf
 sed -i 's/#retry-timeout.*/retry-timeout		= 30/' /etc/watchdog.conf
-echo "watchdog-timneout	= 10" >> /etc/watchdog.conf
+echo "watchdog-timeout	= 10" >> /etc/watchdog.conf
 
 
 # Setup kernel panic behaviour

@@ -1,17 +1,7 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
-import calendar
-import datetime
 import sys
-import os
 import socket
-import threading
-import time
-import subprocess
-import decimal
-import subprocess
-import datetime as dt
-from threading import Thread
 
 extcommand = str.strip(sys.argv[1])
 
@@ -22,7 +12,7 @@ def PiCam_SendCommand(command):
     # Create a TCP/IP socket with check
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(command, (UDP_IP, UDP_PORT))
+        sock.sendto(command.encode(), (UDP_IP, UDP_PORT))
         time.sleep(0.1)
         sock.close()
 

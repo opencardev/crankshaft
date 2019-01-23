@@ -1,4 +1,4 @@
-#!/usr/bin/python2 -u
+#!/usr/bin/python3 -u
 
 import socket
 import sys
@@ -51,11 +51,9 @@ def get_var(varname):
         resultfb = ""
 
     if (result != ""):
-        #print("Result:" + result)
-        return result
+        return result.decode('utf-8')
     else:
-        #print("Result Fallback:" + resultfb)
-        return resultfb
+        return resultfb.decode('utf-8')
 
 # Create a TCP/IP socket
 sockdc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -85,8 +83,8 @@ respreview_x = int(get_var('RPICAM_X'))
 respreview_y = int(get_var('RPICAM_Y'))
 camera.rotation = int(get_var('RPICAM_ROTATION'))
 camera.framerate = int(get_var('RPICAM_FPS'))
-camera.awb_mode = get_var('RPICAM_AWB')
-camera.exposure_mode = get_var('RPICAM_EXP')
+camera.awb_mode = str(get_var('RPICAM_AWB'))
+camera.exposure_mode = str(get_var('RPICAM_EXP'))
 recordtime = int(get_var('RPICAM_LOOPTIME'))
 loopcount = int(get_var('RPICAM_LOOPCOUNT'))
 start_recording = int(get_var('RPICAM_AUTORECORDING'))
@@ -244,12 +242,13 @@ while exit != 1:
     if (start_recording == 1):
         start_recording = 0
         data = "Record"
+        print("start_recording = 0")
     else:
         dataudp, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
         try:
-            data = str(dataudp.rstrip('\x00'))
+            data = str(dataudp.rstrip('\x00').decode('utf-8'))
         except:
-            data = str(dataudp)
+            data = str(dataudp.decode('utf-8'))
 
     print("RPi-Camera: received command: " + data)
 

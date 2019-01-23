@@ -19,13 +19,13 @@ rsyslog
 mc
 nano
 i2c-tools
-python-picamera
+python3-picamera
 python3-gpiozero
 pv
 busybox-static
 plymouth-themes
 initramfs-tools
-python-pil
+python3-pil
 htop
 cpufrequtils
 zip

@@ -68,14 +68,13 @@ resy = int(resarray[2])
 camera = PiCamera()
 if (get_var('RPICAM_RESOLUTION') == "1080"):
     camera.resolution = (1920, 1080)
+    camera.annotate_text_size = 80
 elif (get_var('RPICAM_RESOLUTION') == "720"):
     camera.resolution = (1280, 720)
-elif (get_var('RPICAM_RESOLUTION') == "600"):
-    camera.resolution = (800, 600)
+    camera.annotate_text_size = 40
 else:
-    camera.resolution = (640, 480)
-
-camera.annotate_text_size = 45
+    camera.resolution = (800, 480)
+    camera.annotate_text_size = 20
 
 rearcammode = "false"
 rearcamoverlay = "false"
@@ -164,7 +163,8 @@ def updateWindow():
             if savingfile == 1:
                 camera.annotate_text = "RPi-Dashcam - Saving file..."
             else:
-                camera.annotate_text = "RPi-Dashcam - " + dt.datetime.now().strftime('%d-%m-%Y %H:%M:%S') + " (" + str(free) + " MB free)"
+                #camera.annotate_text = "RPi-Dashcam - " + dt.datetime.now().strftime('%d-%m-%Y %H:%M:%S') + " (" + str(free) + " MB free)"
+                camera.annotate_text = "RPi-Dashcam - " + dt.datetime.now().strftime('%d-%m-%Y %H:%M:%S')
             if loop_recording == 1:
                 counter = counter + 0.2
                 if counter > recordtime:

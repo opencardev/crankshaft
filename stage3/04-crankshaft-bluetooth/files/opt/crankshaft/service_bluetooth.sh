@@ -25,10 +25,7 @@ if [ $ENABLE_BLUETOOTH -eq 1 ]; then
     sudo bt-adapter --set DiscoverableTimeout 0
     if [ $ENABLE_PAIRABLE -eq 1 ]; then
         log_echo "Set bluetooth adapter pairable for 120 seconds"
-        sudo bt-adapter --set Pairable 1
-        sudo bt-adapter --set PairableTimeout 120
-        touch /tmp/bluetooth_pairable
-        sleep 120 && sudo rm /tmp/bluetooth_pairable &
+        /usr/local/bin/crankshaft bluetooth pairable
     fi
     # Try 5 attempts to connect
     counter=0

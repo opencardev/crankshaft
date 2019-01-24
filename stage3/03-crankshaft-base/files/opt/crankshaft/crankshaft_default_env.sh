@@ -78,10 +78,6 @@ CUSTOM_BRIGHTNESS_COMMAND=
 # Flip the screen 180°
 FLIP_SCREEN=0
 
-# Try to identify and setup display during boot
-# don't use - only prepared for further releases!
-DISPLAY_AUTO_DETECT=0
-
 ### Audio ###
 # If stored vol is lower than this set to this value
 STARTUP_VOL_MIN=30

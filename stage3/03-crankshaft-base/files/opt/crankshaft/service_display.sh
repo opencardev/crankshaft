@@ -7,11 +7,6 @@ if [ -f $BRIGHTNESS_FILE ]; then
     chmod 666 $BRIGHTNESS_FILE
 fi
 
-# Auto detect display if enabled in config
-if [ $DISPLAY_AUTO_DETECT -eq 1 ]; then
-    /usr/local/bin/crankshaft display autodetect
-fi
-
 # Check if we need to rotate
 flipset=`grep '^lcd_rotate=' /boot/config.txt`
 

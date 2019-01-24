@@ -68,8 +68,12 @@ resy = int(resarray[2])
 camera = PiCamera()
 if (get_var('RPICAM_RESOLUTION') == "1080"):
     camera.resolution = (1920, 1080)
-else:
+elif (get_var('RPICAM_RESOLUTION') == "720"):
     camera.resolution = (1280, 720)
+elif (get_var('RPICAM_RESOLUTION') == "600"):
+    camera.resolution = (800, 600)
+else:
+    camera.resolution = (640, 480)
 
 camera.annotate_text_size = 45
 
@@ -146,7 +150,7 @@ overlay.layer = 0
 
 def freespace(p):
     s = os.statvfs(p)
-    return s.f_bsize * s.f_bavail / 1024 / 1024
+    return round(s.f_bsize * s.f_bavail / 1024 / 1024,0)
 
 free = freespace(recordpath)
 

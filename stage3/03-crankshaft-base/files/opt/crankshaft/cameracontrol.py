@@ -13,9 +13,7 @@ def PiCam_SendCommand(command):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.sendto(command.encode(), (UDP_IP, UDP_PORT))
-        time.sleep(0.1)
         sock.close()
-
     except:
         quit()
 

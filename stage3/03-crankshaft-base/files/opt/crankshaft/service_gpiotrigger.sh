@@ -17,9 +17,9 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
                 fi
             else
                 if [ -f /tmp/rearcam_enabled ]; then
-                    rm /tmp/rearcam_enabled
+                    rm /tmp/rearcam_enabled >/dev/null 2>&1
                     sleep 0.5
-                    rm /tmp/blackscreen
+                    rm /tmp/blackscreen >/dev/null 2>&1
                 fi
             fi
         fi
@@ -35,13 +35,13 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
                 fi
             else
                 if [ -f /tmp/night_mode_enabled ]; then
-                    rm /tmp/night_mode_enabled
+                    rm /tmp/night_mode_enabled >/dev/null 2>&1
                     crankshaft brightness restore &
                 fi
             fi
         else
             if [ -f /tmp/daynight_gpio ]; then
-                rm /tmp/daynight_gpio
+                rm /tmp/daynight_gpio >/dev/null 2>&1
             fi
         fi
         if [ $IGNITION_PIN -ne 0 ]; then

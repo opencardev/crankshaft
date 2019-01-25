@@ -8,7 +8,7 @@ on_chroot << EOF
 hardlink -t /usr/share/doc
 echo ${BUILDHASH} > /etc/crankshaft.build
 echo ${IMG_DATE} > /etc/crankshaft.date
-if [ $BUILD_RELEASE_FROM_DEV -eq 1 ]; then
+if [ "$BUILD_RELEASE_FROM_DEV" == "1" ]; then
     echo "crankshaft-ng" > /etc/crankshaft.branch
 else
     echo ${BUILDBRANCH} > /etc/crankshaft.branch

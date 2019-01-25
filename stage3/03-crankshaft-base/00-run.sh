@@ -38,6 +38,9 @@ cp -f $BASE_DIR/prebuilts/gpio2kbd/gpio2kbd files/opt/crankshaft/gpio2kbd
 chmod 777 files/opt/crankshaft/gpio2kbd
 
 # cam_overlay updates
+if [ ! -d files/opt/crankshaft/cam_overlay ]; then
+    mkdir files/opt/crankshaft/cam_overlay
+fi
 cp -f $BASE_DIR/prebuilts/cam_overlay/cam_overlay.bin files/opt/crankshaft/cam_overlay/cam_overlay.bin
 cp -f $BASE_DIR/prebuilts/cam_overlay/overlay.png files/opt/crankshaft/cam_overlay/overlay.png
 cp -f $BASE_DIR/prebuilts/cam_overlay/shader-YUYV.frag files/opt/crankshaft/cam_overlay/shader-YUYV.frag

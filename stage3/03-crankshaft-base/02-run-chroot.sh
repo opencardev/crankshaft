@@ -58,6 +58,9 @@ ln -s /boot/crankshaft/wallpaper-eq.png /home/pi/wallpaper-eq.png
 ln -s /boot/crankshaft/splash.png /usr/share/plymouth/themes/custom/splash.png
 ln -s /boot/crankshaft/shutdown.png /usr/share/plymouth/themes/custom/shutdown.png
 
+# custom usbcamera-overlay
+ln -s /boot/crankshaft/usbcamera-overlay.png /opt/crankshaft/cam_overlay/overlay.png
+
 # triggerhappy
 sed -i 's/user nobody/user pi/' /lib/systemd/system/triggerhappy.service
 ln -s /boot/crankshaft/triggerhappy.conf /etc/triggerhappy/triggers.d/crankshaft.conf

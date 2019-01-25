@@ -63,6 +63,13 @@ if [ ! -f /boot/crankshaft/camera-overlay.png ] || [ ! -s /boot/crankshaft/camer
     /usr/local/bin/crankshaft filesystem boot lock
 fi
 
+if [ ! -f /boot/crankshaft/usbcamera-overlay.png ] || [ ! -s /boot/crankshaft/usbcamera-overlay.png ]; then
+    log_echo "Place default usbcamera-overlay.png"
+    /usr/local/bin/crankshaft filesystem boot unlock
+    cp /opt/crankshaft/wallpaper/usbcamera-overlay.png /boot/crankshaft/
+    /usr/local/bin/crankshaft filesystem boot lock
+fi
+
 if [ ! -f /boot/crankshaft/splash.png ] || [ ! -s /boot/crankshaft/splash.png ]; then
     log_echo "Place default splash.png"
     /usr/local/bin/crankshaft filesystem boot unlock

@@ -145,6 +145,14 @@ RPICAM_RESOLUTION=720
 RPICAM_ZOOM=0
 RPICAM_YCORRECTION=0
 
+# USB Rearcam ###
+# Use usb cam instead of rpi cam module for rearcam
+USBCAM_USE=0
+# Overlay settings
+USBCAM_ROTATION=0
+USBCAM_HFLIP=0
+USBCAM_VFLIP=0
+
 # RTC Related Settings ###
 # Enables day/night switch by rtc - don't change manually!
 # Use command 'crankshaft rtc xxx' in shell!

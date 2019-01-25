@@ -37,6 +37,14 @@ chmod 777 files/usr/local/bin/crankshaft
 cp -f $BASE_DIR/prebuilts/gpio2kbd/gpio2kbd files/opt/crankshaft/gpio2kbd
 chmod 777 files/opt/crankshaft/gpio2kbd
 
+# cam_overlay updates
+cp -f $BASE_DIR/prebuilts/cam_overlay/cam_overlay.bin files/opt/crankshaft/cam_overlay/cam_overlay.bin
+cp -f $BASE_DIR/prebuilts/cam_overlay/overlay.png files/opt/crankshaft/cam_overlay/overlay.png
+cp -f $BASE_DIR/prebuilts/cam_overlay/shader-YUYV.frag files/opt/crankshaft/cam_overlay/shader-YUYV.frag
+cp -f $BASE_DIR/prebuilts/cam_overlay/shader.frag files/opt/crankshaft/cam_overlay/shader.frag
+cp -f $BASE_DIR/prebuilts/cam_overlay/shader.vert files/opt/crankshaft/cam_overlay/shader.vert
+chmod 777 files/opt/crankshaft/cam_overlay/cam_overlay.bin
+
 # openauto updates
 cp -f $BASE_DIR/prebuilts/openauto/autoapp files/usr/local/bin/autoapp
 cp -f $BASE_DIR/prebuilts/openauto/autoapp_helper files/usr/local/bin/autoapp_helper

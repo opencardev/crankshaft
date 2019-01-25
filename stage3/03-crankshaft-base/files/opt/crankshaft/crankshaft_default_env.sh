@@ -152,6 +152,9 @@ USBCAM_USE=0
 USBCAM_ROTATION=0
 USBCAM_HFLIP=0
 USBCAM_VFLIP=0
+# Ignore all and use this custom params
+# Only for special setups
+USBCAM_CUSTOM_PARAMS=
 
 # RTC Related Settings ###
 # Enables day/night switch by rtc - don't change manually!

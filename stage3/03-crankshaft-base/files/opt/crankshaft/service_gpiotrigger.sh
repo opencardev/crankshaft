@@ -16,18 +16,26 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
                     touch /tmp/blackscreen
                     PARAMS=""
                     if [ $USBCAM_USE -eq 1 ]; then
-                        if [ $USBCAM_HFLIP -eq 1 ]; then
-                            PARAMS="$PARAMS -h"
+                        if [ "$USBCAM_CUSTOM_PARAMS" != "" ]; then
+                            cd /opt/crankshaft/cam_overlay
+                            log_echo "cam_overlay.bin - Custom param set:"
+                            log_echo "cam_overlay.bin $USBCAM_CUSTOM_PARAMS &"
+                            ./cam_overlay.bin -s $USBCAM_CUSTOM_PARAMS &
+                        else
+                            if [ $USBCAM_HFLIP -eq 1 ]; then
+
+                                PARAMS="$PARAMS -h"
+                            fi
+                            if [ $USBCAM_VFLIP -eq 1 ]; then
+                                PARAMS="$PARAMS -v"
+                            fi
+                            if [ $USBCAM_ROTATION -eq 1 ]; then
+                                PARAMS="$PARAMS -R"
+                            fi
+                            cd /opt/crankshaft/cam_overlay
+                            log_echo "cam_overlay.bin $PARAMS &"
+                            ./cam_overlay.bin -s $PARAMS &
                         fi
-                        if [ $USBCAM_VFLIP -eq 1 ]; then
-                            PARAMS="$PARAMS -v"
-                        fi
-                        if [ $USBCAM_ROTATION -eq 1 ]; then
-                            PARAMS="$PARAMS -R"
-                        fi
-                        cd /opt/crankshaft/cam_overlay
-                        log_echo "cam_overlay.bin $PARAMS &"
-                        ./cam_overlay.bin -s $PARAMS &
                     else
                         /opt/crankshaft/cameracontrol.py Rearcam &
                     fi

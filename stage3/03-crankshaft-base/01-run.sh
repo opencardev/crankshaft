@@ -116,7 +116,7 @@ install -m 644 files/opt/crankshaft/wallpaper/camera-overlay.png              "$
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-eq.png                "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 
 install -d "${ROOTFS_DIR}/opt/crankshaft/cam_overlay"
-install -m 644 files/opt/crankshaft/cam_overlay/cam_overlay.bin   "${ROOTFS_DIR}/opt/crankshaft/cam_overlay/"
+install -m 755 files/opt/crankshaft/cam_overlay/cam_overlay.bin   "${ROOTFS_DIR}/opt/crankshaft/cam_overlay/"
 install -m 644 files/opt/crankshaft/cam_overlay/overlay.png       "${ROOTFS_DIR}/opt/crankshaft/cam_overlay/"
 install -m 644 files/opt/crankshaft/cam_overlay/shader-YUYV.frag  "${ROOTFS_DIR}/opt/crankshaft/cam_overlay/"
 install -m 644 files/opt/crankshaft/cam_overlay/shader.frag       "${ROOTFS_DIR}/opt/crankshaft/cam_overlay/"

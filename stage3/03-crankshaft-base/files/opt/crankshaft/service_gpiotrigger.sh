@@ -12,44 +12,11 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
             REARCAM_GPIO=`gpio -g read $REARCAM_PIN`
             if [ $REARCAM_GPIO -ne 1 ] ; then
                 if [ ! -f /tmp/rearcam_enabled ]; then
-                    touch /tmp/rearcam_enabled
-                    touch /tmp/blackscreen
-                    PARAMS=""
-                    if [ $USBCAM_USE -eq 1 ]; then
-                        if [ "$USBCAM_CUSTOM_PARAMS" != "" ]; then
-                            cd /opt/crankshaft/cam_overlay
-                            log_echo "cam_overlay.bin - Custom param set:"
-                            log_echo "cam_overlay.bin $USBCAM_CUSTOM_PARAMS &"
-                            ./cam_overlay.bin -s $USBCAM_CUSTOM_PARAMS &
-                        else
-                            if [ $USBCAM_HFLIP -eq 1 ]; then
-
-                                PARAMS="$PARAMS -h"
-                            fi
-                            if [ $USBCAM_VFLIP -eq 1 ]; then
-                                PARAMS="$PARAMS -v"
-                            fi
-                            if [ $USBCAM_ROTATION -eq 1 ]; then
-                                PARAMS="$PARAMS -R"
-                            fi
-                            cd /opt/crankshaft/cam_overlay
-                            log_echo "cam_overlay.bin $PARAMS &"
-                            ./cam_overlay.bin -s $PARAMS &
-                        fi
-                    else
-                        /opt/crankshaft/cameracontrol.py Rearcam &
-                    fi
+                    /usr/local/bin/crankshaft rearcam show
                 fi
             else
                 if [ -f /tmp/rearcam_enabled ]; then
-                    if [ $USBCAM_USE -eq 1 ]; then
-                        sudo killall cam_overlay.bin >/dev/null 2>&1
-                    else
-                        /opt/crankshaft/cameracontrol.py DashcamMode &
-                    fi
-                    rm /tmp/rearcam_enabled >/dev/null 2>&1
-                    sleep 0.5
-                    rm /tmp/blackscreen >/dev/null 2>&1
+                    /usr/local/bin/crankshaft rearcam hide
                 fi
             fi
         fi

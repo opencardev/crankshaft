@@ -2,6 +2,9 @@
 
 clear
 
+# don't change this flag!
+BUILD_RELEASE_FROM_DEV=0
+
 # check for updates
 ./check-updates.sh
 
@@ -16,6 +19,16 @@ BUILDHASH=`git rev-parse --short HEAD | awk '{print toupper($0)}'`
 BUILDBRANCH=`cat ./.git/HEAD | cut -d'/' -f3`
 export BUILDHASH
 export BUILDBRANCH
+export BUILD_RELEASE_FROM_DEV
+
+if [ $BUILD_RELEASE_FROM_DEV -eq 1 ] && [ "$BUILDBRANCH" != "csng-dev" ]; then
+    echo "***************************************************************************************"
+    echo "You started a release build from dev but your branch is not csng-dev!"
+    echo ""
+    echo "Abort."
+    echo "***************************************************************************************"
+    exit 1
+fi
 
 # enable all build stages
 touch ./stage0/SKIP &>/dev/null
@@ -41,9 +54,10 @@ echo "**************************************************************************
 echo "Start build..."
 echo ""
 echo "***************************************************************************************"
-echo "Build Hash:   "$BUILDHASH
-echo "Build Date:   "$TODAY_DATE
-echo "Build Branch: "$BUILDBRANCH
+echo "Build Hash:     "$BUILDHASH
+echo "Build Date:     "$TODAY_DATE
+echo "Build Branch:   "$BUILDBRANCH
+echo "Build Override: "$BUILD_RELEASE_FROM_DEV
 echo "***************************************************************************************"
 echo "Current commit crankshaft-ng:"
 git log -n1 --no-merges

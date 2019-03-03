@@ -25,7 +25,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
             log_echo "Configure ip for wlan0"
             echo "[${CYAN}${BOLD} INFO ${RESET}] Configure interface ip" > /dev/tty3
             # 5 client ip's available (sum 6)
-            sudo ifconfig wlan0 192.168.254.1 netmask 255.255.255.248 broadcast 192.168.254.7
+            sudo ifconfig wlan0 192.168.254.1 netmask 255.255.255.240 broadcast 192.168.254.15
             #switch power management
             log_echo "Switch on wlan0"
             # delete existing rules

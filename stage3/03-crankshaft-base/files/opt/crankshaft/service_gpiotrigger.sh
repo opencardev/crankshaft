@@ -58,6 +58,17 @@ if [ $REARCAM_PIN -ne 0 ] || [ $IGNITION_PIN -ne 0 ] || [ $DAYNIGHT_PIN -ne 0 ];
                 IGN_COUNTER=0
             fi
         fi
+        if [ -f /tmp/android_device ] && [ $ANDROID_PIN -ne 0 ]; then
+            if [ "$(sudo gpio -g read $ANDROID_PIN)" != "1" ]; then
+                log_echo "Setting device gpio pin up"
+                sudo /usr/bin/gpio -g mode $ANDROID_PIN up
+            fi
+        else
+            if [ "$(sudo gpio -g read $ANDROID_PIN)" != "0" ]; then
+                log_echo "Setting device gpio pin down"
+                sudo /usr/bin/gpio -g mode $ANDROID_PIN down
+            fi
+        fi
         sleep 1
     done
 fi

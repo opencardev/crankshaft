@@ -12,9 +12,9 @@ mkdir -p "${ROOTFS_DIR}"
 BOOT_SIZE=$(du --apparent-size -s "${EXPORT_ROOTFS_DIR}/boot" --block-size=1 | cut -f 1)
 TOTAL_SIZE=$(du --apparent-size -s "${EXPORT_ROOTFS_DIR}" --exclude var/cache/apt/archives --block-size=1 | cut -f 1)
 
-ROUND_SIZE="$((6 * 1024 * 1024))"
+ROUND_SIZE="$((8 * 1024 * 1024))"
 ROUNDED_ROOT_SECTOR=$(((2 * BOOT_SIZE + ROUND_SIZE) / ROUND_SIZE * ROUND_SIZE / 512 + 8192))
-IMG_SIZE=$(((BOOT_SIZE + TOTAL_SIZE + (256 * 1024 * 1024) + ROUND_SIZE - 1) / ROUND_SIZE * ROUND_SIZE))
+IMG_SIZE=$(((BOOT_SIZE + TOTAL_SIZE + (1024 * 1024 * 1024) + ROUND_SIZE - 1) / ROUND_SIZE * ROUND_SIZE))
 
 truncate -s "${IMG_SIZE}" "${IMG_FILE}"
 fdisk -H 255 -S 63 "${IMG_FILE}" <<EOF
@@ -37,16 +37,12 @@ p
 w
 EOF
 
-PARTED_OUT=$(parted -s "${IMG_FILE}" unit b print)
-BOOT_OFFSET=$(echo "$PARTED_OUT" | grep -e '^ 1'| xargs echo -n \
-| cut -d" " -f 2 | tr -d B)
-BOOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^ 1'| xargs echo -n \
-| cut -d" " -f 4 | tr -d B)
+PARTED_OUT=$(parted -sm "${IMG_FILE}" unit b print)
+BOOT_OFFSET=$(echo "$PARTED_OUT" | grep -e '^1:' | cut -d':' -f 2 | tr -d B)
+BOOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^1:' | cut -d':' -f 4 | tr -d B)
 
-ROOT_OFFSET=$(echo "$PARTED_OUT" | grep -e '^ 2'| xargs echo -n \
-| cut -d" " -f 2 | tr -d B)
-ROOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^ 2'| xargs echo -n \
-| cut -d" " -f 4 | tr -d B)
+ROOT_OFFSET=$(echo "$PARTED_OUT" | grep -e '^2:' | cut -d':' -f 2 | tr -d B)
+ROOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^2:' | cut -d':' -f 4 | tr -d B)
 
 BOOT_DEV=$(losetup --show -f -o "${BOOT_OFFSET}" --sizelimit "${BOOT_LENGTH}" "${IMG_FILE}")
 ROOT_DEV=$(losetup --show -f -o "${ROOT_OFFSET}" --sizelimit "${ROOT_LENGTH}" "${IMG_FILE}")

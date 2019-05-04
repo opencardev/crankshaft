@@ -106,6 +106,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* 2>/dev/null); do
             cp -f /tmp/rootfs/etc/hostapd/hostapd.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/hostapd/ 2>/dev/null
             cp -f /tmp/rootfs/etc/cs_lightsensor /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
             cp -f /tmp/rootfs/etc/plymouth/plymouthd.conf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/plymouth/ 2>/dev/null
+            cp -f /tmp/rootfs/etc/shadow /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}/etc/ 2>/dev/null
             sleep 1
             # umount after backup
             printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3

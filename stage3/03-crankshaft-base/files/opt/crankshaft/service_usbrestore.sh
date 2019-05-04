@@ -84,6 +84,8 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             echo "default-server = unix:/var/run/pulse/native" >> /etc/pulse/client.conf
             echo "autospawn = no" >> /etc/pulse/client.conf
             chmod 644 /etc/timezone > /dev/null 2>&1
+            chmod 640 /etc/shadow > /dev/null 2>&1
+            chown root:shadow /etc/shadow > /dev/null 2>&1
             # remove possible existing lost boot entries
             sed -i 's/# Initramfs params for flashsystem//' /boot/config.txt
             sed -i 's/initramfs initrd.img followkernel//' /boot/config.txt

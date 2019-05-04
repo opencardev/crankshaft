@@ -254,3 +254,11 @@ ln -s /usr/local/bin/crankshaft /usr/local/bin/csmt
 
 # Set path for rsyslogd
 sed -i 's/\$WorkDirectory \/var\/spool\/rsyslog/\$WorkDirectory \/var\/spool/' /etc/rsyslog.conf
+
+# Download source for exfat-nofuse and kernel
+cd /usr/src/
+git clone https://github.com/dorimanx/exfat-nofuse
+version=`cat ./exfat-nofuse/dkms.conf | grep PACKAGE_VERSION | cut -d= -f2 | sed "s/\"//g"`
+mv exfat-nofuse exfat-$version
+
+dkms add -m exfat -v 1.2.8

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASEDIR="pwd"
+BASEDIR="`cd $0 >/dev/null 2>&1; pwd`" >/dev/null 2>&1
 
 mountpoints=`mount | grep ${BASEDIR} | awk '{print $3}' | awk {'print length, $1'} | sort -g -r | cut -d' ' -f2-`
 

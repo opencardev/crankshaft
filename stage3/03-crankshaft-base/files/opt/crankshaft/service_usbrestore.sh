@@ -15,6 +15,22 @@ if [ ! -f /etc/cs_resize_done ]; then
     reboot
 fi
 
+# build and install dkms modules
+if [ ! -f /etc/dkms_done ]; then
+    show_clear_screen
+    show_screen
+    show_cursor
+    echo "${RESET}" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] Running dkms ..." > /dev/tty3
+    echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    mount -o remount,rw /
+    dkms autoinstall
+    touch /etc/dkms_done
+    sync
+    reboot
+fi
+
 SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: -f2 | sed 's/ //g')
 
 if [ ! -f /etc/cs_backup_restore_done ]; then

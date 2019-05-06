@@ -36,13 +36,6 @@ if [ ! -f /tmp/usb_debug_mode ]; then
         fi
         log_echo "Stop watchdog.service"
         systemctl stop watchdog
-        EXFAT=`dkms status exfat | cut -d: -f2 | sed 's/ //g'`
-        if [ "$EXFAT" != "installed" ] ; then
-            echo "[${RED}${BOLD} FAIL ${RESET}] DKMS module exfat missing - installing..."
-            sudo dkms autoinstall
-        else
-            echo "[${CYAN}${BOLD}  OK  ${RESET}] DKMS module exfat is present"
-        fi
         show_cursor
     else
         touch /tmp/start_openauto

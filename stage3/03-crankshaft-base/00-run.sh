@@ -81,18 +81,3 @@ chmod 644 files/usr/local/bin/usbreset.md5
 # combine splitted archive
 cat $BASE_DIR/prebuilts/qt5/Qt_5113_OpenGLES2.tar.xz.part* > $BASE_DIR/prebuilts/qt5/Qt_5113_OpenGLES2.tar.xz
 mv -f $BASE_DIR/prebuilts/qt5/Qt_5113_OpenGLES2.tar.xz files/qt5/Qt5_OpenGLES2.tar.xz
-
-# check kernel version and add exfat-nofuse if precompiled available
-for folder in $(ls -d ${ROOTFS_DIR}/lib/modules/*); do
-    if [ -d $folder ]; then
-	KERNEL=$(basename $folder)
-	echo "Checking folder $KERNEL"
-	if [ -f $BASE_DIR/prebuilts/exfat-nofuse/$KERNEL/extra/exfat.ko ]; then
-	    mkdir ${ROOTFS_DIR}/lib/modules/$KERNEL/extra
-	    cp -f $BASE_DIR/prebuilts/exfat-nofuse/$KERNEL/extra/exfat.ko ${ROOTFS_DIR}/lib/modules/$KERNEL/extra/
-	    echo "Exfat module added!"
-	else
-	    echo "No exfat module available."
-	fi
-    fi
-done

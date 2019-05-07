@@ -26,6 +26,17 @@ if [ ! -f /etc/dkms_done ]; then
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
     mount -o remount,rw /
     dkms autoinstall
+    if [ "$(dkms status | grep exfat | cut -d: -f2 | sed 's/ //g')" == "installed" ]; then
+        sed -i 's/exfat//g' /etc/modules
+        sed -i '/./,/^$/!d' /etc/modules
+        echo "exfat" >> /etc/modules
+        sed -i 's/exfat//g' /etc/initramfs-tools/modules
+        sed -i '/./,/^$/!d' /etc/initramfs-tools/modules
+        echo "exfat" >> /etc/initramfs-tools/modules
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] Module exfat successfully installed" > /dev/tty3
+        echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+    fi
     touch /etc/dkms_done
     sync
     reboot

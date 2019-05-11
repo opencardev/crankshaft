@@ -111,8 +111,8 @@ systemctl disable hotspot-monitor.service
 systemctl disable wpa_supplicant.service
 systemctl disable hwclock-load.service
 systemctl disable rpicamserver.service
-systemctl disable regenerate_ssh_host_keys.service
-systemctl disable wifisetup.service
+#systemctl disable regenerate_ssh_host_keys.service
+#systemctl disable wifisetup.service
 systemctl disable systemd-rfkill.service
 systemctl disable systemd-rfkill.socket
 systemctl disable resize2fs_once.service
@@ -145,10 +145,11 @@ rm /lib/systemd/system/basic.target.wants/alsa-restore.service
 rm /lib/systemd/system/basic.target.wants/alsa-state.service
 rm /lib/systemd/system/apply_noobs_os_config.service
 rm /lib/systemd/system/wifi-country.service
+rm /lib/systemd/system/regenerate_ssh_host_keys.service
 rm /lib/udev/rules.d/90-alsa-restore.rules
 rm /lib/dhcpcd/dhcpcd-hooks/50-ntp.conf
 
-systemctl daemon-relaod
+#systemctl daemon-relaod
 
 # set custom boot splash
 #plymouth-set-default-theme crankshaft
@@ -177,7 +178,12 @@ sed -i 's/^#ListenAddress 0.0.0.0/ListenAddress 0.0.0.0/' /etc/ssh/sshd_config
 
 # OS Name
 STRING="Welcome to Crankshaft CarOS (${IMG_DATE} / Build ${BUILDHASH})"
-sed -i 's/PRETTY_NAME=.*/PRETTY_NAME="'${STRING}'"/g' /usr/lib/os-release
+#sed -i "s/PRETTY_NAME=.*/PRETTY_NAME=${STRING}/g" /usr/lib/os-release
+cp /usr/lib/os-release /usr/lib/os-release.bak
+sed -i '/PRETTY_NAME=/d' /usr/lib/os-release.bak
+echo "PRETTY_NAME=$STRING" > /usr/lib/os-release
+cat /usr/lib/os-release.bak >> /usr/lib/os-release
+rm /usr/lib/os-release.bak
 echo "$STRING" > /etc/issue
 echo "" >> /etc/issue
 echo "$STRING" > /etc/issue.net

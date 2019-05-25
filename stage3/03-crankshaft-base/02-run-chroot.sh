@@ -265,7 +265,7 @@ sed -i 's/\$WorkDirectory \/var\/spool\/rsyslog/\$WorkDirectory \/var\/spool/' /
 cd /usr/src/
 git clone https://github.com/dorimanx/exfat-nofuse
 cd exfat-nofuse
-git add remote barrybingo https://github.com/dorimanx/exfat-nofuse
+git remote add barrybingo https://github.com/barrybingo/exfat-nofuse
 git merge barrybingo/master
 cd ..
 version=`cat ./exfat-nofuse/dkms.conf | grep PACKAGE_VERSION | cut -d= -f2 | sed "s/\"//g"`

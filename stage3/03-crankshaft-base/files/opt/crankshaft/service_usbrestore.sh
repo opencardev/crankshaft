@@ -139,11 +139,16 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             source /boot/crankshaft/crankshaft_env.sh
             # check rtc setup
             RTC_CHECK=$(cat /boot/config.txt | grep "^dtoverlay=i2c-rtc")
+            RTC_MODEL=$(cat /boot/config.txt | grep "^dtoverlay=i2c-rtc" | cut -d, -f2)
             if [ ! -z $RTC_CHECK ]; then
                 echo "" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-                echo "[${CYAN}${BOLD} INFO ${RESET}] Setup rtc..." > /dev/tty3
+                echo "[${CYAN}${BOLD} INFO ${RESET}] Setup rtc ($RTC_MODEL)..." > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
+                sed -i '/rtc*/d' /etc/modules
+                sed -i '/./,/^$/!d' /etc/modules
+                echo "rtc-$RTC_MODEL" >> /etc/modules
+                modprobe rtc-$RTC_MODEL
                 # try to set systime from rtc
                 echo "" > /dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3

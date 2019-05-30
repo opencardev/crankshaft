@@ -124,7 +124,7 @@ if [ $ENABLE_HOTSPOT -eq 1 ] || [ -f /tmp/manual_hotspot_control ]; then
                 # configure blank interface
                 echo "[${CYAN}${BOLD} INFO ${RESET}] Reconfigure ip wlan0" > /dev/tty3
                 log_echo "Cleanup ip address for wlan0"
-                sudo ip address del 192.168.254.1/29 dev wlan0
+                sudo ip addr flush wlan0
                 # restaret dhcpcd to bring up network
                 sudo systemctl restart dhcpcd
                 sudo systemctl restart wpa-monitor

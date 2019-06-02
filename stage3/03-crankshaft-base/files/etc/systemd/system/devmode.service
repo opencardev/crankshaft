@@ -7,6 +7,7 @@
 [Service]
  Type=simple
  ExecStart=/opt/crankshaft/service_devmode.sh
+ ExecStartPost=/usr/local/bin/crankshaft cover extract &
  StandardInput=tty
  StandardOutput=tty
  RemainAfterExit=yes

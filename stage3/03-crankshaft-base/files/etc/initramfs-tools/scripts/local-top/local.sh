@@ -15,6 +15,23 @@ printf "\n" >/dev/tty3
 
 SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d: -f2 | sed 's/ //g')
 
+# remove possible existing old backups from all connected drives
+for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* 2>/dev/null); do
+    DEVICE="/dev/$(basename ${FSMOUNTPOINT})"
+    if [ "$DEVICE" == "/dev/CSSTORAGE" ]; then
+        DEVICE="$(mount | grep CSSTORAGE | awk {'print $1'})"
+        PARTITION="CSSTORAGE"
+    else
+        PARTITION="$(basename ${DEVICE})"
+    fi
+    if [ "$DEVICE" != "/dev/CSSTORAGE" ]; then
+        mount -o remount,rw ${DEVICE}
+    fi
+    if [ -d /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL} ]; then
+        rm -rf /media/USBDRIVES/${PARTITION}/cs-backup/${SERIAL}
+    fi
+done
+
 for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* 2>/dev/null); do
     DEVICE="/dev/$(basename ${FSMOUNTPOINT})"
     if [ "$DEVICE" == "/dev/CSSTORAGE" ]; then

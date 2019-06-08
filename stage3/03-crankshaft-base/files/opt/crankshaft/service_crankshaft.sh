@@ -98,4 +98,8 @@ if [ ! -f /boot/crankshaft/shutdown.png ] || [ ! -s /boot/crankshaft/shutdown.pn
     /usr/local/bin/crankshaft filesystem boot lock
 fi
 
+if [ ! -f /etc/cs_first_start_done ]; then
+    /usr/local/bin/crankshaft resizebg
+fi
+
 exit 0

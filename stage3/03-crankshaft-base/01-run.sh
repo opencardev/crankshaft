@@ -112,6 +112,8 @@ install -m 644 files/opt/crankshaft/wallpaper/wallpaper.png                   "$
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-night.png             "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-classic.png           "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-classic-night.png     "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
+install -m 644 files/opt/crankshaft/wallpaper/wallpaper-christmas.png         "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
+install -m 644 files/opt/crankshaft/wallpaper/wallpaper-firework.png          "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/wallpaper/camera-overlay.png              "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"
 install -m 644 files/opt/crankshaft/cam_overlay/overlay.png                   "${ROOTFS_DIR}/opt/crankshaft/wallpaper/usbcamera-overlay.png"
 install -m 644 files/opt/crankshaft/wallpaper/wallpaper-eq.png                "${ROOTFS_DIR}/opt/crankshaft/wallpaper/"

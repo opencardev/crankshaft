@@ -49,6 +49,20 @@ if [ ! -f /boot/crankshaft/wallpaper-classic-night.png ] || [ ! -s /boot/cranksh
     /usr/local/bin/crankshaft filesystem boot lock
 fi
 
+if [ ! -f /boot/crankshaft/wallpaper-christmas.png ] || [ ! -s /boot/crankshaft/wallpaper-christmas.png ]; then
+    log_echo "Place default wallpaper-christmas.png"
+    /usr/local/bin/crankshaft filesystem boot unlock
+    cp /opt/crankshaft/wallpaper/wallpaper-christmas.png /boot/crankshaft/
+    /usr/local/bin/crankshaft filesystem boot lock
+fi
+
+if [ ! -f /boot/crankshaft/wallpaper-firework.png ] || [ ! -s /boot/crankshaft/wallpaper-firework.png ]; then
+    log_echo "Place default wallpaper-firework.png"
+    /usr/local/bin/crankshaft filesystem boot unlock
+    cp /opt/crankshaft/wallpaper/wallpaper-firework.png /boot/crankshaft/
+    /usr/local/bin/crankshaft filesystem boot lock
+fi
+
 if [ ! -f /boot/crankshaft/wallpaper-eq.png ] || [ ! -s /boot/crankshaft/wallpaper-eq.png ]; then
     log_echo "Place default wallpaper-eq.png"
     /usr/local/bin/crankshaft filesystem boot unlock

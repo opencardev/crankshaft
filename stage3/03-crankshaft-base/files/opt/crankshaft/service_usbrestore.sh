@@ -249,6 +249,12 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
                 crankshaft lightsensor enable
             fi
 
+            # Enable splash dirung boot
+            mount -o remount,rw /boot
+            sed -i 's/splash //' /boot/cmdline.txt
+            sed -i 's/$/ splash/' /boot/cmdline.txt
+            mount -o remount,ro /boot
+
             # set done
             mount -o remount,rw /
             touch /etc/cs_backup_restore_done
@@ -264,6 +270,11 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
             log_echo "No Backup found on $DEVICE (${LABEL}) - skip ..."
         fi
     done
+    # Enable splash dirung boot
+    mount -o remount,rw /boot
+    sed -i 's/splash //' /boot/cmdline.txt
+    sed -i 's/$/ splash/' /boot/cmdline.txt
+    mount -o remount,ro /boot
 else
     echo "${RESET}" > /dev/tty3
     echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
@@ -273,4 +284,3 @@ else
 fi
 
 exit 0
-

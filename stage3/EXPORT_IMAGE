@@ -1,4 +1,4 @@
-IMG_SUFFIX="-ng-$BUILDHASH"
+IMG_SUFFIX="-rpi4-$BUILDHASH"
 if [ "${USE_QEMU}" = "1" ]; then
 	export IMG_SUFFIX="${IMG_SUFFIX}-qemu"
 fi

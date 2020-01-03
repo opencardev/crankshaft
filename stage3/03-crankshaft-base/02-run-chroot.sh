@@ -139,15 +139,8 @@ rm /lib/systemd/system/apt-daily-upgrade.service
 rm /etc/systemd/system/timers.target.wants/apt-daily.timer
 rm /etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer
 rm /lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
-rm /lib/systemd/system/alsa-restore.service
-rm /lib/systemd/system/alsa-state.service
-rm /lib/systemd/system/basic.target.wants/alsa-restore.service
-rm /lib/systemd/system/basic.target.wants/alsa-state.service
 rm /lib/systemd/system/apply_noobs_os_config.service
-rm /lib/systemd/system/wifi-country.service
-rm /lib/systemd/system/regenerate_ssh_host_keys.service
-rm /lib/udev/rules.d/90-alsa-restore.rules
-rm /lib/dhcpcd/dhcpcd-hooks/50-ntp.conf
+
 
 #systemctl daemon-relaod
 

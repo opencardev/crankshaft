@@ -66,6 +66,7 @@ install -m 644 files/etc/initramfs-tools/conf.d/local.conf              "${ROOTF
 install -m 755 files/etc/initramfs-tools/hooks/pv                       "${ROOTFS_DIR}/etc/initramfs-tools/hooks/"
 install -m 755 files/etc/initramfs-tools/scripts/local-top/local.sh     "${ROOTFS_DIR}/etc/initramfs-tools/scripts/local-top/"
 
+install -d "${ROOTFS_DIR}/etc/hostapd/"
 install -m 644 files/etc/default/hostapd                                "${ROOTFS_DIR}/etc/default/"
 install -m 644 files/etc/hostapd/hostapd.conf                           "${ROOTFS_DIR}/etc/hostapd/"
 install -m 644 files/etc/dnsmasq.conf                                   "${ROOTFS_DIR}/etc/"

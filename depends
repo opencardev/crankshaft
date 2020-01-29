@@ -1,6 +1,6 @@
 quilt
 parted
-realpath
+realpath:coreutils
 qemu-arm-static:qemu-user-static
 debootstrap
 zerofree
@@ -13,4 +13,7 @@ rsync
 xz:xz-utils
 curl
 xxd
-pv
+file
+git
+lsmod:kmod
+bc

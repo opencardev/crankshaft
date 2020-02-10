@@ -118,7 +118,7 @@ WIFI_UPDATE_CONFIG=1
 
 # Hotspot (if enabled the wifi client is disabled and a hotspot is opened)
 # Hotspot has now a default password (1234567890) -> changeable in /etc/hostapd/hostapd.conf if really needed!
-ENABLE_HOTSPOT=0
+ENABLE_HOTSPOT=1
 
 ### RPi Camera Module ###
 # Overlay settings

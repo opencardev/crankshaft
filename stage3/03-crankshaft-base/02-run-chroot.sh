@@ -1,18 +1,16 @@
 #!/bin/bash -e
 
+if [ -f $CONTINUE ]; then
+  set +e
+fi
+
 # Set lang
 SETLANG=en_GB
 
-sudo sed -i -e '/^#/! s/./# &/' /etc/locale.gen # disable all entries by adding # in line start
-sudo sed -i "s/^# $SETLANG.UTF-8 UTF-8/$SETLANG.UTF-8 UTF-8/" /etc/locale.gen # enable lang
-sudo dpkg-reconfigure --frontend=noninteractive locales
-sudo update-locale LANG=$SETLANG.UTF-8
-
-#link graphics libs
-ln -s /opt/vc/lib/libbrcmEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
-ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so
-ln -s /opt/vc/lib/libbrcmOpenVG.so /usr/lib/arm-linux-gnueabihf/libOpenVG.so
-ln -s /opt/vc/lib/libbrcmWFC.so /usr/lib/arm-linux-gnueabihf/libWFC.so
+sed -i -e '/^#/! s/./# &/' /etc/locale.gen # disable all entries by adding # in line start
+sed -i "s/^# $SETLANG.UTF-8 UTF-8/$SETLANG.UTF-8 UTF-8/" /etc/locale.gen # enable lang
+dpkg-reconfigure --frontend=noninteractive locales
+update-locale LANG=$SETLANG.UTF-8
 
 # we don't need to resize the root part
 sed -i 's/ init\=.*$//' /boot/cmdline.txt
@@ -38,6 +36,11 @@ echo "gpu_mem=256" >> /boot/config.txt
 echo "" >> /boot/config.txt
 echo "# Overscan fix" >> /boot/config.txt
 echo "overscan_scale=1" >> /boot/config.txt
+
+echo "" >> /boot/config.txt
+echo "dtparam=watchdog=on" >> /boot/config.txt
+
+sed -i 's/#dtoverlay=vc4-fkms-v3d/dtoverlay=vc4-fkms-v3d/' /boot/config.txt
 
 # pulseaudio
 cat /etc/pulse/csng_daemon.conf >> /etc/pulse/daemon.conf
@@ -69,15 +72,19 @@ ln -s /boot/crankshaft/triggerhappy.conf /etc/triggerhappy/triggers.d/crankshaft
 echo "CRANKSHAFT-NG" > /etc/hostname
 sed -i "s/raspberrypi/CRANKSHAFT-NG/" /etc/hosts
 
-# fix watchdog module (seems to be renamed on latest versions)
-echo "bcm2835_wdt" | sudo tee -a /etc/modules
-
 # Boost system performance
 sed -i 's/reboot.target/shutdown.target/g' /lib/systemd/system/rpi-display-backlight.service
+
+# set gpsd settings
+sed -i 's/GPSD_OPTIONS=\"\"/GPSD_OPTIONS=\"-n\"/g' /etc/default/gpsd
+echo "" >> /etc/ntp.conf
+echo "server 127.127.28.0 minpoll 4 maxpoll 4 prefer" >> /etc/ntp.conf
+echo "fudge 127.127.28.0 time1 -1.25 refid GPS" >> /etc/ntp.conf
 
 # Set default startup services state
 systemctl enable gpio2kbd.service
 systemctl enable crankshaft.service
+systemctl enable btservice.service
 systemctl enable user_startup.service
 systemctl enable devmode.service
 systemctl enable debugmode.service
@@ -99,6 +106,7 @@ systemctl enable pulseaudio.service
 systemctl disable rpi-display-backlight.service
 systemctl enable rpi-display-backlight.service
 systemctl enable hotspot.service
+systemctl enable ofono.service
 systemctl enable alsastaterestore.service
 systemctl enable systemd-timesyncd.service
 systemctl enable networking.service
@@ -107,6 +115,7 @@ systemctl enable lightsensor.service
 systemctl enable i2ccheck.service
 systemctl enable wpa-monitor.service
 systemctl enable custombrightness.service
+systemctl enable gpsd.service
 systemctl disable hotspot-monitor.service
 systemctl disable wpa_supplicant.service
 systemctl disable hwclock-load.service
@@ -129,6 +138,9 @@ systemctl disable raspi-config.service
 systemctl disable systemd-fsck@.service
 systemctl disable smbd.service
 systemctl disable nmbd.service
+systemctl disable gldriver-test.service
+systemctl disable dphys-swapfile.service
+systemctl disable systemd-timesyncd.service
 
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket
@@ -266,3 +278,5 @@ version=`cat ./exfat-nofuse/dkms.conf | grep PACKAGE_VERSION | cut -d= -f2 | sed
 mv exfat-nofuse exfat-$version
 
 dkms add -m exfat -v $version
+
+exit 0

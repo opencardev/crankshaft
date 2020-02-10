@@ -50,7 +50,7 @@ fi
 # callable functions
 show_clear_screen() {
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
-    sleep 1
+    #sleep 1
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
     chvt 3
     printf "\033[2J" > /dev/tty3 # clear screen
@@ -60,7 +60,7 @@ show_clear_screen() {
 
 show_screen() {
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
-    sleep 1
+    #sleep 1
     plymouth --hide-splash > /dev/null 2>&1 # hide the boot splash
     chvt 3
     log_echo "Show Screen"

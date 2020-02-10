@@ -7,12 +7,6 @@ console-setup   console-setup/codeset47 select  Guess optimal character set
 # Font for the console:
 # Choices: Fixed, Goha, GohaClassic, Terminus, TerminusBold, TerminusBoldVGA, VGA, Do not change the boot/kernel font, Let the system select a suitable font
 console-setup   console-setup/fontface47        select  Do not change the boot/kernel font
-# Geographic area:
-# Choices: Africa, America, Antarctica, Australia, Arctic Ocean, Asia, Atlantic Ocean, Europe, Indian Ocean, Pacific Ocean, System V timezones, US, None of the above
-tzdata	tzdata/Areas	select	Etc
-# Time zone:
-# Choices: GMT, GMT+0, GMT+1, GMT+10, GMT+11, GMT+12, GMT+2, GMT+3, GMT+4, GMT+5, GMT+6, GMT+7, GMT+8, GMT+9, GMT-0, GMT-1, GMT-10, GMT-11, GMT-12, GMT-13, GMT-14, GMT-2, GMT-3, GMT-4, GMT-5, GMT-6, GMT-7, GMT-8, GMT-9, GMT0, Greenwich, UCT, UTC, Universal, Zulu
-tzdata	tzdata/Zones/Etc	select	UTC
 # Key to function as AltGr:
 # Choices: The default for the keyboard layout, No AltGr key, Right Alt (AltGr), Right Control, Right Logo key, Menu key, Left Alt, Left Logo key, Keypad Enter key, Both Logo keys, Both Alt keys
 keyboard-configuration	keyboard-configuration/altgr	select	The default for the keyboard layout
@@ -21,7 +15,7 @@ keyboard-configuration	keyboard-configuration/altgr	select	The default for the k
 keyboard-configuration	keyboard-configuration/model	select	Generic 105-key (Intl) PC
 # Keymap to use:
 # Choices: American English, Albanian, Arabic, Asturian, Bangladesh, Belarusian, Bengali, Belgian, Bosnian, Brazilian, British English, Bulgarian, Bulgarian (phonetic layout), Burmese, Canadian French, Canadian Multilingual, Catalan, Chinese, Croatian, Czech, Danish, Dutch, Dvorak, Dzongkha, Esperanto, Estonian, Ethiopian, Finnish, French, Georgian, German, Greek, Gujarati, Gurmukhi, Hebrew, Hindi, Hungarian, Icelandic, Irish, Italian, Japanese, Kannada, Kazakh, Khmer, Kirghiz, Korean, Kurdish (F layout), Kurdish (Q layout), Lao, Latin American, Latvian, Lithuanian, Macedonian, Malayalam, Nepali, Northern Sami, Norwegian, Persian, Philippines, Polish, Portuguese, Punjabi, Romanian, Russian, Serbian (Cyrillic), Sindhi, Sinhala, Slovak, Slovenian, Spanish, Swedish, Swiss French, Swiss German, Tajik, Tamil, Telugu, Thai, Tibetan, Turkish (F layout), Turkish (Q layout), Ukrainian, Uyghur, Vietnamese
-keyboard-configuration	keyboard-configuration/xkb-keymap	select	gb
+keyboard-configuration	keyboard-configuration/xkb-keymap	select	${KEYBOARD_KEYMAP}
 # Compose key:
 # Choices: No compose key, Right Alt (AltGr), Right Control, Right Logo key, Menu key, Left Logo key, Caps Lock
 keyboard-configuration	keyboard-configuration/compose	select	No compose key
@@ -29,4 +23,4 @@ keyboard-configuration	keyboard-configuration/compose	select	No compose key
 keyboard-configuration	keyboard-configuration/ctrl_alt_bksp	boolean	true
 # Keyboard layout:
 # Choices: English (UK), English (UK) - English (UK\, Colemak), English (UK) - English (UK\, Dvorak with UK punctuation), English (UK) - English (UK\, Dvorak), English (UK) - English (UK\, Macintosh international), English (UK) - English (UK\, Macintosh), English (UK) - English (UK\, extended WinKeys), English (UK) - English (UK\, international with dead keys), Other
-keyboard-configuration  keyboard-configuration/variant  select  English (UK)
+keyboard-configuration  keyboard-configuration/variant  select  ${KEYBOARD_LAYOUT}

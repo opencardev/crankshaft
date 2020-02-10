@@ -15,6 +15,7 @@ install -m 644 files/etc/pulse/csng_daemon.conf                         "${ROOTF
 install -m 644 files/etc/pulse/csng_default.pa                          "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/pulse/csng_system.pa                           "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/systemd/system/openauto.service                "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/btservice.service               "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/crankshaft.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/daymode.service                 "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/daymode.timer                   "${ROOTFS_DIR}/etc/systemd/system/"
@@ -172,4 +173,4 @@ install -m 644 files/lib/dhcpcd/dhcpcd-hooks/20-resolv.conf             "${ROOTF
 install -m 644 files/lib/systemd/system/dhcpcd.service                  "${ROOTFS_DIR}/lib/systemd/system/"
 
 #qt5
-pv -p  -w 80 files/qt5/Qt5_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/
+tar -xJf files/qt5/Qt5_OpenGLES2.tar.xz -C ${ROOTFS_DIR}/

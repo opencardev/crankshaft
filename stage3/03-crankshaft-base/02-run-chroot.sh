@@ -38,8 +38,17 @@ echo "# Overscan fix" >> /boot/config.txt
 echo "overscan_scale=1" >> /boot/config.txt
 
 echo "" >> /boot/config.txt
+echo "# Enable watchdog" >> /boot/config.txt
 echo "dtparam=watchdog=on" >> /boot/config.txt
 
+echo "" >> /boot/config.txt
+echo "# Boot time improvements" >> /boot/config.txt
+echo "boot_delay=0" >> /boot/config.txt
+echo "initial_turbo=30" >> /boot/config.txt
+echo "start_cd=1" >> /boot/config.txt
+echo "#dtoverlay=sdtweak,overclock_50=100" >> /boot/config.txt
+
+# enable vc4 for rpi3 as well
 sed -i 's/#dtoverlay=vc4-fkms-v3d/dtoverlay=vc4-fkms-v3d/' /boot/config.txt
 
 # pulseaudio
@@ -116,6 +125,7 @@ systemctl enable i2ccheck.service
 systemctl enable wpa-monitor.service
 systemctl enable custombrightness.service
 systemctl enable gpsd.service
+systemctl enable watchdog.service
 systemctl disable hotspot-monitor.service
 systemctl disable wpa_supplicant.service
 systemctl disable hwclock-load.service
@@ -141,6 +151,7 @@ systemctl disable nmbd.service
 systemctl disable gldriver-test.service
 systemctl disable dphys-swapfile.service
 systemctl disable systemd-timesyncd.service
+systemctl disable systemd-fsck@dev-mmcblk0p1.service
 
 rm /lib/systemd/system/systemd-rfkill.service
 rm /lib/systemd/system/systemd-rfkill.socket

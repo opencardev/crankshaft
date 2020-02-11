@@ -3,4 +3,4 @@ libboost-chrono1.67.0 libboost-atomic1.67.0 libpulse-mainloop-glib0 libfontconfi
 librtaudio6 fbi libts0  wiringpi insserv watchdog pulseaudio evtest mpg321 gstreamer1.0-plugins-base
 gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad gstreamer1.0-pulseaudio gstreamer1.0-tools gstreamer1.0-plugins-base-apps
 libjpeg9 libtag1v5 libgps23 dos2unix triggerhappy locate eyed3 plymouth cpufrequtils libraspberrypi0 libgles2 libdouble-conversion1
-gpsd ntp hostapd dnsmasq
+gpsd ntp hostapd dnsmasq i2c-tools

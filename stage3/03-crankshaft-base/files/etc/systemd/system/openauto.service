@@ -2,6 +2,7 @@
  Description=Crankshaft Android Auto Headunit
  After=usbdetect.service usbrestore.service pulseaudio.service
  Before=timerstart.service
+ Conflicts=plymouth.service
 
 [Service]
  Type=simple

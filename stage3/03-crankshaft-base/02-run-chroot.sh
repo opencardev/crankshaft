@@ -112,6 +112,7 @@ systemctl enable timerstart.service
 systemctl enable regensshkeys.service
 systemctl enable ssh.service
 systemctl enable pulseaudio.service
+systemctl enable pacheck.service
 systemctl disable rpi-display-backlight.service
 systemctl enable rpi-display-backlight.service
 systemctl enable hotspot.service
@@ -169,7 +170,8 @@ rm /lib/systemd/system/apply_noobs_os_config.service
 
 # set custom boot splash
 #plymouth-set-default-theme crankshaft
-plymouth-set-default-theme csnganimation
+#plymouth-set-default-theme csnganimation
+plymouth-set-default-theme tribar
 
 # create lib cache
 ldconfig

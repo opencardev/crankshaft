@@ -116,7 +116,6 @@ systemctl enable pacheck.service
 systemctl disable rpi-display-backlight.service
 systemctl enable rpi-display-backlight.service
 systemctl enable hotspot.service
-systemctl enable ofono.service
 systemctl enable alsastaterestore.service
 systemctl enable systemd-timesyncd.service
 systemctl enable networking.service

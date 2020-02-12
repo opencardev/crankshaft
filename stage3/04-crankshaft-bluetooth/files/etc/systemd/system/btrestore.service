@@ -1,10 +1,9 @@
 [Unit]
  Description=Crankshaft Bluetooth Pairing Restore Service
- Before=bluetooth.target
+ Before=bluetooth.service
 
 [Service]
- Type=simple
- Restart=on-failure
+ Type=oneshot
  User=pi
  WorkingDirectory=/home/pi
  ExecStart=/opt/crankshaft/service_btrestore.sh

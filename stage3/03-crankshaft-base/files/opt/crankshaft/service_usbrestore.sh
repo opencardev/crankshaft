@@ -77,7 +77,7 @@ if [ ! -f /etc/cs_backup_restore_done ]; then
         echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
         log_echo "Checking for cs backups to restore..."
         log_echo "Checking if backup folder is present on ${DEVICE} (${LABEL} / ${FSTYPE}) ..."
-        sleep 2
+        #sleep 2
         if [ -d ${FSMOUNTPOINT}/cs-backup/${SERIAL} ]; then
             show_screen
             show_cursor

@@ -6,6 +6,7 @@ install -m 644 files/etc/systemd/system/btdevicedetect.service          "${ROOTF
 install -m 644 files/etc/systemd/system/btrestore.service               "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/csng-bluetooth.service          "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/dbus-1/system.d/bluetooth2.conf                "${ROOTFS_DIR}/etc/dbus-1/system.d/"
+install -m 644 files/etc/dbus-1/system.d/ofono2.conf                    "${ROOTFS_DIR}/etc/dbus-1/system.d/"
 install -m 644 files/etc/dbus-1/system.d/pulse-bt.conf                  "${ROOTFS_DIR}/etc/dbus-1/system.d/"
 
 # /opt

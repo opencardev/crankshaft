@@ -11,6 +11,7 @@ install -m 755 files/opt/crankshaft/crankshaft_default_env.sh           "${ROOTF
 install -d "${ROOTFS_DIR}/boot/crankshaft/custom"
 
 # /etc
+install -d "${ROOTFS_DIR}/etc/systemd/system/systemd-udevd.service.d"
 install -m 644 files/etc/pulse/csng_daemon.conf                         "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/pulse/csng_default.pa                          "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/pulse/csng_system.pa                           "${ROOTFS_DIR}/etc/pulse/"
@@ -50,6 +51,7 @@ install -m 644 files/etc/systemd/system/alsastaterestore.service        "${ROOTF
 install -m 644 files/etc/systemd/system/lightsensor.service             "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/i2ccheck.service                "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/wpa-monitor.service             "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/systemd-udevd.service.d/override.conf "${ROOTFS_DIR}/etc/systemd/system/systemd-udevd.service.d"
 install -m 644 files/etc/udev/rules.d/10-gpio2kbd.rules                 "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.rules                  "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.master                 "${ROOTFS_DIR}/etc/udev/rules.d/"

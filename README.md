@@ -6,10 +6,7 @@ https://getcrankshaft.com/
 # Docker build image
 
 - Ensure binfmt support installed [binfmt-support](binfmt-misc.md)
-- Clone Prebuilts
-``` bash
-git clone https://github.com/opencardev/prebuilts.git
-```
+
 - Create config for pi-gen
 ```bash
 cp config.example config

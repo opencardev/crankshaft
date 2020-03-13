@@ -3,77 +3,167 @@
 KERNEL=="sd*", GOTO="SKIP_DEVICE"
 KERNEL=="sg*", GOTO="SKIP_DEVICE"
 SUBSYSTEM!="usb", GOTO="SKIP_DEVICE"
-#Acer
+### Allwinner
+SUBSYSTEM=="usb", ATTR{idVendor}=="1F3A", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Amlogic
+SUBSYSTEM=="usb", ATTR{idVendor}=="1b8e", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### AnyDATA
+SUBSYSTEM=="usb", ATTR{idVendor}=="16D5", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Archos
+SUBSYSTEM=="usb", ATTR{idVendor}=="0E79", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Acer
 SUBSYSTEM=="usb", ATTR{idVendor}=="0502", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#ASUS
+### ASUS
 SUBSYSTEM=="usb", ATTR{idVendor}=="0b05", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Dell
+### BYD
+SUBSYSTEM=="usb", ATTR{idVendor}=="1D91", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Compal
+SUBSYSTEM=="usb", ATTR{idVendor}=="04B7", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Compalcomm
+SUBSYSTEM=="usb", ATTR{idVendor}=="1219", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Dell
 SUBSYSTEM=="usb", ATTR{idVendor}=="413c", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Foxconn
+### ECS
+SUBSYSTEM=="usb", ATTR{idVendor}=="03fc", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### EMERGING_TECH
+SUBSYSTEM=="usb", ATTR{idVendor}=="297F", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Emerson
+SUBSYSTEM=="usb", ATTR{idVendor}=="2207", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Foxconn
 SUBSYSTEM=="usb", ATTR{idVendor}=="0489", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Fujitsu
+### Fujitsu Toshiba
 SUBSYSTEM=="usb", ATTR{idVendor}=="04c5", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Fujitsu Toshiba
-SUBSYSTEM=="usb", ATTR{idVendor}=="04c5", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Garmin-Asus
+### Funai
+SUBSYSTEM=="usb", ATTR{idVendor}=="0F1C", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Garmin-Asus
 SUBSYSTEM=="usb", ATTR{idVendor}=="091e", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Google
+### Google
 SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Haier
+### Gigabyte
+SUBSYSTEM=="usb", ATTR{idVendor}=="0414", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Gigaset
+SUBSYSTEM=="usb", ATTR{idVendor}=="1E85", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### GIONEE
+SUBSYSTEM=="usb", ATTR{idVendor}=="271D", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Haier
 SUBSYSTEM=="usb", ATTR{idVendor}=="201E", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Hisense
+### Hisense
 SUBSYSTEM=="usb", ATTR{idVendor}=="109b", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#HTC
+### HTC
 SUBSYSTEM=="usb", ATTR{idVendor}=="0bb4", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Huawei
+### Huawei
 SUBSYSTEM=="usb", ATTR{idVendor}=="12d1", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#K-Touch
+### Harris
+SUBSYSTEM=="usb", ATTR{idVendor}=="19A5", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Honeywell
+SUBSYSTEM=="usb", ATTR{idVendor}=="0c2e", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### HP
+SUBSYSTEM=="usb", ATTR{idVendor}=="03f0", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### INQ Mobile
+SUBSYSTEM=="usb", ATTR{idVendor}=="2314", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Intel
+SUBSYSTEM=="usb", ATTR{idVendor}=="8087", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Intermec
+SUBSYSTEM=="usb", ATTR{idVendor}=="067e", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### IRiver
+SUBSYSTEM=="usb", ATTR{idVendor}=="2420", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Kobo
+SUBSYSTEM=="usb", ATTR{idVendor}=="2237", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### K-Touch
 SUBSYSTEM=="usb", ATTR{idVendor}=="24e3", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#KT Tech
+### KT Tech
 SUBSYSTEM=="usb", ATTR{idVendor}=="2116", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Kyocera
+### Kyocera
 SUBSYSTEM=="usb", ATTR{idVendor}=="0482", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Lenovo
+### Lenovo
 SUBSYSTEM=="usb", ATTR{idVendor}=="17ef", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#LG
+### LG
 SUBSYSTEM=="usb", ATTR{idVendor}=="1004", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Motorola
+### Lab126
+SUBSYSTEM=="usb", ATTR{idVendor}=="1949", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### LenovoMobile
+SUBSYSTEM=="usb", ATTR{idVendor}=="2006", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Lumigon
+SUBSYSTEM=="usb", ATTR{idVendor}=="25E3", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Motorola
 SUBSYSTEM=="usb", ATTR{idVendor}=="22b8", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#MTK
+### MTK
 SUBSYSTEM=="usb", ATTR{idVendor}=="0e8d", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#NEC
+### MSI
+SUBSYSTEM=="usb", ATTR{idVendor}=="0DB0", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### NEC
 SUBSYSTEM=="usb", ATTR{idVendor}=="0409", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Nook
+### Nook
 SUBSYSTEM=="usb", ATTR{idVendor}=="2080", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Nvidia
+### Nokia
+SUBSYSTEM=="usb", ATTR{idVendor}=="0421", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Nvidia
 SUBSYSTEM=="usb", ATTR{idVendor}=="0955", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#OTGV
+### OTGV
 SUBSYSTEM=="usb", ATTR{idVendor}=="2257", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Pantech
+### OPPO
+SUBSYSTEM=="usb", ATTR{idVendor}=="22D9", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### On-The-Go-Video
+SUBSYSTEM=="usb", ATTR{idVendor}=="2257", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### OUYA
+SUBSYSTEM=="usb", ATTR{idVendor}=="2836", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### One Plus
+SUBSYSTEM=="usb", ATTR{idVendor}=="2a70", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Pantech
 SUBSYSTEM=="usb", ATTR{idVendor}=="10a9", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Pegatron
+### Pegatron
 SUBSYSTEM=="usb", ATTR{idVendor}=="1d4d", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Philips
+### Philips
 SUBSYSTEM=="usb", ATTR{idVendor}=="0471", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#PMC-Sierra
+### PMC-Sierra
 SUBSYSTEM=="usb", ATTR{idVendor}=="04da", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Qualcomm
+### Positivo
+SUBSYSTEM=="usb", ATTR{idVendor}=="1662", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Prestigio
+SUBSYSTEM=="usb", ATTR{idVendor}=="29e4", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Qualcomm
 SUBSYSTEM=="usb", ATTR{idVendor}=="05c6", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#SK Telesys
+### Qisda
+SUBSYSTEM=="usb", ATTR{idVendor}=="1D45", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Quanta
+SUBSYSTEM=="usb", ATTR{idVendor}=="0408", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Rockchip
+SUBSYSTEM=="usb", ATTR{idVendor}=="2207", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### SK Telesys
 SUBSYSTEM=="usb", ATTR{idVendor}=="1f53", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Samsung
+### Samsung
 SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Sharp
+### Sharp
 SUBSYSTEM=="usb", ATTR{idVendor}=="04dd", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Sony
+### Sony
 SUBSYSTEM=="usb", ATTR{idVendor}=="054c", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Sony Ericsson
+### Sony Ericsson
 SUBSYSTEM=="usb", ATTR{idVendor}=="0fce", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Teleepoch
+### Smartisan
+SUBSYSTEM=="usb", ATTR{idVendor}=="29a9", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Teleepoch
 SUBSYSTEM=="usb", ATTR{idVendor}=="2340", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#Toshiba
+### Toshiba
 SUBSYSTEM=="usb", ATTR{idVendor}=="0930", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
-#ZTE
+### T & A Mobile Phones' USB Vendor ID
+SUBSYSTEM=="usb", ATTR{idVendor}=="1BBB", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### TechFaith
+SUBSYSTEM=="usb", ATTR{idVendor}=="1d09", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Texas Instruments
+SUBSYSTEM=="usb", ATTR{idVendor}=="0451", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Unowhy
+SUBSYSTEM=="usb", ATTR{idVendor}=="2A49", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Vizio
+SUBSYSTEM=="usb", ATTR{idVendor}=="E040", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Wacom
+SUBSYSTEM=="usb", ATTR{idVendor}=="0531", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Xiaomi
+SUBSYSTEM=="usb", ATTR{idVendor}=="2717", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### YotaDevices
+SUBSYSTEM=="usb", ATTR{idVendor}=="2916", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### Yulong Coolpad
+SUBSYSTEM=="usb", ATTR{idVendor}=="1EBF", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
+### ZTE
 SUBSYSTEM=="usb", ATTR{idVendor}=="19d2", MODE="0666", GROUP="plugdev", RUN+="/opt/crankshaft/usb_action.sh add '$env{ID_MODEL}' '%E{DEVNAME}'"
 
 # Disconnect action

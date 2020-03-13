@@ -98,3 +98,71 @@ update_issue() {
 	echo -e "Raspberry Pi reference ${IMG_DATE}\nGenerated using ${PI_GEN}, ${PI_GEN_REPO}, ${GIT_HASH}, ${1}" > "${ROOTFS_DIR}/etc/rpi-issue"
 }
 export -f update_issue
+
+
+
+run_flappy(){
+
+    command="echo 'No parameters passed' &&
+        echo 'run_flappy(command, reties_number = 5, sleep = 1' &&
+        echo "exiting..." &&
+        exit 1"
+
+    retries=5
+    sleep=1
+
+    if [ $# -gt 3 ]; then
+        sleep=$3
+    fi
+
+    if [ $# -gt 2 ]; then
+        retries=$2
+    fi
+
+    if [ $# -gt 0 ]; then
+        command=$1
+    fi
+
+    counter=0
+    while :
+    do
+        #echo $command
+
+        set +e
+        ret=$(eval $command) && returncode=$? || returncode=$?
+        set -e
+
+        let counter=counter+1
+
+        if [ $returncode -eq 0 ]
+        then
+	    echo $ret
+            break
+        fi
+
+
+        #echo "command exited with non zero return code: ${returncode}"
+
+        if [ $counter -gt $retries ]
+        then
+	    echo $command
+            echo "reached maximimu retries"
+            echo exiting
+            exit $returncode
+            break
+        fi
+
+        sleep $sleep
+        #echo "Restarting ${counter}"
+
+    done
+}
+
+b="-la"
+
+a=$(run_flappy 'ls ${b}')
+echo $a
+#exit 1
+
+export -f run_flappy
+

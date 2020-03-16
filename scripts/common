@@ -99,7 +99,20 @@ update_issue() {
 }
 export -f update_issue
 
+check_and_create_loop_device(){
+    if [ ! -b /dev/loop0 ]; then
+        mknod /dev/loop0 b 7 0
+        mknod /dev/loop1 b 7 0
+        mknod /dev/loop2 b 7 0
+        mknod /dev/loop3 b 7 0
+        mknod /dev/loop4 b 7 0
+        mknod /dev/loop5 b 7 0
+        mknod /dev/loop6 b 7 0
+        mknod /dev/loop7 b 7 0
+    fi
+}
 
+export -f check_and_create_loop_device
 
 run_flappy(){
 

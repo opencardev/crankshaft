@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-IMG_FILE="${STAGE_WORK_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}.img"
-INFO_FILE="${STAGE_WORK_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}.info"
-MD5_FILE="${STAGE_WORK_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}.img.md5"
+IMG_FILE="${IMG_FILE:?"ERROR"}"
+INFO_FILE="${IMG_FILE%.img}.info"
+MD5_FILE="${IMG_FILE}.md5"
 
 on_chroot << EOF
 hardlink -t /usr/share/doc
@@ -81,11 +81,11 @@ unmount_image "${IMG_FILE}"
 
 mkdir -p "${DEPLOY_DIR}"
 
-rm -f "${DEPLOY_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}.zip"
+rm -f "${DEPLOY_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.zip"
 
 pushd "${STAGE_WORK_DIR}" > /dev/null
 md5sum "$(basename "${IMG_FILE}")" > "$(basename "${MD5_FILE}")"
-zip "${DEPLOY_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}.zip" \
+zip "${DEPLOY_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.zip" \
         "$(basename "${IMG_FILE}")" \
         "$(basename "${MD5_FILE}")"
 popd > /dev/null

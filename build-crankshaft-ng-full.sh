@@ -52,9 +52,9 @@ echo "**************************************************************************
 echo "Start build..."
 echo ""
 echo "***************************************************************************************"
-echo "Build Hash:     "$BUILDHASH
-echo "Build Date:     "$TODAY_DATE
-echo "Build Branch:   "$BUILDBRANCH
+echo "    Build Hash: "$BUILDHASH
+echo "    Build Date: "$TODAY_DATE
+echo "  Build Branch: "$BUILDBRANCH
 echo "Build Override: "$BUILD_RELEASE_FROM_DEV
 echo "***************************************************************************************"
 echo "Current commit crankshaft-ng:"

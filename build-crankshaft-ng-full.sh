@@ -13,7 +13,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # set date
-TODAY_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"}"
+TODAY_DATE="${IMG_DATE:-"$(date +%Y%m%d)"}"
 
 BUILDHASH=`git rev-parse --short HEAD | awk '{print toupper($0)}'`
 BUILDBRANCH=`cat ./.git/HEAD | cut -d'/' -f3`
@@ -31,14 +31,11 @@ if [ $BUILD_RELEASE_FROM_DEV -eq 1 ] && [ "$BUILDBRANCH" != "csng-dev" ]; then
 fi
 
 # enable all build stages
-rm ./stage0/SKIP &>/dev/null
-rm ./stage1/SKIP &>/dev/null
-rm ./stage2/SKIP &>/dev/null
-rm ./stage3/SKIP &>/dev/null
-rm ./stage4/SKIP &>/dev/null
+/bin/rm -f ./stage?/SKIP &>/dev/null
 
 # set build name
-echo "IMG_NAME='crankshaft'" > config
+# Is/should be set in the config file already.
+# echo "IMG_NAME='crankshaft'" > config
 
 # unmount possible left mounts
 ./build-unmount.sh
@@ -52,9 +49,9 @@ echo "**************************************************************************
 echo "Start build..."
 echo ""
 echo "***************************************************************************************"
-echo "Build Hash:     "$BUILDHASH
-echo "Build Date:     "$TODAY_DATE
-echo "Build Branch:   "$BUILDBRANCH
+echo "    Build Hash: "$BUILDHASH
+echo "    Build Date: "$TODAY_DATE
+echo "  Build Branch: "$BUILDBRANCH
 echo "Build Override: "$BUILD_RELEASE_FROM_DEV
 echo "***************************************************************************************"
 echo "Current commit crankshaft-ng:"

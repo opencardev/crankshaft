@@ -13,7 +13,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # set date
-TODAY_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"}"
+TODAY_DATE="${IMG_DATE:-"$(date +%Y%m%d)"}"
 
 BUILDHASH=`git rev-parse --short HEAD | awk '{print toupper($0)}'`
 BUILDBRANCH=`cat ./.git/HEAD | cut -d'/' -f3`
@@ -54,9 +54,9 @@ echo "**************************************************************************
 echo "Start build..."
 echo ""
 echo "***************************************************************************************"
-echo "Build Hash:     "$BUILDHASH
-echo "Build Date:     "$TODAY_DATE
-echo "Build Branch:   "$BUILDBRANCH
+echo "    Build Hash: "$BUILDHASH
+echo "    Build Date: "$TODAY_DATE
+echo "  Build Branch: "$BUILDBRANCH
 echo "Build Override: "$BUILD_RELEASE_FROM_DEV
 echo "***************************************************************************************"
 echo "Current commit crankshaft-ng:"

@@ -133,11 +133,14 @@ if [ -z "${IMG_NAME}" ]; then
 fi
 
 export USE_QEMU="${USE_QEMU:-0}"
-export IMG_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"}"
+export IMG_DATE="${IMG_DATE:-"$(date +%Y%m%dT%H%M%S)"}"
+export IMG_FILENAME="${IMG_NAME}-${IMG_DATE}"
 
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export SCRIPT_DIR="${BASE_DIR}/scripts"
-export WORK_DIR="${WORK_DIR:-"${BASE_DIR}/work/${IMG_DATE}-${IMG_NAME}"}"
+
+export WORK_DIR="${WORK_DIR:-"${BASE_DIR}/work/${IMG_FILENAME}"}"
+
 export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR}/deploy"}
 export LOG_FILE="${WORK_DIR}/build.log"
 
@@ -145,6 +148,7 @@ export BASE_DIR
 
 export CLEAN
 export IMG_NAME
+export IMG_FILENAME
 export APT_PROXY
 
 export STAGE
@@ -169,7 +173,6 @@ export QUILT_REFRESH_ARGS="-p ab"
 source "${SCRIPT_DIR}/common"
 # shellcheck source=scripts/dependencies_check
 source "${SCRIPT_DIR}/dependencies_check"
-
 
 dependencies_check "${BASE_DIR}/depends"
 

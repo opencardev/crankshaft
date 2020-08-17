@@ -1,8 +1,25 @@
+# Things that you'll change that we don't need in the repo.
+
+# I ignore the ignore 'cause if someone changes it then it shouldn't
+# go back into the stream.
+.gitignore
+
+# OS flotsam that should be ignored for the purposes of git.
+*/.DS_Store
+
+# If you change your config file, we don't care.
+config
+*.secret
+
+# Now the things that may end up in the workspace
+
+# Workspace flotsam that should be ignored for the purposes of git.
+
+# Output spaces that we don't care about.
 deploy/*
 work/*
-config
-SKIP
-SKIP_IMAGES
+
+# I'm not sure why we ignore these....
 prebuilts/*
 stage2/03-crankshaft-base/files/usr/local/bin/autoapp
 stage2/03-crankshaft-base/files/usr/local/bin/btservice
@@ -12,3 +29,10 @@ stage2/03-crankshaft-base/files/etc/udev/rules.d/51-android.rules
 stage2/03-crankshaft-base/files/etc/udev/rules.d/51-android.master
 stage2/03-crankshaft-base/files/qt5/Qt5_OpenGLES2.tar.xz
 stage2/03-crankshaft-base/files/qt5/Qt5_libs_OpenGLES2.tar.xz
+
+# Here are flags that you might set that we want to ignore.
+stage?/DEBUG
+stage?/TRACE
+
+stage?/SKIP
+stage?/SKIP_IMAGES

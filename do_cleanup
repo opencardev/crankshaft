@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Remove the crankshaft container.
+docker rm -v crankshaft
+
+# This command is pretty cut-throat, it nukes all images it finds.
+# docker images -aq  | xargs -l1 docker rmi
+
+# These four lines will remove unused containers, images, and storage volumes
+# before asking the docker system to prune off anything else not being used.
+docker container prune --force
+docker image prune --force
+docker volume prune --force
+docker system prune --force

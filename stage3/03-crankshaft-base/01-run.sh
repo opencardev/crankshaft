@@ -175,4 +175,4 @@ install -m 644 files/lib/dhcpcd/dhcpcd-hooks/20-resolv.conf             "${ROOTF
 install -m 644 files/lib/systemd/system/dhcpcd.service                  "${ROOTFS_DIR}/lib/systemd/system/"
 
 #qt5
-tar -xJf files/qt5/Qt5_OpenGLES2.tar.xz -C ${ROOTFS_DIR}/
+tar -xf files/qt5/Qt5_OpenGLES2.tar.xz -C ${ROOTFS_DIR}/

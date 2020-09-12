@@ -1,15 +1,24 @@
 name: ci
 
 on:
+#  schedule:
+#    - cron: '0 10 * * *' # everyday at 10am
   push:
+    branches:
+      - '**'
+    tags:
+      - 'v*.*.*'
+  pull_request:
 
 jobs:
-  qemu:
+  docker:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v2
+        with:
+          submodules: true
       -
         name: Set up QEMU
         id: qemu
@@ -18,5 +27,32 @@ jobs:
           image: tonistiigi/binfmt:latest
           platforms: all
       -
-        name: Available platforms
-        run: echo ${{ steps.qemu.outputs.platforms }}
+        name: Copy Example Config
+        id: configure
+        run: cp config.example config
+      -
+        name: Run build
+        id: build-docker
+        run: bash ./build-docker.sh
+      - 
+        name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
+      - 
+        name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./my-artifact.zip
+          asset_name: my-artifact.zip
+          asset_content_type: application/zip

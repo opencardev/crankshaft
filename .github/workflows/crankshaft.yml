@@ -39,7 +39,7 @@ jobs:
       - 
         name: Set the version
         id: set_version
-        run: sed -i "s/crankshaft-ng/${version}/g" config
+        run: sed -i "s|crankshaft-ng|${version}|g" config
         env:
           version: ${{ steps.get_version.outputs.version }}
       -

@@ -29,7 +29,19 @@ jobs:
       -
         name: Copy Example Config
         id: configure
-        run: cp config.example config
+        run: | 
+          cp config.example config
+      - 
+        name: Get the version
+        id: get_version
+        run: |
+          echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+      - 
+        name: Set the version
+        id: set_version
+        run: sed -i "s/crankshaft-ng/${version}/g" config
+        env:
+          version: ${{ steps.get_version.outputs.version }}
       -
         name: Run build
         id: build-docker

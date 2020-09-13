@@ -61,10 +61,11 @@ jobs:
         name: Get Name of Artifact
         id: get-artifact-name
         run: |
-          ARTIFACT_PATHNAME=$(ls *.zip | head -n 1)
+          ARTIFACT_PATHNAME=$(ls deploy/*.zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          ARTIFACT_DIRNAME=$(dirname $ARTIFACT_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
-          echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
+          echo ::set-output name=artifact_path::${ARTIFACT_DIRNAME}
       - 
         name: Upload Release Asset
         id: upload-release-asset 

@@ -8,6 +8,7 @@ on:
 #      - '**'
     tags:
       - '*.*.*'
+      - 'csng-*'
 #  pull_request:
 
 jobs:

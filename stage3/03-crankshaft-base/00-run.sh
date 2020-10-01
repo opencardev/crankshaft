@@ -18,7 +18,7 @@ echo 'KERNEL=="sg*", GOTO="SKIP_DEVICE"' >> $DEST
 echo 'SUBSYSTEM!="usb", GOTO="SKIP_DEVICE"' >> $DEST
 cat files/etc/udev/rules.d/51-android.master >> $DEST
 # Add action
-sudo sed -i 's/GROUP="plugdev"$/GROUP="plugdev", RUN+="\/opt\/crankshaft\/usb_action.sh add '\'\$env\{ID_MODEL\}\'' '\''%E\{DEVNAME\}'\''"/' $DEST
+sed -i 's/GROUP="plugdev"$/GROUP="plugdev", RUN+="\/opt\/crankshaft\/usb_action.sh add '\'\$env\{ID_MODEL\}\'' '\''%E\{DEVNAME\}'\''"/' $DEST
 # Add disconnect action
 echo '' >> $DEST
 echo '# Disconnect action' >> $DEST
@@ -78,6 +78,5 @@ chmod 644 files/usr/local/lib/libaasdk_proto.so.md5
 chmod 644 files/usr/local/bin/usbreset.md5
 
 # qt5
-# combine splitted archive
-cat $BASE_DIR/prebuilts/qt5/Qt_5123_OpenGLES2.tar.xz.part* > $BASE_DIR/prebuilts/qt5/Qt_5123_OpenGLES2.tar.xz
-mv -f $BASE_DIR/prebuilts/qt5/Qt_5123_OpenGLES2.tar.xz files/qt5/Qt5_OpenGLES2.tar.xz
+rm -rf files/qt5/Qt5_OpenGLES2.tar.xz
+cat $BASE_DIR/prebuilts/qt5/Qt_5141_OpenGLES2.tar.xz* > files/qt5/Qt5_OpenGLES2.tar.xz

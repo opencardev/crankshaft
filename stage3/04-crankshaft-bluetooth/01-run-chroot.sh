@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+if [ -f $CONTINUE ]; then
+  set +e
+fi
+
 # enable headset mode and allow auto switch between hfp and a2dp
 sed -i 's/load-module module-bluetooth-discover.*/load-module module-bluetooth-discover headset=ofono/' /etc/pulse/default.pa
 sed -i 's/load-module module-bluetooth-discover.*/load-module module-bluetooth-discover headset=ofono/' /etc/pulse/system.pa
@@ -46,3 +50,5 @@ ln -s /usr/share/doc/bluez-test-scripts/examples/test-profile /usr/local/bin/tes
 ln -s /usr/share/doc/bluez-test-scripts/examples/test-proximity /usr/local/bin/test-proximity
 ln -s /usr/share/doc/bluez-test-scripts/examples/test-sap-server /usr/local/bin/test-sap-server
 ln -s /usr/share/doc/bluez-test-scripts/examples/test-thermometer /usr/local/bin/test-thermometer
+
+exit 0

@@ -5,7 +5,7 @@ source /opt/crankshaft/crankshaft_system_env.sh
 
 splash=1
 # give pulse audio a moment to check for audio hardware
-sleep 2
+#sleep 2
 
 #
 # check outputs

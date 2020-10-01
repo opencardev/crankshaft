@@ -5,15 +5,25 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-#import gobject
-from gi.repository import GObject as gobject
+from gi.repository import GLib as glib
 
 import re
 import dbus
 import dbus.mainloop.glib
 import subprocess
 
-relevant_ifaces = [ "org.bluez.Adapter1", "org.bluez.Device1" ]
+#relevant_ifaces = [ "org.bluez.Adapter1", "org.bluez.Device1" ]
+relevant_ifaces = [ "org.bluez.Device1" ]
+
+def set_trusted(path):
+    props = dbus.Interface(bus.get_object("org.bluez", path),
+                    "org.freedesktop.DBus.Properties")
+    props.Set("org.bluez.Device1", "Trusted", True)
+
+def dev_connect(path):
+    dev = dbus.Interface(bus.get_object("org.bluez", path),
+                            "org.bluez.Device1")
+    dev.Connect()
 
 def property_changed(interface, changed, invalidated, path):
         iface = interface[interface.rfind(".") + 1:]
@@ -25,15 +35,8 @@ def interfaces_added(path, interfaces):
         for iface in interfaces:
                 if not(iface in relevant_ifaces):
                         continue
-                try:
-                        found = re.search('dev\_(..\_..\_..\_..\_..\_..)', path).group(1)
-                except AttributeError:
-                        found = '' # apply your error handling
-                mac=found.replace("_",":")
-                cmd_trust='echo "trust '+mac+' \\nquit" | bluetoothctl'
-                subprocess.call(cmd_trust, shell=True)
-                cmd_connect='echo "connect '+mac+' \\nquit" | bluetoothctl'
-                subprocess.call(cmd_connect, shell=True)
+                set_trusted(path)
+                dev_connect(path)
 
 def interfaces_removed(path, interfaces):
         for iface in interfaces:
@@ -54,5 +57,5 @@ if __name__ == '__main__':
                         dbus_interface="org.freedesktop.DBus.ObjectManager",
                         signal_name="InterfacesRemoved")
 
-        mainloop = gobject.MainLoop()
+        mainloop = glib.MainLoop()
         mainloop.run()

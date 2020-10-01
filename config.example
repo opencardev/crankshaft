@@ -1,0 +1,10 @@
+IMG_NAME='crankshaft-ng'
+ENABLE_SSH=0
+#these are the defaults uncomment to change
+#FIRST_USER_NAME=pi
+#FIRST_USER_PASS=raspberry
+# Uncomment this if a build fails and you'd like to try again
+#CONTINUE=1
+IMG_VERSION=v1-${IMG_NAME}
+IMG_FILENAME=${IMG_VERSION}
+ZIP_FILENAME=${IMG_VERSION}

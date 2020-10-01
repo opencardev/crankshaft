@@ -1,0 +1,80 @@
+name: build-crankshaft
+
+on:
+#  schedule:
+#    - cron: '0 10 * * *' # everyday at 10am
+  push:
+#    branches:
+#      - '**'
+    tags:
+      - '*.*.*'
+#  pull_request:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      -
+        name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
+      -
+        name: Copy Example Config
+        id: configure
+        run: | 
+          cp config.example config
+      - 
+        name: Get the version
+        id: get_version
+        run: |
+          echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+      - 
+        name: Set the version
+        id: set_version
+        run: sed -i "s|crankshaft-ng|${version}|g" config
+        env:
+          version: ${{ steps.get_version.outputs.version }}
+      -
+        name: Run build
+        id: build-docker
+        run: bash ./build-docker.sh
+      - 
+        name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
+      - 
+        name: Get Name of Artifact
+        id: get-artifact-name
+        run: |
+          ls -hla
+          ARTIFACT_PATHNAME=$(ls ./deploy/*.zip | head -n 1)
+          ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
+          echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
+      - 
+        name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get-artifact-name.outputs.artifact_path }}
+          asset_name: ${{ steps.get-artifact-name.outputs.artifact_filename }}
+
+          asset_content_type: application/zip

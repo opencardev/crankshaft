@@ -15,9 +15,9 @@ ENABLE_GPIO=1
 # GPIO 27,28
 
 # GPIO Setup
-DEV_PIN=4
-INVERT_PIN=15
-X11_PIN=13
+DEV_PIN=0
+INVERT_PIN=0
+X11_PIN=0
 
 # Device connected gpio (device connected 1 / else 0)
 # Note: this gpio depends NOT on ENABLE_GPIO!!!
@@ -118,7 +118,7 @@ WIFI_UPDATE_CONFIG=1
 
 # Hotspot (if enabled the wifi client is disabled and a hotspot is opened)
 # Hotspot has now a default password (1234567890) -> changeable in /etc/hostapd/hostapd.conf if really needed!
-ENABLE_HOTSPOT=0
+ENABLE_HOTSPOT=1
 
 ### RPi Camera Module ###
 # Overlay settings

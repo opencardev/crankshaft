@@ -11,10 +11,12 @@ install -m 755 files/opt/crankshaft/crankshaft_default_env.sh           "${ROOTF
 install -d "${ROOTFS_DIR}/boot/crankshaft/custom"
 
 # /etc
+install -d "${ROOTFS_DIR}/etc/systemd/system/systemd-udevd.service.d"
 install -m 644 files/etc/pulse/csng_daemon.conf                         "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/pulse/csng_default.pa                          "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/pulse/csng_system.pa                           "${ROOTFS_DIR}/etc/pulse/"
 install -m 644 files/etc/systemd/system/openauto.service                "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/btservice.service               "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/crankshaft.service              "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/daymode.service                 "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/daymode.timer                   "${ROOTFS_DIR}/etc/systemd/system/"
@@ -49,6 +51,7 @@ install -m 644 files/etc/systemd/system/alsastaterestore.service        "${ROOTF
 install -m 644 files/etc/systemd/system/lightsensor.service             "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/i2ccheck.service                "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 644 files/etc/systemd/system/wpa-monitor.service             "${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/etc/systemd/system/systemd-udevd.service.d/override.conf "${ROOTFS_DIR}/etc/systemd/system/systemd-udevd.service.d"
 install -m 644 files/etc/udev/rules.d/10-gpio2kbd.rules                 "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.rules                  "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -m 644 files/etc/udev/rules.d/51-android.master                 "${ROOTFS_DIR}/etc/udev/rules.d/"
@@ -66,6 +69,7 @@ install -m 644 files/etc/initramfs-tools/conf.d/local.conf              "${ROOTF
 install -m 755 files/etc/initramfs-tools/hooks/pv                       "${ROOTFS_DIR}/etc/initramfs-tools/hooks/"
 install -m 755 files/etc/initramfs-tools/scripts/local-top/local.sh     "${ROOTFS_DIR}/etc/initramfs-tools/scripts/local-top/"
 
+install -d "${ROOTFS_DIR}/etc/hostapd/"
 install -m 644 files/etc/default/hostapd                                "${ROOTFS_DIR}/etc/default/"
 install -m 644 files/etc/hostapd/hostapd.conf                           "${ROOTFS_DIR}/etc/hostapd/"
 install -m 644 files/etc/dnsmasq.conf                                   "${ROOTFS_DIR}/etc/"
@@ -171,4 +175,4 @@ install -m 644 files/lib/dhcpcd/dhcpcd-hooks/20-resolv.conf             "${ROOTF
 install -m 644 files/lib/systemd/system/dhcpcd.service                  "${ROOTFS_DIR}/lib/systemd/system/"
 
 #qt5
-pv -p  -w 80 files/qt5/Qt5_OpenGLES2.tar.xz | tar -xf - -C ${ROOTFS_DIR}/
+tar -xf files/qt5/Qt5_OpenGLES2.tar.xz -C ${ROOTFS_DIR}/

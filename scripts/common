@@ -9,17 +9,17 @@ bootstrap(){
 
 	export http_proxy=${APT_PROXY}
 
-	if [ "$(dpkg --print-architecture)" !=  "armhf" ]; then
+	if [ "$(dpkg --print-architecture)" !=  "armhf" ] && [ "$(dpkg --print-architecture)" !=  "aarch64" ]; then
 		BOOTSTRAP_CMD=qemu-debootstrap
 	fi
 
 	BOOTSTRAP_ARGS+=(--arch armhf)
 	BOOTSTRAP_ARGS+=(--components "main,contrib,non-free")
-	BOOTSTRAP_ARGS+=(--variant=minbase)
 	BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR}/files/raspberrypi.gpg")
 	BOOTSTRAP_ARGS+=("$@")
+	printf -v BOOTSTRAP_STR '%q ' "${BOOTSTRAP_ARGS[@]}"
 
-	capsh --drop=cap_setfcap -- "${BOOTSTRAP_CMD}" "${BOOTSTRAP_ARGS[@]}" || true
+	setarch linux32 capsh --drop=cap_setfcap -- -c "'${BOOTSTRAP_CMD}' $BOOTSTRAP_STR" || true
 
 	if [ -d "$2/debootstrap" ]; then
 		rmdir "$2/debootstrap"
@@ -90,13 +90,92 @@ on_chroot() {
 		mount --bind /sys "${ROOTFS_DIR}/sys"
 	fi
 
-	capsh --drop=cap_setfcap "--chroot=${ROOTFS_DIR}/" -- -e "$@"
+	setarch linux32 capsh --drop=cap_setfcap "--chroot=${ROOTFS_DIR}/" -- -e "$@"
 }
 export -f on_chroot
 
 update_issue() {
-	local GIT_HASH
-	GIT_HASH=$(git rev-parse HEAD)
-	echo -e "Raspberry Pi reference ${IMG_DATE}\nGenerated using pi-gen, https://github.com/RPi-Distro/pi-gen, ${GIT_HASH}, ${1}" > "${ROOTFS_DIR}/etc/rpi-issue"
+	echo -e "Raspberry Pi reference ${IMG_DATE}\nGenerated using ${PI_GEN}, ${PI_GEN_REPO}, ${GIT_HASH}, ${1}" > "${ROOTFS_DIR}/etc/rpi-issue"
 }
 export -f update_issue
+
+check_and_create_loop_device(){
+    if [ ! -b /dev/loop0 ]; then
+        mknod /dev/loop0 b 7 0
+        mknod /dev/loop1 b 7 0
+        mknod /dev/loop2 b 7 0
+        mknod /dev/loop3 b 7 0
+        mknod /dev/loop4 b 7 0
+        mknod /dev/loop5 b 7 0
+        mknod /dev/loop6 b 7 0
+        mknod /dev/loop7 b 7 0
+    fi
+}
+
+export -f check_and_create_loop_device
+
+run_flappy(){
+
+    command="echo 'No parameters passed' &&
+        echo 'run_flappy(command, reties_number = 5, sleep = 1' &&
+        echo "exiting..." &&
+        exit 1"
+
+    retries=5
+    sleep=1
+
+    if [ $# -gt 3 ]; then
+        sleep=$3
+    fi
+
+    if [ $# -gt 2 ]; then
+        retries=$2
+    fi
+
+    if [ $# -gt 0 ]; then
+        command=$1
+    fi
+
+    counter=0
+    while :
+    do
+        #echo $command
+
+        set +e
+        ret=$(eval $command) && returncode=$? || returncode=$?
+        set -e
+
+        let counter=counter+1
+
+        if [ $returncode -eq 0 ]
+        then
+	    echo $ret
+            break
+        fi
+
+
+        #echo "command exited with non zero return code: ${returncode}"
+
+        if [ $counter -gt $retries ]
+        then
+	    echo $command
+            echo "reached maximimu retries"
+            echo exiting
+            exit $returncode
+            break
+        fi
+
+        sleep $sleep
+        #echo "Restarting ${counter}"
+
+    done
+}
+
+b="-la"
+
+a=$(run_flappy 'ls ${b}')
+echo $a
+#exit 1
+
+export -f run_flappy
+

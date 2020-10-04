@@ -31,9 +31,11 @@ jobs:
         name: Get the version
         id: get_version
         run: |
+          raw=$(git branch -r --contains ${{ github.ref }})
+          branch=${raw/origin\/}
           echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
           echo ::set-output name=buildhash::$(git rev-parse --short "$GITHUB_SHA")
-          echo ::set-output name=buildbranch::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=buildbranch::${branch}
           echo ::set-output name=builddate::$(date '+%Y-%m-%d')
       - 
         name: Configure

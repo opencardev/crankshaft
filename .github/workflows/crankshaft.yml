@@ -27,23 +27,40 @@ jobs:
         with:
           image: tonistiigi/binfmt:latest
           platforms: all
-      -
-        name: Copy Example Config
-        id: configure
-        run: | 
-          cp config.example config
       - 
         name: Get the version
         id: get_version
         run: |
           echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+          echo ::set-output name=buildhash::$(git rev-parse --short "$GITHUB_SHA")
+          echo ::set-output name=buildbranch::${GITHUB_REF##*/}
+          echo ::set-output name=builddate::$(date '+%Y-%m-%d')
       - 
-        name: Set the version
-        id: set_version
-        run: sed -i "s|crankshaft-ng|${version}|g" config
+        name: Configure
+        id: configure
+        run: |
+          cat > config <<EOF
+          IMG_NAME=${buildbranch}
+          ENABLE_SSH=0
+          #these are the defaults uncomment to change
+          #FIRST_USER_NAME=pi
+          #FIRST_USER_PASS=raspberry
+          # Uncomment this if a build fails and you'd like to try again
+          #CONTINUE=1
+          IMG_VERSION=${BUILDDATE}-${IMG_NAME}-${BUILDHASH}
+          IMG_FILENAME=${IMG_VERSION}
+          ZIP_FILENAME=${IMG_VERSION}
+          BUILDHASH='${BUILDHASH}'
+          BUILDBRANCH='${BUILDBRANCH}'
+          BUILDDATE='${BUILDDATE}'
+          EOF
+          find . -type f -iname "*.sh" -exec chmod +x {} \;
         env:
           version: ${{ steps.get_version.outputs.version }}
-      -
+          BUILDHASH: ${{ steps.get_version.outputs.buildhash }}
+          BUILDBRANCH: ${{ steps.get_version.outputs.buildbranch }} 
+          BUILDDATE: ${{ steps.get_version.outputs.builddate }} 
+      - 
         name: Run build
         id: build-docker
         run: bash ./build-docker.sh
@@ -55,7 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: "Crankshaft OpenCarOS NG ${{ steps.get_version.outputs.version }} ${{ steps.get_version.outputs.builddate }}"
           draft: true
           prerelease: true
       - 
@@ -67,6 +84,18 @@ jobs:
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
+          MD5_PATHNAME=$(ls ./deploy/*.md5 | head -n 1)
+          MD5_NAME=$(basename $MD5_PATHNAME)
+          echo ::set-output name=md5_filename::${MD5_NAME}
+          echo ::set-output name=md5_path::${MD5_PATHNAME}
+          SHA1_PATHNAME=$(ls ./deploy/*.sha1 | head -n 1)
+          SHA1_NAME=$(basename $SHA1_PATHNAME)
+          echo ::set-output name=sha1_filename::${SHA1_NAME}
+          echo ::set-output name=sha1_path::${SHA1_PATHNAME}
+          SHA256_PATHNAME=$(ls ./deploy/*.sha256 | head -n 1)
+          SHA256_NAME=$(basename $SHA256_PATHNAME)
+          echo ::set-output name=sha256_filename::${SHA256_NAME}
+          echo ::set-output name=sha256_path::${SHA256_PATHNAME}
       - 
         name: Upload Release Asset
         id: upload-release-asset 
@@ -79,3 +108,39 @@ jobs:
           asset_name: ${{ steps.get-artifact-name.outputs.artifact_filename }}
 
           asset_content_type: application/zip
+      - 
+        name: Upload Release MD5
+        id: upload-release-md5 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get-artifact-name.outputs.md5_path }}
+          asset_name: ${{ steps.get-artifact-name.outputs.md5_filename }}
+
+          asset_content_type: text/plain
+      - 
+        name: Upload Release SHA1
+        id: upload-release-sha1 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get-artifact-name.outputs.sha1_path }}
+          asset_name: ${{ steps.get-artifact-name.outputs.sha1_filename }}
+
+          asset_content_type: text/plain
+      - 
+        name: Upload Release SHA256
+        id: upload-release-SHA256 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get-artifact-name.outputs.sha256_path }}
+          asset_name: ${{ steps.get-artifact-name.outputs.sha256_filename }}
+
+          asset_content_type: text/plain

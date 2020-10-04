@@ -40,7 +40,7 @@ jobs:
         id: configure
         run: |
           cat > config <<EOF
-          IMG_NAME=${buildbranch}
+          IMG_NAME=${BUILDBRANCH}
           ENABLE_SSH=0
           #these are the defaults uncomment to change
           #FIRST_USER_NAME=pi

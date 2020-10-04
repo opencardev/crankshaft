@@ -33,7 +33,7 @@ jobs:
         run: |
           echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
           echo ::set-output name=buildhash::$(git rev-parse --short "$GITHUB_SHA")
-          echo ::set-output name=buildbranch::${git rev-parse --abbrev-ref HEAD}
+          echo ::set-output name=buildbranch::$(git rev-parse --abbrev-ref HEAD)
           echo ::set-output name=builddate::$(date '+%Y-%m-%d')
       - 
         name: Configure

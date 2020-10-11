@@ -39,8 +39,6 @@ jobs:
         name: Configure
         id: configure
         run: |
-          IMG_NAME=${BUILDBRANCH}
-          IMG_VERSION = '${BUILDDATE}-${IMG_NAME}-${BUILDHASH}'
           cat > config <<EOF
           IMG_NAME=${IMG_VERSION}
           ENABLE_SSH=0
@@ -62,7 +60,8 @@ jobs:
           version: ${{ steps.get_version.outputs.version }}
           BUILDHASH: ${{ steps.get_version.outputs.buildhash }}
           BUILDBRANCH: ${{ steps.get_version.outputs.buildbranch }} 
-          BUILDDATE: ${{ steps.get_version.outputs.builddate }} 
+          BUILDDATE: ${{ steps.get_version.outputs.builddate }}  
+          IMG_VERSION: '${{ steps.get_version.outputs.builddate }}-${{ steps.get_version.outputs.buildbranch }}-${{ steps.get_version.outputs.buildhash }}'
       - 
         name: Run build
         id: build-docker

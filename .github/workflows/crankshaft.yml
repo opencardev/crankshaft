@@ -39,8 +39,8 @@ jobs:
         name: Configure
         id: configure
         run: |
-          export IMG_NAME=${BUILDBRANCH}
-          export IMG_VERSION = '${BUILDDATE}-${IMG_NAME}-${BUILDHASH}'
+          IMG_NAME=${BUILDBRANCH}
+          IMG_VERSION = '${BUILDDATE}-${IMG_NAME}-${BUILDHASH}'
           cat > config <<EOF
           IMG_NAME=${IMG_VERSION}
           ENABLE_SSH=0

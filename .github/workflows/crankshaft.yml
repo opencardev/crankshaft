@@ -55,6 +55,7 @@ jobs:
           BUILDDATE='${BUILDDATE}'
           EOF
           find . -type f -iname "*.sh" -exec chmod +x {} \;
+          cat config
         env:
           version: ${{ steps.get_version.outputs.version }}
           BUILDHASH: ${{ steps.get_version.outputs.buildhash }}

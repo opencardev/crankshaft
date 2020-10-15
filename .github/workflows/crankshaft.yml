@@ -33,21 +33,21 @@ jobs:
         run: |
           echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
           echo ::set-output name=buildhash::$(git rev-parse --short "$GITHUB_SHA")
-          echo ::set-output name=buildbranch::$(git rev-parse --abbrev-ref HEAD)
+          echo ::set-output name=buildbranch::${GITHUB_REF/refs\/tags\//}
           echo ::set-output name=builddate::$(date '+%Y-%m-%d')
       - 
         name: Configure
         id: configure
         run: |
           cat > config <<EOF
-          IMG_NAME=${BUILDBRANCH}
+          IMG_NAME=${IMG_VERSION}
           ENABLE_SSH=0
           #these are the defaults uncomment to change
           #FIRST_USER_NAME=pi
           #FIRST_USER_PASS=raspberry
           # Uncomment this if a build fails and you'd like to try again
           #CONTINUE=1
-          IMG_VERSION=${BUILDDATE}-${IMG_NAME}-${BUILDHASH}
+          IMG_VERSION=${IMG_VERSION}
           IMG_FILENAME=${IMG_VERSION}
           ZIP_FILENAME=${IMG_VERSION}
           BUILDHASH='${BUILDHASH}'
@@ -55,11 +55,13 @@ jobs:
           BUILDDATE='${BUILDDATE}'
           EOF
           find . -type f -iname "*.sh" -exec chmod +x {} \;
+          cat config
         env:
           version: ${{ steps.get_version.outputs.version }}
           BUILDHASH: ${{ steps.get_version.outputs.buildhash }}
           BUILDBRANCH: ${{ steps.get_version.outputs.buildbranch }} 
-          BUILDDATE: ${{ steps.get_version.outputs.builddate }} 
+          BUILDDATE: ${{ steps.get_version.outputs.builddate }}  
+          IMG_VERSION: '${{ steps.get_version.outputs.builddate }}-${{ steps.get_version.outputs.buildbranch }}-${{ steps.get_version.outputs.buildhash }}'
       - 
         name: Run build
         id: build-docker

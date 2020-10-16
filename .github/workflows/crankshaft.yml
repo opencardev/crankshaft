@@ -4,8 +4,6 @@ on:
 #  schedule:
 #    - cron: '0 10 * * *' # everyday at 10am
   push:
-#    branches:
-#      - '**'
     tags:
       - '*.*.*'
       - 'csng-*'
@@ -35,7 +33,7 @@ jobs:
           branch=${raw/origin\/}
           echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
           echo ::set-output name=buildhash::$(git rev-parse --short "$GITHUB_SHA")
-          echo ::set-output name=buildbranch::${branch}
+          echo ::set-output name=buildbranch::'crankshaft-ng'
           echo ::set-output name=builddate::$(date '+%Y-%m-%d')
       - 
         name: Configure
@@ -63,7 +61,7 @@ jobs:
           BUILDHASH: ${{ steps.get_version.outputs.buildhash }}
           BUILDBRANCH: ${{ steps.get_version.outputs.buildbranch }} 
           BUILDDATE: ${{ steps.get_version.outputs.builddate }}  
-          IMG_VERSION: '${{ steps.get_version.outputs.builddate }}-${{ steps.get_version.outputs.buildbranch }}-${{ steps.get_version.outputs.buildhash }}'
+          IMG_VERSION: '${{ steps.get_version.outputs.builddate }}-${{ steps.get_version.outputs.version }}-${{ steps.get_version.outputs.buildhash }}'
       - 
         name: Run build
         id: build-docker

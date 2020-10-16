@@ -179,6 +179,7 @@ export KEYBOARD_LAYOUT="${KEYBOARD_LAYOUT:-English (UK)}"
 export TIMEZONE_DEFAULT="${TIMEZONE_DEFAULT:-Europe/London}"
 
 export GIT_HASH=${GIT_HASH:-"$(git rev-parse HEAD)"}
+export GIT_BRANCH=${GIT_BRANCH:-"$(git branch  --no-color  | grep -E '^\*')"}
 
 export CLEAN
 export IMG_NAME

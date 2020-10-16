@@ -66,6 +66,9 @@ jobs:
         name: Run build
         id: build-docker
         run: bash ./build-docker.sh
+        env:
+          GIT_HASH: ${{ steps.get_version.outputs.buildhash }}
+          GIT_BRANCH: ${{ steps.get_version.outputs.buildbranch }} 
       - 
         name: Create Release
         id: create_release

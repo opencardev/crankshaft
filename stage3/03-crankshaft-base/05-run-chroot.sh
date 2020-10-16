@@ -1,13 +1,13 @@
 #!/bin/bash -e
 
 cat > /etc/crankshaft.date << EOF
-${BUILDDATE}
+${IMG_DATE}
 EOF
 
 cat > /etc/crankshaft.build << EOF
-${BUILDHASH}
+${GIT_HASH}
 EOF
 
 cat > /etc/crankshaft.branch << EOF
-${BUILDBRANCH}
+${GIT_BRANCH}
 EOF

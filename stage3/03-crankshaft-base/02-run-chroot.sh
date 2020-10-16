@@ -193,7 +193,7 @@ sed -i 's/#Banner none/Banner \/etc\/issue.net/' /etc/ssh/sshd_config
 sed -i 's/^#ListenAddress 0.0.0.0/ListenAddress 0.0.0.0/' /etc/ssh/sshd_config
 
 # OS Name
-STRING="Welcome to Crankshaft CarOS (${IMG_DATE} / Build ${BUILDHASH})"
+STRING="Welcome to Crankshaft CarOS (${IMG_DATE} / Build ${GIT_HASH})"
 #sed -i "s/PRETTY_NAME=.*/PRETTY_NAME=${STRING}/g" /usr/lib/os-release
 cp /usr/lib/os-release /usr/lib/os-release.bak
 sed -i '/PRETTY_NAME=/d' /usr/lib/os-release.bak

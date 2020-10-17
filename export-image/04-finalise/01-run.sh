@@ -89,7 +89,7 @@ mkdir -p "${DEPLOY_DIR}"
 rm -f "${DEPLOY_DIR}/${ZIP_FILENAME}${IMG_SUFFIX}.zip"
 rm -f "${DEPLOY_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
 pushd "${STAGE_WORK_DIR}" > /dev/null
-	MD5HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.md5"
+	MD5HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.img.md5"
 	SHA1HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.sha1"
 	SHA256HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.sha256"
 	md5sum "$(basename "${IMG_FILE}")" > "$(basename "${MD5HASH}")"

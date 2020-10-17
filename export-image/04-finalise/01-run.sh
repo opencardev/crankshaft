@@ -88,13 +88,14 @@ mkdir -p "${DEPLOY_DIR}"
 
 rm -f "${DEPLOY_DIR}/${ZIP_FILENAME}${IMG_SUFFIX}.zip"
 rm -f "${DEPLOY_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
-
-MD5HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.md5"
-SHA1HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.sha1"
-SHA256HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.sha256"
-md5sum ${IMG_FILE} > "${MD5HASH}"
-sha1sum ${IMG_FILE} > "${SHA1HASH}"
-sha256sum ${IMG_FILE} > "${SHA256HASH}"
+pushd "${STAGE_WORK_DIR}" > /dev/null
+	MD5HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.md5"
+	SHA1HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.sha1"
+	SHA256HASH="${STAGE_WORK_DIR}/${IMG_FILENAME}.sha256"
+	md5sum "$(basename "${IMG_FILE}")" > "$(basename "${MD5HASH}")"
+	sha1sum "$(basename "${IMG_FILE}")" > "$(basename "${SHA1HASH}")"
+	sha256sum "$(basename "${IMG_FILE}")" > "$(basename "${SHA256HASH}")"
+popd > /dev/null
 
 if [ "${DEPLOY_ZIP}" == "1" ]; then
 	pushd "${STAGE_WORK_DIR}" > /dev/null

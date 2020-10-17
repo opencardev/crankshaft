@@ -66,10 +66,10 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
     fi
 
     if [ $ALLOW_USB_FLASH -eq 1 ]; then
-        UPDATEZIP=$(ls -Art /media/USBDRIVES/${PARTITION} | grep crankshaft-ng | grep .zip | grep -v md5 | grep -v ^._ | tail -1)
+        UPDATEZIP=$(ls -Art /media/USBDRIVES/${PARTITION} | grep 'crankshaft-ng\|csng' | grep .zip | grep -v md5 | grep -v ^._ | tail -1)
         FLAG=0
         if [ ! -z ${UPDATEZIP} ]; then
-            UNPACKED=$(unzip -l /media/USBDRIVES/${PARTITION}/${UPDATEZIP} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | awk {'print $4'})
+            UNPACKED=$(unzip -l /media/USBDRIVES/${PARTITION}/${UPDATEZIP} | grep 'crankshaft-ng\|csng' | grep .img | grep -v md5 | grep -v ^._ | awk {'print $4'})
             if [ ! -f /media/USBDRIVES/${PARTITION}/${UNPACKED} ]; then
                 show_clear_screen
                 echo "" > /dev/tty3
@@ -104,7 +104,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                 FLAG=1
             fi
         fi
-        UPDATEFILE=$(ls -Art /media/USBDRIVES/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | tail -1)
+        UPDATEFILE=$(ls -Art /media/USBDRIVES/${PARTITION} | grep 'crankshaft-ng\|csng' | grep .img | grep -v md5 | grep -v ^._ | tail -1)
         if [ ! -z ${UPDATEFILE} ]; then
             if [ ${FLAG} -ne 1 ]; then
                 show_clear_screen

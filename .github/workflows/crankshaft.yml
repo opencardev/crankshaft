@@ -113,6 +113,7 @@ jobs:
         csng-
       ', needs.buildimage.outputs.version)
     runs-on: ubuntu-latest
+    steps:
       - 
         name: Create Release
         id: create_release

@@ -135,7 +135,6 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ${{ needs.buildimage.outputs.artifact_path }}
           asset_name: ${{ needs.buildimage.outputs.artifact_filename }}
-
           asset_content_type: application/zip
       - 
         name: Upload Release MD5
@@ -147,7 +146,6 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ${{ needs.buildimage.outputs.md5_path }}
           asset_name: ${{ needs.buildimage.outputs.md5_filename }}
-
           asset_content_type: text/plain
       - 
         name: Upload Release SHA1
@@ -159,7 +157,6 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ${{ needs.buildimage.outputs.sha1_path }}
           asset_name: ${{ needs.buildimage.outputs.sha1_filename }}
-
           asset_content_type: text/plain
       - 
         name: Upload Release SHA256
@@ -171,5 +168,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ${{ needs.buildimage.outputs.sha256_path }}
           asset_name: ${{ needs.buildimage.outputs.sha256_filename }}
-
           asset_content_type: text/plain

@@ -1,3 +1,4 @@
 xinit xserver-xorg-video-fbdev
 xserver-xorg-legacy xserver-xorg-input-libinput xserver-xorg-input-mouse libgl1-mesa-dri
 xserver-xorg-input-evdev xcb x11-xserver-utils x11-apps imagemagick
+libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xinerama0

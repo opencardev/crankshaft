@@ -105,9 +105,21 @@ jobs:
           SHA256_NAME=$(basename $SHA256_PATHNAME)
           echo ::set-output name=sha256_filename::${SHA256_NAME}
           echo ::set-output name=sha256_path::${SHA256_PATHNAME}
+      - 
+        name: Upload build artifacts 
+        id: upload_deploy
+        uses: actions/upload-artifact@v2
+        with:
+          name: deploy
+          path: |
+            ${{ steps.get-artifact-name.outputs.artifact_path }}
+            ${{ steps.get-artifact-name.outputs.md5_path }}
+            ${{ steps.get-artifact-name.outputs.sha1_path }}
+            ${{ steps.get-artifact-name.outputs.sha256_path }}
+            ./pi-gen/deploy/build.log
   release:
     name: Create release
-    needs: buildimage
+    needs: [buildimage]
     if:
       contains('
         csng-
@@ -126,6 +138,32 @@ jobs:
           draft: true
           prerelease: true
       - 
+        name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: deploy
+      - 
+        name: Get Name of Artifact
+        id: get-artifact-name
+        run: |
+          ls -hla
+          ARTIFACT_PATHNAME=$(ls *.zip | head -n 1)
+          ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
+          echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
+          MD5_PATHNAME=$(ls .*.md5 | head -n 1)
+          MD5_NAME=$(basename $MD5_PATHNAME)
+          echo ::set-output name=md5_filename::${MD5_NAME}
+          echo ::set-output name=md5_path::${MD5_PATHNAME}
+          SHA1_PATHNAME=$(ls *.sha1 | head -n 1)
+          SHA1_NAME=$(basename $SHA1_PATHNAME)
+          echo ::set-output name=sha1_filename::${SHA1_NAME}
+          echo ::set-output name=sha1_path::${SHA1_PATHNAME}
+          SHA256_PATHNAME=$(ls *.sha256 | head -n 1)
+          SHA256_NAME=$(basename $SHA256_PATHNAME)
+          echo ::set-output name=sha256_filename::${SHA256_NAME}
+          echo ::set-output name=sha256_path::${SHA256_PATHNAME}
+      - 
         name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
@@ -133,8 +171,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ${{ needs.buildimage.outputs.artifact_path }}
-          asset_name: ${{ needs.buildimage.outputs.artifact_filename }}
+          asset_path: ${{ steps.get-artifact-name.outputs.artifact_path }}
+          asset_name: ${{ steps.get-artifact-name.outputs.artifact_filename }}
           asset_content_type: application/zip
       - 
         name: Upload Release MD5
@@ -144,8 +182,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ${{ needs.buildimage.outputs.md5_path }}
-          asset_name: ${{ needs.buildimage.outputs.md5_filename }}
+          asset_path: ${{ steps.get-artifact-name.outputs.md5_path }}
+          asset_name: ${{ steps.get-artifact-name.outputs.md5_filename }}
           asset_content_type: text/plain
       - 
         name: Upload Release SHA1
@@ -155,8 +193,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ${{ needs.buildimage.outputs.sha1_path }}
-          asset_name: ${{ needs.buildimage.outputs.sha1_filename }}
+          asset_path: ${{ steps.get-artifact-name.outputs.sha1_path }}
+          asset_name: ${{ steps.get-artifact-name.outputs.sha1_filename }}
           asset_content_type: text/plain
       - 
         name: Upload Release SHA256
@@ -166,6 +204,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ${{ needs.buildimage.outputs.sha256_path }}
-          asset_name: ${{ needs.buildimage.outputs.sha256_filename }}
+          asset_path: ${{ steps.get-artifact-name.outputs.sha256_path }}
+          asset_name: ${{ steps.get-artifact-name.outputs.sha256_filename }}
           asset_content_type: text/plain

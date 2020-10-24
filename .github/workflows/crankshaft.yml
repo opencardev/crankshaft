@@ -121,9 +121,7 @@ jobs:
     name: Create release
     needs: [buildimage]
     if:
-      contains('
-        csng-
-      ', needs.buildimage.outputs.version)
+      contains(github.event.inputs.version,'csng')
     runs-on: ubuntu-latest
     steps:
       - 
@@ -147,19 +145,19 @@ jobs:
         id: get-artifact-name
         run: |
           ls -hla
-          ARTIFACT_PATHNAME=$(ls *.zip | head -n 1)
+          ARTIFACT_PATHNAME=$(ls deploy/*.zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
-          MD5_PATHNAME=$(ls .*.md5 | head -n 1)
+          MD5_PATHNAME=$(ls .deploy/*.md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
           echo ::set-output name=md5_filename::${MD5_NAME}
           echo ::set-output name=md5_path::${MD5_PATHNAME}
-          SHA1_PATHNAME=$(ls *.sha1 | head -n 1)
+          SHA1_PATHNAME=$(ls deploy/*.sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)
           echo ::set-output name=sha1_filename::${SHA1_NAME}
           echo ::set-output name=sha1_path::${SHA1_PATHNAME}
-          SHA256_PATHNAME=$(ls *.sha256 | head -n 1)
+          SHA256_PATHNAME=$(ls deploy/*.sha256 | head -n 1)
           SHA256_NAME=$(basename $SHA256_PATHNAME)
           echo ::set-output name=sha256_filename::${SHA256_NAME}
           echo ::set-output name=sha256_path::${SHA256_PATHNAME}

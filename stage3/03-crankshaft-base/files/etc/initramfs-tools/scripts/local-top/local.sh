@@ -44,7 +44,7 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/* 2>/dev/null); do
     FSTYPE=$(blkid ${DEVICE} | sed 's/.*TYPE="//' | cut -d'"' -f1)
 
     if [ -d /media/USBDRIVES/${PARTITION} ]; then
-        UPDATEFILE=$(ls -Art /media/USBDRIVES/${PARTITION} | grep crankshaft-ng | grep .img | grep -v md5 | grep -v ^._ | tail -1)
+        UPDATEFILE=$(ls -Art /media/USBDRIVES/${PARTITION} | grep 'crankshaft-ng\|csng' | grep .img | grep -v md5 | grep -v ^._ | tail -1)
         if [ ! -z ${UPDATEFILE} ]; then
             printf "[ ${CYAN}INFO${GRAY} ] *******************************************************\n" >/dev/tty3
             printf "[ ${CYAN}INFO${GRAY} ] Detected  Drive: ${DEVICE}\n" > /dev/tty3

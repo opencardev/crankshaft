@@ -149,7 +149,7 @@ jobs:
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
-          MD5_PATHNAME=$(ls .deploy/*.md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*.md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
           echo ::set-output name=md5_filename::${MD5_NAME}
           echo ::set-output name=md5_path::${MD5_PATHNAME}

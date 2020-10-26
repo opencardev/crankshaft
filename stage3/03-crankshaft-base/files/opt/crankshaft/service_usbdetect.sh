@@ -98,6 +98,8 @@ for FSMOUNTPOINT in $(ls -d /media/USBDRIVES/*); do
                 show_cursor
                 sudo mount -o remount,rw ${DEVICE}
                 rm /media/USBDRIVES/${PARTITION}/*.md5 > /dev/null 2>&1
+                rm /media/USBDRIVES/${PARTITION}/*.sha1 > /dev/null 2>&1
+                rm /media/USBDRIVES/${PARTITION}/*.sha256 > /dev/null 2>&1
                 rm /media/USBDRIVES/${PARTITION}/*.img > /dev/null 2>&1
                 /bin/echo "n" | unzip -q -o /media/USBDRIVES/${PARTITION}/${UPDATEZIP} -d /media/USBDRIVES/${PARTITION}
                 hide_cursor

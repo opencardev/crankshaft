@@ -187,11 +187,11 @@ EXTERNAL_BLUETOOTH=0
 ALLOW_USB_FLASH=1
 
 # LightSensor
-LIGHTSENSOR_TYPE = 'TSL2561' # Allowed Values TSL2561 TSL2591
+LIGHTSENSOR_TYPE='TSL2561' # Allowed Values TSL2561 TSL2591
 # the address of TSL2561/TSL2591 can be
 # 0x29, 0x39 or 0x49
-TSL_I2C_BUS = 1
-TSL_ADDR = 0x29
+TSL_I2C_BUS=1
+TSL_ADDR=0x29
 
 # Auto brightness control based on tsl2561 light sensor
 # Check interval sensor 5,10,15,20,25,30

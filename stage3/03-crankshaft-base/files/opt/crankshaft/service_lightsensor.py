@@ -12,24 +12,24 @@ def get_var(varname):
         CMD = 'echo $(source /boot/crankshaft/crankshaft_env.sh; echo $%s)' % varname
         p = subprocess.Popen(CMD, stdout=subprocess.PIPE,
                              shell=True, executable='/bin/bash')
-        return int(p.stdout.readlines()[0].strip())
+        return p.stdout.readlines()[0].strip()
     except:
         CMD = 'echo $(source /opt/crankshaft/crankshaft_default_env.sh; echo $%s)' % varname
         p = subprocess.Popen(CMD, stdout=subprocess.PIPE,
                              shell=True, executable='/bin/bash')
-        return int(p.stdout.readlines()[0].strip())
-
+        return p.stdout.readlines()[0].strip()
 
 # ---------------------------------
 # Get Variables from Config
-daynight_gpio = get_var('DAYNIGHT_PIN')
-LIGHTSENSOR = get_var('LIGHTSENSOR_TYPE')
-TSL_I2C_BUS = get_var('TSL_I2C_BUS')
-TSL_ADDR = get_var('TSL_ADDR')
+daynight_gpio = int(get_var('DAYNIGHT_PIN'))
+LIGHTSENSOR = str(get_var('LIGHTSENSOR_TYPE').decode())
+TSL_I2C_BUS = int(get_var('TSL_I2C_BUS'))
+TSL_ADDR = int(get_var('TSL_ADDR').decode(),16)
 # ---------------------------------
 
 
 def get_LUX(LIGHTSENSOR):
+    print(LIGHTSENSOR)
     if 'TSL2561' == LIGHTSENSOR:
         Lux = get_LUX_TSL2561(TSL_I2C_BUS, TSL_ADDR)
     elif 'TSL2591' == LIGHTSENSOR:
@@ -104,39 +104,40 @@ while True:
         os.system("echo {} > /tmp/tsl2561".format(Luxrounded))
         lastvalue = Luxrounded
         # Set display brightness
-        if Luxrounded <= get_var('LUX_LEVEL_1'):
+        if Luxrounded <= int(get_var('LUX_LEVEL_1')):
             os.system("crankshaft brightness set " +
                       str(get_var('DISP_BRIGHTNESS_1')) + " &")
             step = 1
-        elif Luxrounded > get_var('LUX_LEVEL_1') and Luxrounded < get_var('LUX_LEVEL_2'):
+        elif Luxrounded > int(get_var('LUX_LEVEL_1')) and Luxrounded < int(get_var('LUX_LEVEL_2')):
             os.system("crankshaft brightness set " +
                       str(get_var('DISP_BRIGHTNESS_2')) + " &")
             step = 2
-        elif Luxrounded >= get_var('LUX_LEVEL_2') and Luxrounded < get_var('LUX_LEVEL_3'):
+        elif Luxrounded >= int(get_var('LUX_LEVEL_2')) and Luxrounded < int(get_var('LUX_LEVEL_3')):
             os.system("crankshaft brightness set " +
                       str(get_var('DISP_BRIGHTNESS_3')) + " &")
             step = 3
-        elif Luxrounded >= get_var('LUX_LEVEL_3') and Luxrounded < get_var('LUX_LEVEL_4'):
+        elif Luxrounded >= int(get_var('LUX_LEVEL_3')) and Luxrounded < int(get_var('LUX_LEVEL_4')):
             os.system("crankshaft brightness set " +
                       str(get_var('DISP_BRIGHTNESS_4')) + " &")
             step = 4
-        elif Luxrounded >= get_var('LUX_LEVEL_4') and Luxrounded < get_var('LUX_LEVEL_5'):
+        elif Luxrounded >= int(get_var('LUX_LEVEL_4')) and Luxrounded < int(get_var('LUX_LEVEL_5')):
             os.system("crankshaft brightness set " +
                       str(get_var('DISP_BRIGHTNESS_5')) + " &")
             step = 5
-        elif Luxrounded >= get_var('LUX_LEVEL_5'):
+        elif Luxrounded >= int(get_var('LUX_LEVEL_5')):
             os.system("crankshaft brightness set " +
                       str(get_var('DISP_BRIGHTNESS_5')) + " &")
             step = 6
 
         if daynight_gpio == 0:
-            if step <= get_var('TSL2561_DAYNIGHT_ON_STEP'):
+            if step <= int(get_var('TSL2561_DAYNIGHT_ON_STEP')):
                 print("Lux = {} | ".format(Luxrounded) +
                       "Level " + str(step) + " -> trigger night")
                 os.system("touch /tmp/night_mode_enabled >/dev/null 2>&1")
             else:
-                if step > get_var('TSL2561_DAYNIGHT_ON_STEP'):
+                if step > int(get_var('TSL2561_DAYNIGHT_ON_STEP')):
                     print("Lux = {} | ".format(Luxrounded) +
                           "Level " + str(step) + " -> trigger day")
                     os.system("sudo rm /tmp/night_mode_enabled >/dev/null 2>&1")
-    sleep(get_var('TSL2561_CHECK_INTERVAL'))
+
+    sleep(int(get_var('TSL2561_CHECK_INTERVAL')))

@@ -71,17 +71,21 @@ if [ "$(i2cdetect -l | grep i2c-1)" != "" ]; then
 
     # check for lightsensor
     if [ -f /etc/cs_lightsensor ]; then
-        checkdevice 39
+        checkdevice $(echo $TSL_ADDR| cut -c 3-)
         if [ $? -eq 1 ]; then
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
-            echo "[${CYAN}${BOLD} INFO ${RESET}] Check for tsl2561 ok. Device at 0x39 is present." > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Check for light sensor ok. " > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] LightSensor ${LIGHTSENSOR_TYPE} found." > /dev/tty3
+            echo "[${CYAN}${BOLD} INFO ${RESET}] Device at ${TSL_ADDR} is present." > /dev/tty3
             echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" > /dev/tty3
         else
             show_screen
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-            echo "[${RED}${BOLD} WARN ${RESET}] Check for tsl2561 failed. Device at 0x39 is missing!" > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Check for light sensor failed. " > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] LightSensor ${LIGHTSENSOR_TYPE} not found." > /dev/tty3
+            echo "[${RED}${BOLD} WARN ${RESET}] Device at ${TSL_ADDR} is missing!" > /dev/tty3
             echo "[${RED}${BOLD} WARN ${RESET}] *******************************************************" > /dev/tty3
-            log_echo "Check for tsl2561 failed. Seems device at 0x39 is missing!"
+            log_echo "Check for LightSensor ${LIGHTSENSOR_TYPE} failed. Seems device at ${TSL_ADDR} is missing!"
         fi
     fi
 else

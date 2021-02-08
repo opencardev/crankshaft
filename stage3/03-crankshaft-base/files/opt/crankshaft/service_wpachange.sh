@@ -18,7 +18,7 @@ function update_network() {
         COUNTER=0
         #check for 30 seconds for dhcp lease assigned
         while [ $COUNTER -lt 30 ]; do
-            if [ -f /var/run/dhcpcd/resolv.conf/wlan0.dhcp ]; then
+            if [ -f /var/run/resolvconf/interfaces/wlan0.dhcp ]; then
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] DHCP-EVENT: $SSID got a lease" >/dev/tty3
                 echo "[${CYAN}${BOLD} INFO ${RESET}] *******************************************************" >/dev/tty3

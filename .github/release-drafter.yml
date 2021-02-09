@@ -1,0 +1,12 @@
+template: |
+  ## Hardware configurations
+
+  ## Fixes
+  $CHANGES
+
+  ## Enhancements
+  - TSL 2561/2591 Support #436
+
+  ## AASDK/OpenAuto
+  Applied fixes for:
+  - None

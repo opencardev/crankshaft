@@ -39,7 +39,7 @@ jobs:
         config:
           - {
               name: "Debian Buster armhf",
-              basefile: "base_buster_armhf",
+              basefile: "updater/base_buster_armhf",
               arch: "armhf",
               osname: "buster",
               ostype: "Debian"

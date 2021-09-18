@@ -1,0 +1,156 @@
+name: Pifile
+
+on:
+#  push:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+jobs:
+  version:
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+    runs-on: "ubuntu-latest"
+    steps:
+      - 
+        name: Get the version
+        id: get_version
+        run: |
+          if [ -z "$version" ]
+          then
+                version=$(date '+%Y%m%d')
+                echo ::set-output name=version::"${version}"
+          else
+                echo ::set-output name=version::"${version}"
+          fi
+        env:
+          version: ${{ github.event.inputs.version }}
+  build:
+    runs-on: ${{ matrix.host }}
+    needs: [ version ]
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        host: [
+          "ubuntu-latest",
+          #"macos-10.15",
+        ]
+        config:
+          - {
+              name: "Debian Buster armhf",
+              basefile: "base_buster_armhf",
+              arch: "armhf",
+              osname: "buster",
+              ostype: "Debian"
+            }
+    name: 'Build:  ${{ matrix.config.name }}'
+    steps:
+      - 
+        name: Checkout repository
+        uses: actions/checkout@v1
+      - 
+        name: Get the version
+        id: get_version
+        run: |
+          if [ -n "$ostype" ]
+          then 
+                osname=${ostype}_${osname}
+          fi
+          echo ::set-output name=version::"${version}-${osname}-${arch}"
+        env:
+          version: ${{needs.version.outputs.version }}
+          arch: ${{ matrix.config.arch }}
+          ostype: ${{ matrix.config.ostype }}
+          osname: ${{ matrix.config.osname }}
+      - 
+        name: Create Base Image
+        uses: Nature40/pimod@v0.2.2
+        with:
+          pifile: ${{ matrix.config.basefile }}.Pifile
+      - 
+        name: Rename Image
+        run: mv ${{ matrix.config.basefile }}.img crankshaft-${{ steps.get_version.outputs.version }}.img
+      - 
+        name: Package zip
+        run: zip crankshaft-${{ steps.get_version.outputs.version }}.zip crankshaft-${{ steps.get_version.outputs.version }}.img
+      - 
+        name: Upload build artifacts 
+        id: upload_deploy
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.get_version.outputs.version }}
+          path: crankshaft-${{ steps.get_version.outputs.version }}.zip
+# Create Release
+  release:
+    runs-on: ubuntu-latest
+    needs: [ version, build ]
+    name: 'Create release'
+    outputs:
+      release_upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+    steps:
+      - 
+        name: Create GitHub release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{needs.version.outputs.version }}
+          release_name: Release ${{needs.version.outputs.version }}
+          draft: true
+          prerelease: true
+# Upload release artifacts
+  upload:
+    needs: [ version, build, release ]
+    runs-on: ${{ matrix.host }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        host: [
+          "ubuntu-latest",
+          #"macos-10.15",
+        ]
+        config:
+          - {
+              name: "Debian Buster armhf",
+              basefile: "base_buster_armhf",
+              arch: "armhf",
+              osname: "buster",
+              ostype: "Debian"
+            }
+
+    name: 'Upload release:  ${{ matrix.config.name }}'
+    steps:
+      - 
+        name: Get the version
+        id: get_version
+        run: |
+          if [ -n "$ostype" ]
+          then 
+                osname=${ostype}_${osname}
+          fi
+          echo ::set-output name=version::"${version}-${osname}-${arch}"
+        env:
+          version: ${{needs.version.outputs.version }}
+          arch: ${{ matrix.config.arch }}
+          ostype: ${{ matrix.config.ostype }}
+          osname: ${{ matrix.config.osname }}
+      - 
+        name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.get_version.outputs.version }}
+      - 
+        name: Upload zip to release
+        id: upload_zip
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
+        with:
+          upload_url: ${{needs.release.outputs.release_upload_url}}
+          asset_path: crankshaft-${{ steps.get_version.outputs.version }}.zip
+          asset_name: crankshaft-${{ steps.get_version.outputs.version }}.zip
+          asset_content_type: application/zip

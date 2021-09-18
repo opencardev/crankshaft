@@ -1,0 +1,11 @@
+#FROM https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
+FROM https://github.com/opencardev/crankshaft/releases/download/csng-alpha7.2/2021-02-09-crankshaft-ng-d5fffdd.zip
+PUMP 1000M
+
+# Update OS and sources
+RUN <<EOF
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
+apt-get install -y sl
+apt-get autoremove -y
+EOF

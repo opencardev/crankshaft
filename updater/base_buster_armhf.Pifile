@@ -4,6 +4,7 @@ PUMP 1000M
 
 # Update OS and sources
 RUN <<EOF
+apt-get update --allow-releaseinfo-change -y
 apt-get update -y
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 apt-get install -y sl

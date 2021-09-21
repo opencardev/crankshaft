@@ -73,14 +73,32 @@ jobs:
         run: mv ${{ matrix.config.basefile }}.img crankshaft-${{ steps.get_version.outputs.version }}.img
       - 
         name: Package zip
-        run: zip crankshaft-${{ steps.get_version.outputs.version }}.zip crankshaft-${{ steps.get_version.outputs.version }}.img
+        id: packagezip
+        run: |
+            IMG_FILENAME="crankshaft-${{ steps.get_version.outputs.version }}.img"
+            ZIP_FILENAME="crankshaft-${{ steps.get_version.outputs.version }}.zip"
+        	MD5HASH="${IMG_FILENAME}.md5"
+        	SHA1HASH="${IMG_FILENAME}.sha1"
+        	SHA256HASH="${IMG_FILENAME}.sha256"
+        	md5sum "${IMG_FILENAME}" > "${MD5HASH}"
+        	sha1sum "${IMG_FILENAME}" > "${SHA1HASH}"
+        	sha256sum "${IMG_FILENAME}" > "${SHA256HASH}"
+            zip "${ZIP_FILENAME}" "${IMG_FILENAME}" "${MD5HASH}" "${SHA1HASH}" "${SHA256HASH}"
+            echo ::set-output name=ZIP_FILENAME::"${ZIP_FILENAME}"
+            echo ::set-output name=MD5HASH::"${MD5HASH}"
+            echo ::set-output name=SHA1HASH::"${SHA1HASH}"
+            echo ::set-output name=SHA256HASH::"${SHA256HASH}"
       - 
         name: Upload build artifacts 
         id: upload_deploy
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.get_version.outputs.version }}
-          path: crankshaft-${{ steps.get_version.outputs.version }}.zip
+          path: |
+            ${{ steps.packagezip.outputs.ZIP_FILENAME }}
+            ${{ steps.packagezip.outputs.MD5HASH }}
+            ${{ steps.packagezip.outputs.SHA1HASH }}
+            ${{ steps.packagezip.outputs.SHA256HASH }}
 # Create Release
   release:
     runs-on: ubuntu-latest
@@ -142,6 +160,21 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ steps.get_version.outputs.version }}
+
+      - 
+        name: Get Artifact Filenames
+        id: getfilenames
+        run: |
+          IMG_FILENAME="crankshaft-${{ steps.get_version.outputs.version }}.img"
+          ZIP_FILENAME="crankshaft-${{ steps.get_version.outputs.version }}.zip"
+          MD5HASH="${IMG_FILENAME}.md5"
+          SHA1HASH="${IMG_FILENAME}.sha1"
+          SHA256HASH="${IMG_FILENAME}.sha256"
+          zip "${ZIP_FILENAME}" "${IMG_FILENAME}" "${MD5HASH}" "${SHA1HASH}" "${SHA256HASH}"
+          echo ::set-output name=ZIP_FILENAME::"${ZIP_FILENAME}"
+          echo ::set-output name=MD5HASH::"${MD5HASH}"
+          echo ::set-output name=SHA1HASH::"${SHA1HASH}"
+          echo ::set-output name=SHA256HASH::"${SHA256HASH}"
       - 
         name: Upload zip to release
         id: upload_zip
@@ -151,6 +184,42 @@ jobs:
           RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
         with:
           upload_url: ${{needs.release.outputs.release_upload_url}}
-          asset_path: crankshaft-${{ steps.get_version.outputs.version }}.zip
-          asset_name: crankshaft-${{ steps.get_version.outputs.version }}.zip
+          asset_path: ${{ steps.getfilenames.outputs.ZIP_FILENAME }}
+          asset_name: ${{ steps.getfilenames.outputs.ZIP_FILENAME }}
           asset_content_type: application/zip
+      - 
+        name: Upload md5 to release
+        id: upload_md5
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
+        with:
+          upload_url: ${{needs.release.outputs.release_upload_url}}
+          asset_path: ${{ steps.getfilenames.outputs.MD5HASH }}
+          asset_name: ${{ steps.getfilenames.outputs.MD5HASH }}
+          asset_content_type: text/plain
+      - 
+        name: Upload sha1 to release
+        id: upload_sha1
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
+        with:
+          upload_url: ${{needs.release.outputs.release_upload_url}}
+          asset_path: ${{ steps.getfilenames.outputs.SHA1HASH }}
+          asset_name: ${{ steps.getfilenames.outputs.SHA1HASH }}
+          asset_content_type: text/plain
+      - 
+        name: Upload sha256 to release
+        id: upload_sha256
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
+        with:
+          upload_url: ${{needs.release.outputs.release_upload_url}}
+          asset_path: ${{ steps.getfilenames.outputs.SHA256HASH }}
+          asset_name: ${{ steps.getfilenames.outputs.SHA256HASH }}
+          asset_content_type: text/plain

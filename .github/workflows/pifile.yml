@@ -27,8 +27,6 @@ jobs:
           else
                 echo ::set-output name=version::"${version}"
           fi
-          raw=$(git branch -r --contains ${{ github.ref }})
-          branch=${raw/origin\/}
           builddate=$(date '+%Y-%m-%d')
           buildbranch='crankshaft-ng'
           buildhash=$(git rev-parse --short "$GITHUB_SHA")

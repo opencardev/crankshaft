@@ -14,6 +14,9 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - 
+        name: Checkout repository
+        uses: actions/checkout@v1
+      - 
         name: Get the version
         id: get_version
         run: |
@@ -135,7 +138,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{needs.version.outputs.version }}
-          release_name: Release ${{needs.version.outputs.version }}
+          release_name: ${{needs.version.outputs.buildname }}
           body: ${{steps.github_release.outputs.changelog}}
           draft: true
           prerelease: true
@@ -163,20 +166,6 @@ jobs:
     name: 'Upload release:  ${{ matrix.config.name }}'
     steps:
       - 
-        name: Get the version
-        id: get_version
-        run: |
-          if [ -n "$ostype" ]
-          then 
-                osname=${ostype}_${osname}
-          fi
-          echo ::set-output name=version::"${version}-${osname}-${arch}"
-        env:
-          version: ${{needs.version.outputs.version }}
-          arch: ${{ matrix.config.arch }}
-          ostype: ${{ matrix.config.ostype }}
-          osname: ${{ matrix.config.osname }}
-      - 
         name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -202,7 +191,7 @@ jobs:
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
+          RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
         with:
           upload_url: ${{needs.release.outputs.release_upload_url}}
           asset_path: ${{ steps.getfilenames.outputs.ZIP_FILENAME }}
@@ -214,7 +203,7 @@ jobs:
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
+          RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
         with:
           upload_url: ${{needs.release.outputs.release_upload_url}}
           asset_path: ${{ steps.getfilenames.outputs.MD5HASH }}
@@ -226,7 +215,7 @@ jobs:
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
+          RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
         with:
           upload_url: ${{needs.release.outputs.release_upload_url}}
           asset_path: ${{ steps.getfilenames.outputs.SHA1HASH }}
@@ -238,7 +227,7 @@ jobs:
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
+          RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
         with:
           upload_url: ${{needs.release.outputs.release_upload_url}}
           asset_path: ${{ steps.getfilenames.outputs.SHA256HASH }}

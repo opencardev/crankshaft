@@ -124,8 +124,6 @@ jobs:
         name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v2.4.1
-        with:
-          configuration: ".github/workflows/releasecfg/configuration.json"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - 

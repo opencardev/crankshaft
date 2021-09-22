@@ -176,3 +176,6 @@ install -m 644 files/lib/systemd/system/dhcpcd.service                  "${ROOTF
 
 #qt5
 tar -xf files/qt5/Qt5_OpenGLES2.tar.xz -C ${ROOTFS_DIR}/
+
+#wiringpi
+install -m 755 files/wiringpi-latest.deb                               "${ROOTFS_DIR}/root/"

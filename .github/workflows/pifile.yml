@@ -20,7 +20,7 @@ jobs:
         name: Get the version
         id: get_version
         run: |
-          if [ -z "$version" ]
+          if [ -z "$version" ]||[ "$version" = "" ]||[ "$version" = " " ]
           then
                 version=$(date '+%Y%m%d')
                 echo ::set-output name=version::"${version}"
@@ -46,7 +46,7 @@ jobs:
       max-parallel: 3
       matrix:
         host: [
-          "ubuntu-latest",
+          "ubuntu-20.04",
           #"macos-10.15",
         ]
         config:
@@ -114,7 +114,7 @@ jobs:
             ${{ steps.packagezip.outputs.SHA256HASH }}
 # Create Release
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [ version, build ]
     name: 'Create release'
     outputs:
@@ -147,7 +147,7 @@ jobs:
       max-parallel: 3
       matrix:
         host: [
-          "ubuntu-latest",
+          "ubuntu-20.04",
           #"macos-10.15",
         ]
         config:

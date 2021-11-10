@@ -11,7 +11,7 @@ jobs:
     outputs:
       version: ${{ steps.get_version.outputs.version }}
       buildname: ${{ steps.get_version.outputs.buildname }}
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-20.04"
     steps:
       - 
         name: Checkout repository
@@ -78,7 +78,7 @@ jobs:
           osname: ${{ matrix.config.osname }}
       - 
         name: Create Base Image
-        uses: Nature40/pimod@v0.2.2
+        uses: Nature40/pimod@v0.4.4
         with:
           pifile: ${{ matrix.config.basefile }}.Pifile
       - 
@@ -123,7 +123,7 @@ jobs:
       - 
         name: Build Changelog
         id: github_release
-        uses: mikepenz/release-changelog-builder-action@v2.4.1
+        uses: mikepenz/release-changelog-builder-action@v2.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - 

@@ -178,7 +178,6 @@ jobs:
           MD5HASH="${IMG_FILENAME}.md5"
           SHA1HASH="${IMG_FILENAME}.sha1"
           SHA256HASH="${IMG_FILENAME}.sha256"
-          zip "${ZIP_FILENAME}" "${IMG_FILENAME}" "${MD5HASH}" "${SHA1HASH}" "${SHA256HASH}"
           echo ::set-output name=ZIP_FILENAME::"${ZIP_FILENAME}"
           echo ::set-output name=MD5HASH::"${MD5HASH}"
           echo ::set-output name=SHA1HASH::"${SHA1HASH}"

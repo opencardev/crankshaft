@@ -78,7 +78,7 @@ jobs:
           osname: ${{ matrix.config.osname }}
       - 
         name: Create Base Image
-        uses: Nature40/pimod@v0.2.2
+        uses: Nature40/pimod@v0.4.4
         with:
           pifile: ${{ matrix.config.basefile }}.Pifile
       - 

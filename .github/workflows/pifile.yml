@@ -189,12 +189,10 @@ jobs:
           ls -hlaR
           IMG_FILENAME="crankshaft-${{needs.version.outputs.buildname }}.img"
           ZIP_FILENAME="crankshaft-${{needs.version.outputs.buildname }}.zip"
-          ZIP_PATHNAME="${{steps.get_version.outputs.version }}/${ZIP_FILENAME}"
           MD5HASH="${IMG_FILENAME}.md5"
           SHA1HASH="${IMG_FILENAME}.sha1"
           SHA256HASH="${IMG_FILENAME}.sha256"
           echo ::set-output name=ZIP_FILENAME::"${ZIP_FILENAME}"
-          echo ::set-output name=ZIP_PATHNAME::"${ZIP_PATHNAME}"
           echo ::set-output name=MD5HASH::"${MD5HASH}"
           echo ::set-output name=SHA1HASH::"${SHA1HASH}"
           echo ::set-output name=SHA256HASH::"${SHA256HASH}"
@@ -208,7 +206,7 @@ jobs:
           RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
         with:
           upload_url: ${{needs.release.outputs.release_upload_url}}
-          asset_path: ${{ steps.getfilenames.outputs.ZIP_PATHNAME }}
+          asset_path: ${{ steps.getfilenames.outputs.ZIP_FILENAME }}
           asset_name: ${{ steps.getfilenames.outputs.ZIP_FILENAME }}
           asset_content_type: application/zip
       - 

@@ -51,10 +51,10 @@ jobs:
         ]
         config:
           - {
-              name: "Debian Buster armhf",
-              basefile: "updater/base_buster_armhf",
+              name: "Debian Bullseye armhf",
+              basefile: "updater/base_bullseye_armhf",
               arch: "armhf",
-              osname: "buster",
+              osname: "bullseye",
               ostype: "Debian"
             }
     name: 'Build:  ${{ matrix.config.name }}'
@@ -152,10 +152,10 @@ jobs:
         ]
         config:
           - {
-              name: "Debian Buster armhf",
-              basefile: "base_buster_armhf",
+              name: "Debian Bullseye armhf",
+              basefile: "base_bullseye_armhf",
               arch: "armhf",
-              osname: "buster",
+              osname: "bullseye",
               ostype: "Debian"
             }
 

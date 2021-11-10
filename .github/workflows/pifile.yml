@@ -188,7 +188,7 @@ jobs:
         run: |
           IMG_FILENAME="crankshaft-${{needs.version.outputs.buildname }}.img"
           ZIP_FILENAME="crankshaft-${{needs.version.outputs.buildname }}.zip"
-          ZIP_PATHNAME="./${{steps.get_version.outputs.version }}/${ZIP_FILENAME}"
+          ZIP_PATHNAME="${{steps.get_version.outputs.version }}/${ZIP_FILENAME}"
           MD5HASH="${IMG_FILENAME}.md5"
           SHA1HASH="${IMG_FILENAME}.sha1"
           SHA256HASH="${IMG_FILENAME}.sha256"

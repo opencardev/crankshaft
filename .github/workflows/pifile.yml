@@ -6,6 +6,8 @@ on:
     inputs:
       version:
         description: 'Version'
+        required: true
+        default: 'latest'
 jobs:
   version:
     outputs:
@@ -20,7 +22,7 @@ jobs:
         name: Get the version
         id: get_version
         run: |
-          if [ -z "$version" ]||[ "$version" = "" ]||[ "$version" = " " ]
+          if [ -z "$version" ]||[ "$version" = "" ]||[ "$version" = " " ]||[ "$version" = "latest" ]
           then
                 version=$(date '+%Y%m%d')
                 echo ::set-output name=version::"${version}"

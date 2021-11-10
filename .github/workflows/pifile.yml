@@ -22,7 +22,7 @@ jobs:
         name: Get the version
         id: get_version
         run: |
-          if [ -z "$version" ]||[ "$version" = "" ]||[ "$version" = " " ]||[ "$version" = "latest" ]
+          if [ -z "$version" ] || [ "$version" = " " ] || [ "$version" = "latest" ]
           then
                 version=$(date '+%Y%m%d')
                 echo ::set-output name=version::"${version}"
@@ -33,7 +33,7 @@ jobs:
           buildbranch='crankshaft-ng'
           buildhash=$(git rev-parse --short "$GITHUB_SHA")
           buildname="${builddate}-${buildbranch}-${buildhash}"
-          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=version::${version}
           echo ::set-output name=buildhash::${buildhash}
           echo ::set-output name=buildbranch::${buildbranch}
           echo ::set-output name=builddate::${builddate}

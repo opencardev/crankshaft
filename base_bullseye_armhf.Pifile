@@ -10,4 +10,4 @@ apt-get autoremove -y
 "
 
 # Add pi-gen.Pifile
-INCLUDE pi-gen
+# INCLUDE pi-gen

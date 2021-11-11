@@ -1,6 +1,4 @@
-RUN <<EOF
-mkdir -p /build
-EOF
+RUN mkdir -p /build
 
 INSTALL "build_stage.sh" "/build/"
 RUN chmod +x /build/build_stage.sh

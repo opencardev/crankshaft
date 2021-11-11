@@ -2,11 +2,11 @@ RUN <<EOF
 mkdir -p /build
 EOF
 
-INSTALL "updater/build_stage.sh" "/build/build_stage.sh"
+INSTALL "build_stage.sh" "/build/build_stage.sh"
 RUN chmod +x /build/build_stage.sh
 
-INSTALL "scripts" "/build/scripts"
-INSTALL "stage2" "/build/stage2"
-INSTALL "stage3" "/build/stage3"
+INSTALL "../scripts" "/build/scripts"
+INSTALL "../stage2" "/build/stage2"
+INSTALL "../stage3" "/build/stage3"
 
 RUN bash -c '/build/build_stage.sh'

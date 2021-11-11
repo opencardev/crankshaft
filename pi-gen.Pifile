@@ -2,7 +2,7 @@ RUN <<EOF
 mkdir -p /build
 EOF
 
-INSTALL "build_stage.sh" "/build/build_stage.sh"
+INSTALL "build_stage.sh" "/build/"
 RUN chmod +x /build/build_stage.sh
 
 INSTALL "scripts" "/build/scripts/"

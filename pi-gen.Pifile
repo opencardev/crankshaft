@@ -7,5 +7,26 @@ INSTALL "scripts" "/build/scripts/"
 INSTALL "stage2" "/build/stage2/"
 INSTALL "stage3" "/build/stage3/"
 
-HOST sudo modprobe binfmt_misc
-RUN bash -c '/build/build_stage.sh'
+
+RUN  <<EOF
+cat > /build/pimod.patch <<EOP
+diff --git a/scripts/dependencies_check b/scripts/dependencies_check
+index 375512b..eb35f05 100644
+--- a/scripts/dependencies_check
++++ b/scripts/dependencies_check
+@@ -28,11 +28,4 @@ dependencies_check()
+ 		false
+ 	fi
+ 
+-
+-	if ! grep -q "/proc/sys/fs/binfmt_misc" /proc/mounts; then
+-		echo "Module binfmt_misc not loaded in host"
+-		echo "Please run:"
+-		echo "  sudo modprobe binfmt_misc"
+-		exit 1
+-	fi
+ }
+EOP
+patch -u /build/build_stage.sh -i /build/pimod.patch
+bash -c '/build/build_stage.sh'
+EOF

@@ -1,0 +1,16 @@
+diff --git a/scripts/dependencies_check b/scripts/dependencies_check
+index 375512b..eb35f05 100644
+--- a/scripts/dependencies_check
++++ b/scripts/dependencies_check
+@@ -28,11 +28,4 @@ dependencies_check()
+ 		false
+ 	fi
+ 
+-
+-	if ! grep -q "/proc/sys/fs/binfmt_misc" /proc/mounts; then
+-		echo "Module binfmt_misc not loaded in host"
+-		echo "Please run:"
+-		echo "  sudo modprobe binfmt_misc"
+-		exit 1
+-	fi
+ }

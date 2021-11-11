@@ -12,4 +12,4 @@ apt-get autoremove -y
 EOF
 
 # Add pi-gen.Pifile
-source updater/pi-gen.Pifile
+INCLUDE pi-gen

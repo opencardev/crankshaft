@@ -8,7 +8,7 @@ INSTALL "stage2" "/build/stage2/"
 INSTALL "stage3" "/build/stage3/"
 
 
-RUN  <<EOF
+RUN <<EOF
 cat > /build/pimod.patch <<EOP
 diff --git a/scripts/dependencies_check b/scripts/dependencies_check
 index 375512b..eb35f05 100644

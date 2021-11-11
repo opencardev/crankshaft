@@ -3,13 +3,13 @@ FROM https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_ar
 PUMP 1000M
 
 # Update OS and sources
-RUN <<EOF
+RUN bash -c "
 apt-get update --allow-releaseinfo-change -y
 apt-get update -y
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 apt-get install -y sl
 apt-get autoremove -y
-EOF
+"
 
 # Add pi-gen.Pifile
 INCLUDE pi-gen

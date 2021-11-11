@@ -8,3 +8,6 @@ DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 apt-get install -y sl
 apt-get autoremove -y
 EOF
+
+# Add pi-gen.Pifile
+source pi-gen.Pifile

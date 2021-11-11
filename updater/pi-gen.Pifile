@@ -1,0 +1,10 @@
+RUN <<EOF
+mkdir -p /build
+EOF
+
+INSTALL 777 "build_stage.sh" "/build/build_stage.sh"
+INSTALL "../scripts" "/build/scripts"
+INSTALL "../stage2" "/build/stage2"
+INSTALL "../stage3" "/build/stage3"
+
+RUN bash -c '/build/build_stage.sh'

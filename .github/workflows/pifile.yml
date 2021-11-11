@@ -53,6 +53,13 @@ jobs:
         ]
         config:
           - {
+              name: "Debian Buster armhf",
+              basefile: "updater/base_buster_armhf",
+              arch: "armhf",
+              osname: "buster",
+              ostype: "Debian"
+            }
+          - {
               name: "Debian Bullseye armhf",
               basefile: "updater/base_bullseye_armhf",
               arch: "armhf",
@@ -154,8 +161,15 @@ jobs:
         ]
         config:
           - {
+              name: "Debian Buster armhf",
+              basefile: "updater/base_buster_armhf",
+              arch: "armhf",
+              osname: "buster",
+              ostype: "Debian"
+            }
+          - {
               name: "Debian Bullseye armhf",
-              basefile: "base_bullseye_armhf",
+              basefile: "updater/base_bullseye_armhf",
               arch: "armhf",
               osname: "bullseye",
               ostype: "Debian"

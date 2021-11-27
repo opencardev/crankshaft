@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/stale@v4.0.0
         with:
+          operations-per-run: 1000
           exempt-all-issue-assignees: true
           stale-issue-message: 'This issue is stale because it has been open 120 days with no activity. Remove stale label or comment or this will be closed in 60 days.'
           stale-issue-label: 'no-issue-activity'

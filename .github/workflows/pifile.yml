@@ -142,7 +142,7 @@ jobs:
         with:
           tag_name: ${{needs.version.outputs.version }}
           release_name: ${{needs.version.outputs.buildname }}
-          body: ${{steps.github_release.outputs.changelog}}
+          #body: ${{steps.github_release.outputs.changelog}}
           draft: true
           prerelease: true
 # Upload release artifacts

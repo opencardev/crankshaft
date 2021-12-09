@@ -57,6 +57,13 @@ jobs:
               osname: "buster",
               ostype: "Debian"
             }
+          - {
+              name: "Debian Buster arm7",
+              basefile: "updater/base_buster_arm7",
+              arch: "arm7",
+              osname: "buster",
+              ostype: "Debian"
+            }
     name: 'Build:  ${{ matrix.config.name }}'
     steps:
       - 
@@ -155,6 +162,13 @@ jobs:
               name: "Debian Buster armhf",
               basefile: "base_buster_armhf",
               arch: "armhf",
+              osname: "buster",
+              ostype: "Debian"
+            }
+          - {
+              name: "Debian Buster arm7",
+              basefile: "updater/base_buster_arm7",
+              arch: "arm7",
               osname: "buster",
               ostype: "Debian"
             }

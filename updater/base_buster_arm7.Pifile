@@ -3,19 +3,19 @@ FROM https://github.com/opencardev/crankshaft/releases/download/csng-alpha7.2/20
 PUMP 1000M
 
 # Update OS and sources
-RUN <<EOF
+RUN bash -c "
 apt-get update --allow-releaseinfo-change -y
 apt-get update -y
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 apt-get install -y sl
 apt-get autoremove -y
-EOF
+"
 
-RUN <<EOF
+RUN bash -c "
 cd /root
 rm -rf /usr/local/qt5
 wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_armv7l_OpenGLES2.tar.xz.part00
 wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_armv7l_OpenGLES2.tar.xz.part01
 cat Qt_5151_armv7l_OpenGLES2.tar.xz* > Qt5_OpenGLES2.tar.xz
 tar -xf Qt5_OpenGLES2.tar.xz -C /
-EOF
+"

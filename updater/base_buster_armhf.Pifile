@@ -3,10 +3,10 @@ FROM https://github.com/opencardev/crankshaft/releases/download/csng-alpha7.2/20
 PUMP 1000M
 
 # Update OS and sources
-RUN <<EOF
+RUN bash -c "
 apt-get update --allow-releaseinfo-change -y
-apt-get update -y
+apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 apt-get install -y sl
 apt-get autoremove -y
-EOF
+"

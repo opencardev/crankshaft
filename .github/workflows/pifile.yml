@@ -31,7 +31,7 @@ jobs:
           buildbranch='crankshaft-ng'
           buildhash=$(git rev-parse --short "$GITHUB_SHA")
           buildname="${builddate}-${buildbranch}-${buildhash}"
-          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=version::${version}
           echo ::set-output name=buildhash::${buildhash}
           echo ::set-output name=buildbranch::${buildbranch}
           echo ::set-output name=builddate::${builddate}

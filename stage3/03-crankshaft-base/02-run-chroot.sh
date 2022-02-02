@@ -49,7 +49,7 @@ echo "start_cd=1" >> /boot/config.txt
 echo "#dtoverlay=sdtweak,overclock_50=100" >> /boot/config.txt
 
 # enable vc4 for rpi3 as well
-sed -i 's/#dtoverlay=vc4-fkms-v3d/dtoverlay=vc4-fkms-v3d/' /boot/config.txt
+#sed -i 's/#dtoverlay=vc4-fkms-v3d/dtoverlay=vc4-fkms-v3d/' /boot/config.txt
 
 # pulseaudio
 cat /etc/pulse/csng_daemon.conf >> /etc/pulse/daemon.conf

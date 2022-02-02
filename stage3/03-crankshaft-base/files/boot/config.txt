@@ -82,25 +82,5 @@ gpu_mem=128
 
 [all]
 
-# Custom power settings
-max_usb_current=1
-
-# Disable the PWR LED.
-dtparam=pwr_led_trigger=none
-dtparam=pwr_led_activelow=off
-
-# Disable Rainbow splash
-disable_splash=1
-
-# Overscan fix
-overscan_scale=1
-
-# Enable watchdog
-dtparam=watchdog=on
-
-# Boot time improvements
-boot_delay=0
-initial_turbo=30
-start_cd=1
 
 

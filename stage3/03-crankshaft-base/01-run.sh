@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 # /boot
+install -m 644 files/boot/config.txt                                    "${ROOTFS_DIR}/boot/"
 install -d "${ROOTFS_DIR}/boot/crankshaft"
 install -m 644 files/boot/crankshaft/gpio2kbd.cfg                       "${ROOTFS_DIR}/boot/crankshaft/"
 install -m 644 files/boot/crankshaft/openauto.ini                       "${ROOTFS_DIR}/boot/crankshaft/"

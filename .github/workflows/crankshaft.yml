@@ -96,14 +96,14 @@ jobs:
         name: Get Name of Artifact
         id: get-artifact-name
         run: |
-          ls -hla
-          ARTIFACT_PATHNAME=$(ls -d -- deploy/*[!-pi2].zip | head -n 1)
+          ls -hla deploy/*
+          ARTIFACT_PATHNAME=$(ls deploy/*[!-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-          MD5_PATHNAME=$(ls -d -- deploy/*[!-pi2].md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*[!-pi2].md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
-          SHA1_PATHNAME=$(ls -d -- deploy/*[!-pi2].sha1 | head -n 1)
+          SHA1_PATHNAME=$(ls deploy/*[!-pi2].sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)
-          SHA256_PATHNAME=$(ls -d -- deploy/*[!-pi2].sha256 | head -n 1)
+          SHA256_PATHNAME=$(ls deploy/*[!-pi2].sha256 | head -n 1)
           SHA256_NAME=$(basename $SHA256_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
@@ -117,14 +117,14 @@ jobs:
         name: Get Name of Artifact - pi2
         id: get-artifact-name-pi2
         run: |
-          ls -hla
-          ARTIFACT_PATHNAME=$(ls -d -- deploy/*[-pi2].zip | head -n 1)
+          ls -hla deploy/*
+          ARTIFACT_PATHNAME=$(ls deploy/*[-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-          MD5_PATHNAME=$(ls -d -- deploy/*[-pi2].md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*[-pi2].md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
-          SHA1_PATHNAME=$(ls -d -- deploy/*[-pi2].sha1 | head -n 1)
+          SHA1_PATHNAME=$(ls deploy/*[-pi2].sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)
-          SHA256_PATHNAME=$(ls -d -- deploy/*[-pi2].sha256 | head -n 1)
+          SHA256_PATHNAME=$(ls deploy/*[-pi2].sha256 | head -n 1)
           SHA256_NAME=$(basename $SHA256_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
@@ -177,14 +177,14 @@ jobs:
         name: Get Name of Artifact
         id: get-artifact-name
         run: |
-          ls -hla
-          ARTIFACT_PATHNAME=$(ls -d -- deploy/*[!-pi2].zip | head -n 1)
+          ls -hla deploy/*
+          ARTIFACT_PATHNAME=$(ls deploy/*[!-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-          MD5_PATHNAME=$(ls -d -- deploy/*[!-pi2].md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*[!-pi2].md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
-          SHA1_PATHNAME=$(ls -d -- deploy/*[!-pi2].sha1 | head -n 1)
+          SHA1_PATHNAME=$(ls deploy/*[!-pi2].sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)
-          SHA256_PATHNAME=$(ls -d -- deploy/*[!-pi2].sha256 | head -n 1)
+          SHA256_PATHNAME=$(ls deploy/*[!-pi2].sha256 | head -n 1)
           SHA256_NAME=$(basename $SHA256_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
@@ -198,14 +198,14 @@ jobs:
         name: Get Name of Artifact - pi2
         id: get-artifact-name-pi2
         run: |
-          ls -hla
-          ARTIFACT_PATHNAME=$(ls -d -- deploy/*[-pi2].zip | head -n 1)
+          ls -hla deploy/*
+          ARTIFACT_PATHNAME=$(ls deploy/*[-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-          MD5_PATHNAME=$(ls -d -- deploy/*[-pi2].md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*[-pi2].md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
-          SHA1_PATHNAME=$(ls -d -- deploy/*[-pi2].sha1 | head -n 1)
+          SHA1_PATHNAME=$(ls deploy/*[-pi2].sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)
-          SHA256_PATHNAME=$(ls -d -- deploy/*[-pi2].sha256 | head -n 1)
+          SHA256_PATHNAME=$(ls deploy/*[-pi2].sha256 | head -n 1)
           SHA256_NAME=$(basename $SHA256_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}

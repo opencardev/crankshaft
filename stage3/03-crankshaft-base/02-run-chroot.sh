@@ -30,10 +30,6 @@ echo "# Disable Rainbow splash" >> /boot/config.txt
 echo "disable_splash=1" >> /boot/config.txt
 
 echo "" >> /boot/config.txt
-echo "# GPU Mem" >> /boot/config.txt
-echo "gpu_mem=256" >> /boot/config.txt
-
-echo "" >> /boot/config.txt
 echo "# Overscan fix" >> /boot/config.txt
 echo "overscan_scale=1" >> /boot/config.txt
 

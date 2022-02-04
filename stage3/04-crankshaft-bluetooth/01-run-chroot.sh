@@ -18,9 +18,9 @@ systemctl enable btdevicedetect
 systemctl enable btrestore
 
 # config.txt
-echo "" >> /boot/config.txt
-echo "# Bluetooth" >> /boot/config.txt
-echo "dtoverlay=pi3-disable-bt" >> /boot/config.txt
+#echo "" >> /boot/config.txt
+#echo "# Bluetooth" >> /boot/config.txt
+#echo "dtoverlay=pi3-disable-bt" >> /boot/config.txt
 
 usermod -G bluetooth -a pi
 usermod -G bluetooth -a pulse

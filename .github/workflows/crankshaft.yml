@@ -23,6 +23,14 @@ jobs:
       sha1_filename: ${{ steps.get-artifact-name.outputs.sha1_filename }}
       sha256_path: ${{ steps.get-artifact-name.outputs.sha256_path }}
       sha256_filename: ${{ steps.get-artifact-name.outputs.sha256_filename }}
+      pi2_artifact_path: ${{ steps.get-artifact-name.outputs.artifact_path }}
+      pi2_artifact_filename: ${{ steps.get-artifact-name-pi2.outputs.artifact_filename }}
+      pi2_md5_path: ${{ steps.get-artifact-name-pi2.outputs.md5_path }}
+      pi2_md5_filename: ${{ steps.get-artifact-name-pi2.outputs.md5_filename }}
+      pi2_sha1_path: ${{ steps.get-artifact-name-pi2.outputs.sha1_path }}
+      pi2_sha1_filename: ${{ steps.get-artifact-name-pi2.outputs.sha1_filename }}
+      pi2_sha256_path: ${{ steps.get-artifact-name-pi2.outputs.sha256_path }}
+      pi2_sha256_filename: ${{ steps.get-artifact-name-pi2.outputs.sha256_filename }}
       version: ${{ steps.get_version.outputs.version }}
       builddate: ${{ steps.get_version.outputs.builddate }}  
     steps:
@@ -88,21 +96,42 @@ jobs:
         name: Get Name of Artifact
         id: get-artifact-name
         run: |
-          ls -hla
-          ARTIFACT_PATHNAME=$(ls ./deploy/*.zip | head -n 1)
+          ls -hla deploy/*
+          ARTIFACT_PATHNAME=$(ls deploy/*[!-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          MD5_PATHNAME=$(ls deploy/*[!-pi2].img.md5 | head -n 1)
+          MD5_NAME=$(basename $MD5_PATHNAME)
+          SHA1_PATHNAME=$(ls deploy/*[!-pi2].sha1 | head -n 1)
+          SHA1_NAME=$(basename $SHA1_PATHNAME)
+          SHA256_PATHNAME=$(ls deploy/*[!-pi2].sha256 | head -n 1)
+          SHA256_NAME=$(basename $SHA256_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
-          MD5_PATHNAME=$(ls ./deploy/*.md5 | head -n 1)
-          MD5_NAME=$(basename $MD5_PATHNAME)
           echo ::set-output name=md5_filename::${MD5_NAME}
           echo ::set-output name=md5_path::${MD5_PATHNAME}
-          SHA1_PATHNAME=$(ls ./deploy/*.sha1 | head -n 1)
-          SHA1_NAME=$(basename $SHA1_PATHNAME)
           echo ::set-output name=sha1_filename::${SHA1_NAME}
           echo ::set-output name=sha1_path::${SHA1_PATHNAME}
-          SHA256_PATHNAME=$(ls ./deploy/*.sha256 | head -n 1)
+          echo ::set-output name=sha256_filename::${SHA256_NAME}
+          echo ::set-output name=sha256_path::${SHA256_PATHNAME}
+      - 
+        name: Get Name of Artifact - pi2
+        id: get-artifact-name-pi2
+        run: |
+          ls -hla deploy/*
+          ARTIFACT_PATHNAME=$(ls deploy/*[-pi2].zip | head -n 1)
+          ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          MD5_PATHNAME=$(ls deploy/*[-pi2].img.md5 | head -n 1)
+          MD5_NAME=$(basename $MD5_PATHNAME)
+          SHA1_PATHNAME=$(ls deploy/*[-pi2].sha1 | head -n 1)
+          SHA1_NAME=$(basename $SHA1_PATHNAME)
+          SHA256_PATHNAME=$(ls deploy/*[-pi2].sha256 | head -n 1)
           SHA256_NAME=$(basename $SHA256_PATHNAME)
+          echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
+          echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
+          echo ::set-output name=md5_filename::${MD5_NAME}
+          echo ::set-output name=md5_path::${MD5_PATHNAME}
+          echo ::set-output name=sha1_filename::${SHA1_NAME}
+          echo ::set-output name=sha1_path::${SHA1_PATHNAME}
           echo ::set-output name=sha256_filename::${SHA256_NAME}
           echo ::set-output name=sha256_path::${SHA256_PATHNAME}
       - 
@@ -116,6 +145,10 @@ jobs:
             ${{ steps.get-artifact-name.outputs.md5_path }}
             ${{ steps.get-artifact-name.outputs.sha1_path }}
             ${{ steps.get-artifact-name.outputs.sha256_path }}
+            ${{ steps.get-artifact-name-pi2.outputs.artifact_path }}
+            ${{ steps.get-artifact-name-pi2.outputs.md5_path }}
+            ${{ steps.get-artifact-name-pi2.outputs.sha1_path }}
+            ${{ steps.get-artifact-name-pi2.outputs.sha256_path }}
             ./pi-gen/deploy/build.log
   release:
     name: Create release
@@ -144,21 +177,42 @@ jobs:
         name: Get Name of Artifact
         id: get-artifact-name
         run: |
-          ls -hla
-          ARTIFACT_PATHNAME=$(ls deploy/*.zip | head -n 1)
+          ls -hla deploy/*
+          ARTIFACT_PATHNAME=$(ls deploy/*[!-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          MD5_PATHNAME=$(ls deploy/*[!-pi2].img.md5 | head -n 1)
+          MD5_NAME=$(basename $MD5_PATHNAME)
+          SHA1_PATHNAME=$(ls deploy/*[!-pi2].sha1 | head -n 1)
+          SHA1_NAME=$(basename $SHA1_PATHNAME)
+          SHA256_PATHNAME=$(ls deploy/*[!-pi2].sha256 | head -n 1)
+          SHA256_NAME=$(basename $SHA256_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
-          MD5_PATHNAME=$(ls deploy/*.md5 | head -n 1)
-          MD5_NAME=$(basename $MD5_PATHNAME)
           echo ::set-output name=md5_filename::${MD5_NAME}
           echo ::set-output name=md5_path::${MD5_PATHNAME}
-          SHA1_PATHNAME=$(ls deploy/*.sha1 | head -n 1)
-          SHA1_NAME=$(basename $SHA1_PATHNAME)
           echo ::set-output name=sha1_filename::${SHA1_NAME}
           echo ::set-output name=sha1_path::${SHA1_PATHNAME}
-          SHA256_PATHNAME=$(ls deploy/*.sha256 | head -n 1)
+          echo ::set-output name=sha256_filename::${SHA256_NAME}
+          echo ::set-output name=sha256_path::${SHA256_PATHNAME}
+      - 
+        name: Get Name of Artifact - pi2
+        id: get-artifact-name-pi2
+        run: |
+          ls -hla deploy/*
+          ARTIFACT_PATHNAME=$(ls deploy/*[-pi2].zip | head -n 1)
+          ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          MD5_PATHNAME=$(ls deploy/*[-pi2].img.md5 | head -n 1)
+          MD5_NAME=$(basename $MD5_PATHNAME)
+          SHA1_PATHNAME=$(ls deploy/*[-pi2].sha1 | head -n 1)
+          SHA1_NAME=$(basename $SHA1_PATHNAME)
+          SHA256_PATHNAME=$(ls deploy/*[-pi2].sha256 | head -n 1)
           SHA256_NAME=$(basename $SHA256_PATHNAME)
+          echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
+          echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
+          echo ::set-output name=md5_filename::${MD5_NAME}
+          echo ::set-output name=md5_path::${MD5_PATHNAME}
+          echo ::set-output name=sha1_filename::${SHA1_NAME}
+          echo ::set-output name=sha1_path::${SHA1_PATHNAME}
           echo ::set-output name=sha256_filename::${SHA256_NAME}
           echo ::set-output name=sha256_path::${SHA256_PATHNAME}
       - 
@@ -173,8 +227,19 @@ jobs:
           asset_name: ${{ steps.get-artifact-name.outputs.artifact_filename }}
           asset_content_type: application/zip
       - 
+        name: Upload Release Asset -pi2
+        id: upload-release-asset-pi2
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get-artifact-name-pi2.outputs.artifact_path }}
+          asset_name: ${{ steps.get-artifact-name-pi2.outputs.artifact_filename }}
+          asset_content_type: application/zip
+      - 
         name: Upload Release MD5
-        id: upload-release-md5 
+        id: upload-release-md5
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -182,6 +247,17 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ${{ steps.get-artifact-name.outputs.md5_path }}
           asset_name: ${{ steps.get-artifact-name.outputs.md5_filename }}
+          asset_content_type: text/plain
+      - 
+        name: Upload Release MD5 -pi2
+        id: upload-release-md5-pi2 
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get-artifact-name-pi2.outputs.md5_path }}
+          asset_name: ${{ steps.get-artifact-name-pi2.outputs.md5_filename }}
           asset_content_type: text/plain
       - 
         name: Upload Release SHA1
@@ -195,8 +271,19 @@ jobs:
           asset_name: ${{ steps.get-artifact-name.outputs.sha1_filename }}
           asset_content_type: text/plain
       - 
+        name: Upload Release SHA1 -pi2
+        id: upload-release-sha1-pi2 
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get-artifact-name-pi2.outputs.sha1_path }}
+          asset_name: ${{ steps.get-artifact-name-pi2.outputs.sha1_filename }}
+          asset_content_type: text/plain
+      - 
         name: Upload Release SHA256
-        id: upload-release-SHA256 
+        id: upload-release-SHA256
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -204,4 +291,15 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ${{ steps.get-artifact-name.outputs.sha256_path }}
           asset_name: ${{ steps.get-artifact-name.outputs.sha256_filename }}
+          asset_content_type: text/plain
+      - 
+        name: Upload Release SHA256 -pi2
+        id: upload-release-SHA256-pi2 
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get-artifact-name-pi2.outputs.sha256_path }}
+          asset_name: ${{ steps.get-artifact-name-pi2.outputs.sha256_filename }}
           asset_content_type: text/plain

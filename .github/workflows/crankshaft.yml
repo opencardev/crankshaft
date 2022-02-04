@@ -99,7 +99,7 @@ jobs:
           ls -hla deploy/*
           ARTIFACT_PATHNAME=$(ls deploy/*[!-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-          MD5_PATHNAME=$(ls deploy/*[!-pi2].md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*[!-pi2].img.md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
           SHA1_PATHNAME=$(ls deploy/*[!-pi2].sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)
@@ -120,7 +120,7 @@ jobs:
           ls -hla deploy/*
           ARTIFACT_PATHNAME=$(ls deploy/*[-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-          MD5_PATHNAME=$(ls deploy/*[-pi2].md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*[-pi2].img.md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
           SHA1_PATHNAME=$(ls deploy/*[-pi2].sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)
@@ -180,7 +180,7 @@ jobs:
           ls -hla deploy/*
           ARTIFACT_PATHNAME=$(ls deploy/*[!-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-          MD5_PATHNAME=$(ls deploy/*[!-pi2].md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*[!-pi2].img.md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
           SHA1_PATHNAME=$(ls deploy/*[!-pi2].sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)
@@ -201,7 +201,7 @@ jobs:
           ls -hla deploy/*
           ARTIFACT_PATHNAME=$(ls deploy/*[-pi2].zip | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-          MD5_PATHNAME=$(ls deploy/*[-pi2].md5 | head -n 1)
+          MD5_PATHNAME=$(ls deploy/*[-pi2].img.md5 | head -n 1)
           MD5_NAME=$(basename $MD5_PATHNAME)
           SHA1_PATHNAME=$(ls deploy/*[-pi2].sha1 | head -n 1)
           SHA1_NAME=$(basename $SHA1_PATHNAME)

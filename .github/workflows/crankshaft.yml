@@ -137,7 +137,7 @@ jobs:
       - 
         name: Upload build artifacts 
         id: upload_deploy
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: deploy
           path: |

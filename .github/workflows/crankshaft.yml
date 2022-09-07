@@ -158,16 +158,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - 
-        name: Create Release
+        name: Create GitHub release
         id: create_release
-        uses: actions/create-release@v1.1.4
+        uses: release-drafter/release-drafter@v5
+        inputs:
+          version: ${{needs.version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: "Crankshaft OpenCarOS NG ${{ needs.buildimage.outputs.version }} ${{ needs.buildimage.outputs.builddate }}"
-          draft: true
-          prerelease: true
       - 
         name: Download artifact
         uses: actions/download-artifact@v2

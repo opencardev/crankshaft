@@ -12,3 +12,4 @@ stage2/03-crankshaft-base/files/etc/udev/rules.d/51-android.rules
 stage2/03-crankshaft-base/files/etc/udev/rules.d/51-android.master
 stage2/03-crankshaft-base/files/qt5/Qt5_OpenGLES2.tar.xz
 stage2/03-crankshaft-base/files/qt5/Qt5_libs_OpenGLES2.tar.xz
+*.bak

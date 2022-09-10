@@ -8,7 +8,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v4.1.0
+      - uses: actions/stale@v5.1.1
         with:
           operations-per-run: 1000
           remove-issue-stale-when-updated: true

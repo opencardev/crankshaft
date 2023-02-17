@@ -106,27 +106,27 @@ while True:
         # Set display brightness
         if Luxrounded <= int(get_var('LUX_LEVEL_1')):
             os.system("crankshaft brightness set " +
-                      str(get_var('DISP_BRIGHTNESS_1')) + " &")
+                      str(int(get_var('DISP_BRIGHTNESS_1'))) + " &")
             step = 1
         elif Luxrounded > int(get_var('LUX_LEVEL_1')) and Luxrounded < int(get_var('LUX_LEVEL_2')):
             os.system("crankshaft brightness set " +
-                      str(get_var('DISP_BRIGHTNESS_2')) + " &")
+                      str(int(get_var('DISP_BRIGHTNESS_2'))) + " &")
             step = 2
         elif Luxrounded >= int(get_var('LUX_LEVEL_2')) and Luxrounded < int(get_var('LUX_LEVEL_3')):
             os.system("crankshaft brightness set " +
-                      str(get_var('DISP_BRIGHTNESS_3')) + " &")
+                      str(int(get_var('DISP_BRIGHTNESS_3'))) + " &")
             step = 3
         elif Luxrounded >= int(get_var('LUX_LEVEL_3')) and Luxrounded < int(get_var('LUX_LEVEL_4')):
             os.system("crankshaft brightness set " +
-                      str(get_var('DISP_BRIGHTNESS_4')) + " &")
+                      str(int(get_var('DISP_BRIGHTNESS_4'))) + " &")
             step = 4
         elif Luxrounded >= int(get_var('LUX_LEVEL_4')) and Luxrounded < int(get_var('LUX_LEVEL_5')):
             os.system("crankshaft brightness set " +
-                      str(get_var('DISP_BRIGHTNESS_5')) + " &")
+                      str(int(get_var('DISP_BRIGHTNESS_5'))) + " &")
             step = 5
         elif Luxrounded >= int(get_var('LUX_LEVEL_5')):
             os.system("crankshaft brightness set " +
-                      str(get_var('DISP_BRIGHTNESS_5')) + " &")
+                      str(int(get_var('DISP_BRIGHTNESS_5'))) + " &")
             step = 6
 
         if daynight_gpio == 0:

@@ -24,7 +24,11 @@ BOOT_PART_START=$((ALIGN))
 BOOT_PART_SIZE=$(((BOOT_SIZE + ALIGN - 1) / ALIGN * ALIGN))
 ROOT_PART_START=$((BOOT_PART_START + BOOT_PART_SIZE))
 ROOT_PART_SIZE=$(((ROOT_SIZE + ROOT_MARGIN + ALIGN  - 1) / ALIGN * ALIGN))
-IMG_SIZE=$((BOOT_PART_START + BOOT_PART_SIZE + ROOT_PART_SIZE))
+# IMG_SIZE=$((BOOT_PART_START + BOOT_PART_SIZE + ROOT_PART_SIZE))
+# I didn't really figure out all the sector math going on here, but the "lotsetup" step for the rootfs
+# failed unless I gave the "truncate" step some breathing room. I don't know how much it wants,
+# so I arbitrarily chose the "ALIGN" amount.
+IMG_SIZE=$((BOOT_PART_START + BOOT_PART_SIZE + ROOT_PART_SIZE + ALIGN))
 
 truncate -s "${IMG_SIZE}" "${IMG_FILE}"
 

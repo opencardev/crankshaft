@@ -19,7 +19,7 @@ ALIGN="$((4 * 1024 * 1024))"
 # filesystem block size) and gives some free space on the resulting
 # image.
 #ROOT_MARGIN="$(echo "($ROOT_SIZE * 0.2 + 200 * 1024 * 1024) / 1" | bc)"
-ROOT_MARGIN="$(echo "($ROOT_SIZE * 0.2) / 1" | bc)"
+ROOT_MARGIN="$(echo "(($ROOT_SIZE * 0.2) + (512 * 1024 * 1024)) / 1" | bc)" # add 512MB to the rootfs size
 
 BOOT_PART_START=$((ALIGN))
 BOOT_PART_SIZE=$(((BOOT_SIZE + ALIGN - 1) / ALIGN * ALIGN))

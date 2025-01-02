@@ -15,7 +15,7 @@ jobs:
     steps:
       - 
         name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
       - 
         name: Get the version
         id: get_version
@@ -68,7 +68,7 @@ jobs:
     steps:
       - 
         name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
       - 
         name: Get the version
         id: get_version
@@ -111,7 +111,7 @@ jobs:
       - 
         name: Upload build artifacts 
         id: upload_deploy
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.get_version.outputs.version }}
           path: |
@@ -177,7 +177,7 @@ jobs:
     steps:
       - 
         name: Download build artifacts
-        uses: actions/download-artifact@v4.1.8
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.get_version.outputs.version }}
 

@@ -150,75 +150,75 @@ jobs:
 # Upload release artifacts
   upload:
     needs: [ version, build, release ]
-    runs-on: "ubuntu-latest"
-    name: 'Upload release'
+    runs-on: ${{ matrix.host }}
+    needs: [ version ]
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        host: [
+          "ubuntu-latest",
+          #"macos-10.15",
+        ]
+        config:
+          - {
+              name: "Debian Buster armhf",
+              basefile: "updater/base_buster_armhf",
+              arch: "armhf",
+              osname: "buster",
+              ostype: "Debian"
+            }
+          - {
+              name: "Debian Buster arm7",
+              basefile: "updater/base_buster_arm7",
+              arch: "arm7",
+              osname: "buster",
+              ostype: "Debian"
+            }
     steps:
-      - 
-        name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ needs.build.get_version.outputs.version }}
-
-      - 
-        name: Get Artifact Filenames
-        id: getfilenames
+    - 
+        name: Get the version
+        id: get_version
         run: |
-          ls -hla deploy/*
-          IMG_FILENAME="${{needs.build.outputs.version }}.img"
-          ZIP_FILENAME="${{needs.build.outputs.version }}.zip"
-          MD5HASH="${IMG_FILENAME}.md5"
-          SHA1HASH="${IMG_FILENAME}.sha1"
-          SHA256HASH="${IMG_FILENAME}.sha256"
-          echo "IMG_FILENAME=${IMG_FILENAME}" >> $GITHUB_OUTPUT
-          echo "ZIP_FILENAME=${ZIP_FILENAME}" >> $GITHUB_OUTPUT
-          echo "MD5HASH=${MD5HASH}" >> $GITHUB_OUTPUT
-          echo "SHA1HASH=${SHA1HASH}" >> $GITHUB_OUTPUT
-          echo "SHA256HASH=${SHA256HASH}" >> $GITHUB_OUTPUT
-      - 
-        name: Upload zip to release
-        id: upload_zip
-        uses: actions/upload-release-asset@v1.0.2
+          if [ -n "$ostype" ]
+          then 
+                osname=${ostype}_${osname}
+          fi
+          echo "version=${version}-${osname}-${arch}" >> $GITHUB_OUTPUT
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
-        with:
-          upload_url: ${{needs.release.outputs.release_upload_url}}
-          asset_path: ${{ steps.getfilenames.outputs.ZIP_FILENAME }}
-          asset_name: ${{ steps.getfilenames.outputs.ZIP_FILENAME }}
-          asset_content_type: application/zip
-      - 
-        name: Upload md5 to release
-        id: upload_md5
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
-        with:
-          upload_url: ${{needs.release.outputs.release_upload_url}}
-          asset_path: ${{ steps.getfilenames.outputs.MD5HASH }}
-          asset_name: ${{ steps.getfilenames.outputs.MD5HASH }}
-          asset_content_type: text/plain
-      - 
-        name: Upload sha1 to release
-        id: upload_sha1
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
-        with:
-          upload_url: ${{needs.release.outputs.release_upload_url}}
-          asset_path: ${{ steps.getfilenames.outputs.SHA1HASH }}
-          asset_name: ${{ steps.getfilenames.outputs.SHA1HASH }}
-          asset_content_type: text/plain
-      - 
-        name: Upload sha256 to release
-        id: upload_sha256
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ needs.version.outputs.buildname }}
-        with:
-          upload_url: ${{needs.release.outputs.release_upload_url}}
-          asset_path: ${{ steps.getfilenames.outputs.SHA256HASH }}
-          asset_name: ${{ steps.getfilenames.outputs.SHA256HASH }}
-          asset_content_type: text/plain
+          version: ${{needs.version.outputs.version }}
+          arch: ${{ matrix.config.arch }}
+          ostype: ${{ matrix.config.ostype }}
+          osname: ${{ matrix.config.osname }}
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/release/${{ steps.get_version.outputs.version }}.img
+        asset_name: ${{ steps.get_version.outputs.version }}.img
+        tag: ${{ github.ref }}
+        release_name: ${{needs.version.outputs.version }}
+    - name: Upload MD5 to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/release/${{ steps.get_version.outputs.version }}.img.md5
+        asset_name: ${{ steps.get_version.outputs.version }}.img.md5
+        tag: ${{ github.ref }}
+        release_name: ${{needs.version.outputs.version }}
+    - name: Upload SHA1 to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/release/${{ steps.get_version.outputs.version }}.img.sha1
+        asset_name: ${{ steps.get_version.outputs.version }}.img.sha1
+        tag: ${{ github.ref }}
+        release_name: ${{needs.version.outputs.version }}
+    - name: Upload SHA256 to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/release/${{ steps.get_version.outputs.version }}.img.sha256
+        asset_name: ${{ steps.get_version.outputs.version }}.img.sha256
+        tag: ${{ github.ref }}
+        release_name: ${{needs.version.outputs.version }}

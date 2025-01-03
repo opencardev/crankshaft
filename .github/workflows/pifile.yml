@@ -39,6 +39,8 @@ jobs:
         env:
           version: ${{ github.event.inputs.version }}
   build:
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
     runs-on: ${{ matrix.host }}
     needs: [ version ]
     strategy:
@@ -90,13 +92,13 @@ jobs:
           pifile: ${{ matrix.config.basefile }}.Pifile
       - 
         name: Rename Image
-        run: mv ${{ matrix.config.basefile }}.img crankshaft-${{needs.version.outputs.buildname }}.img
+        run: mv ${{ matrix.config.basefile }}.img ${{steps.get_version.outputs.version}}.img
       - 
         name: Package zip
         id: packagezip
         run: |
-          IMG_FILENAME="crankshaft-${{needs.version.outputs.buildname }}.img"
-          ZIP_FILENAME="crankshaft-${{needs.version.outputs.buildname }}.zip"
+          IMG_FILENAME="${{steps.get_version.outputs.version}}.img"
+          ZIP_FILENAME="${{steps.get_version.outputs.version}}.zip"
           MD5HASH="${IMG_FILENAME}.md5"
           SHA1HASH="${IMG_FILENAME}.sha1"
           SHA256HASH="${IMG_FILENAME}.sha256"
@@ -179,19 +181,19 @@ jobs:
         name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ${{ steps.get_version.outputs.version }}
+          name: ${{ needs.build.get_version.outputs.version }}
 
       - 
         name: Get Artifact Filenames
         id: getfilenames
         run: |
-          IMG_FILENAME="crankshaft-${{needs.version.outputs.buildname }}.img"
-          ZIP_FILENAME="crankshaft-${{needs.version.outputs.buildname }}.zip"
+          IMG_FILENAME="${{needs.build.outputs.version }}.img"
+          ZIP_FILENAME="${{needs.build.outputs.version }}.zip"
           MD5HASH="${IMG_FILENAME}.md5"
           SHA1HASH="${IMG_FILENAME}.sha1"
           SHA256HASH="${IMG_FILENAME}.sha256"
           zip "${ZIP_FILENAME}" "${IMG_FILENAME}" "${MD5HASH}" "${SHA1HASH}" "${SHA256HASH}"
-          echo ::set-output name=ZIP_FILENAME::"${ZIP_FILENAME}"
+          echo "{ZIP_FILENAME}=${ZIP_FILENAME}"
           echo ::set-output name=MD5HASH::"${MD5HASH}"
           echo ::set-output name=SHA1HASH::"${SHA1HASH}"
           echo ::set-output name=SHA256HASH::"${SHA256HASH}"

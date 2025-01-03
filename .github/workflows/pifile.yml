@@ -150,32 +150,8 @@ jobs:
 # Upload release artifacts
   upload:
     needs: [ version, build, release ]
-    runs-on: ${{ matrix.host }}
-    strategy:
-      fail-fast: false
-      max-parallel: 3
-      matrix:
-        host: [
-          "ubuntu-latest",
-          #"macos-10.15",
-        ]
-        config:
-          - {
-              name: "Debian Buster armhf",
-              basefile: "base_buster_armhf",
-              arch: "armhf",
-              osname: "buster",
-              ostype: "Debian"
-            }
-          - {
-              name: "Debian Buster arm7",
-              basefile: "updater/base_buster_arm7",
-              arch: "arm7",
-              osname: "buster",
-              ostype: "Debian"
-            }
-
-    name: 'Upload release:  ${{ matrix.config.name }}'
+    runs-on: "ubuntu-latest"
+    name: 'Upload release'
     steps:
       - 
         name: Download build artifacts
@@ -187,6 +163,7 @@ jobs:
         name: Get Artifact Filenames
         id: getfilenames
         run: |
+          ls -hla deploy/*
           IMG_FILENAME="${{needs.build.outputs.version }}.img"
           ZIP_FILENAME="${{needs.build.outputs.version }}.zip"
           MD5HASH="${IMG_FILENAME}.md5"

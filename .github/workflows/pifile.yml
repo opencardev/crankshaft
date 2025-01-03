@@ -23,19 +23,19 @@ jobs:
           if [ -z "$version" ]
           then
                 version=$(date '+%Y%m%d')
-                echo ::set-output name=version::"${version}"
+                echo "{version}=${version}" >> $GITHUB_OUTPUT
           else
-                echo ::set-output name=version::"${version}"
+                echo "{version}=${version}" >> $GITHUB_OUTPUT
           fi
           builddate=$(date '+%Y-%m-%d')
           buildbranch='crankshaft-ng'
           buildhash=$(git rev-parse --short "$GITHUB_SHA")
           buildname="${builddate}-${buildbranch}-${buildhash}"
-          echo ::set-output name=version::${version}
-          echo ::set-output name=buildhash::${buildhash}
-          echo ::set-output name=buildbranch::${buildbranch}
-          echo ::set-output name=builddate::${builddate}
-          echo ::set-output name=buildname::${buildname}
+          echo "{version}=${version}" >> $GITHUB_OUTPUT
+          echo "{buildhash}=${buildhash}" >> $GITHUB_OUTPUT
+          echo "{buildbranch}=${buildbranch}" >> $GITHUB_OUTPUT
+          echo "{builddate}=${builddate}" >> $GITHUB_OUTPUT
+          echo "{buildname}=${buildname}" >> $GITHUB_OUTPUT
         env:
           version: ${{ github.event.inputs.version }}
   build:
@@ -79,7 +79,7 @@ jobs:
           then 
                 osname=${ostype}_${osname}
           fi
-          echo ::set-output name=version::"${version}-${osname}-${arch}"
+          echo "{version}=${version}-${osname}-${arch}" >> $GITHUB_OUTPUT
         env:
           version: ${{needs.version.outputs.version }}
           arch: ${{ matrix.config.arch }}
@@ -106,10 +106,10 @@ jobs:
           sha1sum "${IMG_FILENAME}" > "${SHA1HASH}"
           sha256sum "${IMG_FILENAME}" > "${SHA256HASH}"
           zip "${ZIP_FILENAME}" "${IMG_FILENAME}" "${MD5HASH}" "${SHA1HASH}" "${SHA256HASH}"
-          echo ::set-output name=ZIP_FILENAME::"${ZIP_FILENAME}"
-          echo ::set-output name=MD5HASH::"${MD5HASH}"
-          echo ::set-output name=SHA1HASH::"${SHA1HASH}"
-          echo ::set-output name=SHA256HASH::"${SHA256HASH}"
+          echo "{ZIP_FILENAME}=${ZIP_FILENAME}" >> $GITHUB_OUTPUT
+          echo "{MD5HASH}=${MD5HASH}" >> $GITHUB_OUTPUT
+          echo "{SHA1HASH}=${SHA1HASH}" >> $GITHUB_OUTPUT
+          echo "{SHA256HASH}=${SHA256HASH}" >> $GITHUB_OUTPUT
       - 
         name: Upload build artifacts 
         id: upload_deploy
@@ -192,11 +192,11 @@ jobs:
           MD5HASH="${IMG_FILENAME}.md5"
           SHA1HASH="${IMG_FILENAME}.sha1"
           SHA256HASH="${IMG_FILENAME}.sha256"
-          zip "${ZIP_FILENAME}" "${IMG_FILENAME}" "${MD5HASH}" "${SHA1HASH}" "${SHA256HASH}"
-          echo "{ZIP_FILENAME}=${ZIP_FILENAME}"
-          echo ::set-output name=MD5HASH::"${MD5HASH}"
-          echo ::set-output name=SHA1HASH::"${SHA1HASH}"
-          echo ::set-output name=SHA256HASH::"${SHA256HASH}"
+          echo "{IMG_FILENAME}=${IMG_FILENAME}" >> $GITHUB_OUTPUT
+          echo "{ZIP_FILENAME}=${ZIP_FILENAME}" >> $GITHUB_OUTPUT
+          echo "{MD5HASH}=${MD5HASH}" >> $GITHUB_OUTPUT
+          echo "{SHA1HASH}=${SHA1HASH}" >> $GITHUB_OUTPUT
+          echo "{SHA256HASH}=${SHA256HASH}" >> $GITHUB_OUTPUT
       - 
         name: Upload zip to release
         id: upload_zip

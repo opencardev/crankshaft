@@ -1,5 +1,5 @@
 #FROM https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
-FROM https://github.com/opencardev/crankshaft/releases/download/csng-alpha7.5/2022-02-04-crankshaft-ng-496df4a.zip
+FROM https://github.com/opencardev/crankshaft/releases/download/v.2022.09.12.1/2022-09-11-crankshaft-ng-66525ef-pi2.zip
 PUMP 1000M
 
 # Update OS and sources

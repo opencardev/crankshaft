@@ -135,23 +135,22 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v5.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - 
-        name: Create GitHub release
-        id: create_release
-        uses: actions/create-release@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{needs.version.outputs.version }}
-          release_name: ${{needs.version.outputs.buildname }}
-          #body: ${{steps.github_release.outputs.changelog}}
-          draft: true
-          prerelease: true
+#      - 
+#        name: Create GitHub release
+#        id: create_release
+#        uses: actions/create-release@v1.0.0
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{needs.version.outputs.version }}
+#          release_name: ${{needs.version.outputs.buildname }}
+#          #body: ${{steps.github_release.outputs.changelog}}
+#          draft: true
+#          prerelease: true
 # Upload release artifacts
   upload:
     needs: [ version, build, release ]
     runs-on: ${{ matrix.host }}
-    needs: [ version ]
     strategy:
       fail-fast: false
       max-parallel: 3
@@ -197,7 +196,7 @@ jobs:
         file: target/release/${{ steps.get_version.outputs.version }}.img
         asset_name: ${{ steps.get_version.outputs.version }}.img
         tag: ${{ github.ref }}
-        release_name: ${{needs.version.outputs.version }}
+        release_name: ${{needs.version.outputs.buildname }}
     - name: Upload MD5 to release
       uses: svenstaro/upload-release-action@v2
       with:
@@ -205,7 +204,7 @@ jobs:
         file: target/release/${{ steps.get_version.outputs.version }}.img.md5
         asset_name: ${{ steps.get_version.outputs.version }}.img.md5
         tag: ${{ github.ref }}
-        release_name: ${{needs.version.outputs.version }}
+        release_name: ${{needs.version.outputs.buildname }}
     - name: Upload SHA1 to release
       uses: svenstaro/upload-release-action@v2
       with:
@@ -213,7 +212,7 @@ jobs:
         file: target/release/${{ steps.get_version.outputs.version }}.img.sha1
         asset_name: ${{ steps.get_version.outputs.version }}.img.sha1
         tag: ${{ github.ref }}
-        release_name: ${{needs.version.outputs.version }}
+        release_name: ${{needs.version.outputs.buildname }}
     - name: Upload SHA256 to release
       uses: svenstaro/upload-release-action@v2
       with:
@@ -221,4 +220,4 @@ jobs:
         file: target/release/${{ steps.get_version.outputs.version }}.img.sha256
         asset_name: ${{ steps.get_version.outputs.version }}.img.sha256
         tag: ${{ github.ref }}
-        release_name: ${{needs.version.outputs.version }}
+        release_name: ${{needs.version.outputs.buildname }}

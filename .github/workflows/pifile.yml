@@ -203,7 +203,6 @@ jobs:
         tag: ${{ steps.get_version.outputs.version }}
         release_name: ${{needs.version.outputs.buildname }}
         draft: true
-        file_glob: true
 #    - name: Upload MD5 to release
 #      uses: svenstaro/upload-release-action@v2
 #      with:

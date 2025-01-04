@@ -193,31 +193,35 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: target/release/${{ steps.get_version.outputs.version }}.img
-        asset_name: ${{ steps.get_version.outputs.version }}.img
+        file: target/release/${{ steps.get_version.outputs.version }}.zip
+        asset_name: ${{ steps.get_version.outputs.version }}.zip
         tag: ${{ github.ref }}
         release_name: ${{needs.version.outputs.buildname }}
-    - name: Upload MD5 to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: target/release/${{ steps.get_version.outputs.version }}.img.md5
-        asset_name: ${{ steps.get_version.outputs.version }}.img.md5
-        tag: ${{ github.ref }}
-        release_name: ${{needs.version.outputs.buildname }}
-    - name: Upload SHA1 to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: target/release/${{ steps.get_version.outputs.version }}.img.sha1
-        asset_name: ${{ steps.get_version.outputs.version }}.img.sha1
-        tag: ${{ github.ref }}
-        release_name: ${{needs.version.outputs.buildname }}
-    - name: Upload SHA256 to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: target/release/${{ steps.get_version.outputs.version }}.img.sha256
-        asset_name: ${{ steps.get_version.outputs.version }}.img.sha256
-        tag: ${{ github.ref }}
-        release_name: ${{needs.version.outputs.buildname }}
+        draft: true
+#    - name: Upload MD5 to release
+#      uses: svenstaro/upload-release-action@v2
+#      with:
+#        repo_token: ${{ secrets.GITHUB_TOKEN }}
+#        file: target/release/${{ steps.get_version.outputs.version }}.img.md5
+#        asset_name: ${{ steps.get_version.outputs.version }}.img.md5
+#        tag: ${{ github.ref }}
+#        release_name: ${{needs.version.outputs.buildname }}
+#        draft: true
+#    - name: Upload SHA1 to release
+#      uses: svenstaro/upload-release-action@v2
+#      with:
+#        repo_token: ${{ secrets.GITHUB_TOKEN }}
+#        file: target/release/${{ steps.get_version.outputs.version }}.img.sha1
+#        asset_name: ${{ steps.get_version.outputs.version }}.img.sha1
+#        tag: ${{ github.ref }}
+#        release_name: ${{needs.version.outputs.buildname }}
+#        draft: true
+#    - name: Upload SHA256 to release
+#      uses: svenstaro/upload-release-action@v2
+#      with:
+#        repo_token: ${{ secrets.GITHUB_TOKEN }}
+#        file: target/release/${{ steps.get_version.outputs.version }}.img.sha256
+#        asset_name: ${{ steps.get_version.outputs.version }}.img.sha256
+#        tag: ${{ github.ref }}
+#        release_name: ${{needs.version.outputs.buildname }}
+#        draft: true

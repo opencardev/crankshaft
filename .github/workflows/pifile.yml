@@ -121,15 +121,21 @@ jobs:
             ${{ steps.packagezip.outputs.MD5HASH }}
             ${{ steps.packagezip.outputs.SHA1HASH }}
             ${{ steps.packagezip.outputs.SHA256HASH }}
+      - 
+        name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v5.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
           asset_name: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
-          tag: ${{needs.version.outputs.buildname }}
-          release_name: ${{needs.version.outputs.buildname }}
+          tag: ${{needs.version.outputs.version }}
           draft: true
+          body: ${{steps.github_release.outputs.changelog}}
 # Create Release
 #  release:
 #    runs-on: ubuntu-latest

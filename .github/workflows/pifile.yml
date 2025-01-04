@@ -189,15 +189,21 @@ jobs:
           arch: ${{ matrix.config.arch }}
           ostype: ${{ matrix.config.ostype }}
           osname: ${{ matrix.config.osname }}
+    - 
+      name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ steps.get_version.outputs.version }}
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: target/release/${{ steps.get_version.outputs.version }}.zip
+        file: ${{ steps.get_version.outputs.version }}/${{ steps.get_version.outputs.version }}.zip
         asset_name: ${{ steps.get_version.outputs.version }}.zip
         tag: ${{ steps.get_version.outputs.version }}
         release_name: ${{needs.version.outputs.buildname }}
         draft: true
+        file_glob: true
 #    - name: Upload MD5 to release
 #      uses: svenstaro/upload-release-action@v2
 #      with:

@@ -134,8 +134,10 @@ jobs:
           file: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
           asset_name: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
           tag: ${{needs.version.outputs.version }}
-          draft: true
-          body: ${{steps.github_release.outputs.changelog}}
+          latest: false
+          prerelease: true
+          #draft: true
+          #body: ${{steps.github_release.outputs.changelog}}
 # Create Release
 #  release:
 #    runs-on: ubuntu-latest

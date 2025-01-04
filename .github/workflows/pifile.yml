@@ -195,7 +195,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: target/release/${{ steps.get_version.outputs.version }}.zip
         asset_name: ${{ steps.get_version.outputs.version }}.zip
-        tag: ${{ github.ref }}
+        tag: ${{ steps.get_version.outputs.version }}
         release_name: ${{needs.version.outputs.buildname }}
         draft: true
 #    - name: Upload MD5 to release

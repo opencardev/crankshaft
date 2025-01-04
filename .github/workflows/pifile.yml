@@ -121,20 +121,29 @@ jobs:
             ${{ steps.packagezip.outputs.MD5HASH }}
             ${{ steps.packagezip.outputs.SHA1HASH }}
             ${{ steps.packagezip.outputs.SHA256HASH }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
+          asset_name: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
+          tag: ${{ steps.get_version.outputs.version }}
+          release_name: ${{needs.version.outputs.buildname }}
+          draft: true
 # Create Release
-  release:
-    runs-on: ubuntu-latest
-    needs: [ version, build ]
-    name: 'Create release'
-    outputs:
-      release_upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-    steps:
-      - 
-        name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v5.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#  release:
+#    runs-on: ubuntu-latest
+#    needs: [ version, build ]
+#    name: 'Create release'
+#    outputs:
+#      release_upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+#    steps:
+#      - 
+#        name: Build Changelog
+#        id: github_release
+#        uses: mikepenz/release-changelog-builder-action@v5.0.0
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #      - 
 #        name: Create GitHub release
 #        id: create_release
@@ -148,61 +157,61 @@ jobs:
 #          draft: true
 #          prerelease: true
 # Upload release artifacts
-  upload:
-    needs: [ version, build, release ]
-    runs-on: ${{ matrix.host }}
-    strategy:
-      fail-fast: false
-      max-parallel: 3
-      matrix:
-        host: [
-          "ubuntu-latest",
-          #"macos-10.15",
-        ]
-        config:
-          - {
-              name: "Debian Buster armhf",
-              basefile: "updater/base_buster_armhf",
-              arch: "armhf",
-              osname: "buster",
-              ostype: "Debian"
-            }
-          - {
-              name: "Debian Buster arm7",
-              basefile: "updater/base_buster_arm7",
-              arch: "arm7",
-              osname: "buster",
-              ostype: "Debian"
-            }
-    steps:
-    - 
-        name: Get the version
-        id: get_version
-        run: |
-          if [ -n "$ostype" ]
-          then 
-                osname=${ostype}_${osname}
-          fi
-          echo "version=${version}-${osname}-${arch}" >> $GITHUB_OUTPUT
-        env:
-          version: ${{needs.version.outputs.version }}
-          arch: ${{ matrix.config.arch }}
-          ostype: ${{ matrix.config.ostype }}
-          osname: ${{ matrix.config.osname }}
-    - 
-      name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ steps.get_version.outputs.version }}
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ steps.get_version.outputs.version }}/${{ steps.get_version.outputs.version }}.zip
-        asset_name: ${{ steps.get_version.outputs.version }}.zip
-        tag: ${{ steps.get_version.outputs.version }}
-        release_name: ${{needs.version.outputs.buildname }}
-        draft: true
+#  upload:
+#    needs: [ version, build, release ]
+#    runs-on: ${{ matrix.host }}
+#    strategy:
+#      fail-fast: false
+#      max-parallel: 3
+#      matrix:
+#        host: [
+#          "ubuntu-latest",
+#          #"macos-10.15",
+#        ]
+#        config:
+#          - {
+#              name: "Debian Buster armhf",
+#              basefile: "updater/base_buster_armhf",
+#              arch: "armhf",
+#              osname: "buster",
+#              ostype: "Debian"
+#            }
+#          - {
+#              name: "Debian Buster arm7",
+#              basefile: "updater/base_buster_arm7",
+#              arch: "arm7",
+#              osname: "buster",
+#              ostype: "Debian"
+#            }
+#    steps:
+#    - 
+#        name: Get the version
+#        id: get_version
+#        run: |
+#          if [ -n "$ostype" ]
+#          then 
+#                osname=${ostype}_${osname}
+#          fi
+#          echo "version=${version}-${osname}-${arch}" >> $GITHUB_OUTPUT
+#        env:
+#          version: ${{needs.version.outputs.version }}
+#          arch: ${{ matrix.config.arch }}
+#          ostype: ${{ matrix.config.ostype }}
+#          osname: ${{ matrix.config.osname }}
+#    - 
+#      name: Download artifact
+#      uses: actions/download-artifact@v4
+#      with:
+#        name: ${{ steps.get_version.outputs.version }}
+#    - name: Upload binaries to release
+#      uses: svenstaro/upload-release-action@v2
+#      with:
+#        repo_token: ${{ secrets.GITHUB_TOKEN }}
+#        file: ${{ steps.get_version.outputs.version }}/${{ steps.get_version.outputs.version }}.zip
+#        asset_name: ${{ steps.get_version.outputs.version }}.zip
+#        tag: ${{ steps.get_version.outputs.version }}
+#        release_name: ${{needs.version.outputs.buildname }}
+#        draft: true
 #    - name: Upload MD5 to release
 #      uses: svenstaro/upload-release-action@v2
 #      with:

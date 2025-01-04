@@ -127,7 +127,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
           asset_name: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
-          tag: ${{ steps.get_version.outputs.version }}
+          tag: ${{needs.version.outputs.buildname }}
           release_name: ${{needs.version.outputs.buildname }}
           draft: true
 # Create Release

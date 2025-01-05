@@ -1,5 +1,5 @@
 #FROM https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
-FROM https://github.com/opencardev/crankshaft/releases/download/v.2022.09.12.1/2022-09-11-crankshaft-ng-66525ef-pi2.zip
+FROM https://github.com/opencardev/crankshaft/releases/download/v.2022.09.12.1/2022-09-11-crankshaft-ng-66525ef.zip
 PUMP 1000M
 
 # Update OS and sources
@@ -50,4 +50,15 @@ rm -f /usr/local/bin/crankshaft.md5
 wget -O /usr/local/bin/crankshaft.md5 https://github.com/opencardev/prebuilts/raw/master/csmt/crankshaft.md5
 chmod 644 /usr/local/bin/crankshaft.md5
 
+"
+
+RUN bash -c "
+cd /root
+rm -rf /usr/local/qt5
+wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_OpenGLES2.tar.xz.part00
+wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_OpenGLES2.tar.xz.part01
+wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_OpenGLES2.tar.xz.part02
+wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_OpenGLES2.tar.xz.part03
+cat Qt_5151_OpenGLES2.tar.xz* > Qt5_OpenGLES2.tar.xz
+tar -xf Qt5_OpenGLES2.tar.xz -C /
 "

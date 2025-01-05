@@ -51,3 +51,14 @@ wget -O /usr/local/bin/crankshaft.md5 https://github.com/opencardev/prebuilts/ra
 chmod 644 /usr/local/bin/crankshaft.md5
 
 "
+
+RUN bash -c "
+cd /root
+rm -rf /usr/local/qt5
+wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_armv7l_OpenGLES2.tar.xz.part00
+wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_armv7l_OpenGLES2.tar.xz.part01
+wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_armv7l_OpenGLES2.tar.xz.part02
+wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_armv7l_OpenGLES2.tar.xz.part03
+cat Qt_5151_armv7l_OpenGLES2.tar.xz* > Qt5_OpenGLES2.tar.xz
+tar -xf Qt5_OpenGLES2.tar.xz -C /
+"

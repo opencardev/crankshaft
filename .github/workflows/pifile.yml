@@ -62,7 +62,7 @@ jobs:
           - {
               name: "Debian Buster arm7",
               basefile: "updater/base_buster_arm7",
-              arch: "arm7",
+              arch: "arm7-pi2",
               osname: "buster",
               ostype: "Debian"
             }

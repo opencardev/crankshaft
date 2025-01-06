@@ -62,3 +62,5 @@ wget https://github.com/opencardev/prebuilts/raw/master/qt5/Qt_5151_OpenGLES2.ta
 cat Qt_5151_OpenGLES2.tar.xz* > Qt5_OpenGLES2.tar.xz
 tar -xf Qt5_OpenGLES2.tar.xz -C /
 "
+
+INCLUDE version

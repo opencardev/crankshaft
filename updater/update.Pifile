@@ -41,15 +41,15 @@ ldconfig
 
 HOST bash -c "
 cat > crankshaft.date << EOF
-${IMG_DATE}
+$(date '+%Y-%m-%d')
 EOF
 
 cat > crankshaft.build << EOF
-${GIT_HASH}
+$(git rev-parse --short "$GITHUB_SHA")
 EOF
 
 cat > crankshaft.branch << EOF
-${GIT_BRANCH}
+$(git rev-parse --abbrev-ref HEAD)
 EOF
 "
 

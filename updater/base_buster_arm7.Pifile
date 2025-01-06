@@ -49,7 +49,7 @@ chmod 777 /usr/local/bin/crankshaft
 rm -f /usr/local/bin/crankshaft.md5
 wget -O /usr/local/bin/crankshaft.md5 https://github.com/opencardev/prebuilts/raw/master/csmt/crankshaft.md5
 chmod 644 /usr/local/bin/crankshaft.md5
-
+ldconfig
 "
 
 RUN bash -c "

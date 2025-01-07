@@ -45,7 +45,7 @@ $(date '+%Y-%m-%d')
 EOF
 
 cat > crankshaft.build << EOF
-$(git rev-parse --short)
+$(git rev-parse --short HEAD)
 EOF
 
 cat > crankshaft.branch << EOF

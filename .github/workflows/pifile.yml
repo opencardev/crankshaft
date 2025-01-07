@@ -134,7 +134,7 @@ jobs:
           file: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
           asset_name: ${{ steps.packagezip.outputs.ZIP_FILENAME }}
           tag: ${{needs.version.outputs.version }}
-          latest: false
+          make_latest: false
           prerelease: true
           #draft: true
           #body: ${{steps.github_release.outputs.changelog}}

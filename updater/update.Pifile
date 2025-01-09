@@ -37,6 +37,9 @@ rm -f /usr/local/bin/crankshaft.md5
 wget -O /usr/local/bin/crankshaft.md5 https://github.com/opencardev/prebuilts/raw/master/csmt/crankshaft.md5
 chmod 644 /usr/local/bin/crankshaft.md5
 ldconfig
+wget -O /boot/crankshaft/openauto-logs.ini https://github.com/opencardev/crankshaft/raw/csng/stage3/03-crankshaft-base/files/boot/crankshaft/openauto-logs.ini
+chmod 644 /boot/crankshaft/openauto-logs.ini
+ln -sf /tmp/openauto-logs.ini /home/pi/openauto-logs.ini
 "
 
 HOST bash -c "

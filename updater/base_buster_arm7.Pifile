@@ -24,6 +24,7 @@ tar -xf Qt5_OpenGLES2.tar.xz -C /
 
 # comment out fkms on [all] for pi2 compat with eglfs
 RUN bash -c "
+mount /dev/mapper/loop0p1 /boot
 sed -i '/^\[all\]/{:a;n;/^dtoverlay=vc4-fkms-v3d/s/^/#/;ba}' /boot/config.txt
 "
 

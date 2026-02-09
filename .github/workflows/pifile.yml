@@ -113,7 +113,7 @@ jobs:
       - 
         name: Upload build artifacts 
         id: upload_deploy
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.get_version.outputs.version }}
           path: |

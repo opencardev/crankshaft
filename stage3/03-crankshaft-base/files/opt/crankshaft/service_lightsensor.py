@@ -96,6 +96,40 @@ def get_LUX_TSL2591(TSL_I2C_BUS, TSL_ADDR):
 
 
 lastvalue = 0
+TSL_ADDRESS_POSSIBLE = [0x29, 0x39, 0x49]
+
+def check_tsl2561_address() -> None:
+    global TSL_ADDR
+    def check(address: str) -> bool:
+        result = subprocess.run(
+            ["sudo", "i2cget", "-y", "1", address, "0x8A"],
+            capture_output=True,
+            text=True
+        )
+        output = result.stdout.strip()
+        if output == "0x50":
+            return True
+        return False
+
+    # check the current address in the config first
+    if check(TSL_ADDR):
+        return
+    # check the others address possible
+    TSL_ADDRESS_POSSIBLE.remove(TSL_ADDR)
+    for address in TSL_ADDRESS_POSSIBLE:
+        if check(address):
+            print("Found TSL2561 at address 0x{:02X}".format(address))
+            TSL_ADDR = address
+            subprocess.run(
+                ["sed", "-i", f"s/TSL_ADDR=0x29/TSL_ADDR=0x{address:X}/g", filename],
+                capture_output=True,
+                text=True
+            )
+            return
+    print("No TSL2561 found at addresses 0x29, 0x39, 0x49. Please check your wiring and config.")
+
+if 'TSL2561' == LIGHTSENSOR:
+    check_tsl2561_address()
 
 while True:
     Luxrounded = get_LUX(LIGHTSENSOR)

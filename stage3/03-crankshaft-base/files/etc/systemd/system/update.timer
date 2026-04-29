@@ -1,9 +1,0 @@
-[Unit]
- Description=Crankshaft Update Check
- After=usbrestore.service usbdetect.service rc.local.service
-
-[Timer]
- OnCalendar=*-*-* *:00:00
-
-[Install]
- WantedBy=timers.target

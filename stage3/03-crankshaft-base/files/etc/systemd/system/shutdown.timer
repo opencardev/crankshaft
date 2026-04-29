@@ -1,9 +1,0 @@
-[Unit]
- Description=Crankshaft Shutdown Timer
-
-[Timer]
- OnActiveSec=60m
- AccuracySec=5s
-
-[Install]
- WantedBy=timers.target

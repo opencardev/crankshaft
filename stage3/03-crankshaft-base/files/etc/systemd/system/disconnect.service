@@ -1,8 +1,0 @@
-[Unit]
- Description=Crankshaft Disconnect Service
-
-[Service]
- Type=simple
- ExecStart=/usr/local/bin/crankshaft display off
- ExecStop=/usr/local/bin/crankshaft display on
- RemainAfterExit=yes

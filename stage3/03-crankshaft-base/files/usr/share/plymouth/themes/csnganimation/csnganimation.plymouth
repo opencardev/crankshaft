@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=CSNG Animation
-Description=Script example plugin.
-ModuleName=csnganimation
-
-[script]
-ImageDir=/usr/share/plymouth/themes/csnganimation
-ScriptFile=/usr/share/plymouth/themes/csnganimation/csnganimation.script

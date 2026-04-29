@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=crankshaft
-Description=Raspberry Pi Desktop Splash
-ModuleName=script
-
-[script]
-ImageDir=/usr/share/plymouth/themes/crankshaft
-ScriptFile=/usr/share/plymouth/themes/crankshaft/crankshaft.script

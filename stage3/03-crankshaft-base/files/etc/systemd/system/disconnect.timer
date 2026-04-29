@@ -1,9 +1,0 @@
-[Unit]
- Description=Crankshaft Disconnect Timer
-
-[Timer]
- OnActiveSec=120s
- AccuracySec=1s
-
-[Install]
- WantedBy=timers.target

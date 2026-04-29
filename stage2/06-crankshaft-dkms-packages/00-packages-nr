@@ -1,2 +1,0 @@
-dkms raspberrypi-kernel-headers bc git flex bison build-essential libssl-dev libncurses5-dev exfat-utils
-

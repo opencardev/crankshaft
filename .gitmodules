@@ -1,3 +1,0 @@
-[submodule "prebuilts"]
-	path = prebuilts
-	url = https://github.com/opencardev/prebuilts.git

@@ -1,7 +1,0 @@
-[Unit]
- Description=Crankshaft Night Mode Service
-
-[Service]
- Type=simple
- ExecStart=/opt/crankshaft/service_daynight.sh night &
-

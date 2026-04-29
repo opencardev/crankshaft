@@ -1,9 +1,0 @@
-[Unit]
- Description=Crankshaft Update Service
-
-[Service]
- Type=simple
- ExecStart=/usr/local/bin/crankshaft update check
-
-[Install]
- WantedBy=multi-user.target

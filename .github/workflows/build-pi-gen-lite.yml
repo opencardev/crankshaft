@@ -1,0 +1,274 @@
+# Project: Crankshaft
+# This file is part of Crankshaft project.
+# Copyright (C) 2025 OpenCarDev Team
+
+name: build-pi-gen-lite
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: "Version"
+        required: true
+        type: string
+      release:
+        description: "Debian Release"
+        type: string
+        required: false
+        default: "trixie"
+      auto_release:
+        description: "Auto release"
+        required: false
+        default: "false"
+        type: string
+      create_release_draft:
+        description: "Create release draft"
+        required: false
+        default: "false"
+        type: string
+      release-tag:
+        description: "Git release tag to build for (e.g., v1.2.0)"
+        required: false
+        type: string
+      attach-to-release:
+        description: "Automatically attach images to GitHub release"
+        required: false
+        default: "false"
+        type: string
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version"
+        required: true
+        default: "DEV"
+        type: string
+      release:
+        description: "Debian Release"
+        required: false
+        default: "trixie"
+        type: choice
+        options:
+          - trixie
+      auto_release:
+        description: "Automatically create a GitHub release from this build"
+        required: false
+        default: false
+        type: boolean
+      create_release_draft:
+        description: "Create the release as a draft"
+        required: false
+        default: false
+        type: boolean
+      release-tag:
+        description: "Git release tag to build for (e.g., v1.2.0) - optional"
+        required: false
+        default: ""
+        type: string
+      attach-to-release:
+        description: "Automatically attach images to GitHub release"
+        required: false
+        default: false
+        type: boolean
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+
+permissions:
+  contents: write
+
+jobs:
+  build-lite-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: armhf
+            branch: master
+            platform: linux/arm/v7
+          - arch: arm64
+            branch: arm64
+            platform: linux/arm64
+
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+      builddate: ${{ steps.get_version.outputs.builddate }}
+
+    steps:
+      - name: Checkout crankshaft repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Get build metadata
+        id: get_version
+        run: |
+          set -euo pipefail
+          VERSION="${{ inputs.version || github.event.inputs.version || 'DEV' }}"
+          ARCH="${{ matrix.arch }}"
+          RELEASE="${{ inputs.release || github.event.inputs.release || 'trixie' }}"
+          BUILD_HASH=$(git rev-parse --short "$GITHUB_SHA")
+          BUILD_DATE=$(date '+%Y-%m-%d')
+          BUILD_BRANCH="pi-gen-lite"
+
+          if [ "$VERSION" = "DEV" ]; then
+            VERSION_STRING="${BUILD_DATE}-${BUILD_BRANCH}-${ARCH}-${RELEASE}-${BUILD_HASH}"
+          else
+            VERSION_STRING="${VERSION}-${BUILD_DATE}-${ARCH}-${RELEASE}-${BUILD_HASH}"
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "version_string=${VERSION_STRING}" >> "$GITHUB_OUTPUT"
+          echo "buildhash=${BUILD_HASH}" >> "$GITHUB_OUTPUT"
+          echo "buildbranch=${BUILD_BRANCH}" >> "$GITHUB_OUTPUT"
+          echo "builddate=${BUILD_DATE}" >> "$GITHUB_OUTPUT"
+          echo "arch=${ARCH}" >> "$GITHUB_OUTPUT"
+          echo "release=${RELEASE}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout pi-gen repository
+        uses: actions/checkout@v5
+        with:
+          repository: RPi-Distro/pi-gen
+          ref: ${{ matrix.branch }}
+          path: pi-gen
+          fetch-depth: 1
+
+      - name: Prepare pi-gen custom stage
+        run: |
+          set -euo pipefail
+          rm -rf pi-gen/stage60
+          cp -r image_builder/stages/stage60 pi-gen/stage60
+          find pi-gen/stage60 -type f -name "*.sh" -exec chmod +x {} \;
+          sed -i 's/qemu-user-binfmt/qemu-user-static/g' pi-gen/depends
+
+      - name: Install host dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y \
+            coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+            dosfstools e2fsprogs libarchive-tools libcap2-bin grep rsync xz-utils \
+            file git curl bc gpg pigz xxd arch-test bmap-tools kmod binfmt-support
+
+      - name: Enable binfmt emulation
+        run: |
+          set -euo pipefail
+          sudo modprobe binfmt_misc
+          sudo ln -sf /usr/bin/qemu-arm-static /usr/local/bin/qemu-arm
+          sudo ln -sf /usr/bin/qemu-aarch64-static /usr/local/bin/qemu-aarch64
+          sudo update-binfmts --enable qemu-arm
+          sudo update-binfmts --enable qemu-aarch64
+          arch-test "${{ matrix.arch }}"
+
+      - name: Configure pi-gen build
+        working-directory: pi-gen
+        run: |
+          set -euo pipefail
+          cat > config <<EOF
+          IMG_NAME=${{ steps.get_version.outputs.version_string }}
+          RELEASE=${{ steps.get_version.outputs.release }}
+          DEPLOY_COMPRESSION=xz
+          COMPRESSION_LEVEL=9
+          LOCALE_DEFAULT=en_GB.UTF-8
+          TARGET_HOSTNAME=raspberrypi
+          KEYBOARD_KEYMAP=gb
+          KEYBOARD_LAYOUT="English (UK)"
+          TIMEZONE_DEFAULT=Europe/London
+          FIRST_USER_NAME=pi
+          FIRST_USER_PASS=raspberry
+          DISABLE_FIRST_BOOT_USER_RENAME=1
+          ENABLE_SSH=1
+          PUBKEY_ONLY_SSH=0
+          STAGE_LIST="stage0 stage1 stage2 stage60"
+          CRANKSHAFT_APT_REPO=https://apt.opencardev.org
+          CRANKSHAFT_APT_SUITE=trixie
+          CRANKSHAFT_APT_COMPONENT=nightly
+          CRANKSHAFT_AUDIO_SYSTEM=pulseaudio
+          EOF
+
+      - name: Build pi-gen lite image
+        working-directory: pi-gen
+        run: |
+          set -euo pipefail
+          sudo ./build.sh
+          sudo chown -R "$(id -u):$(id -g)" deploy work || true
+
+      - name: Collect build outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p pi-gen/extracted-container
+
+          if [ -d pi-gen/deploy ]; then
+            cp -r pi-gen/deploy pi-gen/extracted-container/
+          fi
+          if [ -f pi-gen/work/build.log ]; then
+            cp pi-gen/work/build.log pi-gen/extracted-container/build.log
+          fi
+
+          if [ ! -d pi-gen/extracted-container/deploy ]; then
+            echo "No deploy directory found in container or host"
+          fi
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pi-gen-lite-${{ matrix.arch }}-${{ steps.get_version.outputs.builddate }}-${{ steps.get_version.outputs.version }}
+          path: |
+            pi-gen/extracted-container/deploy/
+            pi-gen/extracted-container/build.log
+            pi-gen/extracted-container/docker-container.log
+          retention-days: 30
+
+      - name: Upload build diagnostics on failure
+        if: always() && (failure() || cancelled())
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-logs-failure-${{ matrix.arch }}-${{ steps.get_version.outputs.builddate }}-${{ steps.get_version.outputs.version }}
+          path: |
+            pi-gen/extracted-container/
+            pi-gen/deploy/
+            pi-gen/*.log
+          retention-days: 7
+
+  build-summary:
+    name: Build Summary
+    needs: [build-lite-images]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Success Summary
+        if: needs.build-lite-images.result == 'success'
+        run: |
+          echo "Pi-gen lite image builds completed successfully"
+          echo "Version: ${{ needs.build-lite-images.outputs.version }}"
+          echo "Date: ${{ needs.build-lite-images.outputs.builddate }}"
+
+      - name: Publish run info
+        if: needs.build-lite-images.result == 'success'
+        run: |
+          {
+            echo "Build Run ID: ${{ github.run_id }}"
+            echo "Version: ${{ needs.build-lite-images.outputs.version }}"
+            echo "Build Date: ${{ needs.build-lite-images.outputs.builddate }}"
+            echo
+            echo "To create a release from these artifacts, run:"
+            echo "gh workflow run release-from-pi-gen.yml -f build_run_id=${{ github.run_id }} -f version='${{ needs.build-lite-images.outputs.version }}'"
+          } > run-info.txt
+
+      - name: Upload run info
+        if: needs.build-lite-images.result == 'success'
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-run-info-${{ needs.build-lite-images.outputs.builddate }}
+          path: run-info.txt
+          retention-days: 30
+
+      - name: Build Failure Summary
+        if: needs.build-lite-images.result == 'failure'
+        run: |
+          echo "Pi-gen lite image build failed"
+          exit 1

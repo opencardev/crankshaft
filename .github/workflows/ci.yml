@@ -1,0 +1,141 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Debian release
+        required: false
+        default: trixie
+        type: choice
+        options:
+          - trixie
+      auto_release:
+        description: Automatically create a GitHub release from this build
+        required: false
+        default: false
+        type: boolean
+      create_release_draft:
+        description: Create the release as a draft
+        required: false
+        default: false
+        type: boolean
+      attach-to-release:
+        description: Automatically attach images to GitHub release
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  version-metadata:
+    name: Version Metadata
+    runs-on: ubuntu-24.04
+    outputs:
+      base_version: ${{ steps.version.outputs.base_version }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup GitVersion
+        uses: gittools/actions/gitversion/setup@v4
+        with:
+          versionSpec: 6.x
+
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v4
+
+      - name: Export build version outputs
+        id: version
+        shell: bash
+        run: |
+          echo "base_version=${{ steps.gitversion.outputs.MajorMinorPatch }}" >> "${GITHUB_OUTPUT}"
+          echo "version=${{ steps.gitversion.outputs.SemVer }}" >> "${GITHUB_OUTPUT}"
+
+      - name: Publish version summary
+        shell: bash
+        run: |
+          {
+            echo "## Build Version"
+            echo
+            echo "- Base Version: ${{ steps.version.outputs.base_version }}"
+            echo "- Semantic Version: ${{ steps.version.outputs.version }}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+  build-pi-gen-lite:
+    name: Build Pi-gen Lite Images
+    needs: [version-metadata]
+    uses: ./.github/workflows/build-pi-gen-lite.yml
+    with:
+      version: ${{ needs.version-metadata.outputs.version }}
+      release: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.release || 'trixie') || 'trixie' }}
+      auto_release: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.auto_release || 'false') || 'false' }}
+      create_release_draft: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.create_release_draft || 'false') || 'false' }}
+      attach-to-release: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs['attach-to-release'] || 'false') || 'false' }}
+    permissions:
+      contents: write
+
+  pi-gen-image-summary:
+    name: Pi-gen Image Summary
+    if: always()
+    needs: [version-metadata, build-pi-gen-lite]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download pi-gen image artifacts
+        if: needs.build-pi-gen-lite.result == 'success'
+        uses: actions/download-artifact@v8
+        with:
+          pattern: pi-gen-lite-*
+          path: pi-gen-artifacts
+
+      - name: Build success summary
+        if: needs.build-pi-gen-lite.result == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t image_files < <(find pi-gen-artifacts -type f \( -name "*.img.xz" -o -name "*.img" -o -name "*.zip" \) | sort)
+
+          {
+            echo "## Pi-gen Images"
+            echo
+            echo "- Version: ${{ needs.version-metadata.outputs.version }}"
+            echo "- Build result: success"
+            echo
+            if [[ ${#image_files[@]} -eq 0 ]]; then
+              echo "No image files were found in downloaded artifacts."
+            else
+              echo "### Produced Images"
+              for file in "${image_files[@]}"; do
+                size_bytes="$(stat -c '%s' "$file")"
+                size_mib="$(awk -v s="$size_bytes" 'BEGIN { printf "%.2f", s / 1048576 }')"
+                echo "- $(basename "$file") (${size_mib} MiB)"
+              done
+            fi
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Build failure summary
+        if: needs.build-pi-gen-lite.result == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "## Pi-gen Images"
+            echo
+            echo "- Version: ${{ needs.version-metadata.outputs.version }}"
+            echo "- Build result: failure"
+            echo "Check uploaded diagnostics artifacts from build-pi-gen-lite for details."
+          } >> "${GITHUB_STEP_SUMMARY}"
+          exit 1

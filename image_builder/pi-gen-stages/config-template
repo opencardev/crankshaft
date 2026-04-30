@@ -1,0 +1,122 @@
+# Project: Crankshaft
+# This file is part of Crankshaft project.
+# Copyright (C) 2025 OpenCarDev Team
+#
+#  Crankshaft is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  Crankshaft is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Crankshaft. If not, see <http://www.gnu.org/licenses/>.
+
+# Crankshaft Pi-Gen Configuration Template
+# This file configures the pi-gen build system for creating Crankshaft images
+
+# ====================================================================
+# IMAGE IDENTIFICATION
+# ====================================================================
+IMG_NAME='crankshaft'
+RELEASE='trixie'
+DEPLOY_COMPRESSION='xz'
+
+# ====================================================================
+# LOCALISATION (British English default per constitution)
+# ====================================================================
+LOCALE_DEFAULT='en_GB.UTF-8'
+TARGET_HOSTNAME='crankshaft'
+KEYBOARD_KEYMAP='gb'
+KEYBOARD_LAYOUT='English (UK)'
+TIMEZONE_DEFAULT='Europe/London'
+
+# ====================================================================
+# DEFAULT USER (TEST CREDENTIALS - MUST CHANGE FOR PRODUCTION)
+# ====================================================================
+# WARNING: These are TEST-ONLY credentials for MVP development
+# Production deployments MUST change password and enable SSH keys
+# See docs/security.md for hardening guidance
+FIRST_USER_NAME='pi'
+FIRST_USER_PASS='raspberry'
+ENABLE_SSH=1
+
+# ====================================================================
+# STAGE SELECTION
+# ====================================================================
+# stage0: Bootstrap (debootstrap base system)
+# stage1: Minimal system (apt, systemd, basic utilities)
+# stage2: Lite system (networking, SSH, kernel modules)
+# stage-crankshaft: Custom Crankshaft installation and configuration
+STAGE_LIST="stage0 stage1 stage2 stage-crankshaft"
+
+# Skip stages we don't need (desktop, recommended packages)
+SKIP_STAGE3=1
+SKIP_STAGE4=1
+SKIP_STAGE5=1
+
+# ====================================================================
+# BUILD PERFORMANCE
+# ====================================================================
+# Use QCOW2 for faster builds and reduced disk usage
+export USE_QCOW2=1
+
+# Image date stamp
+export IMG_DATE="$(date +%Y-%m-%d)"
+
+# ====================================================================
+# TARGET HARDWARE
+# ====================================================================
+# Primary targets: Raspberry Pi 4, Pi 5
+# Best-effort: Raspberry Pi 3, Pi Zero 2
+# Architecture: Set via pi-gen branch (master=armhf, arm64=arm64)
+
+# ====================================================================
+# IMAGE SIZE AND PERFORMANCE TARGETS
+# ====================================================================
+# Target: Compressed image ≤2GB (.xz format)
+# Boot time target: ≤90s Pi 4, ≤120s Pi 3/Zero 2
+# Build time target: ≤60 minutes clean build in CI
+
+# ====================================================================
+# CRANKSHAFT-SPECIFIC CONFIGURATION
+# ====================================================================
+# These are passed to stage-crankshaft scripts as environment variables
+
+# APT repository for Crankshaft packages
+export CRANKSHAFT_APT_REPO='https://apt.opencardev.org'
+export CRANKSHAFT_APT_SUITE='trixie'
+export CRANKSHAFT_APT_COMPONENT='nightly'
+
+# Crankshaft core packages
+export CRANKSHAFT_CORE_PKG='crankshaft-core'
+export CRANKSHAFT_UI_PKG='crankshaft-ui-slim'
+
+# Audio system configuration
+export CRANKSHAFT_AUDIO_SYSTEM='pipewire'  # or 'pulseaudio' for Pi 3/Zero 2
+
+# Display configuration
+export CRANKSHAFT_DISPLAY='hdmi'  # VNC deferred to Phase 2
+
+# First-boot wizard
+export CRANKSHAFT_FIRSTBOOT_WIZARD='enabled'
+
+# ====================================================================
+# ADVANCED OPTIONS
+# ====================================================================
+# Clean APT cache to reduce image size
+export CLEAN=1
+
+# Reduce image size by removing unnecessary files
+export REDUCE_IMAGE_SIZE=1
+
+# ====================================================================
+# NOTES
+# ====================================================================
+# - This config is used by image_builder/scripts/build-docker-debug.sh
+# - Custom stage location: image_builder/pi-gen-stages/stage-crankshaft/
+# - To build: cd image_builder && ./scripts/build-docker-debug.sh
+# - Output: build/crankshaft-<date>-<arch>.img.xz

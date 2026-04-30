@@ -107,6 +107,9 @@ export CRANKSHAFT_FIRSTBOOT_WIZARD='enabled'
 # ====================================================================
 # ADVANCED OPTIONS
 # ====================================================================
+# Disable cloud-init/netplan provisioning in generated images.
+ENABLE_CLOUD_INIT=0
+
 # Clean APT cache to reduce image size
 export CLEAN=1
 

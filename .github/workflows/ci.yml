@@ -29,6 +29,11 @@ on:
         required: false
         default: false
         type: boolean
+      enable_nightly:
+        description: Also enable the nightly apt component (stable is always enabled)
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -85,6 +90,7 @@ jobs:
       auto_release: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.auto_release || 'false') || 'false' }}
       create_release_draft: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.create_release_draft || 'false') || 'false' }}
       attach-to-release: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs['attach-to-release'] || 'false') || 'false' }}
+      enable_nightly: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.enable_nightly || 'false') || 'false' }}
     permissions:
       contents: write
 

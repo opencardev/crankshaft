@@ -21,9 +21,10 @@
 # ====================================================================
 # IMAGE IDENTIFICATION
 # ====================================================================
-IMG_NAME='crankshaft'
-RELEASE='trixie'
+IMG_NAME='@@IMG_NAME@@'
+RELEASE='@@RELEASE@@'
 DEPLOY_COMPRESSION='xz'
+COMPRESSION_LEVEL=9
 
 # ====================================================================
 # LOCALISATION (British English default per constitution)
@@ -42,7 +43,9 @@ TIMEZONE_DEFAULT='Europe/London'
 # See docs/security.md for hardening guidance
 FIRST_USER_NAME='pi'
 FIRST_USER_PASS='raspberry'
+DISABLE_FIRST_BOOT_USER_RENAME=1
 ENABLE_SSH=1
+PUBKEY_ONLY_SSH=0
 
 # ====================================================================
 # STAGE SELECTION
@@ -50,8 +53,8 @@ ENABLE_SSH=1
 # stage0: Bootstrap (debootstrap base system)
 # stage1: Minimal system (apt, systemd, basic utilities)
 # stage2: Lite system (networking, SSH, kernel modules)
-# stage-crankshaft: Custom Crankshaft installation and configuration
-STAGE_LIST="stage0 stage1 stage2 stage-crankshaft"
+# stage60: Custom Crankshaft installation and configuration
+STAGE_LIST="stage0 stage1 stage2 stage60"
 
 # Skip stages we don't need (desktop, recommended packages)
 SKIP_STAGE3=1
@@ -88,21 +91,9 @@ export IMG_DATE="$(date +%Y-%m-%d)"
 
 # APT repository for Crankshaft packages
 export CRANKSHAFT_APT_REPO='https://apt.opencardev.org'
-export CRANKSHAFT_APT_SUITE='trixie'
-export CRANKSHAFT_APT_COMPONENT='nightly'
-
-# Crankshaft core packages
-export CRANKSHAFT_CORE_PKG='crankshaft-core'
-export CRANKSHAFT_UI_PKG='crankshaft-ui-slim'
-
-# Audio system configuration
-export CRANKSHAFT_AUDIO_SYSTEM='pipewire'  # or 'pulseaudio' for Pi 3/Zero 2
-
-# Display configuration
-export CRANKSHAFT_DISPLAY='hdmi'  # VNC deferred to Phase 2
-
-# First-boot wizard
-export CRANKSHAFT_FIRSTBOOT_WIZARD='enabled'
+export CRANKSHAFT_APT_SUITE='@@CRANKSHAFT_APT_SUITE@@'
+# stable is always configured; set CRANKSHAFT_ENABLE_NIGHTLY=true to also add the nightly component
+export CRANKSHAFT_ENABLE_NIGHTLY='@@CRANKSHAFT_ENABLE_NIGHTLY@@'
 
 # ====================================================================
 # ADVANCED OPTIONS

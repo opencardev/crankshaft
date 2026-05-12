@@ -35,6 +35,11 @@ on:
         required: false
         default: "false"
         type: string
+      enable_nightly:
+        description: "Also enable the nightly apt component (stable is always enabled)"
+        required: false
+        default: "false"
+        type: string
 
   workflow_dispatch:
     inputs:
@@ -67,6 +72,11 @@ on:
         type: string
       attach-to-release:
         description: "Automatically attach images to GitHub release"
+        required: false
+        default: false
+        type: boolean
+      enable_nightly:
+        description: "Also enable the nightly apt component (stable is always enabled)"
         required: false
         default: false
         type: boolean
@@ -163,30 +173,18 @@ jobs:
           arch-test "${{ matrix.arch }}"
 
       - name: Configure pi-gen build
-        working-directory: pi-gen
         run: |
           set -euo pipefail
-          cat > config <<EOF
-          IMG_NAME=${{ steps.get_version.outputs.version_string }}
-          RELEASE=${{ steps.get_version.outputs.release }}
-          DEPLOY_COMPRESSION=xz
-          COMPRESSION_LEVEL=9
-          LOCALE_DEFAULT=en_GB.UTF-8
-          TARGET_HOSTNAME=raspberrypi
-          KEYBOARD_KEYMAP=gb
-          KEYBOARD_LAYOUT="English (UK)"
-          TIMEZONE_DEFAULT=Europe/London
-          FIRST_USER_NAME=pi
-          FIRST_USER_PASS=raspberry
-          DISABLE_FIRST_BOOT_USER_RENAME=1
-          ENABLE_SSH=1
-          PUBKEY_ONLY_SSH=0
-          STAGE_LIST="stage0 stage1 stage2 stage60"
-          CRANKSHAFT_APT_REPO=https://apt.opencardev.org
-          CRANKSHAFT_APT_SUITE=trixie
-          CRANKSHAFT_APT_COMPONENT=nightly
-          CRANKSHAFT_AUDIO_SYSTEM=pulseaudio
-          EOF
+          TEMPLATE="${GITHUB_WORKSPACE}/image_builder/pi-gen-stages/config-template"
+          ENABLE_NIGHTLY="${{ inputs.enable_nightly || 'false' }}"
+          sed \
+            -e 's|@@IMG_NAME@@|${{ steps.get_version.outputs.version_string }}|g' \
+            -e 's|@@RELEASE@@|${{ steps.get_version.outputs.release }}|g' \
+            -e 's|@@CRANKSHAFT_APT_SUITE@@|${{ steps.get_version.outputs.release }}|g' \
+            -e "s|@@CRANKSHAFT_ENABLE_NIGHTLY@@|${ENABLE_NIGHTLY}|g" \
+            "${TEMPLATE}" > pi-gen/config
+          echo "--- Generated pi-gen config ---"
+          cat pi-gen/config
 
       - name: Build pi-gen lite image
         working-directory: pi-gen
@@ -247,28 +245,116 @@ jobs:
           echo "Version: ${{ needs.build-lite-images.outputs.version }}"
           echo "Date: ${{ needs.build-lite-images.outputs.builddate }}"
 
-      - name: Publish run info
-        if: needs.build-lite-images.result == 'success'
-        run: |
-          {
-            echo "Build Run ID: ${{ github.run_id }}"
-            echo "Version: ${{ needs.build-lite-images.outputs.version }}"
-            echo "Build Date: ${{ needs.build-lite-images.outputs.builddate }}"
-            echo
-            echo "To create a release from these artifacts, run:"
-            echo "gh workflow run release-from-pi-gen.yml -f build_run_id=${{ github.run_id }} -f version='${{ needs.build-lite-images.outputs.version }}'"
-          } > run-info.txt
-
-      - name: Upload run info
-        if: needs.build-lite-images.result == 'success'
-        uses: actions/upload-artifact@v7
-        with:
-          name: build-run-info-${{ needs.build-lite-images.outputs.builddate }}
-          path: run-info.txt
-          retention-days: 30
-
       - name: Build Failure Summary
         if: needs.build-lite-images.result == 'failure'
         run: |
           echo "Pi-gen lite image build failed"
           exit 1
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-lite-images]
+    if: >-
+      needs.build-lite-images.result == 'success' &&
+      (inputs.auto_release == 'true' || inputs.auto_release == true)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download all image artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: pi-gen-lite-*
+          path: release-assets
+          merge-multiple: false
+
+      - name: Collect image files
+        id: assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t image_files < <(find release-assets -type f \( -name "*.img.xz" -o -name "*.img.gz" -o -name "*.zip" \) | sort)
+          echo "Found ${#image_files[@]} image file(s):"
+          for f in "${image_files[@]}"; do echo "  $f"; done
+          printf '%s\n' "${image_files[@]}" > image-files.txt
+
+      - name: Generate release notes
+        id: notes
+        shell: bash
+        env:
+          VERSION: ${{ needs.build-lite-images.outputs.version }}
+          BUILD_DATE: ${{ needs.build-lite-images.outputs.builddate }}
+        run: |
+          set -euo pipefail
+          TAG="v${VERSION}"
+          PREV_TAG=$(git tag --sort=-version:refname | grep -v "^${TAG}$" | head -n1 || true)
+
+          {
+            echo "## Crankshaft ${TAG}"
+            echo
+            echo "**Released:** ${BUILD_DATE}  "
+            echo "**Architectures:** \`armhf\` (ARMv7 32-bit), \`arm64\` (AArch64 64-bit)"
+            echo
+            echo "### Changes"
+            echo
+            if [[ -n "${PREV_TAG}" ]]; then
+              git log "${PREV_TAG}..HEAD" \
+                --pretty=format:"- %s (%h)" \
+                --no-merges \
+                | head -60
+            else
+              git log HEAD \
+                --pretty=format:"- %s (%h)" \
+                --no-merges \
+                | head -60
+            fi
+            echo
+            echo
+            echo "### Installation"
+            echo
+            echo "Flash the correct image for your Raspberry Pi to an SD card using [Raspberry Pi Imager](https://www.raspberrypi.com/software/) or \`dd\`."
+            echo
+            echo "| Image suffix | Compatible hardware |"
+            echo "|---|---|"
+            echo "| \`armhf\` | Raspberry Pi 2 / 3 / 4 / 5 (32-bit OS) |"
+            echo "| \`arm64\` | Raspberry Pi 3 / 4 / 5 (64-bit OS) |"
+            echo
+            if [[ -n "${PREV_TAG}" ]]; then
+              echo "**Full changelog:** https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${TAG}"
+            fi
+          } > release-notes.md
+
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CREATE_DRAFT: ${{ inputs.create_release_draft }}
+          ATTACH_IMAGES: ${{ inputs.attach-to-release }}
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.notes.outputs.tag }}"
+
+          EXTRA_FLAGS=()
+          if [[ "${CREATE_DRAFT}" == "true" ]]; then
+            EXTRA_FLAGS+=(--draft)
+          fi
+
+          ASSET_ARGS=()
+          if [[ "${ATTACH_IMAGES}" == "true" ]] && [[ -s image-files.txt ]]; then
+            while IFS= read -r f; do
+              [[ -n "$f" ]] && ASSET_ARGS+=("$f")
+            done < image-files.txt
+          fi
+
+          gh release create "${TAG}" \
+            --title "Crankshaft ${TAG}" \
+            --notes-file release-notes.md \
+            "${EXTRA_FLAGS[@]}" \
+            "${ASSET_ARGS[@]}"

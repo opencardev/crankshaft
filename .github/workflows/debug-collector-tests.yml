@@ -1,0 +1,37 @@
+name: Debug Collector Tests
+
+on:
+  pull_request:
+    paths:
+      - "tools/crankshaft-debug-collector/**"
+      - ".github/workflows/debug-collector-tests.yml"
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - "tools/crankshaft-debug-collector/**"
+      - ".github/workflows/debug-collector-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Run debug collector tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Run tests
+        shell: bash
+        run: |
+          chmod +x tools/crankshaft-debug-collector/scripts/run-tests.sh
+          tools/crankshaft-debug-collector/scripts/run-tests.sh

@@ -1,237 +1,29 @@
 #!/usr/bin/env python3
+"""Compatibility wrapper for the modular collector project.
 
-import argparse
-import datetime
-import os
-import re
-import shlex
-import shutil
-import subprocess
-import tarfile
+The real implementation lives in /usr/share/crankshaft/debug-collector.
+Keeping this tiny wrapper preserves existing operator workflows that invoke
+`crankshaft-debug-collect` from PATH.
+"""
+
+from __future__ import annotations
+
+import importlib
+import sys
 from pathlib import Path
 
+PROJECT_ROOT = Path("/usr/share/crankshaft/debug-collector")
+SRC_ROOT = PROJECT_ROOT / "src"
 
-def run_command(command, output_path, timeout=30):
-    try:
-        completed = subprocess.run(
-            command,
-            shell=True,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-            check=False,
-        )
-        body = []
-        body.append(f"$ {command}")
-        body.append(f"exit_code: {completed.returncode}")
-        if completed.stdout:
-            body.append("\n[stdout]")
-            body.append(completed.stdout.rstrip())
-        if completed.stderr:
-            body.append("\n[stderr]")
-            body.append(completed.stderr.rstrip())
-        output_path.write_text("\n".join(body) + "\n", encoding="utf-8")
-        return completed.returncode, completed.stdout + completed.stderr
-    except Exception as exc:
-        output_path.write_text(f"$ {command}\nerror: {exc}\n", encoding="utf-8")
-        return 255, str(exc)
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
 
 
-def safe_copy(src, dst):
-    src_path = Path(src)
-    if not src_path.exists():
-        return False
-    dst.parent.mkdir(parents=True, exist_ok=True)
-    if src_path.is_dir():
-        if dst.exists():
-            shutil.rmtree(dst)
-        shutil.copytree(src_path, dst)
-    else:
-        shutil.copy2(src_path, dst)
-    return True
-
-
-def check_repo_present():
-    repo_file = Path("/etc/apt/sources.list.d/opencardev.list")
-    if not repo_file.exists():
-        return False
-    try:
-        content = repo_file.read_text(encoding="utf-8", errors="replace")
-    except Exception:
-        return False
-    return "apt.opencardev.org" in content
-
-
-def parse_pkg_installed(pkg_status_output):
-    pattern = re.compile(r"^ii\s+(\S+)", re.MULTILINE)
-    return set(pattern.findall(pkg_status_output))
-
-
-def collect(args):
-    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    base_dir = Path(args.output_dir).expanduser().resolve()
-    work_dir = base_dir / f"crankshaft-debug-{timestamp}"
-    logs_dir = work_dir / "logs"
-    commands_dir = work_dir / "commands"
-    config_dir = work_dir / "config"
-
-    logs_dir.mkdir(parents=True, exist_ok=True)
-    commands_dir.mkdir(parents=True, exist_ok=True)
-    config_dir.mkdir(parents=True, exist_ok=True)
-
-    command_specs = [
-        ("uname", "uname -a"),
-        ("os_release", "cat /etc/os-release"),
-        ("kernel_cmdline", "cat /proc/cmdline"),
-        ("uptime", "uptime"),
-        ("disk_usage", "df -h"),
-        ("memory", "free -h"),
-        ("lsusb", "lsusb"),
-        ("usb_tree", "lsusb -t"),
-        ("network", "ip addr"),
-        ("route", "ip route"),
-        ("systemd_failed", "systemctl --failed --no-pager"),
-        ("crankshaft_core_status", "systemctl status crankshaft-core --no-pager"),
-        ("crankshaft_ui_status", "systemctl status crankshaft-ui-slim --no-pager"),
-        ("bluetooth_status", "systemctl status bluetooth --no-pager"),
-        ("audio_status", "systemctl --type=service --state=running --no-pager | egrep -i 'pulse|pipewire|wireplumber'"),
-        ("apt_policy_core", "apt-cache policy crankshaft-core"),
-        ("apt_policy_ui", "apt-cache policy crankshaft-ui-slim"),
-        ("apt_policy_aasdk", "apt-cache policy libaasdk"),
-        ("dpkg_core", "dpkg -l 'crankshaft*'"),
-        ("dpkg_aasdk", "dpkg -l 'libaasdk*'"),
-        ("dpkg_qt", "dpkg -l 'libqt6*' 'qml6-module-*'"),
-        ("dpkg_gstreamer", "dpkg -l 'gstreamer1.0-*' 'libgstreamer*'"),
-        ("journal_boot", "journalctl -b --no-pager"),
-        ("journal_core", "journalctl -u crankshaft-core -b --no-pager"),
-        ("journal_ui", "journalctl -u crankshaft-ui-slim -b --no-pager"),
-        ("journal_bluetooth", "journalctl -u bluetooth -b --no-pager"),
-        ("journal_network", "journalctl -u NetworkManager -b --no-pager"),
-        ("dmesg", "dmesg -T"),
-    ]
-
-    results = {}
-    for name, cmd in command_specs:
-        code, text = run_command(cmd, commands_dir / f"{name}.txt")
-        results[name] = {"code": code, "text": text}
-
-    copied = []
-    config_candidates = [
-        "/etc/crankshaft/config.ini",
-        "/etc/default/crankshaft-core",
-        "/etc/apt/sources.list",
-        "/etc/apt/sources.list.d/opencardev.list",
-        "/boot/firmware/config.txt",
-        "/boot/config.txt",
-    ]
-    for source in config_candidates:
-        target = config_dir / source.lstrip("/")
-        if safe_copy(source, target):
-            copied.append(source)
-
-    analysis = []
-    analysis.append("Crankshaft Debug Analysis")
-    analysis.append("========================")
-    analysis.append(f"Generated at: {datetime.datetime.now().isoformat()}")
-    analysis.append(f"Output folder: {work_dir}")
-    analysis.append("")
-
-    if os.geteuid() != 0:
-        analysis.append("WARNING: script was not run as root; some logs may be incomplete.")
-
-    services = {
-        "crankshaft-core": "crankshaft_core_status",
-        "crankshaft-ui-slim": "crankshaft_ui_status",
-        "bluetooth": "bluetooth_status",
-    }
-    analysis.append("Service checks:")
-    for svc, key in services.items():
-        text = results.get(key, {}).get("text", "")
-        if "Active: active (running)" in text:
-            analysis.append(f"- OK: {svc} is active")
-        elif "could not be found" in text.lower() or "loaded: not-found" in text.lower():
-            analysis.append(f"- FAIL: {svc} service file not found")
-        else:
-            analysis.append(f"- WARN: {svc} is not active, review commands/{key}.txt")
-
-    analysis.append("")
-    analysis.append("Package checks:")
-    installed_pkgs = parse_pkg_installed(results.get("dpkg_core", {}).get("text", "") + "\n" + results.get("dpkg_aasdk", {}).get("text", ""))
-    expected = ["crankshaft-core", "crankshaft-ui-slim", "libaasdk"]
-    for pkg in expected:
-        if pkg in installed_pkgs:
-            analysis.append(f"- OK: {pkg} installed")
-        else:
-            analysis.append(f"- FAIL: {pkg} missing")
-
-    if check_repo_present():
-        analysis.append("- OK: OpenCarDev apt repo configured")
-    else:
-        analysis.append("- FAIL: OpenCarDev apt repo missing or malformed")
-
-    analysis.append("")
-    journal_blob = "\n".join(
-        [
-            results.get("journal_core", {}).get("text", ""),
-            results.get("journal_boot", {}).get("text", ""),
-            results.get("dmesg", {}).get("text", ""),
-        ]
-    ).lower()
-    error_markers = [
-        "aasdk",
-        "android auto",
-        "usb",
-        "timeout",
-        "failed",
-        "error",
-    ]
-    analysis.append("Relevant log markers:")
-    for marker in error_markers:
-        count = journal_blob.count(marker)
-        analysis.append(f"- {marker}: {count} matches")
-
-    analysis.append("")
-    analysis.append("Suggested investigation steps:")
-    analysis.append("1. Compare commands/dpkg_*.txt between dev build and pi-gen image")
-    analysis.append("2. Compare commands/journal_core.txt and commands/dmesg.txt for USB/AASDK errors")
-    analysis.append("3. Verify apt repo and candidate versions in commands/apt_policy_*.txt")
-    analysis.append("4. Ensure phone is connected and visible in commands/lsusb.txt during test")
-
-    (work_dir / "analysis.txt").write_text("\n".join(analysis) + "\n", encoding="utf-8")
-
-    archive_path = base_dir / f"crankshaft-debug-{timestamp}.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as tar:
-        tar.add(work_dir, arcname=work_dir.name)
-
-    print("Debug collection complete")
-    print(f"Working directory: {work_dir}")
-    print(f"Archive: {archive_path}")
-    if copied:
-        print("Copied config files:")
-        for entry in copied:
-            print(f"- {entry}")
-
-
-def build_parser():
-    parser = argparse.ArgumentParser(
-        description=(
-            "Collect Crankshaft diagnostics for issues such as AASDK not connecting. "
-            "Use this to compare dev-build behavior against pi-gen image behavior."
-        )
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="/tmp",
-        help="Directory for output folder and tar.gz archive (default: /tmp)",
-    )
-    return parser
-
-
-def main():
-    parser = build_parser()
-    args = parser.parse_args()
-    collect(args)
+def load_main():
+    """Import entrypoint lazily after dynamic sys.path setup."""
+    module = importlib.import_module("crankshaft_debug_collector.cli")
+    return module.main
 
 
 if __name__ == "__main__":
-    main()
+    load_main()()

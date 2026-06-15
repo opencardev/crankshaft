@@ -1,0 +1,47 @@
+# Enforce LF line endings repo-wide
+* text eol=lf
+
+# Shell scripts should always use LF
+*.sh text eol=lf
+
+# Windows scripts: still enforce LF to keep consistency across WSL/CI
+*.ps1 text eol=lf
+*.bat text eol=lf
+*.cmd text eol=lf
+
+# Dockerfile should use LF
+Dockerfile text eol=lf
+
+# Source code
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.h text eol=lf
+*.c text eol=lf
+*.cc text eol=lf
+*.cxx text eol=lf
+
+# CMake files
+*.cmake text eol=lf
+CMakeLists.txt text eol=lf
+
+# Configuration files
+*.json text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.conf text eol=lf
+*.ini text eol=lf
+*.ts text eol=lf
+*.qml text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary

@@ -1,0 +1,20 @@
+[project]
+name = "crankshaft-debug-collector"
+version = "0.1.0"
+description = "Collect Crankshaft diagnostics into a portable support archive"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+crankshaft-debug-collect = "crankshaft_debug_collector.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/crankshaft_debug_collector"]

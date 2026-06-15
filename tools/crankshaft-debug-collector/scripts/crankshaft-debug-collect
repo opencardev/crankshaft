@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+"""Wrapper entrypoint for environments without editable installs.
+
+This wrapper executes the packaged project directly from its repository path
+under /usr/share/crankshaft/debug-collector.
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path("/usr/share/crankshaft/debug-collector")
+SRC_ROOT = PROJECT_ROOT / "src"
+
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from crankshaft_debug_collector.cli import main
+
+
+if __name__ == "__main__":
+    main()

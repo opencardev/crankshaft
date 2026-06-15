@@ -44,3 +44,13 @@
 - Add service unit/drop-in paths to `SERVICE_CONFIG_CANDIDATES`.
 - Add logs to `LOG_CANDIDATES`.
 - Keep cross-module logic minimal; prefer adding helper functions near ownership.
+
+---
+
+## Related documentation
+
+| Document | Content |
+|----------|---------|
+| [SERVICES.md](SERVICES.md) | Every captured systemd service: purpose, runtime dirs, useful commands |
+| [SETTINGS.md](SETTINGS.md) | All `slim_ui.*` preference keys, defaults, and validation rules |
+| [TRIAGE.md](TRIAGE.md) | How to interpret archive output and diagnose common failures |

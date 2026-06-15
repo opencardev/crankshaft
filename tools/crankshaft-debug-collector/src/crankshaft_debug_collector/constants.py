@@ -62,6 +62,8 @@ COMMAND_SPECS: Final[list[tuple[str, str]]] = [
 CONFIG_CANDIDATES: Final[list[str]] = [
     "/etc/crankshaft",
     "/etc/default/crankshaft-core",
+    "/var/lib/crankshaft/slim-ui",
+    "/run/crankshaft/ui-slim-display.env",
     "/etc/apt/sources.list",
     "/etc/apt/sources.list.d/opencardev.list",
     "/boot/firmware/config.txt",

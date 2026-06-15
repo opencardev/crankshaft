@@ -63,3 +63,12 @@ Stage60 installs a tiny wrapper script that executes this project directly from
 - `src/crankshaft_debug_collector/cli.py`: CLI entrypoint.
 
 See `docs/ARCHITECTURE.md` for flow and maintenance guidance.
+
+## Documentation
+
+| Document | Content |
+|----------|---------|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Module responsibilities, data flow, extension guide |
+| [docs/SERVICES.md](docs/SERVICES.md) | Captured systemd services: purpose, runtime dirs, useful commands |
+| [docs/SETTINGS.md](docs/SETTINGS.md) | All `slim_ui.*` preference keys, defaults, and validation rules |
+| [docs/TRIAGE.md](docs/TRIAGE.md) | How to interpret archive output and diagnose common failures |

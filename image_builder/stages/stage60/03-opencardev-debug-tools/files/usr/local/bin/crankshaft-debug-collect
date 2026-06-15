@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Compatibility wrapper for the modular collector project.
+"""Fallback entry point – should not be reached on a correctly built image.
 
-The real implementation lives in /usr/share/crankshaft/debug-collector.
-Keeping this tiny wrapper preserves existing operator workflows that invoke
-`crankshaft-debug-collect` from PATH.
+The canonical entry point is installed by:
+    uv pip install --system /usr/share/crankshaft/debug-collector
+
+That command writes the real entry point (from pyproject.toml [project.scripts])
+directly into /usr/local/bin. This file is only present as a safety fallback in
+case uv was not available during the image build; it loads the project source from
+the staged location via sys.path injection.
 """
 
 from __future__ import annotations
@@ -12,15 +16,15 @@ import importlib
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path("/usr/share/crankshaft/debug-collector")
-SRC_ROOT = PROJECT_ROOT / "src"
+# Staged project source location – matches the path used by 00-run.sh.
+PROJECT_SRC = Path("/usr/share/crankshaft/debug-collector/src")
 
-if str(SRC_ROOT) not in sys.path:
-    sys.path.insert(0, str(SRC_ROOT))
+if str(PROJECT_SRC) not in sys.path:
+    sys.path.insert(0, str(PROJECT_SRC))
 
 
 def load_main():
-    """Import entrypoint lazily after dynamic sys.path setup."""
+    """Import the CLI entrypoint lazily after dynamic sys.path setup."""
     module = importlib.import_module("crankshaft_debug_collector.cli")
     return module.main
 

@@ -79,6 +79,27 @@ exit_code: <N>
 | `lsusb.txt` | USB device tree — verify Android device is visible. |
 | `usb_tree.txt` | USB topology — check device is on correct bus/port. |
 | `audio_status.txt` | Running PipeWire / PulseAudio / WirePlumber services. |
+| `audio_processes.txt` | Process-level view of audio/Bluetooth daemons. |
+| `audio_sockets.txt` | Active Pulse/PipeWire unix sockets and owners. |
+| `pactl_info.txt` | Pulse server selection and runtime endpoint details. |
+| `pactl_sinks.txt` | Available audio sinks and states. |
+| `pactl_sink_inputs.txt` | Active playback streams routed to sinks. |
+| `pactl_cards.txt` | Audio cards/profiles available for routing. |
+| `wpctl_status.txt` | WirePlumber graph-level status summary. |
+| `pw_cli_nodes.txt` | PipeWire node list (sinks, sources, streams). |
+| `pw_cli_links.txt` | PipeWire graph links (who is connected to what). |
+| `bluetoothctl_show.txt` | Adapter power/discoverability/pairing state. |
+| `bluetoothctl_devices.txt` | Known Bluetooth devices. |
+| `bluetoothctl_paired.txt` | Paired Bluetooth devices. |
+| `rfkill.txt` | Hardware/software radio blocks (WiFi/Bluetooth). |
+| `nmcli_general.txt` | NetworkManager state summary. |
+| `nmcli_devices.txt` | Device state for wlan/eth interfaces. |
+| `nmcli_connections.txt` | Active network connections. |
+| `iw_dev.txt` | Wireless interfaces and mode details. |
+| `iwconfig.txt` | Legacy wireless link diagnostics. |
+| `journal_pipewire.txt` | PipeWire user-unit journal logs. |
+| `journal_pipewire_pulse.txt` | PipeWire-Pulse compatibility logs. |
+| `journal_wireplumber.txt` | WirePlumber policy manager logs. |
 | `dpkg_core.txt` | Installed Crankshaft package versions. |
 | `dpkg_aasdk.txt` | Installed AASDK package version. |
 | `apt_policy_core.txt` | Candidate versions from apt — useful for diagnosing stale packages. |
@@ -107,10 +128,38 @@ exit_code: <N>
 
 1. Check `audio_status.txt` — are `pipewire`, `pipewire-pulse`, and
    `wireplumber` listed as running?
-2. Check `crankshaft_ui_cat.txt` — are the PipeWire environment variables
-   (`PULSE_SERVER`, `PIPEWIRE_RUNTIME_DIR`) present in the merged unit?
-3. Check `journal_core.txt` for `AudioRouter` or `AudioHAL` errors.
-4. Check `journal_ui.txt` for `AudioBridge` errors.
+2. Check `audio_sockets.txt` and `pactl_info.txt` — does the service resolve
+   the expected Pulse/PipeWire socket path?
+3. Check `pactl_sinks.txt` and `pactl_sink_inputs.txt` — are sinks present and
+   are streams routed to them during playback?
+4. Check `pw_cli_nodes.txt` and `pw_cli_links.txt` — confirm graph nodes and
+   links exist for Crankshaft playback.
+5. Check `journal_pipewire.txt`, `journal_pipewire_pulse.txt`, and
+   `journal_wireplumber.txt` for startup, permission, or graph policy failures.
+6. Check `crankshaft_core_cat.txt` and `crankshaft_ui_cat.txt` — are
+   `PULSE_SERVER`, `PIPEWIRE_RUNTIME_DIR`, and `XDG_RUNTIME_DIR` set?
+7. Check `journal_core.txt` for `AudioRouter` / `AudioHAL` errors and
+   `journal_ui.txt` for `AudioBridge` errors.
+8. If the core and UI disagree about backend availability, follow
+   [AUDIO_ROUTING_REMEDIATION.md](AUDIO_ROUTING_REMEDIATION.md).
+
+### Bluetooth audio route not switching
+
+1. Check `bluetoothctl_show.txt` — adapter must be powered and not blocked.
+2. Check `rfkill.txt` — ensure Bluetooth is not soft/hard blocked.
+3. Check `bluetoothctl_paired.txt` and `bluetoothctl_devices.txt` — verify the
+   target device exists and is paired.
+4. Check `journal_bluetooth.txt` for pairing/profile negotiation failures.
+5. Correlate with `pactl_cards.txt` / `pactl_sinks.txt` to ensure Bluetooth
+   audio profile endpoints are exposed to PipeWire/Pulse.
+
+### Wireless / hotspot side-effects on audio routing
+
+1. Check `nmcli_general.txt` and `nmcli_devices.txt` for interface state
+   flapping or unmanaged devices.
+2. Check `nmcli_connections.txt` and `iw_dev.txt` for active mode changes
+   (AP/client) during projection setup.
+3. Check `journal_network.txt` for reconnect loops that may race service start.
 
 ### Service keeps restarting
 
@@ -137,6 +186,11 @@ exit_code: <N>
 | `config/etc/default/crankshaft-core` | `/etc/default/crankshaft-core` | Core service defaults |
 | `config/var/lib/crankshaft/slim-ui/` | `/var/lib/crankshaft/slim-ui/` | Slim UI state folder containing either `slim-ui-preferences.ini` or `slim-ui-preferences.db` |
 | `config/run/crankshaft/ui-slim-display.env` | `/run/crankshaft/ui-slim-display.env` | Runtime Qt platform env written by the display setup service |
+| `config/etc/pipewire/` | `/etc/pipewire/` | PipeWire daemon/runtime configuration |
+| `config/etc/wireplumber/` | `/etc/wireplumber/` | WirePlumber policy/config overrides |
+| `config/etc/bluetooth/main.conf` | `/etc/bluetooth/main.conf` | BlueZ adapter policy defaults |
+| `config/etc/NetworkManager/NetworkManager.conf` | `/etc/NetworkManager/NetworkManager.conf` | NetworkManager global behavior |
+| `config/etc/NetworkManager/system-connections/` | `/etc/NetworkManager/system-connections/` | Saved wired/wireless connection profiles |
 | `config/etc/apt/sources.list.d/opencardev.list` | OpenCarDev apt source | Repo URL and suite |
 | `config/etc/systemd/system/crankshaft-core.service.d/` | Drop-in directory | PipeWire and local overrides |
 | `config/etc/systemd/system/crankshaft-ui-slim.service.d/` | Drop-in directory | PipeWire and local overrides |
@@ -153,6 +207,8 @@ exit_code: <N>
 | `logs/var/log/messages` | `/var/log/messages` | System messages (RHEL-style) |
 | `logs/var/log/kern.log` | `/var/log/kern.log` | Kernel log |
 | `logs/var/log/daemon.log` | `/var/log/daemon.log` | Daemon log |
+| `logs/var/log/NetworkManager/` | `/var/log/NetworkManager/` | NetworkManager daemon and plugin logs |
+| `logs/var/log/wpa_supplicant.log` | `/var/log/wpa_supplicant.log` | WiFi auth/association events |
 
 ---
 

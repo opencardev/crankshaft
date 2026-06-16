@@ -8,6 +8,7 @@ and lets callers reuse collection internals.
 from __future__ import annotations
 
 import datetime
+import json
 import tarfile
 from pathlib import Path
 
@@ -20,10 +21,14 @@ from .constants import (
     SERVICE_CONFIG_CANDIDATES,
 )
 from .filesystem import copy_candidates
+from .metadata import build_metadata
+from .types import CollectorMetadata
 
 
-def collect(output_dir: str = "/tmp") -> tuple[Path, Path, list[str]]:
-    """Collect diagnostics and return key output paths plus copied sources."""
+def collect(
+    output_dir: str = "/tmp",
+) -> tuple[Path, Path, list[str], Path, CollectorMetadata]:
+    """Collect diagnostics and return paths, copied sources, metadata."""
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     base_dir = Path(output_dir).expanduser().resolve()
     work_dir = base_dir / f"crankshaft-debug-{timestamp}"
@@ -44,7 +49,28 @@ def collect(output_dir: str = "/tmp") -> tuple[Path, Path, list[str]]:
     )
     copied_logs = copy_candidates(LOG_CANDIDATES, logs_dir)
 
+    metadata = build_metadata()
+    metadata_path = work_dir / "collector_metadata.json"
+    metadata_path.write_text(
+        json.dumps(
+            {
+                "collector_version": metadata.collector_version,
+                "collected_at_utc": metadata.collected_at_utc,
+                "build_timestamp_utc": metadata.build_timestamp_utc,
+                "git_commit": metadata.git_commit,
+                "git_branch": metadata.git_branch,
+                "git_tag": metadata.git_tag,
+                "git_dirty": metadata.git_dirty,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
     analysis = build_analysis(results, work_dir)
+    _append_metadata_section(analysis, metadata, metadata_path)
     _append_capture_sections(
         analysis,
         copied_configs,
@@ -62,7 +88,25 @@ def collect(output_dir: str = "/tmp") -> tuple[Path, Path, list[str]]:
         tar.add(work_dir, arcname=work_dir.name)
 
     copied = copied_configs + copied_service_configs + copied_logs
-    return work_dir, archive_path, copied
+    return work_dir, archive_path, copied, metadata_path, metadata
+
+
+def _append_metadata_section(
+    analysis: list[str],
+    metadata: CollectorMetadata,
+    metadata_path: Path,
+) -> None:
+    """Append collector build/version provenance to analysis output."""
+    analysis.append("Collector metadata:")
+    analysis.append(f"- metadata file: {metadata_path.name}")
+    analysis.append(f"- collector version: {metadata.collector_version}")
+    analysis.append(f"- collected at (UTC): {metadata.collected_at_utc}")
+    analysis.append(f"- build timestamp (UTC): {metadata.build_timestamp_utc}")
+    analysis.append(f"- git commit: {metadata.git_commit}")
+    analysis.append(f"- git branch: {metadata.git_branch}")
+    analysis.append(f"- git tag: {metadata.git_tag}")
+    analysis.append(f"- git dirty: {metadata.git_dirty}")
+    analysis.append("")
 
 
 def _append_capture_sections(

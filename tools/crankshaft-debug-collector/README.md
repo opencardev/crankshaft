@@ -16,6 +16,7 @@ simpler than maintaining a large monolithic script in stage files.
 - Captures Crankshaft and system logs into `logs/`.
 - Captures Crankshaft systemd unit files and drop-ins.
 - Generates `analysis.txt` with quick triage checks and guidance.
+- Generates `collector_metadata.json` with collector version/build/git provenance.
 - Produces a single compressed archive for support exchange.
 
 ## Run locally with uv
@@ -67,8 +68,11 @@ See `docs/ARCHITECTURE.md` for flow and maintenance guidance.
 ## Documentation
 
 | Document | Content |
-|----------|---------|
+| --- | --- |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Module responsibilities, data flow, extension guide |
 | [docs/SERVICES.md](docs/SERVICES.md) | Captured systemd services: purpose, runtime dirs, useful commands |
+| [docs/AUDIO_ROUTING_REMEDIATION.md](docs/AUDIO_ROUTING_REMEDIATION.md) | Step-by-step fix path for audio backend mismatch, Bluetooth blocks, and PipeWire connectivity |
 | [docs/SETTINGS.md](docs/SETTINGS.md) | All `slim_ui.*` preference keys, defaults, and validation rules |
 | [docs/TRIAGE.md](docs/TRIAGE.md) | How to interpret archive output and diagnose common failures |
+
+Project history: [CHANGELOG.md](CHANGELOG.md)

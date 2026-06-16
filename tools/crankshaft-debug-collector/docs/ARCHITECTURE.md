@@ -21,6 +21,8 @@
   - Orchestrates capture folders, collection calls, analysis, and tar archive.
 - `cli.py`
   - CLI parser and execution output.
+- `metadata.py`
+  - Captures collector build/version/git provenance for traceability.
 
 ## Data flow
 
@@ -28,14 +30,15 @@
 2. `collector.collect()` creates output folders.
 3. `commands.collect_commands()` executes diagnostics.
 4. `filesystem.copy_candidates()` copies config/service/log artifacts.
-5. `analysis.build_analysis()` builds quick triage summary.
-6. `collector.collect()` writes analysis and tarball.
+5. `metadata.build_metadata()` resolves collector provenance metadata.
+6. `analysis.build_analysis()` builds quick triage summary.
+7. `collector.collect()` writes `analysis.txt`, `collector_metadata.json`, and tarball.
 
 ## Operational notes
 
 - Missing files are not treated as fatal; they are skipped and reported.
 - Command failures are captured in per-command text files for root-cause analysis.
-- Archive structure is deterministic: `commands/`, `config/`, `logs/`, `analysis.txt`.
+- Archive structure is deterministic: `commands/`, `config/`, `logs/`, `analysis.txt`, `collector_metadata.json`.
 
 ## Extending the collector
 

@@ -27,11 +27,22 @@ def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
 
-    work_dir, archive_path, copied = collect(output_dir=args.output_dir)
+    work_dir, archive_path, copied, metadata_path, metadata = collect(
+        output_dir=args.output_dir,
+    )
 
     print("Debug collection complete")
     print(f"Working directory: {work_dir}")
     print(f"Archive: {archive_path}")
+    print(f"Metadata file: {metadata_path}")
+    print("Collector metadata:")
+    print(f"- collector version: {metadata.collector_version}")
+    print(f"- collected at (UTC): {metadata.collected_at_utc}")
+    print(f"- build timestamp (UTC): {metadata.build_timestamp_utc}")
+    print(f"- git commit: {metadata.git_commit}")
+    print(f"- git branch: {metadata.git_branch}")
+    print(f"- git tag: {metadata.git_tag}")
+    print(f"- git dirty: {metadata.git_dirty}")
     if copied:
         print("Copied config/log artifacts:")
         for entry in copied:

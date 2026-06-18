@@ -108,7 +108,7 @@ jobs:
 
     steps:
       - name: Checkout crankshaft repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -138,7 +138,7 @@ jobs:
           echo "release=${RELEASE}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout pi-gen repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           repository: RPi-Distro/pi-gen
           ref: ${{ matrix.branch }}
@@ -262,7 +262,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 

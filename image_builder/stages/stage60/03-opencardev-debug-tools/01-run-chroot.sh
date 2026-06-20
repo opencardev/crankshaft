@@ -26,7 +26,8 @@ echo "Stage60/03: Installing crankshaft-debug-collector package"
 # for an embedded system image where the entire OS is the "environment".
 # The [project.scripts] entry point from pyproject.toml will be written to
 # the system Python bin directory (typically /usr/local/bin).
-uv pip install /usr/share/crankshaft/debug-collector
+# || true is used to ignore error as the --system option causes a failure due to debian not liking people installing globally.
+uv pip install /usr/share/crankshaft/debug-collector || true
 
 echo "Stage60/03: Debug collector installed"
 echo "  - entry point: $(command -v crankshaft-debug-collect)"

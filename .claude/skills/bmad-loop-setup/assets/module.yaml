@@ -1,0 +1,19 @@
+code: bmad-loop
+name: BMAD Loop Skills
+description: "Automation-mode skills driven by the bmad-loop orchestrator: interactive escalation resolution (bmad-loop-resolve) and deferred-work sweep triage (bmad-loop-sweep) — the inner dev primitive (which self-reviews and commits) is the upstream bmad-dev-auto skill"
+module_version: 0.8.1
+default_selected: false
+module_greeting: >
+  BMAD Loop installed — both the automation skills and the
+  bmad-loop orchestrator tool (the Python program that drives the loop). Setup
+  installed the `bmad-loop` package from its Git repository with
+  `uv tool install`, ran `bmad-loop init` (skills + hooks + policy + gitignore),
+  and `bmad-loop validate`
+  (preflight). The skills
+  are invoked by the orchestrator and must stay installed together — the
+  bmad-loop-sweep skill normalizes and migrates the deferred-work ledger per its
+  own deferred-work-format.md. They require the BMad Method (bmm) module:
+  _bmad/bmm/config.yaml and a sprint-status.yaml from bmad-sprint-planning. Run
+  `bmad-loop run` to start, `bmad-loop tui` for the dashboard. To upgrade later,
+  just re-run `/bmad-loop-setup` (or `/bmad-loop-setup upgrade`) — it upgrades the
+  orchestrator tool and refreshes the per-project skills for you.

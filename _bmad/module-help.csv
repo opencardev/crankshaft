@@ -1,0 +1,3 @@
+module,skill,display-name,menu-code,description,action,args,phase,preceded-by,followed-by,required,output-location,outputs
+BMAD Loop Skills,bmad-loop-setup,Setup Loop Module,SA,Install or update BMAD Loop module config and help entries.,configure,{-H: headless mode},anytime,,,false,{project-root}/_bmad,config.yaml entries
+BMAD Loop Skills,bmad-loop-sweep,Sweep Triage,ST,Read-only triage of the deferred-work ledger into a machine-readable partition. Automation-only; bmad-loop sweep invokes it.,triage,{--feedback path},anytime,,,false,implementation_artifacts,result.json triage plan

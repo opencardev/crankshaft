@@ -9,9 +9,10 @@ Reads a source CSV with module help entries and merges them into a target CSV.
 Uses an anti-zombie pattern: all existing rows matching the source module code
 are removed before appending fresh rows.
 
-Legacy cleanup: when --legacy-dir and --module-code are provided, deletes old
-per-module module-help.csv files from {legacy-dir}/{module-code}/ and
-{legacy-dir}/core/. Only the current module and core are touched.
+Legacy cleanup: DISABLED. Old per-module module-help.csv files (including
+_bmad/core/module-help.csv) are never deleted — on BMAD v6 they are live,
+manifest-tracked files. The --legacy-dir / --module-code flags are accepted for
+backward compatibility but no longer remove anything.
 
 Exit codes: 0=success, 1=validation error, 2=runtime error
 """
@@ -122,19 +123,20 @@ def write_csv(path: str, header: list[str], rows: list[list[str]], verbose: bool
 
 
 def cleanup_legacy_csvs(legacy_dir: str, module_code: str, verbose: bool = False) -> list:
-    """Delete legacy per-module module-help.csv files for this module and core only.
+    """Intentionally does NOT delete any legacy CSV files (returns an empty list).
 
-    Returns list of deleted file paths.
+    Old per-module module-help.csv files — including _bmad/core/module-help.csv — are
+    live, manifest-tracked config on BMAD v6, so removing them destroys shared BMAD
+    state or desyncs _bmad/_config/files-manifest.csv. The anti-zombie merge into the
+    shared _bmad/module-help.csv already supersedes their entries, so leaving them in
+    place is harmless. Kept as a function so callers and the result JSON stay stable.
     """
-    deleted = []
-    for subdir in (module_code, "core"):
-        legacy_path = Path(legacy_dir) / subdir / "module-help.csv"
-        if legacy_path.exists():
-            if verbose:
-                print(f"Deleting legacy CSV: {legacy_path}", file=sys.stderr)
-            legacy_path.unlink()
-            deleted.append(str(legacy_path))
-    return deleted
+    if verbose:
+        print(
+            "Preserving legacy module-help.csv files (live BMAD v6 config is never deleted)",
+            file=sys.stderr,
+        )
+    return []
 
 
 def reject_unresolved_paths(named_paths: list[tuple[str, str]]) -> None:

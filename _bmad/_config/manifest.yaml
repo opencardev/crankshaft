@@ -1,0 +1,66 @@
+installation:
+  version: 6.10.0
+  installDate: 2026-07-10T23:05:47.878Z
+  lastUpdated: 2026-07-10T23:05:47.878Z
+modules:
+  - name: core
+    version: 6.10.0
+    installDate: 2026-07-10T23:05:17.733Z
+    lastUpdated: 2026-07-10T23:05:47.761Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: bmm
+    version: 6.10.0
+    installDate: 2026-07-10T23:05:17.111Z
+    lastUpdated: 2026-07-10T23:05:47.765Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: bmad-loop
+    version: v0.8.1
+    installDate: 2026-07-10T23:05:17.909Z
+    lastUpdated: 2026-07-10T23:05:47.826Z
+    source: external
+    npmPackage: null
+    repoUrl: https://github.com/bmad-code-org/bmad-loop
+    channel: stable
+    sha: 9aefd40268e72edb492d6bc809dff8bf420953e6
+  - name: tea
+    version: v1.19.0
+    installDate: 2026-07-10T23:05:28.916Z
+    lastUpdated: 2026-07-10T23:05:47.837Z
+    source: external
+    npmPackage: bmad-method-test-architecture-enterprise
+    repoUrl: https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise
+    channel: stable
+    sha: 8734d51f24071ddbcb3617390b5fcddb4128ef77
+  - name: bmb
+    version: v2.1.0
+    installDate: 2026-07-10T23:05:30.457Z
+    lastUpdated: 2026-07-10T23:05:47.853Z
+    source: external
+    npmPackage: bmad-builder
+    repoUrl: https://github.com/bmad-code-org/bmad-builder
+    channel: stable
+    sha: d54981a8ba3b990148256455ccf4e6c1cb4918f0
+  - name: cis
+    version: v0.2.1
+    installDate: 2026-07-10T23:05:32.084Z
+    lastUpdated: 2026-07-10T23:05:47.863Z
+    source: external
+    npmPackage: bmad-creative-intelligence-suite
+    repoUrl: https://github.com/bmad-code-org/bmad-module-creative-intelligence-suite
+    channel: stable
+    sha: 07a8dd03d196a762f21c241d985293fe5b0f90e7
+  - name: wds
+    version: v0.4.3
+    installDate: 2026-07-10T23:05:43.972Z
+    lastUpdated: 2026-07-10T23:05:47.878Z
+    source: external
+    npmPackage: bmad-wds
+    repoUrl: https://github.com/bmad-code-org/bmad-method-wds-expansion
+    channel: stable
+    sha: cc16f09fcfab26d35635af1491f36a38a8431c8d
+ides:
+  - github-copilot

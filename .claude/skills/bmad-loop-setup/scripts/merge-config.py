@@ -12,9 +12,10 @@ Uses an anti-zombie pattern for the module section in config.yaml.
 
 Legacy migration: when --legacy-dir is provided, reads old per-module config files
 from {legacy-dir}/{module-code}/config.yaml and {legacy-dir}/core/config.yaml.
-Matching values serve as fallback defaults (answers override them). After a
-successful merge, the legacy config.yaml files are deleted. Only the current
-module and core directories are touched — other module directories are left alone.
+Matching values serve as fallback defaults (answers override them). These legacy
+files are READ ONLY and never deleted — on BMAD v6 the per-module and core
+config.yaml are live, manifest-tracked files, and the consolidated _bmad/config.yaml
+wins on read regardless. Other modules' config is never touched.
 
 Exit codes: 0=success, 1=validation error, 2=runtime error
 """
@@ -58,7 +59,8 @@ def parse_args():
     parser.add_argument(
         "--legacy-dir",
         help="Path to _bmad/ directory to check for legacy per-module config files. "
-        "Matching values are used as fallback defaults, then legacy files are deleted.",
+        "Matching values are used as fallback defaults; the legacy files are read "
+        "only and never deleted (they are live, manifest-tracked config on BMAD v6).",
     )
     parser.add_argument(
         "--verbose",
@@ -160,19 +162,22 @@ def apply_legacy_defaults(answers: dict, legacy_core: dict, legacy_module: dict)
 
 
 def cleanup_legacy_configs(legacy_dir: str, module_code: str, verbose: bool = False) -> list:
-    """Delete legacy config.yaml files for this module and core only.
+    """Intentionally does NOT delete any legacy config files (returns an empty list).
 
-    Returns list of deleted file paths.
+    Legacy per-module (_bmad/<module>/config.yaml) and core (_bmad/core/config.yaml)
+    configs are read as fallback defaults (see load_legacy_values) but never deleted:
+    on BMAD v6 both are LIVE, manifest-tracked files, so removing core/config.yaml
+    destroys shared core config and removing <module>/config.yaml desyncs
+    _bmad/_config/files-manifest.csv. The consolidated _bmad/config.yaml always wins
+    on read, so leaving the legacy files in place is harmless. Kept as a function so
+    callers and the result JSON stay stable.
     """
-    deleted = []
-    for subdir in (module_code, "core"):
-        legacy_path = Path(legacy_dir) / subdir / "config.yaml"
-        if legacy_path.exists():
-            if verbose:
-                print(f"Deleting legacy config: {legacy_path}", file=sys.stderr)
-            legacy_path.unlink()
-            deleted.append(str(legacy_path))
-    return deleted
+    if verbose:
+        print(
+            "Preserving legacy config files (live BMAD v6 config is never deleted)",
+            file=sys.stderr,
+        )
+    return []
 
 
 def extract_module_metadata(module_yaml: dict) -> dict:

@@ -28,7 +28,7 @@ Both config scripts use an anti-zombie pattern — existing entries for this mod
 3. Check for per-module configuration at `{project-root}/_bmad/bmad-loop/config.yaml` and `{project-root}/_bmad/core/config.yaml`. If either file exists:
    - If `{project-root}/_bmad/config.yaml` does **not** yet have a section for this module: this is a **fresh install**. Inform the user that installer config was detected and values will be consolidated into the new format.
    - If `{project-root}/_bmad/config.yaml` **already** has a section for this module: this is a **legacy migration**. Inform the user that legacy per-module config was found alongside existing config, and legacy values will be used as fallback defaults.
-   - In both cases, per-module config files and directories will be cleaned up after setup.
+   - In both cases, legacy per-module config is consolidated into the new format. Live config files are **preserved** (never deleted); only genuinely redundant skill-payload directories, if any, are cleaned up after setup.
 
 **Decide fresh-install vs upgrade.** This drives whether the tool is upgraded and whether the per-project skills are refreshed (see "Install the Orchestrator Tool" below). Treat it as an **upgrade** when **any** of these hold:
 
@@ -51,7 +51,7 @@ Only when you detected a **pre-rename install** ("Decide fresh-install vs upgrad
 4. **Post-merge cleanup** — the anti-zombie merges key on the **new** names, so old rows and sections survive and need explicit removal:
    - Delete the leftover `bauto:` section from `{project-root}/_bmad/config.yaml`, plus any `bauto`-marked keys in `{project-root}/_bmad/config.user.yaml`.
    - Delete rows from `{project-root}/_bmad/module-help.csv` whose module column (column 1) reads `BMAD Automator Skills` — `merge-help-csv.py`'s anti-zombie filter keys on the new `BMAD Loop Skills`, so it leaves the old-named rows behind.
-   - The legacy installer dir `_bmad/bauto/` is removed by the cleanup step's `--also-remove bauto` (see "Cleanup Legacy Directories").
+   - The legacy installer dir `_bmad/bauto/` is cleaned by the bauto cleanup step (see "Cleanup Legacy Directories") **only if** it holds redundant `bmad-auto-*` skill copies; if it holds only stale config it is preserved (harmless — remove it manually once satisfied).
 
 Then continue with the normal flow below.
 
@@ -76,7 +76,7 @@ python3 ./scripts/merge-config.py --config-path "{project-root}/_bmad/config.yam
 python3 ./scripts/merge-help-csv.py --target "{project-root}/_bmad/module-help.csv" --source ./assets/module-help.csv --legacy-dir "{project-root}/_bmad" --module-code bmad-loop
 ```
 
-Both scripts output JSON to stdout with results. If either exits non-zero, surface the error and stop. The scripts automatically read legacy config values as fallback defaults, then delete the legacy files after a successful merge. Check `legacy_configs_deleted` and `legacy_csvs_deleted` in the output to confirm cleanup.
+Both scripts output JSON to stdout with results. If either exits non-zero, surface the error and stop. The scripts automatically read legacy config values as fallback defaults. Legacy config files are **preserved, never deleted** — on BMAD v6 the per-module and core `config.yaml` / `module-help.csv` are live, manifest-tracked files (so `legacy_configs_deleted` / `legacy_csvs_deleted` are always empty).
 
 Run `./scripts/merge-config.py --help` or `./scripts/merge-help-csv.py --help` for full usage.
 
@@ -132,9 +132,9 @@ Unless the user explicitly asked to skip it (e.g. `skills only` / `--no-tool`), 
 
 3. **Bootstrap the project** — install the coding-CLI hooks, the bundled `bmad-loop-*` skills, the `.bmad-loop/policy.toml` template, and the gitignore entry (idempotent).
 
-   First decide **which coding CLI(s)** the orchestrator should drive. The three supported adapters are `claude` (default), `codex`, and `gemini`. Hooks are registered per CLI, so the choice matters — register every CLI you intend to use for dev/review/triage. Ask the user (unless they already specified it in their setup args, e.g. `cli: claude, codex`, or accepted defaults — then default to `claude` only):
+   First decide **which coding CLI(s)** the orchestrator should drive. The supported adapters are `claude` (default), `codex`, `gemini`, `copilot`, and `antigravity` (Google's `agy`). Hooks are registered per CLI, so the choice matters — register every CLI you intend to use for dev/review/triage. Ask the user (unless they already specified it in their setup args, e.g. `cli: claude, codex`, or accepted defaults — then default to `claude` only):
 
-   > "Which coding CLI(s) should the orchestrator drive — `claude`, `codex`, and/or `gemini`? You can pick more than one. [claude]"
+   > "Which coding CLI(s) should the orchestrator drive — `claude`, `codex`, `gemini`, `copilot`, and/or `antigravity`? You can pick more than one. [claude]"
 
    Build the command with one `--cli <name>` per selected CLI (the flag is repeatable). **On an upgrade, append `--force-skills`** so the per-project skill copies are actually refreshed — without it `init` skips every existing skill dir and the project keeps stale skills against the upgraded tool. On a fresh install, omit it.
 
@@ -149,9 +149,9 @@ Unless the user explicitly asked to skip it (e.g. `skills only` / `--no-tool`), 
    bmad-loop init --project "{project-root}" --cli claude --force-skills
    ```
 
-   Names must be exactly `claude`, `codex`, or `gemini` — `init` errors on an unknown profile and lists the valid ones. `init` prints any one-time first-run notes per CLI (e.g. start `claude` once in the project and accept the workspace-trust + hooks-approval dialogs before `bmad-loop run` — spawned sessions can't answer first-run dialogs). Relay those notes to the user.
+   Names must be exactly `claude`, `codex`, `gemini`, `copilot`, or `antigravity` — `init` errors on an unknown profile and lists the valid ones. `init` prints any one-time first-run notes per CLI (e.g. start `claude` once in the project and accept the workspace-trust + hooks-approval dialogs before `bmad-loop run` — spawned sessions can't answer first-run dialogs). Relay those notes to the user.
 
-   **Skills are installed automatically:** `init` lays the bundled `bmad-loop-*` skills into the right tree for each selected CLI — `.claude/skills/` for `claude`, `.agents/skills/` for `codex`/`gemini`. On a fresh install, existing skill dirs are left untouched; on an upgrade, `--force-skills` overwrites them with the bundled copies from the upgraded tool (use `--no-skills` to skip the step and manage skills yourself).
+   **Skills are installed automatically:** `init` lays the bundled `bmad-loop-*` skills into the right tree for each selected CLI — `.claude/skills/` for `claude`, `.agents/skills/` for `codex`/`gemini`/`copilot`/`antigravity`. On a fresh install, existing skill dirs are left untouched; on an upgrade, `--force-skills` overwrites them with the bundled copies from the upgraded tool (use `--no-skills` to skip the step and manage skills yourself).
 
    > **Note:** `--force-skills` also overwrites `bmad-loop-setup` itself (it ships in the same bundle). That's expected and safe — the freshly laid-down setup skill takes effect on the **next** invocation, and your `_bmad/custom/*.toml` overrides (keyed by skill directory name) are untouched.
 
@@ -177,25 +177,23 @@ Unless the user explicitly asked to skip it (e.g. `skills only` / `--no-tool`), 
 
 ## Cleanup Legacy Directories
 
-After both merge scripts complete successfully, remove the installer's package directories. Skills and agents in these directories are already installed at `.claude/skills/` — the `_bmad/` directory should only contain config files.
+After both merge scripts complete successfully, remove any **redundant skill-payload** directories an older installer may have staged under `_bmad/` (past layouts duplicated skills that already live in the CLI's skill tree, e.g. `.claude/skills/`). On a modern BMAD v6 install nothing redundant is staged, so this step is a **safe no-op** — it never touches `_bmad/core/`, per-module config, or the `_bmad/_config/` manifest.
 
-As with the merge scripts, replace `{project-root}` in the `--bmad-dir` and `--skills-dir` path arguments with the actual project root before running.
+As with the merge scripts, replace `{project-root}` in the `--bmad-dir` and `--skills-dir` path arguments with the actual project root before running. For `--skills-dir`, use the skill tree of a CLI registered in step 3: `.claude/skills` for `claude`, `.agents/skills` for `codex`/`gemini`/`copilot`/`antigravity`. `init` lays the bundled skills into **every** selected CLI's tree, so any registered CLI's tree verifies correctly — the command below shows the `claude` tree; substitute `.agents/skills` if only non-Claude CLIs were registered. Do **not** pass `--also-remove _config` (or any shared config/manifest dir): `_config/` is live BMAD infrastructure and the script refuses to remove it regardless.
 
 ```bash
-python3 ./scripts/cleanup-legacy.py --bmad-dir "{project-root}/_bmad" --module-code bmad-loop --also-remove _config --skills-dir "{project-root}/.claude/skills"
+python3 ./scripts/cleanup-legacy.py --bmad-dir "{project-root}/_bmad" --module-code bmad-loop --skills-dir "{project-root}/.claude/skills"
 ```
 
-The script verifies that every skill in the legacy directories exists at `.claude/skills/` before removing anything. Directories without skills (like `_config/`) are removed directly. If the script exits non-zero, surface the error and stop. Missing directories (already cleaned by a prior run) are not errors — the script is idempotent.
+A directory is removed only when it is a **verified-redundant skill payload**: it contains a `SKILL.md`, carries no live config/manifest files anywhere in its tree (marker-named files inside a staged skill payload don't count — skills legitimately ship e.g. `assets/module-help.csv`), and (with `--skills-dir`) its skills are verified installed under the `--skills-dir` tree. Live config directories (per-module and nested config/manifests) are protected and reported under `directories_protected`; `core/` and `_config/` are protected by name regardless of contents. If the script exits non-zero, surface the error and stop. Missing directories (already cleaned by a prior run) are not errors — the script is idempotent.
 
-**On a rename-upgrade from bmad-auto**, also remove the old `_bmad/bauto/` installer directory. When it was populated by the BMAD-method installer it holds the pre-rename `bmad-auto-*` skill copies, which no longer exist at `.claude/skills/` — so run this cleanup **without** `--skills-dir` to skip the installed-skill verification (their removal is exactly the point). It is a no-op when `_bmad/bauto/` isn't present:
+**On a rename-upgrade from bmad-auto**, if the old `_bmad/bauto/` directory holds pre-rename `bmad-auto-*` skill copies (an older payload layout), run this cleanup **without** `--skills-dir` to skip installed-skill verification (their removal is the point). It is a no-op when `_bmad/bauto/` holds only config or isn't present:
 
 ```bash
 python3 ./scripts/cleanup-legacy.py --bmad-dir "{project-root}/_bmad" --module-code bauto
 ```
 
-(`--module-code bauto` also targets `core`, already handled above — a missing directory is a no-op.)
-
-Check `directories_removed` and `files_removed_count` in the JSON output for the confirmation step. Run `./scripts/cleanup-legacy.py --help` for full usage.
+Check `directories_removed`, `directories_protected`, and `files_removed_count` in the JSON output for the confirmation step. Run `./scripts/cleanup-legacy.py --help` for full usage.
 
 ## Confirm
 
@@ -206,7 +204,7 @@ Report the **tool** result according to the branch taken:
 - **Fresh install:** the installed `bmad-loop --version`, that `bmad-loop init` registered hooks, installed the `bmad-loop-*` skills, and wrote policy/gitignore for the selected coding CLI(s) (name each one — e.g. "hooks + skills installed for claude, codex").
 - **Upgrade:** the before → after `bmad-loop --version` (e.g. "upgraded 0.3.1 → 0.3.2", or "already current at 0.3.2"), that the `bmad-loop-*` skills were **refreshed** (not skipped) with `--force-skills` in each CLI tree, and the re-stamped config version.
 
-Also report the `bmad-loop validate` preflight result (pass, or the readiness checklist of what's still missing). If legacy files were deleted, mention the migration. If legacy directories were removed, report the count and list (e.g. "Cleaned up 106 installer package files from bmb/, core/, \_config/ — skills are installed at .claude/skills/"). Then display the `module_greeting` from `./assets/module.yaml` to the user.
+Also report the `bmad-loop validate` preflight result (pass, or the readiness checklist of what's still missing). If legacy config was consolidated, mention the migration (live config files are preserved, not deleted). If any redundant skill-payload directories were removed, report the count and list from `directories_removed` (e.g. "Cleaned up a redundant skill-payload directory — skills are installed in the CLI's skill tree"); on a v6 install this is typically empty and `directories_protected` confirms `core/` and `_config/` were left intact. Then display the `module_greeting` from `./assets/module.yaml` to the user.
 
 ## Outcome
 

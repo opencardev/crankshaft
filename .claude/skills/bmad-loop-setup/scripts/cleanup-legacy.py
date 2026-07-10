@@ -3,17 +3,26 @@
 # requires-python = ">=3.9"
 # dependencies = []
 # ///
-"""Remove legacy module directories from _bmad/ after config migration.
+"""Remove redundant legacy skill-payload directories from _bmad/ after config migration.
 
-After merge-config.py and merge-help-csv.py have migrated config data and
-deleted individual legacy files, this script removes the now-redundant
-directory trees. These directories contain skill files that are already
-installed at .claude/skills/ (or equivalent) — only the config files at
-_bmad/ root need to persist.
+Older BMAD installers could stage a module's skill payload *and* its config into
+_bmad/<module>/ (and _bmad/core/), duplicating skills that also live in the CLI's
+installed-skills tree (e.g. .claude/skills/ or .agents/skills/). This script
+removes only those *redundant skill-payload* trees.
 
-When --skills-dir is provided, the script verifies that every skill found
-in the legacy directories exists at the installed location before removing
-anything. Directories without skills (like _config/) are removed directly.
+A directory is removed ONLY when it is a verified-redundant skill payload:
+  * it contains >=1 SKILL.md, AND
+  * it carries no live config/manifest files anywhere in its tree (config.yaml,
+    module-help.csv, installer manifests, or a _config/ dir) — marker-named files
+    inside a staged skill payload (under a SKILL.md-bearing dir) don't count, AND
+  * when --skills-dir is given, every skill in it is verified installed there.
+
+Everything else is left untouched. On a modern BMAD v6 install the per-module and
+core directories hold only live config (no staged SKILL.md), and _bmad/_config/ is
+the live installer manifest — so this script is a safe no-op there and never deletes
+shared BMAD state. 'core' and '_config' are never removed: both are protected by
+name regardless of contents. Every other removal decision is driven entirely by
+directory contents, so no version check is needed.
 
 Exit codes: 0=success (including nothing to remove), 1=validation error, 2=runtime error
 """
@@ -47,8 +56,9 @@ def parse_args():
     )
     parser.add_argument(
         "--skills-dir",
-        help="Path to .claude/skills/ — enables safety verification that skills "
-        "are installed before removing legacy copies",
+        help="Path to the CLI's installed-skills tree (.claude/skills/ for claude, "
+        ".agents/skills/ for codex/gemini/copilot/antigravity) — enables safety "
+        "verification that skills are installed before removing legacy copies",
     )
     parser.add_argument(
         "--verbose",
@@ -76,65 +86,127 @@ def find_skill_dirs(base_path: str) -> list:
     return sorted(set(skills))
 
 
-def verify_skills_installed(
-    bmad_dir: str, dirs_to_check: list, skills_dir: str, verbose: bool = False
-) -> list:
-    """Verify that skills in legacy directories exist at the installed location.
+# Markers that mean a directory holds LIVE BMAD config or installer-manifest
+# state — never a disposable skill payload. Their presence protects the directory.
+_CONFIG_MARKERS = ("config.yaml", "config.user.yaml", "module-help.csv", "manifest.yaml")
 
-    Scans each directory in dirs_to_check for skill folders (containing SKILL.md),
-    then checks that a matching directory exists under skills_dir. Directories
-    that contain no skills (like _config/) are silently skipped.
 
-    Returns:
-        List of verified skill names.
+def _inside_skill_payload(item: Path, root: Path) -> bool:
+    """True if item sits inside a staged skill-payload subtree of root.
 
-    Raises SystemExit(1) if any skills are missing from skills_dir.
+    A dir at or above item — strictly below root — containing a SKILL.md marks a
+    staged skill payload; marker-named files under it (e.g. a skill's own
+    assets/module-help.csv) are payload data, not live state. root itself is
+    excluded so markers at the candidate's top level always stay protective.
     """
-    all_verified = []
-    missing = []
+    d = item.parent
+    while d != root:
+        if (d / "SKILL.md").exists():
+            return True
+        d = d.parent
+    return False
+
+
+def _is_config_marker(item: Path) -> bool:
+    return (
+        item.name in _CONFIG_MARKERS
+        or item.name.endswith("-manifest.csv")
+        or item.name == "bmad-help.csv"
+    )
+
+
+def is_config_bearing(path: Path) -> bool:
+    """True if the directory holds live BMAD config or installer-manifest state.
+
+    Such a directory (e.g. _bmad/core/, _bmad/<module>/, _bmad/_config/) is never a
+    redundant skill payload and must not be removed. 'core' and '_config' are
+    protected by name regardless of contents. Otherwise the whole tree is scanned
+    for per-module/core config.yaml + module-help.csv, installer manifests
+    (*-manifest.csv, manifest.yaml, bmad-help.csv), and nested _config/ dirs —
+    skipping markers that belong to a staged skill payload (see
+    _inside_skill_payload), which are disposable copies rather than live state.
+    """
+    if path.name in ("_config", "core"):
+        return True
+    for item in path.rglob("*"):
+        if item.is_dir() and item.name == "_config":
+            if not _inside_skill_payload(item, path):
+                return True
+        elif item.is_file() and _is_config_marker(item):
+            if not _inside_skill_payload(item, path):
+                return True
+    return False
+
+
+def classify_dirs(
+    bmad_dir: str, dirs_to_check: list, skills_dir: str, verbose: bool = False
+) -> tuple:
+    """Partition requested directories into removable payloads vs protected.
+
+    A directory is removable ONLY if it is a verified-redundant skill payload: it
+    contains >=1 SKILL.md, carries no live config/manifest files, and — when
+    skills_dir is given — every skill in it is verified installed there.
+
+    Returns (removable, protected, not_found, verified_skills) where `protected` is a
+    list of {"dir": name, "reason": ...}. Raises SystemExit(1) if a payload dir's
+    skills are missing from skills_dir (the original safety contract).
+    """
+    removable: list = []
+    protected: list = []
+    not_found: list = []
+    verified: list = []
+    missing: list = []
 
     for dirname in dirs_to_check:
-        legacy_path = Path(bmad_dir) / dirname
-        if not legacy_path.exists():
-            continue
-
-        skill_names = find_skill_dirs(str(legacy_path))
-        if not skill_names:
+        target = Path(bmad_dir) / dirname
+        if not target.exists() or not target.is_dir():
+            not_found.append(dirname)
             if verbose:
-                print(
-                    f"No skills found in {dirname}/ — skipping verification",
-                    file=sys.stderr,
-                )
+                print(f"Not found (skipping): {target}", file=sys.stderr)
             continue
 
-        for skill_name in skill_names:
-            installed_path = Path(skills_dir) / skill_name
-            if installed_path.is_dir():
-                all_verified.append(skill_name)
+        if target.name in ("_config", "core"):
+            protected.append({"dir": dirname, "reason": "live BMAD dir (protected by name)"})
+            if verbose:
+                print(f"Protected by name, not removing: {target}", file=sys.stderr)
+            continue
+
+        if is_config_bearing(target):
+            protected.append({"dir": dirname, "reason": "holds live config/manifest"})
+            if verbose:
+                print(f"Protected (live config/manifest), not removing: {target}", file=sys.stderr)
+            continue
+
+        skill_names = find_skill_dirs(str(target))
+        if not skill_names:
+            protected.append({"dir": dirname, "reason": "no skill payload"})
+            if verbose:
+                print(f"No skill payload, not removing: {target}", file=sys.stderr)
+            continue
+
+        if skills_dir:
+            dir_missing = [s for s in skill_names if not (Path(skills_dir) / s).is_dir()]
+            if dir_missing:
+                missing.extend(dir_missing)
                 if verbose:
-                    print(
-                        f"Verified: {skill_name} exists at {installed_path}",
-                        file=sys.stderr,
-                    )
-            else:
-                missing.append(skill_name)
-                if verbose:
-                    print(
-                        f"MISSING: {skill_name} not found at {installed_path}",
-                        file=sys.stderr,
-                    )
+                    for s in dir_missing:
+                        print(f"MISSING: {s} not found under {skills_dir}", file=sys.stderr)
+                continue
+            verified.extend(skill_names)
+
+        removable.append(dirname)
 
     if missing:
         error_result = {
             "status": "error",
             "error": "Skills not found at installed location",
-            "missing_skills": missing,
-            "skills_dir": str(Path(skills_dir).resolve()),
+            "missing_skills": sorted(set(missing)),
+            "skills_dir": str(Path(skills_dir).resolve()) if skills_dir else None,
         }
         print(json.dumps(error_result, indent=2))
         sys.exit(1)
 
-    return sorted(set(all_verified))
+    return removable, protected, not_found, sorted(set(verified))
 
 
 def count_files(path: Path) -> int:
@@ -227,40 +299,42 @@ def main():
     bmad_dir = args.bmad_dir
     module_code = args.module_code
 
-    # Build the list of directories to remove
-    dirs_to_remove = [module_code, "core"] + args.also_remove
+    # Candidate directories. 'core' is NEVER hardcoded here — it holds live core
+    # config on BMAD v6, not a disposable payload. Only the module's own dir plus
+    # any explicit --also-remove targets are considered, and each is still gated by
+    # classify_dirs (verified-redundant skill payload, never config-bearing).
+    dirs_to_check = [module_code] + args.also_remove
     # Deduplicate while preserving order
     seen = set()
     unique_dirs = []
-    for d in dirs_to_remove:
+    for d in dirs_to_check:
         if d not in seen:
             seen.add(d)
             unique_dirs.append(d)
-    dirs_to_remove = unique_dirs
+    dirs_to_check = unique_dirs
 
     if args.verbose:
-        print(f"Directories to remove: {dirs_to_remove}", file=sys.stderr)
+        print(f"Candidate directories: {dirs_to_check}", file=sys.stderr)
 
-    # Safety check: verify skills are installed before removing
-    verified_skills = None
-    if args.skills_dir:
-        if args.verbose:
-            print(
-                f"Verifying skills installed at {args.skills_dir}",
-                file=sys.stderr,
-            )
-        verified_skills = verify_skills_installed(
-            bmad_dir, dirs_to_remove, args.skills_dir, args.verbose
-        )
+    # Classify: only verified-redundant skill payloads are removable; live
+    # config/manifest dirs (core/, <module>/ config, _config/) are protected.
+    removable, protected, not_found, verified_skills = classify_dirs(
+        bmad_dir, dirs_to_check, args.skills_dir, args.verbose
+    )
 
-    # Remove directories
-    removed, not_found, total_files = cleanup_directories(bmad_dir, dirs_to_remove, args.verbose)
+    # Remove only the verified-redundant payload directories. A removable dir can
+    # vanish between classify_dirs() and here (TOCTOU) or a nested --also-remove
+    # target can be removed with its parent earlier in this loop; surface those in
+    # directories_not_found rather than silently dropping them.
+    removed, removal_not_found, total_files = cleanup_directories(bmad_dir, removable, args.verbose)
+    not_found = not_found + removal_not_found
 
     # Build result
     result = {
         "status": "success",
         "bmad_dir": str(Path(bmad_dir).resolve()),
         "directories_removed": removed,
+        "directories_protected": protected,
         "directories_not_found": not_found,
         "files_removed_count": total_files,
     }

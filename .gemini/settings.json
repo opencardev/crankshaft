@@ -1,0 +1,40 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project python C:\\Users\\matth\\install\\repos\\opencardev\\oct_2025\\crankshaft\\.bmad-loop\\bmad_loop_hook.py SessionStart",
+            "timeout": 60000
+          }
+        ]
+      }
+    ],
+    "AfterAgent": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project python C:\\Users\\matth\\install\\repos\\opencardev\\oct_2025\\crankshaft\\.bmad-loop\\bmad_loop_hook.py Stop",
+            "timeout": 60000
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project python C:\\Users\\matth\\install\\repos\\opencardev\\oct_2025\\crankshaft\\.bmad-loop\\bmad_loop_hook.py SessionEnd",
+            "timeout": 60000
+          }
+        ]
+      }
+    ]
+  }
+}

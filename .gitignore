@@ -15,3 +15,8 @@ stage2/03-crankshaft-base/files/qt5/Qt5_libs_OpenGLES2.tar.xz
 *.bak
 tools/crankshaft-debug-collector/src/**/.venv
 tools/crankshaft-debug-collector/src/**/__pycache__
+.bmad-loop/runs/
+.bmad-loop/cache/
+.bmad-loop/policy.toml
+_bmad/config*.*ml
+

@@ -18,6 +18,7 @@ simpler than maintaining a large monolithic script in stage files.
 - Generates `analysis.txt` with quick triage checks and guidance.
 - Generates `collector_metadata.json` with collector version/build/git provenance.
 - Produces a single compressed archive for support exchange.
+- Includes an HDMI/video debug helper script for Raspberry Pi AASDK/Display diagnostics.
 
 ## Run locally with uv
 

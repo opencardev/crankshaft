@@ -82,6 +82,8 @@ def build_analysis(
             )
 
     analysis.append("")
+    _append_hdmi_display_checks(analysis, results)
+    analysis.append("")
     analysis.append("Package checks:")
     installed_pkgs = parse_pkg_installed(
         results.get("dpkg_core", CommandResult(255, "")).text
@@ -138,6 +140,68 @@ def build_analysis(
     )
 
     return analysis
+
+
+def _append_hdmi_display_checks(
+    analysis: list[str],
+    results: dict[str, CommandResult],
+) -> None:
+    """Append Raspberry Pi HDMI/display heuristics for video issue triage."""
+    analysis.append("HDMI / display checks:")
+
+    tvservice_status = results.get("tvservice_status", CommandResult(255, "")).text.lower()
+    if "no device connected" in tvservice_status or "no device present" in tvservice_status:
+        analysis.append("- WARN: tvservice reports no connected display")
+    elif "connected" in tvservice_status or (
+        "state" in tvservice_status
+        and "hdmi" in tvservice_status
+        and "0x" in tvservice_status
+    ):
+        analysis.append("- OK: tvservice reports a connected display")
+    elif tvservice_status.strip():
+        analysis.append("- WARN: tvservice output present but inconclusive")
+    else:
+        analysis.append("- WARN: tvservice output unavailable; check commands/tvservice_status.txt")
+
+    display_power = results.get("vcgencmd_display_power", CommandResult(255, "")).text.lower()
+    if "display_power=1" in display_power:
+        analysis.append("- OK: vcgencmd reports display power on")
+    elif "display_power=0" in display_power:
+        analysis.append("- WARN: vcgencmd reports display power off")
+    elif display_power.strip():
+        analysis.append("- WARN: vcgencmd display power output inconclusive")
+    else:
+        analysis.append("- WARN: vcgencmd display power output missing")
+
+    boot_config = results.get("boot_config", CommandResult(255, "")).text.lower()
+    if "hdmi_force_hotplug=1" in boot_config:
+        analysis.append("- OK: hdmi_force_hotplug enabled in /boot/config.txt")
+    else:
+        analysis.append("- WARN: hdmi_force_hotplug not enabled in /boot/config.txt")
+
+    if "hdmi_group=1" in boot_config or "hdmi_group=2" in boot_config:
+        analysis.append("- OK: HDMI group configured in /boot/config.txt")
+    else:
+        analysis.append("- WARN: HDMI group not configured in /boot/config.txt")
+
+    drm_connectors = results.get("drm_connectors", CommandResult(255, "")).text.lower()
+    if " connected" in drm_connectors:
+        analysis.append("- OK: DRM connector output includes a connected display")
+    elif drm_connectors.strip():
+        analysis.append("- WARN: DRM connector output captured but no connected display found")
+    else:
+        analysis.append("- WARN: DRM connector output missing or unreadable")
+
+    journal_core_video = results.get("journal_core_video", CommandResult(255, "")).text
+    journal_ui_video = results.get("journal_ui_video", CommandResult(255, "")).text
+    if journal_core_video.strip():
+        analysis.append("- OK: video-related messages detected in core logs")
+    else:
+        analysis.append("- WARN: no video-related messages found in core logs")
+    if journal_ui_video.strip():
+        analysis.append("- OK: video/display-related messages detected in UI logs")
+    else:
+        analysis.append("- WARN: no video/display-related messages found in UI logs")
 
 
 def _append_routing_heuristics(

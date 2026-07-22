@@ -51,6 +51,18 @@ COMMAND_SPECS: Final[list[tuple[str, str]]] = [
         "crankshaft_display_setup_cat",
         "systemctl cat crankshaft-ui-slim-display-setup --no-pager",
     ),
+    (
+        "aa_decode_loop_config",
+        "python3 - <<'PY'\nimport json\nfrom pathlib import Path\npaths=[Path('/etc/crankshaft/crankshaft.json'), Path('/usr/share/crankshaft/config/crankshaft.json')]\nfor p in paths:\n    if p.exists():\n        obj=json.loads(p.read_text())\n        print(json.dumps(obj.get('core',{}).get('android_auto',{}).get('decode',{}), indent=2, sort_keys=True))\n        break\nelse:\n    print('missing crankshaft.json')\nPY",
+    ),
+    (
+        "aa_telemetry_config",
+        "python3 - <<'PY'\nimport json\nfrom pathlib import Path\npaths=[Path('/etc/crankshaft/crankshaft.json'), Path('/usr/share/crankshaft/config/crankshaft.json')]\nfor p in paths:\n    if p.exists():\n        obj=json.loads(p.read_text())\n        print(json.dumps(obj.get('core',{}).get('android_auto',{}).get('telemetry',{}), indent=2, sort_keys=True))\n        break\nelse:\n    print('missing crankshaft.json')\nPY",
+    ),
+    (
+        "aa_thermal_config",
+        "python3 - <<'PY'\nimport json\nfrom pathlib import Path\npaths=[Path('/etc/crankshaft/crankshaft.json'), Path('/usr/share/crankshaft/config/crankshaft.json')]\nfor p in paths:\n    if p.exists():\n        obj=json.loads(p.read_text())\n        print(json.dumps(obj.get('core',{}).get('android_auto',{}).get('thermal',{}), indent=2, sort_keys=True))\n        break\nelse:\n    print('missing crankshaft.json')\nPY",
+    ),
     ("bluetooth_status", "systemctl status bluetooth --no-pager"),
     (
         "audio_status",

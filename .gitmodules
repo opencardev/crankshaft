@@ -6,3 +6,6 @@
 	path = src/crankshaft-ui-slim
 	url = https://github.com/opencardev/crankshaft-ui-slim.git
 	branch = develop
+[submodule "src/aasdk"]
+	path = src/aasdk
+	url = https://github.com/opencardev/aasdk

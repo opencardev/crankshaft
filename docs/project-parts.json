@@ -1,0 +1,69 @@
+{
+  "repository_type": "monorepo",
+  "parts": [
+    {
+      "part_id": "core",
+      "path": "src/crankshaft-core",
+      "project_type": "backend",
+      "architecture_file": "architecture-core.md",
+      "development_guide": "development-guide-core.md",
+      "api_contracts": "api-contracts-core.md",
+      "data_models": "data-models-core.md"
+    },
+    {
+      "part_id": "ui",
+      "path": "src/crankshaft-ui-slim",
+      "project_type": "desktop",
+      "architecture_file": "architecture-ui.md",
+      "development_guide": "development-guide-ui.md",
+      "component_inventory": "component-inventory-ui.md"
+    },
+    {
+      "part_id": "tools",
+      "path": "tools/crankshaft-debug-collector",
+      "project_type": "cli",
+      "architecture_file": "architecture-tools.md",
+      "development_guide": "development-guide-tools.md"
+    },
+    {
+      "part_id": "image",
+      "path": "image_builder",
+      "project_type": "infra",
+      "architecture_file": "architecture-image.md",
+      "development_guide": "development-guide-image.md"
+    },
+    {
+      "part_id": "aasdk",
+      "path": "src/aasdk",
+      "project_type": "library",
+      "architecture_file": "architecture-aasdk.md",
+      "development_guide": "development-guide-aasdk.md"
+    }
+  ],
+  "integration_points": [
+    {
+      "from": "ui",
+      "to": "core",
+      "type": "WebSocket",
+      "details": "pub/sub, commands, admin-api (localhost)"
+    },
+    {
+      "from": "core",
+      "to": "aasdk",
+      "type": "Library Dependency",
+      "details": "Android Auto protocol runtime"
+    },
+    {
+      "from": "image",
+      "to": "core/ui/tools",
+      "type": "Image Build Pipeline",
+      "details": "pi-gen stage60 package and service integration"
+    },
+    {
+      "from": "tools",
+      "to": "runtime",
+      "type": "Diagnostics Capture",
+      "details": "logs/config/service metadata archive"
+    }
+  ]
+}

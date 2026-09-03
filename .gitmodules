@@ -1,0 +1,8 @@
+[submodule "src/crankshaft-core"]
+	path = src/crankshaft-core
+	url = https://github.com/opencardev/crankshaft-core.git
+	branch = develop
+[submodule "src/crankshaft-ui-slim"]
+	path = src/crankshaft-ui-slim
+	url = https://github.com/opencardev/crankshaft-ui-slim.git
+	branch = develop
